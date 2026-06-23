@@ -1,0 +1,84 @@
+26-06-18 21:44:47.665 - INFO: 
+===== AnomalyCLIP full evaluation =====
+command: /Users/bytedance/code/.venv/bin/python test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/04_wavelet_tta_stronger_confirm --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.35 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.7 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.05 --tta_topk_ratio 0.03 --tta_min_confidence 0.25
+cwd: /Users/bytedance/code/AnomalyCLIP
+python: 3.9.6 (default, Apr 30 2025, 02:07:17)  [Clang 17.0.0 (clang-1700.0.13.5)]
+platform: macOS-15.7.3-arm64-arm-64bit
+  cuda_available: False
+  cuda_device_count: 0
+  torch_version: 2.0.0
+git_commit: 3911738
+git_status:
+  M AnomalyCLIP_lib/__pycache__/CLIP.cpython-38.pyc
+   M AnomalyCLIP_lib/model_load.py
+   M generate_dataset_json/DAGM.py
+   M generate_dataset_json/DTD.py
+   M generate_dataset_json/btad.py
+   M generate_dataset_json/clinicDB.py
+   M generate_dataset_json/colonDB.py
+   M generate_dataset_json/endoTect.py
+   M generate_dataset_json/isbi.py
+   M generate_dataset_json/kvasir.py
+   M generate_dataset_json/mpdd.py
+   M generate_dataset_json/mvtec.py
+   M generate_dataset_json/tn3k.py
+   M generate_dataset_json/visa.py
+   M logger.py
+   M metrics.py
+   M test.py
+   M train.py
+  ?? .gitignore
+  ?? cache_mvtec_features.py
+  ?? cached_eval_utils.py
+  ?? eval_cached_calibration.py
+  ?? run_param_sweep.py
+  ?? sweep_results/
+  ?? test_time_rectification.py
+  ?? wavelet_calibration.py
+args:
+  aupro_steps: 200
+  checkpoint_path: /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth
+  data_path: /Users/bytedance/Downloads/mvtec_anomaly_detection
+  dataset: mvtec
+  depth: 9
+  feature_map_layer: [0, 1, 2, 3]
+  features_list: [6, 12, 18, 24]
+  image_size: 518
+  metrics: image-pixel-level
+  n_ctx: 12
+  save_path: ./sweep_results/20260618_190501/04_wavelet_tta_stronger_confirm
+  seed: 111
+  sigma: 4
+  t_n_ctx: 4
+  tta_alpha: 0.05
+  tta_min_confidence: 0.25
+  tta_topk_ratio: 0.03
+  tta_update_abnormal: False
+  use_tta_rectification: True
+  use_wavelet: True
+  wavelet_beta: 0.35
+  wavelet_condition_power: 2.0
+  wavelet_fusion: mean
+  wavelet_suppress_beta: 0.7
+extra:
+  device: cpu
+===== end run context =====
+26-06-18 22:37:59.807 - INFO: 
+| objects    |   pixel_auroc |   pixel_aupro |   image_auroc |   image_ap |
+|:-----------|--------------:|--------------:|--------------:|-----------:|
+| carpet     |          98.2 |          94.6 |         100   |      100   |
+| bottle     |          80.5 |          76.7 |          88.5 |       96.8 |
+| hazelnut   |          96.8 |          91.8 |          97.2 |       98.5 |
+| leather    |          98.6 |          96   |          99.8 |       99.9 |
+| cable      |          73.9 |          54.1 |          69.3 |       80.8 |
+| capsule    |          92.3 |          75.5 |          89.6 |       97.8 |
+| grid       |          93.6 |          78.8 |          97.8 |       99.3 |
+| pill       |          90.2 |          89.1 |          80.9 |       95.3 |
+| transistor |          64.9 |          50.4 |          93.7 |       92   |
+| metal_nut  |          72.6 |          68.7 |          91.9 |       98.1 |
+| screw      |          97   |          85.4 |          82.4 |       93.1 |
+| toothbrush |          89   |          81.7 |          85.6 |       94   |
+| zipper     |          78.7 |          43.6 |          98.2 |       99.5 |
+| tile       |          92.5 |          83.4 |         100   |      100   |
+| wood       |          96.1 |          90.7 |          96.8 |       99.2 |
+| mean       |          87.7 |          77.4 |          91.5 |       96.3 |

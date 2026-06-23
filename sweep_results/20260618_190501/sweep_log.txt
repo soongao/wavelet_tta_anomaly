@@ -1,0 +1,67 @@
+sweep_start: 2026-06-18 19:05:01
+runner: test
+aupro_steps: 200
+metrics: image-pixel-level
+
+[2026-06-18 19:05:01] START 01_wavelet_tta_conservative
+command: /Users/bytedance/code/.venv/bin/python -B test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/01_wavelet_tta_conservative --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.25 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.6 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.05 --tta_topk_ratio 0.02 --tta_min_confidence 0.25
+console_log: ./sweep_results/20260618_190501/01_wavelet_tta_conservative/console.log
+[2026-06-18 19:58:22] END 01_wavelet_tta_conservative returncode=0 elapsed_sec=3200.1
+
+[2026-06-18 19:58:22] START 02_wavelet_tta_more_suppression
+command: /Users/bytedance/code/.venv/bin/python -B test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/02_wavelet_tta_more_suppression --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.2 --wavelet_condition_power 2.5 --wavelet_suppress_beta 0.8 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.04 --tta_topk_ratio 0.02 --tta_min_confidence 0.3
+console_log: ./sweep_results/20260618_190501/02_wavelet_tta_more_suppression/console.log
+[2026-06-18 20:51:43] END 02_wavelet_tta_more_suppression returncode=0 elapsed_sec=3201.0
+
+[2026-06-18 20:51:43] START 03_wavelet_tta_weak_tta
+command: /Users/bytedance/code/.venv/bin/python -B test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/03_wavelet_tta_weak_tta --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.25 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.7 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.03 --tta_topk_ratio 0.015 --tta_min_confidence 0.3
+console_log: ./sweep_results/20260618_190501/03_wavelet_tta_weak_tta/console.log
+[2026-06-18 21:44:44] END 03_wavelet_tta_weak_tta returncode=0 elapsed_sec=3181.7
+
+[2026-06-18 21:44:44] START 04_wavelet_tta_stronger_confirm
+command: /Users/bytedance/code/.venv/bin/python -B test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/04_wavelet_tta_stronger_confirm --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.35 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.7 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.05 --tta_topk_ratio 0.03 --tta_min_confidence 0.25
+console_log: ./sweep_results/20260618_190501/04_wavelet_tta_stronger_confirm/console.log
+[2026-06-18 22:38:00] END 04_wavelet_tta_stronger_confirm returncode=0 elapsed_sec=3195.4
+
+[2026-06-18 22:38:00] START 05_wavelet_tta_high_confidence
+command: /Users/bytedance/code/.venv/bin/python -B test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/05_wavelet_tta_high_confidence --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.2 --wavelet_condition_power 3.0 --wavelet_suppress_beta 0.6 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.04 --tta_topk_ratio 0.02 --tta_min_confidence 0.35
+console_log: ./sweep_results/20260618_190501/05_wavelet_tta_high_confidence/console.log
+[2026-06-18 23:31:04] END 05_wavelet_tta_high_confidence returncode=0 elapsed_sec=3183.9
+
+[2026-06-18 23:31:04] START 06_wavelet_tta_light_wavelet
+command: /Users/bytedance/code/.venv/bin/python -B test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/06_wavelet_tta_light_wavelet --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.15 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.5 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.04 --tta_topk_ratio 0.02 --tta_min_confidence 0.25
+console_log: ./sweep_results/20260618_190501/06_wavelet_tta_light_wavelet/console.log
+[2026-06-19 00:24:19] END 06_wavelet_tta_light_wavelet returncode=0 elapsed_sec=3195.1
+
+[2026-06-19 00:24:19] START 07_wavelet_tta_texture_guard
+command: /Users/bytedance/code/.venv/bin/python -B test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/07_wavelet_tta_texture_guard --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.15 --wavelet_condition_power 2.5 --wavelet_suppress_beta 1.0 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.03 --tta_topk_ratio 0.015 --tta_min_confidence 0.35
+console_log: ./sweep_results/20260618_190501/07_wavelet_tta_texture_guard/console.log
+[2026-06-19 01:17:28] END 07_wavelet_tta_texture_guard returncode=0 elapsed_sec=3189.1
+
+[2026-06-19 01:17:28] START 08_wavelet_tta_balanced_topk03
+command: /Users/bytedance/code/.venv/bin/python -B test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/08_wavelet_tta_balanced_topk03 --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.25 --wavelet_condition_power 2.5 --wavelet_suppress_beta 0.7 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.04 --tta_topk_ratio 0.03 --tta_min_confidence 0.3
+console_log: ./sweep_results/20260618_190501/08_wavelet_tta_balanced_topk03/console.log
+[2026-06-19 02:10:42] END 08_wavelet_tta_balanced_topk03 returncode=0 elapsed_sec=3193.7
+
+[2026-06-19 02:10:42] START 09_wavelet_tta_very_weak_tta
+command: /Users/bytedance/code/.venv/bin/python -B test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/09_wavelet_tta_very_weak_tta --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.25 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.6 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.02 --tta_topk_ratio 0.015 --tta_min_confidence 0.35
+console_log: ./sweep_results/20260618_190501/09_wavelet_tta_very_weak_tta/console.log
+[2026-06-19 03:03:45] END 09_wavelet_tta_very_weak_tta returncode=0 elapsed_sec=3183.6
+
+[2026-06-19 03:03:45] START 10_wavelet_tta_mid_beta_high_power
+command: /Users/bytedance/code/.venv/bin/python -B test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/10_wavelet_tta_mid_beta_high_power --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.3 --wavelet_condition_power 3.0 --wavelet_suppress_beta 0.8 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.04 --tta_topk_ratio 0.02 --tta_min_confidence 0.3
+console_log: ./sweep_results/20260618_190501/10_wavelet_tta_mid_beta_high_power/console.log
+[2026-06-19 03:56:53] END 10_wavelet_tta_mid_beta_high_power returncode=0 elapsed_sec=3187.4
+
+[2026-06-19 03:56:53] START 11_wavelet_tta_low_conf_gate
+command: /Users/bytedance/code/.venv/bin/python -B test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/11_wavelet_tta_low_conf_gate --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.2 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.7 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.05 --tta_topk_ratio 0.02 --tta_min_confidence 0.2
+console_log: ./sweep_results/20260618_190501/11_wavelet_tta_low_conf_gate/console.log
+[2026-06-19 04:50:00] END 11_wavelet_tta_low_conf_gate returncode=0 elapsed_sec=3187.8
+
+[2026-06-19 04:50:00] START 12_wavelet_tta_high_suppression_mid_tta
+command: /Users/bytedance/code/.venv/bin/python -B test.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --save_path ./sweep_results/20260618_190501/12_wavelet_tta_high_suppression_mid_tta --metrics image-pixel-level --aupro_steps 200 --use_wavelet --wavelet_beta 0.3 --wavelet_condition_power 2.0 --wavelet_suppress_beta 1.0 --wavelet_fusion mean --use_tta_rectification --tta_alpha 0.04 --tta_topk_ratio 0.025 --tta_min_confidence 0.3
+console_log: ./sweep_results/20260618_190501/12_wavelet_tta_high_suppression_mid_tta/console.log
+[2026-06-19 05:43:13] END 12_wavelet_tta_high_suppression_mid_tta returncode=0 elapsed_sec=3193.0
+
+sweep_end: 2026-06-19 05:43:13
+failures: none

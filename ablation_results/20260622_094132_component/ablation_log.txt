@@ -1,0 +1,9 @@
+ablation_start: 2026-06-22 09:41:32
+suite: component
+datasets: ['mvtec', 'visa']
+metrics: image-pixel-level
+aupro_steps: 200
+feature_map_layer: [1, 2, 3]
+
+ablation_end: 2026-06-22 09:41:32
+failures: none

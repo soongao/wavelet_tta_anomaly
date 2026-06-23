@@ -1,0 +1,7 @@
+sweep_start: 2026-06-18 19:02:39
+runner: test
+aupro_steps: 200
+metrics: image-pixel-level
+
+sweep_end: 2026-06-18 19:02:39
+failures: none

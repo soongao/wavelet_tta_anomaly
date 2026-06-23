@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+
+cache/
+cached_results*/
+my_results*/
+
+.DS_Store

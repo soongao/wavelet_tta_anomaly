@@ -1,0 +1,182 @@
+26-06-22 09:47:10.261 - INFO: 
+===== AnomalyCLIP cached calibration evaluation =====
+command: /Users/bytedance/code/.venv/bin/python eval_cached_calibration.py --cache_dir ./cache/mvtec_anomalyclip_features --save_path ./ablation_results/20260622_094146_component/mvtec/02_wavelet_only --dataset mvtec --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --sigma 5 --layer_weighting sum --layer_weight_temperature 1.0 --wavelet_mode dual_route --wavelet_fusion mean --wavelet_levels 2 --wavelet_level_fusion mean --texture_edge_power 1.0 --use_wavelet --wavelet_beta 0.2 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.0 --texture_max_delta_ratio 0.05 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 17 --texture_local_contrast_weight 0.5 --rank_preserve_topk_ratio 0.35 --rank_gate_mode hard --rank_gate_temperature 0.05 --wavelet_confidence_power 1.0 --use_wavelet_confidence
+cwd: /Users/bytedance/code/AnomalyCLIP
+python: 3.9.6 (default, Apr 30 2025, 02:07:17)  [Clang 17.0.0 (clang-1700.0.13.5)]
+platform: macOS-15.7.3-arm64-arm-64bit
+  cuda_available: False
+  cuda_device_count: 0
+  torch_version: 2.0.0
+git_commit: 3911738
+git_status:
+  M AnomalyCLIP_lib/__pycache__/CLIP.cpython-38.pyc
+   M AnomalyCLIP_lib/model_load.py
+   D checkpoints/9_12_4_multiscale/epoch_1.pth
+   D checkpoints/9_12_4_multiscale/epoch_10.pth
+   D checkpoints/9_12_4_multiscale/epoch_11.pth
+   D checkpoints/9_12_4_multiscale/epoch_12.pth
+   D checkpoints/9_12_4_multiscale/epoch_13.pth
+   D checkpoints/9_12_4_multiscale/epoch_14.pth
+   D checkpoints/9_12_4_multiscale/epoch_2.pth
+   D checkpoints/9_12_4_multiscale/epoch_3.pth
+   D checkpoints/9_12_4_multiscale/epoch_4.pth
+   D checkpoints/9_12_4_multiscale/epoch_5.pth
+   D checkpoints/9_12_4_multiscale/epoch_6.pth
+   D checkpoints/9_12_4_multiscale/epoch_7.pth
+   D checkpoints/9_12_4_multiscale/epoch_8.pth
+   D checkpoints/9_12_4_multiscale/epoch_9.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_1.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_10.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_11.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_12.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_13.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_14.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_2.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_3.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_4.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_5.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_6.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_7.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_8.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_9.pth
+   M generate_dataset_json/DAGM.py
+   M generate_dataset_json/DTD.py
+   M generate_dataset_json/btad.py
+   M generate_dataset_json/clinicDB.py
+   M generate_dataset_json/colonDB.py
+   M generate_dataset_json/endoTect.py
+   M generate_dataset_json/isbi.py
+   M generate_dataset_json/kvasir.py
+   M generate_dataset_json/mpdd.py
+   M generate_dataset_json/mvtec.py
+   M generate_dataset_json/tn3k.py
+   M generate_dataset_json/visa.py
+   M logger.py
+   M metrics.py
+   M test.py
+   M train.py
+  ?? .DS_Store
+  ?? .gitignore
+  ?? ablation_results/
+  ?? cache_multicrop_maps.py
+  ... 12 more files
+args:
+  aupro_steps: 200
+  cache_dir: ./cache/mvtec_anomalyclip_features
+  classes: None
+  dataset: mvtec
+  disable_adaptive_wavelet: False
+  feature_map_layer: [1, 2, 3]
+  image_size: 518
+  image_to_pixel_max_gate: 1.0
+  image_to_pixel_min_gate: 0.0
+  image_to_pixel_power: 1.0
+  image_to_pixel_weight: 0.0
+  layer_consistency_boost: 0.03
+  layer_consistency_condition_power: 1.0
+  layer_consistency_min_layers: 2
+  layer_consistency_suppress: 0.0
+  layer_consistency_topk_ratio: 0.1
+  layer_weight_temperature: 1.0
+  layer_weighting: sum
+  low_rank_clip_gate_mode: hard
+  low_rank_clip_gate_temperature: 0.05
+  low_rank_clip_topk_ratio: 0.35
+  low_rank_condition_power: 2.0
+  low_rank_fusion: mean
+  low_rank_layer_selection: all
+  low_rank_max_delta_ratio: 0.03
+  low_rank_max_rank: 32
+  low_rank_no_center: False
+  low_rank_rank_ratio: 0.15
+  low_rank_sample_patches: 128
+  low_rank_weight: 0.03
+  metrics: image-pixel-level
+  multicrop_cache_dir: None
+  multicrop_missing_policy: error
+  multicrop_weight: 0.25
+  pixel_to_image_normalize: False
+  pixel_to_image_topk_ratio: 0.01
+  pixel_to_image_weight: 0.0
+  rank_gate_mode: hard
+  rank_gate_temperature: 0.05
+  rank_preserve_topk_ratio: 0.35
+  recompute_maps: False
+  save_path: ./ablation_results/20260622_094146_component/mvtec/02_wavelet_only
+  sigma: 5.0
+  texture_delta_reliability_power: 0.0
+  texture_edge_power: 1.0
+  texture_local_contrast_kernel: 17
+  texture_local_contrast_weight: 0.5
+  texture_max_delta_ratio: 0.05
+  texture_suppression_weight: 0.0
+  tta_abnormal_alpha_scale: 1.0
+  tta_alpha: 0.2
+  tta_anchor_layers: last
+  tta_min_confidence: 0.0
+  tta_min_confidence_margin: 0.0
+  tta_mode: legacy
+  tta_repulsion_weight: 0.25
+  tta_topk_ratio: 0.05
+  tta_update_abnormal: False
+  use_image_to_pixel_gate: False
+  use_layer_consistency: False
+  use_low_rank_residual: False
+  use_multicrop_fusion: False
+  use_pixel_to_image_fusion: False
+  use_tta_rectification: False
+  use_wavelet: True
+  use_wavelet_confidence: True
+  use_wavelet_residual: False
+  wavelet_beta: 0.2
+  wavelet_condition_power: 2.0
+  wavelet_confidence_power: 1.0
+  wavelet_fusion: mean
+  wavelet_level_fusion: mean
+  wavelet_levels: 2
+  wavelet_min_reliability: 0.0
+  wavelet_mode: dual_route
+  wavelet_reliability_power: 1.0
+  wavelet_reliability_topk_ratio: 0.05
+  wavelet_residual_condition_power: 2.0
+  wavelet_residual_confidence_power: 1.0
+  wavelet_residual_local_contrast_kernel: 17
+  wavelet_residual_local_contrast_weight: 0.5
+  wavelet_residual_max_delta_ratio: 0.03
+  wavelet_residual_rank_gate_mode: hard
+  wavelet_residual_rank_gate_temperature: 0.05
+  wavelet_residual_topk_ratio: 0.35
+  wavelet_residual_weight: 0.03
+  wavelet_suppress_beta: 0.0
+extra:
+  cache_checkpoint_path: /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth
+  cache_data_path: /Users/bytedance/Downloads/mvtec_anomaly_detection
+  cache_dataset: mvtec
+  cache_dir: ./cache/mvtec_anomalyclip_features
+  cache_feature_map_layer: [0, 1, 2, 3]
+  cache_features_list: [6, 12, 18, 24]
+  cache_mode: patch_features
+  cache_num_samples: 1725
+  multicrop_cache_dir: disabled
+  multicrop_samples: 0
+  sample_files: 1725
+===== end run context =====
+26-06-22 09:52:51.383 - INFO: 
+| objects    |   pixel_auroc |   pixel_aupro |   image_auroc |   image_ap |
+|:-----------|--------------:|--------------:|--------------:|-----------:|
+| carpet     |          98.9 |          94.2 |         100   |      100   |
+| bottle     |          90.6 |          81.2 |          88.7 |       96.8 |
+| hazelnut   |          97.2 |          94.1 |          97.2 |       98.5 |
+| leather    |          98.7 |          95.3 |          99.8 |       99.9 |
+| cable      |          80   |          67   |          70.3 |       81.7 |
+| capsule    |          95.8 |          85.3 |          89.5 |       97.8 |
+| grid       |          97.1 |          84.8 |          97.8 |       99.3 |
+| pill       |          91.8 |          89.8 |          81.1 |       95.3 |
+| transistor |          69.9 |          55.5 |          93.9 |       92.1 |
+| metal_nut  |          75   |          71.1 |          92.4 |       98.2 |
+| screw      |          97.5 |          90   |          82.1 |       92.9 |
+| toothbrush |          92.2 |          89.1 |          85.3 |       93.9 |
+| zipper     |          92.6 |          73.1 |          98.4 |       99.5 |
+| tile       |          95.9 |          86.9 |         100   |      100   |
+| wood       |          96.7 |          89.5 |          96.9 |       99.2 |
+| mean       |          91.3 |          83.1 |          91.6 |       96.4 |

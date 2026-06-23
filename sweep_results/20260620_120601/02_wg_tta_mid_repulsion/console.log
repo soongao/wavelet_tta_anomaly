@@ -1,0 +1,109 @@
+/Users/bytedance/code/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+26-06-20 12:11:59.720 - INFO: 
+===== AnomalyCLIP cached calibration evaluation =====
+command: /Users/bytedance/code/.venv/bin/python eval_cached_calibration.py --cache_dir ./cache/mvtec_anomalyclip_features --save_path ./sweep_results/20260620_120601/02_wg_tta_mid_repulsion --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --layer_weighting sum --layer_weight_temperature 1.0 --use_wavelet --wavelet_mode dual_route --wavelet_beta 0.2 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.0 --wavelet_fusion mean --texture_edge_power 1.0 --texture_max_delta_ratio 0.05 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 17 --texture_local_contrast_weight 0.7 --rank_preserve_topk_ratio 0.2 --use_tta_rectification --tta_mode wavelet_guided --tta_alpha 0.04 --tta_topk_ratio 0.02 --tta_min_confidence 0.2 --tta_repulsion_weight 0.25 --tta_abnormal_alpha_scale 1.0 --use_wavelet_confidence --wavelet_confidence_power 1.5
+cwd: /Users/bytedance/code/AnomalyCLIP
+python: 3.9.6 (default, Apr 30 2025, 02:07:17)  [Clang 17.0.0 (clang-1700.0.13.5)]
+platform: macOS-15.7.3-arm64-arm-64bit
+  cuda_available: False
+  cuda_device_count: 0
+  torch_version: 2.0.0
+git_commit: 3911738
+git_status:
+  M AnomalyCLIP_lib/__pycache__/CLIP.cpython-38.pyc
+   M AnomalyCLIP_lib/model_load.py
+   M generate_dataset_json/DAGM.py
+   M generate_dataset_json/DTD.py
+   M generate_dataset_json/btad.py
+   M generate_dataset_json/clinicDB.py
+   M generate_dataset_json/colonDB.py
+   M generate_dataset_json/endoTect.py
+   M generate_dataset_json/isbi.py
+   M generate_dataset_json/kvasir.py
+   M generate_dataset_json/mpdd.py
+   M generate_dataset_json/mvtec.py
+   M generate_dataset_json/tn3k.py
+   M generate_dataset_json/visa.py
+   M logger.py
+   M metrics.py
+   M test.py
+   M train.py
+  ?? .gitignore
+  ?? cache_mvtec_features.py
+  ?? cached_eval_utils.py
+  ?? eval_cached_calibration.py
+  ?? run_param_sweep.py
+  ?? sweep_results/
+  ?? test_time_rectification.py
+  ?? wavelet_calibration.py
+args:
+  aupro_steps: 200
+  cache_dir: ./cache/mvtec_anomalyclip_features
+  classes: None
+  dataset: mvtec
+  disable_adaptive_wavelet: False
+  feature_map_layer: [1, 2, 3]
+  image_size: 518
+  layer_weight_temperature: 1.0
+  layer_weighting: sum
+  metrics: image-pixel-level
+  rank_preserve_topk_ratio: 0.2
+  recompute_maps: False
+  save_path: ./sweep_results/20260620_120601/02_wg_tta_mid_repulsion
+  sigma: 4
+  texture_edge_power: 1.0
+  texture_local_contrast_kernel: 17
+  texture_local_contrast_weight: 0.7
+  texture_max_delta_ratio: 0.05
+  texture_suppression_weight: 0.0
+  tta_abnormal_alpha_scale: 1.0
+  tta_alpha: 0.04
+  tta_min_confidence: 0.2
+  tta_mode: wavelet_guided
+  tta_repulsion_weight: 0.25
+  tta_topk_ratio: 0.02
+  tta_update_abnormal: False
+  use_tta_rectification: True
+  use_wavelet: True
+  use_wavelet_confidence: True
+  wavelet_beta: 0.2
+  wavelet_condition_power: 2.0
+  wavelet_confidence_power: 1.5
+  wavelet_fusion: mean
+  wavelet_mode: dual_route
+  wavelet_reliability_power: 1.0
+  wavelet_reliability_topk_ratio: 0.05
+  wavelet_suppress_beta: 0.0
+extra:
+  cache_checkpoint_path: /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth
+  cache_data_path: /Users/bytedance/Downloads/mvtec_anomaly_detection
+  cache_dataset: mvtec
+  cache_dir: ./cache/mvtec_anomalyclip_features
+  cache_feature_map_layer: [0, 1, 2, 3]
+  cache_features_list: [6, 12, 18, 24]
+  cache_mode: patch_features
+  cache_num_samples: 1725
+  sample_files: 1725
+===== end run context =====
+26-06-20 12:16:33.673 - INFO: 
+| objects    |   pixel_auroc |   pixel_aupro |   image_auroc |   image_ap |
+|:-----------|--------------:|--------------:|--------------:|-----------:|
+| carpet     |          98.8 |          94   |         100   |      100   |
+| bottle     |          90.4 |          80.8 |          88.7 |       96.8 |
+| hazelnut   |          97.1 |          93.9 |          97.2 |       98.5 |
+| leather    |          98.7 |          95.2 |          99.8 |       99.9 |
+| cable      |          79.7 |          65.8 |          70.3 |       81.8 |
+| capsule    |          95.7 |          85   |          89.5 |       97.8 |
+| grid       |          97.1 |          84.7 |          97.8 |       99.3 |
+| pill       |          91.5 |          89.3 |          81   |       95.3 |
+| transistor |          69.3 |          58.4 |          93.7 |       92   |
+| metal_nut  |          75.2 |          72.8 |          92.3 |       98.2 |
+| screw      |          97.4 |          89.4 |          82   |       92.9 |
+| toothbrush |          92.2 |          88.7 |          85.6 |       94   |
+| zipper     |          92.2 |          72.2 |          98.4 |       99.5 |
+| tile       |          95.7 |          86.7 |         100   |      100   |
+| wood       |          96.6 |          89.2 |          96.9 |       99.2 |
+| mean       |          91.2 |          83.1 |          91.5 |       96.3 |
+cache_dir: ./cache/mvtec_anomalyclip_features
+samples evaluated: 1725

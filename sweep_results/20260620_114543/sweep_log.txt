@@ -1,0 +1,8 @@
+sweep_start: 2026-06-20 11:45:43
+runner: cached
+aupro_steps: 200
+metrics: image-pixel-level
+feature_map_layer: [1, 2, 3]
+
+sweep_end: 2026-06-20 11:45:43
+failures: none

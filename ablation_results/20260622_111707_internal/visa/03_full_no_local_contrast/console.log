@@ -1,0 +1,183 @@
+/Users/bytedance/code/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+26-06-22 11:49:10.607 - INFO: 
+===== AnomalyCLIP cached calibration evaluation =====
+command: /Users/bytedance/code/.venv/bin/python eval_cached_calibration.py --cache_dir ./cache/visa_anomalyclip_features --save_path ./ablation_results/20260622_111707_internal/visa/03_full_no_local_contrast --dataset visa --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --sigma 5 --layer_weighting sum --layer_weight_temperature 1.0 --wavelet_mode dual_route --wavelet_fusion mean --wavelet_levels 2 --wavelet_level_fusion mean --texture_edge_power 1.0 --use_wavelet --wavelet_beta 0.2 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.0 --texture_max_delta_ratio 0.05 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 0 --texture_local_contrast_weight 0.0 --rank_preserve_topk_ratio 0.35 --rank_gate_mode hard --rank_gate_temperature 0.05 --wavelet_confidence_power 1.0 --use_wavelet_confidence --use_tta_rectification --tta_mode wavelet_guided --tta_alpha 0.01 --tta_topk_ratio 0.02 --tta_min_confidence 0.2 --tta_anchor_layers mean --tta_repulsion_weight 0.1 --tta_abnormal_alpha_scale 0.75 --use_multicrop_fusion --multicrop_cache_dir ./cache/visa_multicrop_maps_grid2_ratio075 --multicrop_weight 0.5 --use_pixel_to_image_fusion --pixel_to_image_weight 0.1 --pixel_to_image_topk_ratio 0.01
+cwd: /Users/bytedance/code/AnomalyCLIP
+python: 3.9.6 (default, Apr 30 2025, 02:07:17)  [Clang 17.0.0 (clang-1700.0.13.5)]
+platform: macOS-15.7.3-arm64-arm-64bit
+  cuda_available: False
+  cuda_device_count: 0
+  torch_version: 2.0.0
+git_commit: 3911738
+git_status:
+  M AnomalyCLIP_lib/__pycache__/CLIP.cpython-38.pyc
+   M AnomalyCLIP_lib/model_load.py
+   D checkpoints/9_12_4_multiscale/epoch_1.pth
+   D checkpoints/9_12_4_multiscale/epoch_10.pth
+   D checkpoints/9_12_4_multiscale/epoch_11.pth
+   D checkpoints/9_12_4_multiscale/epoch_12.pth
+   D checkpoints/9_12_4_multiscale/epoch_13.pth
+   D checkpoints/9_12_4_multiscale/epoch_14.pth
+   D checkpoints/9_12_4_multiscale/epoch_2.pth
+   D checkpoints/9_12_4_multiscale/epoch_3.pth
+   D checkpoints/9_12_4_multiscale/epoch_4.pth
+   D checkpoints/9_12_4_multiscale/epoch_5.pth
+   D checkpoints/9_12_4_multiscale/epoch_6.pth
+   D checkpoints/9_12_4_multiscale/epoch_7.pth
+   D checkpoints/9_12_4_multiscale/epoch_8.pth
+   D checkpoints/9_12_4_multiscale/epoch_9.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_1.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_10.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_11.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_12.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_13.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_14.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_2.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_3.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_4.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_5.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_6.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_7.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_8.pth
+   D checkpoints/9_12_4_multiscale_visa/epoch_9.pth
+   M generate_dataset_json/DAGM.py
+   M generate_dataset_json/DTD.py
+   M generate_dataset_json/btad.py
+   M generate_dataset_json/clinicDB.py
+   M generate_dataset_json/colonDB.py
+   M generate_dataset_json/endoTect.py
+   M generate_dataset_json/isbi.py
+   M generate_dataset_json/kvasir.py
+   M generate_dataset_json/mpdd.py
+   M generate_dataset_json/mvtec.py
+   M generate_dataset_json/tn3k.py
+   M generate_dataset_json/visa.py
+   M logger.py
+   M metrics.py
+   M test.py
+   M train.py
+  ?? .DS_Store
+  ?? .gitignore
+  ?? ablation_results/
+  ?? cache_multicrop_maps.py
+  ... 12 more files
+args:
+  aupro_steps: 200
+  cache_dir: ./cache/visa_anomalyclip_features
+  classes: None
+  dataset: visa
+  disable_adaptive_wavelet: False
+  feature_map_layer: [1, 2, 3]
+  image_size: 518
+  image_to_pixel_max_gate: 1.0
+  image_to_pixel_min_gate: 0.0
+  image_to_pixel_power: 1.0
+  image_to_pixel_weight: 0.0
+  layer_consistency_boost: 0.03
+  layer_consistency_condition_power: 1.0
+  layer_consistency_min_layers: 2
+  layer_consistency_suppress: 0.0
+  layer_consistency_topk_ratio: 0.1
+  layer_weight_temperature: 1.0
+  layer_weighting: sum
+  low_rank_clip_gate_mode: hard
+  low_rank_clip_gate_temperature: 0.05
+  low_rank_clip_topk_ratio: 0.35
+  low_rank_condition_power: 2.0
+  low_rank_fusion: mean
+  low_rank_layer_selection: all
+  low_rank_max_delta_ratio: 0.03
+  low_rank_max_rank: 32
+  low_rank_no_center: False
+  low_rank_rank_ratio: 0.15
+  low_rank_sample_patches: 128
+  low_rank_weight: 0.03
+  metrics: image-pixel-level
+  multicrop_cache_dir: ./cache/visa_multicrop_maps_grid2_ratio075
+  multicrop_missing_policy: error
+  multicrop_weight: 0.5
+  pixel_to_image_normalize: False
+  pixel_to_image_topk_ratio: 0.01
+  pixel_to_image_weight: 0.1
+  rank_gate_mode: hard
+  rank_gate_temperature: 0.05
+  rank_preserve_topk_ratio: 0.35
+  recompute_maps: False
+  save_path: ./ablation_results/20260622_111707_internal/visa/03_full_no_local_contrast
+  sigma: 5.0
+  texture_delta_reliability_power: 0.0
+  texture_edge_power: 1.0
+  texture_local_contrast_kernel: 0
+  texture_local_contrast_weight: 0.0
+  texture_max_delta_ratio: 0.05
+  texture_suppression_weight: 0.0
+  tta_abnormal_alpha_scale: 0.75
+  tta_alpha: 0.01
+  tta_anchor_layers: mean
+  tta_min_confidence: 0.2
+  tta_min_confidence_margin: 0.0
+  tta_mode: wavelet_guided
+  tta_repulsion_weight: 0.1
+  tta_topk_ratio: 0.02
+  tta_update_abnormal: False
+  use_image_to_pixel_gate: False
+  use_layer_consistency: False
+  use_low_rank_residual: False
+  use_multicrop_fusion: True
+  use_pixel_to_image_fusion: True
+  use_tta_rectification: True
+  use_wavelet: True
+  use_wavelet_confidence: True
+  use_wavelet_residual: False
+  wavelet_beta: 0.2
+  wavelet_condition_power: 2.0
+  wavelet_confidence_power: 1.0
+  wavelet_fusion: mean
+  wavelet_level_fusion: mean
+  wavelet_levels: 2
+  wavelet_min_reliability: 0.0
+  wavelet_mode: dual_route
+  wavelet_reliability_power: 1.0
+  wavelet_reliability_topk_ratio: 0.05
+  wavelet_residual_condition_power: 2.0
+  wavelet_residual_confidence_power: 1.0
+  wavelet_residual_local_contrast_kernel: 17
+  wavelet_residual_local_contrast_weight: 0.5
+  wavelet_residual_max_delta_ratio: 0.03
+  wavelet_residual_rank_gate_mode: hard
+  wavelet_residual_rank_gate_temperature: 0.05
+  wavelet_residual_topk_ratio: 0.35
+  wavelet_residual_weight: 0.03
+  wavelet_suppress_beta: 0.0
+extra:
+  cache_checkpoint_path: /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale_visa/epoch_15.pth
+  cache_data_path: /Users/bytedance/Downloads/VisA_20220922
+  cache_dataset: visa
+  cache_dir: ./cache/visa_anomalyclip_features
+  cache_feature_map_layer: [0, 1, 2, 3]
+  cache_features_list: [6, 12, 18, 24]
+  cache_mode: patch_features
+  cache_num_samples: 2162
+  multicrop_cache_dir: ./cache/visa_multicrop_maps_grid2_ratio075
+  multicrop_samples: 2162
+  sample_files: 2162
+===== end run context =====
+26-06-22 11:55:56.556 - INFO: 
+| objects    |   pixel_auroc |   pixel_aupro |   image_auroc |   image_ap |
+|:-----------|--------------:|--------------:|--------------:|-----------:|
+| candle     |          99.2 |          97   |          87.5 |       89.9 |
+| capsules   |          96.3 |          92.2 |          86   |       91.7 |
+| cashew     |          94.6 |          92.9 |          81.1 |       91.9 |
+| chewinggum |          99.1 |          91.9 |          97.6 |       99   |
+| fryum      |          95.3 |          90.9 |          95   |       97.7 |
+| macaroni1  |          99   |          93.8 |          86.7 |       86.6 |
+| macaroni2  |          98.4 |          88.3 |          67.4 |       65.6 |
+| pcb1       |          94.6 |          88.6 |          88.2 |       89.6 |
+| pcb2       |          94.1 |          83.8 |          66.7 |       69.3 |
+| pcb3       |          89.9 |          86.3 |          65.4 |       72.2 |
+| pcb4       |          96.1 |          92.3 |          96.3 |       96.4 |
+| pipe_fryum |          98.4 |          97.7 |          97.4 |       98.8 |
+| mean       |          96.2 |          91.3 |          84.6 |       87.4 |
+cache_dir: ./cache/visa_anomalyclip_features
+samples evaluated: 2162

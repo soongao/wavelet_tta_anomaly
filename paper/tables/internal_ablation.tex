@@ -1,0 +1,24 @@
+\begin{table*}[t]
+\centering
+\caption{Internal design ablation. All variants are evaluated on top of the full method, and all metrics are reported in percent.}
+\label{tab:internal-ablation}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llcccc}
+\toprule
+Dataset & Variant & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
+\midrule
+\multirow{4}{*}{MVTec}
+& Full method & \textbf{91.8} & \textbf{85.6} & \textbf{94.5} & \textbf{97.6} \\
+& w/o wavelet confidence & 91.8 & 85.6 & 94.5 & 97.6 \\
+& w/o rank preserve & 91.8 & 85.6 & 94.5 & 97.6 \\
+& w/o local contrast & 91.8 & 85.6 & 94.5 & 97.6 \\
+\midrule
+\multirow{4}{*}{VisA}
+& Full method & \textbf{96.2} & \textbf{91.3} & \textbf{84.6} & \textbf{87.4} \\
+& w/o wavelet confidence & 96.2 & 91.3 & 84.6 & 87.4 \\
+& w/o rank preserve & 96.2 & 91.3 & 84.6 & 87.4 \\
+& w/o local contrast & 96.2 & 91.3 & 84.6 & 87.4 \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}

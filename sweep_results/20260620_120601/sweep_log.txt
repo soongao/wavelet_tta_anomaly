@@ -1,0 +1,33 @@
+sweep_start: 2026-06-20 12:06:01
+runner: cached
+aupro_steps: 200
+metrics: image-pixel-level
+feature_map_layer: [1, 2, 3]
+
+[2026-06-20 12:06:01] START 01_wg_tta_weak_balanced
+command: /Users/bytedance/code/.venv/bin/python -B eval_cached_calibration.py --cache_dir ./cache/mvtec_anomalyclip_features --save_path ./sweep_results/20260620_120601/01_wg_tta_weak_balanced --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --layer_weighting sum --layer_weight_temperature 1.0 --use_wavelet --wavelet_mode dual_route --wavelet_beta 0.2 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.0 --wavelet_fusion mean --texture_edge_power 1.0 --texture_max_delta_ratio 0.05 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 17 --texture_local_contrast_weight 0.5 --rank_preserve_topk_ratio 0.3 --use_tta_rectification --tta_mode wavelet_guided --tta_alpha 0.03 --tta_topk_ratio 0.02 --tta_min_confidence 0.2 --tta_repulsion_weight 0.15 --tta_abnormal_alpha_scale 1.0 --use_wavelet_confidence --wavelet_confidence_power 1.0
+console_log: ./sweep_results/20260620_120601/01_wg_tta_weak_balanced/console.log
+[2026-06-20 12:11:57] END 01_wg_tta_weak_balanced returncode=0 elapsed_sec=355.8
+
+[2026-06-20 12:11:57] START 02_wg_tta_mid_repulsion
+command: /Users/bytedance/code/.venv/bin/python -B eval_cached_calibration.py --cache_dir ./cache/mvtec_anomalyclip_features --save_path ./sweep_results/20260620_120601/02_wg_tta_mid_repulsion --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --layer_weighting sum --layer_weight_temperature 1.0 --use_wavelet --wavelet_mode dual_route --wavelet_beta 0.2 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.0 --wavelet_fusion mean --texture_edge_power 1.0 --texture_max_delta_ratio 0.05 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 17 --texture_local_contrast_weight 0.7 --rank_preserve_topk_ratio 0.2 --use_tta_rectification --tta_mode wavelet_guided --tta_alpha 0.04 --tta_topk_ratio 0.02 --tta_min_confidence 0.2 --tta_repulsion_weight 0.25 --tta_abnormal_alpha_scale 1.0 --use_wavelet_confidence --wavelet_confidence_power 1.5
+console_log: ./sweep_results/20260620_120601/02_wg_tta_mid_repulsion/console.log
+[2026-06-20 12:16:34] END 02_wg_tta_mid_repulsion returncode=0 elapsed_sec=276.9
+
+[2026-06-20 12:16:34] START 03_wg_tta_abnormal_light
+command: /Users/bytedance/code/.venv/bin/python -B eval_cached_calibration.py --cache_dir ./cache/mvtec_anomalyclip_features --save_path ./sweep_results/20260620_120601/03_wg_tta_abnormal_light --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --layer_weighting dynamic_wavelet --layer_weight_temperature 0.5 --use_wavelet --wavelet_mode dual_route --wavelet_beta 0.25 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.0 --wavelet_fusion mean --texture_edge_power 1.0 --texture_max_delta_ratio 0.05 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 17 --texture_local_contrast_weight 0.5 --rank_preserve_topk_ratio 0.3 --use_tta_rectification --tta_mode wavelet_guided --tta_alpha 0.04 --tta_topk_ratio 0.02 --tta_min_confidence 0.25 --tta_repulsion_weight 0.25 --tta_abnormal_alpha_scale 0.5 --use_wavelet_confidence --wavelet_confidence_power 1.0
+console_log: ./sweep_results/20260620_120601/03_wg_tta_abnormal_light/console.log
+[2026-06-20 12:22:28] END 03_wg_tta_abnormal_light returncode=0 elapsed_sec=354.9
+
+[2026-06-20 12:22:28] START 04_wg_tta_high_confidence
+command: /Users/bytedance/code/.venv/bin/python -B eval_cached_calibration.py --cache_dir ./cache/mvtec_anomalyclip_features --save_path ./sweep_results/20260620_120601/04_wg_tta_high_confidence --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --layer_weighting sum --layer_weight_temperature 1.0 --use_wavelet --wavelet_mode dual_route --wavelet_beta 0.2 --wavelet_condition_power 3.0 --wavelet_suppress_beta 0.0 --wavelet_fusion mean --texture_edge_power 1.0 --texture_max_delta_ratio 0.03 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 25 --texture_local_contrast_weight 0.7 --rank_preserve_topk_ratio 0.2 --use_tta_rectification --tta_mode wavelet_guided --tta_alpha 0.03 --tta_topk_ratio 0.015 --tta_min_confidence 0.35 --tta_repulsion_weight 0.2 --tta_abnormal_alpha_scale 0.75 --use_wavelet_confidence --wavelet_confidence_power 2.0
+console_log: ./sweep_results/20260620_120601/04_wg_tta_high_confidence/console.log
+[2026-06-20 12:27:22] END 04_wg_tta_high_confidence returncode=0 elapsed_sec=293.5
+
+[2026-06-20 12:27:22] START 05_legacy_tta_control
+command: /Users/bytedance/code/.venv/bin/python -B eval_cached_calibration.py --cache_dir ./cache/mvtec_anomalyclip_features --save_path ./sweep_results/20260620_120601/05_legacy_tta_control --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --layer_weighting sum --layer_weight_temperature 1.0 --use_wavelet --wavelet_mode dual_route --wavelet_beta 0.25 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.0 --wavelet_fusion mean --texture_edge_power 1.0 --texture_max_delta_ratio 0.05 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 0 --texture_local_contrast_weight 0.0 --rank_preserve_topk_ratio 0.0 --use_tta_rectification --tta_mode legacy --tta_alpha 0.04 --tta_topk_ratio 0.02 --tta_min_confidence 0.2 --tta_repulsion_weight 0.0 --tta_abnormal_alpha_scale 1.0 --wavelet_confidence_power 1.0
+console_log: ./sweep_results/20260620_120601/05_legacy_tta_control/console.log
+[2026-06-20 12:32:22] END 05_legacy_tta_control returncode=0 elapsed_sec=299.6
+
+sweep_end: 2026-06-20 12:32:22
+failures: none
