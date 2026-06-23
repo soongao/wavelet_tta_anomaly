@@ -1,0 +1,6 @@
+script: unknown
+source:
+  log_path: my_results_mvtec/log.txt
+  run_dir: my_results_mvtec
+  status: no args block or parseable command found
+args: {}

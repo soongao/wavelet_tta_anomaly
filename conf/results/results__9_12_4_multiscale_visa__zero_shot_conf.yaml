@@ -1,0 +1,6 @@
+script: unknown
+source:
+  log_path: results/9_12_4_multiscale_visa/zero_shot/log.txt
+  run_dir: results/9_12_4_multiscale_visa/zero_shot
+  status: no args block or parseable command found
+args: {}

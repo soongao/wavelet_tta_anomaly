@@ -1,0 +1,14 @@
+script: export_configs.py
+args:
+  conf_dir: ./conf
+  results:
+  - my_results_mvtec
+  - my_results_mvtec_dual_route_best
+  - my_results_mvtec_dual_route_guarded
+  - my_results_mvtec_wavelet_tta_conservative
+  - sweep_results
+  - cached_results
+  - ablation_results
+  - results
+  skip_defaults: false
+  skip_results: false

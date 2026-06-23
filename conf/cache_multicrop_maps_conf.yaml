@@ -1,0 +1,30 @@
+script: cache_multicrop_maps.py
+args:
+  data_path: /Users/bytedance/Downloads/mvtec_anomaly_detection
+  checkpoint_path: /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth
+  cache_dir: ./cache/mvtec_multicrop_maps
+  dataset: mvtec
+  features_list:
+  - 6
+  - 12
+  - 18
+  - 24
+  feature_map_layer:
+  - 1
+  - 2
+  - 3
+  image_size: 518
+  depth: 9
+  n_ctx: 12
+  t_n_ctx: 4
+  dpam_layer: 20
+  layer_weighting: sum
+  layer_weight_temperature: 1.0
+  crop_grid: 2
+  crop_ratio: 0.75
+  crop_forward_batch_size: 4
+  seed: 111
+  device: auto
+  resume: false
+  max_samples: null
+  classes: null

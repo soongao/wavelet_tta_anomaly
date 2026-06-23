@@ -1,0 +1,20 @@
+script: test_one_example.py
+args:
+  image_path: ./data/visa
+  checkpoint_path: ./checkpoint/
+  features_list:
+  - 6
+  - 12
+  - 18
+  - 24
+  image_size: 518
+  depth: 9
+  n_ctx: 12
+  t_n_ctx: 4
+  feature_map_layer:
+  - 0
+  - 1
+  - 2
+  - 3
+  seed: 111
+  sigma: 4

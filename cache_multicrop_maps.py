@@ -12,6 +12,7 @@ from cached_eval_utils import (
     load_model_and_text_features,
     setup_seed,
 )
+from config_utils import parse_args_with_config
 from dataset import Dataset
 from logger import get_logger, log_run_context
 from multicrop_utils import build_multicrop_boxes, output_box_to_pil_box, stitch_crop_maps
@@ -185,4 +186,5 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 if __name__ == "__main__":
-    cache_multicrop_maps(build_parser().parse_args())
+    args, _ = parse_args_with_config(build_parser())
+    cache_multicrop_maps(args)

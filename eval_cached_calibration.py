@@ -14,6 +14,7 @@ from cached_eval_utils import (
     selected_classes,
     smooth_anomaly_map,
 )
+from config_utils import parse_args_with_config
 from dataset import generate_class_info
 from logger import get_logger, log_run_context
 from test_time_rectification import rectify_text_features_with_multi_layer_anchors
@@ -518,4 +519,5 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 if __name__ == "__main__":
-    evaluate_cache(build_parser().parse_args())
+    args, _ = parse_args_with_config(build_parser())
+    evaluate_cache(args)

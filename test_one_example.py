@@ -9,6 +9,7 @@ import os
 import random
 import numpy as np
 from utils import get_transform, normalize
+from config_utils import parse_args_with_config
 
 def setup_seed(seed):
     torch.manual_seed(seed)
@@ -99,7 +100,7 @@ def test(args):
         visualizer(image_path, anomaly_map.detach().cpu().numpy(), args.image_size)
 
 
-if __name__ == '__main__':
+def build_parser():
     parser = argparse.ArgumentParser("AnomalyCLIP", add_help=True)
     # paths
     parser.add_argument("--image_path", type=str, default="./data/visa", help="path to test dataset")
@@ -113,8 +114,11 @@ if __name__ == '__main__':
     parser.add_argument("--feature_map_layer", type=int,  nargs="+", default=[0, 1, 2, 3], help="zero shot")
     parser.add_argument("--seed", type=int, default=111, help="random seed")
     parser.add_argument("--sigma", type=int, default=4, help="zero shot")
-    
-    args = parser.parse_args()
+    return parser
+
+
+if __name__ == '__main__':
+    args, _ = parse_args_with_config(build_parser())
     print(args)
     setup_seed(args.seed)
     test(args)

@@ -5,6 +5,8 @@ import sys
 import time
 from datetime import datetime
 
+from config_utils import parse_args_with_config
+
 
 PARAMETER_SETS = [
     {
@@ -523,7 +525,7 @@ def has_finished(run_dir):
         return "| mean" in handle.read()
 
 
-def parse_args():
+def build_parser():
     parser = argparse.ArgumentParser("Run AnomalyCLIP wavelet+TTA parameter sweep")
     parser.add_argument("--runner", choices=["test", "cached"], default="test")
     parser.add_argument("--cache_dir", default="./cache/mvtec_anomalyclip_features")
@@ -543,11 +545,19 @@ def parse_args():
     parser.add_argument("--tta_update_abnormal", action="store_true")
     parser.add_argument("--resume", action="store_true", help="skip runs whose log.txt already has a mean row")
     parser.add_argument("--dry_run", action="store_true", help="print commands without running them")
-    return parser.parse_args()
+    return parser
+
+
+def parse_args():
+    parser = build_parser()
+    return parse_args_with_config(parser, default_config_path="./conf/run_param_sweep_conf.yaml")
 
 
 def main():
-    args = parse_args()
+    args, config = parse_args()
+    parameter_sets = config.get("parameter_sets", PARAMETER_SETS)
+    if not isinstance(parameter_sets, list):
+        raise ValueError("'parameter_sets' in config must be a list")
     sweep_id = datetime.now().strftime("%Y%m%d_%H%M%S")
     sweep_dir = os.path.join(args.save_root, sweep_id)
     os.makedirs(sweep_dir, exist_ok=True)
@@ -562,7 +572,7 @@ def main():
         master_log.write(f"default_sigma: {args.sigma}\n")
 
     failures = []
-    for idx, params in enumerate(PARAMETER_SETS, start=1):
+    for idx, params in enumerate(parameter_sets, start=1):
         run_name = f"{idx:02d}_{params['name']}"
         run_dir = os.path.join(sweep_dir, run_name)
         command = make_command(args, params, run_dir)

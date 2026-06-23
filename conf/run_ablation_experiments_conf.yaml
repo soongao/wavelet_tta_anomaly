@@ -1,0 +1,120 @@
+script: run_ablation_experiments.py
+args:
+  suite: component
+  datasets:
+  - mvtec
+  - visa
+  save_root: ./ablation_results
+  metrics: image-pixel-level
+  aupro_steps: 200
+  feature_map_layer:
+  - 1
+  - 2
+  - 3
+  sigma: 5
+  layer_weighting: sum
+  layer_weight_temperature: 1.0
+  resume: false
+  dry_run: false
+datasets_config:
+  mvtec:
+    cache_dir: ./cache/mvtec_anomalyclip_features
+    multicrop_cache_dir: ./cache/mvtec_multicrop_maps_grid2_ratio075
+    original_log: results/9_12_4_multiscale/zero_shot/log.txt
+    original_mean:
+    - 91.1
+    - 81.4
+    - 91.6
+    - 96.4
+  visa:
+    cache_dir: ./cache/visa_anomalyclip_features
+    multicrop_cache_dir: ./cache/visa_multicrop_maps_grid2_ratio075
+    original_log: results/9_12_4_multiscale_visa/zero_shot/log.txt
+    original_mean:
+    - 95.5
+    - 86.7
+    - 82.0
+    - 85.3
+current_wavelet:
+  wavelet_mode: dual_route
+  wavelet_beta: 0.2
+  wavelet_condition_power: 2.0
+  wavelet_suppress_beta: 0.0
+  wavelet_fusion: mean
+  wavelet_levels: 2
+  wavelet_level_fusion: mean
+  texture_edge_power: 1.0
+  texture_max_delta_ratio: 0.05
+  texture_suppression_weight: 0.0
+  texture_local_contrast_kernel: 17
+  texture_local_contrast_weight: 0.5
+  rank_preserve_topk_ratio: 0.35
+  rank_gate_mode: hard
+  rank_gate_temperature: 0.05
+  use_wavelet_confidence: true
+  wavelet_confidence_power: 1.0
+current_tta:
+  tta_mode: wavelet_guided
+  tta_alpha: 0.01
+  tta_topk_ratio: 0.02
+  tta_min_confidence: 0.2
+  tta_anchor_layers: mean
+  tta_repulsion_weight: 0.1
+  tta_abnormal_alpha_scale: 0.75
+current_pixel_to_image:
+  pixel_to_image_weight: 0.1
+  pixel_to_image_topk_ratio: 0.01
+current_multicrop:
+  multicrop_weight: 0.5
+component_ablations:
+- name: cached_baseline_l123
+  description: cached baseline, layers 1/2/3, no proposed module
+- name: wavelet_only
+  description: baseline + wavelet calibration
+  use_wavelet: true
+- name: tta_only
+  description: baseline + wavelet-guided TTA only
+  use_tta: true
+- name: wavelet_tta
+  description: baseline + wavelet calibration + wavelet-guided TTA
+  use_wavelet: true
+  use_tta: true
+- name: wavelet_tta_p2i
+  description: wavelet + TTA + pixel-to-image fusion
+  use_wavelet: true
+  use_tta: true
+  use_pixel_to_image: true
+- name: wavelet_tta_multicrop
+  description: wavelet + TTA + multi-crop fusion
+  use_wavelet: true
+  use_tta: true
+  use_multicrop: true
+- name: full_method
+  description: wavelet + TTA + multi-crop + pixel-to-image fusion
+  use_wavelet: true
+  use_tta: true
+  use_pixel_to_image: true
+  use_multicrop: true
+internal_ablations:
+- name: full_no_wavelet_confidence
+  description: full method without wavelet confidence gating
+  use_wavelet: true
+  use_tta: true
+  use_pixel_to_image: true
+  use_multicrop: true
+  use_wavelet_confidence: false
+- name: full_no_rank_preserve
+  description: full method without rank-preserve top-k protection
+  use_wavelet: true
+  use_tta: true
+  use_pixel_to_image: true
+  use_multicrop: true
+  rank_preserve_topk_ratio: 0.0
+- name: full_no_local_contrast
+  description: full method without local texture contrast
+  use_wavelet: true
+  use_tta: true
+  use_pixel_to_image: true
+  use_multicrop: true
+  texture_local_contrast_kernel: 0
+  texture_local_contrast_weight: 0.0

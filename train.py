@@ -12,6 +12,7 @@ import numpy as np
 import os
 import random
 from utils import get_transform
+from config_utils import parse_args_with_config
 def setup_seed(seed):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
@@ -113,7 +114,7 @@ def train(args):
             ckp_path = os.path.join(args.save_path, 'epoch_' + str(epoch + 1) + '.pth')
             torch.save({"prompt_learner": prompt_learner.state_dict()}, ckp_path)
 
-if __name__ == '__main__':
+def build_parser():
     parser = argparse.ArgumentParser("AnomalyCLIP", add_help=True)
     parser.add_argument("--train_data_path", type=str, default="/Users/bytedance/Downloads/VisA_20220922", help="train dataset path")
     parser.add_argument("--save_path", type=str, default='/Users/bytedance/code/AnomalyCLIP/my_checkpoint/train_on_visa', help='path to save results')
@@ -134,6 +135,10 @@ if __name__ == '__main__':
     parser.add_argument("--print_freq", type=int, default=1, help="print frequency")
     parser.add_argument("--save_freq", type=int, default=1, help="save frequency")
     parser.add_argument("--seed", type=int, default=111, help="random seed")
-    args = parser.parse_args()
+    return parser
+
+
+if __name__ == '__main__':
+    args, _ = parse_args_with_config(build_parser())
     setup_seed(args.seed)
     train(args)

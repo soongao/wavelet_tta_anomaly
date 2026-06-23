@@ -14,6 +14,7 @@ from cached_eval_utils import (
     load_model_and_text_features,
     setup_seed,
 )
+from config_utils import parse_args_with_config
 from dataset import Dataset
 from logger import get_logger, log_run_context
 from utils import get_transform
@@ -189,4 +190,5 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 if __name__ == "__main__":
-    cache_features(build_parser().parse_args())
+    args, _ = parse_args_with_config(build_parser())
+    cache_features(args)

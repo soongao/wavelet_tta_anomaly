@@ -6,6 +6,8 @@ import sys
 import time
 from datetime import datetime
 
+from config_utils import parse_args_with_config
+
 
 DATASETS = {
     "mvtec": {
@@ -153,12 +155,13 @@ def now_text():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
-def merge_params(ablation):
+def merge_params(ablation, config=None):
+    config = config or {}
     params = {}
-    params.update(CURRENT_WAVELET)
-    params.update(CURRENT_TTA)
-    params.update(CURRENT_P2I)
-    params.update(CURRENT_MULTICROP)
+    params.update(config.get("current_wavelet", CURRENT_WAVELET))
+    params.update(config.get("current_tta", CURRENT_TTA))
+    params.update(config.get("current_pixel_to_image", CURRENT_P2I))
+    params.update(config.get("current_multicrop", CURRENT_MULTICROP))
     params.update(ablation)
     return params
 
@@ -248,8 +251,8 @@ def add_multicrop_args(command, params, dataset_config):
     ]
 
 
-def make_command(dataset_name, dataset_config, ablation, save_path, args):
-    params = merge_params(ablation)
+def make_command(dataset_name, dataset_config, ablation, save_path, args, config=None):
+    params = merge_params(ablation, config=config)
     command = [
         sys.executable,
         "-B",
@@ -348,7 +351,32 @@ def selected_ablations(suite):
     raise ValueError(f"unknown suite: {suite}")
 
 
-def write_summary(sweep_dir, rows, args):
+def configured_ablations(suite, config):
+    if "ablations" in config:
+        ablations = config["ablations"]
+        if not isinstance(ablations, list):
+            raise ValueError("'ablations' in config must be a list")
+        return ablations
+    if "component_ablations" in config or "internal_ablations" in config:
+        component = config.get("component_ablations", COMPONENT_ABLATIONS)
+        internal = config.get("internal_ablations", INTERNAL_ABLATIONS)
+        if suite == "component":
+            return component
+        if suite == "internal":
+            return internal
+        if suite == "all":
+            return component + internal
+    return selected_ablations(suite)
+
+
+def configured_datasets(config):
+    datasets = config.get("datasets_config", DATASETS)
+    if not isinstance(datasets, dict):
+        raise ValueError("'datasets_config' in config must be a mapping")
+    return datasets
+
+
+def write_summary(sweep_dir, rows, args, dataset_configs):
     summary_path = os.path.join(sweep_dir, "summary.md")
     with open(summary_path, "w", encoding="utf-8") as handle:
         handle.write("# AnomalyCLIP 消融实验结果\n\n")
@@ -361,16 +389,17 @@ def write_summary(sweep_dir, rows, args):
         handle.write("指标顺序：`pixel AUROC | pixel AUPRO | image AUROC | image AP`\n\n")
 
         for dataset_name in args.datasets:
-            config = DATASETS[dataset_name]
-            original = config["original_mean"]
+            config = dataset_configs[dataset_name]
+            original = config.get("original_mean")
             handle.write(f"## {dataset_name}\n\n")
-            handle.write(f"原始 AnomalyCLIP 日志：`{config['original_log']}`\n\n")
+            handle.write(f"原始 AnomalyCLIP 日志：`{config.get('original_log', 'unknown')}`\n\n")
             handle.write("| 实验 | pixel AUROC | pixel AUPRO | image AUROC | image AP | 说明 |\n")
             handle.write("|:--|--:|--:|--:|--:|:--|\n")
-            handle.write(
-                f"| original_anomalyclip | {original[0]:.1f} | {original[1]:.1f} | "
-                f"{original[2]:.1f} | {original[3]:.1f} | original log |\n"
-            )
+            if original:
+                handle.write(
+                    f"| original_anomalyclip | {original[0]:.1f} | {original[1]:.1f} | "
+                    f"{original[2]:.1f} | {original[3]:.1f} | original log |\n"
+                )
             for row in rows:
                 if row["dataset"] != dataset_name:
                     continue
@@ -392,10 +421,10 @@ def write_summary(sweep_dir, rows, args):
     return summary_path
 
 
-def parse_args():
+def build_parser():
     parser = argparse.ArgumentParser("Run cached AnomalyCLIP ablation experiments")
     parser.add_argument("--suite", choices=["component", "internal", "all"], default="component")
-    parser.add_argument("--datasets", nargs="+", choices=sorted(DATASETS.keys()), default=["mvtec", "visa"])
+    parser.add_argument("--datasets", nargs="+", default=["mvtec", "visa"])
     parser.add_argument("--save_root", default="./ablation_results")
     parser.add_argument("--metrics", default="image-pixel-level", choices=["image-level", "pixel-level", "image-pixel-level"])
     parser.add_argument("--aupro_steps", type=int, default=200)
@@ -405,17 +434,26 @@ def parse_args():
     parser.add_argument("--layer_weight_temperature", type=float, default=1.0)
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--dry_run", action="store_true")
-    return parser.parse_args()
+    return parser
+
+
+def parse_args():
+    parser = build_parser()
+    return parse_args_with_config(parser, default_config_path="./conf/run_ablation_experiments_conf.yaml")
 
 
 def main():
-    args = parse_args()
+    args, config = parse_args()
+    dataset_configs = configured_datasets(config)
+    unknown_datasets = sorted(set(args.datasets) - set(dataset_configs))
+    if unknown_datasets:
+        raise ValueError("unknown datasets: " + ", ".join(unknown_datasets))
     sweep_id = datetime.now().strftime("%Y%m%d_%H%M%S")
     sweep_dir = os.path.join(args.save_root, f"{sweep_id}_{args.suite}")
     os.makedirs(sweep_dir, exist_ok=True)
     master_log_path = os.path.join(sweep_dir, "ablation_log.txt")
 
-    ablations = selected_ablations(args.suite)
+    ablations = configured_ablations(args.suite, config)
     with open(master_log_path, "w", encoding="utf-8") as master_log:
         master_log.write(f"ablation_start: {now_text()}\n")
         master_log.write(f"suite: {args.suite}\n")
@@ -427,11 +465,11 @@ def main():
     rows = []
     failures = []
     for dataset_name in args.datasets:
-        dataset_config = DATASETS[dataset_name]
+        dataset_config = dataset_configs[dataset_name]
         for index, ablation in enumerate(ablations, start=1):
             run_name = f"{index:02d}_{ablation['name']}"
             run_dir = os.path.join(sweep_dir, dataset_name, run_name)
-            command = make_command(dataset_name, dataset_config, ablation, run_dir, args)
+            command = make_command(dataset_name, dataset_config, ablation, run_dir, args, config=config)
 
             if args.dry_run:
                 print(command_text(command))
@@ -472,7 +510,7 @@ def main():
                     f"elapsed_sec={elapsed:.1f} mean={mean}"
                 )
 
-    summary_path = write_summary(sweep_dir, rows, args) if not args.dry_run else None
+    summary_path = write_summary(sweep_dir, rows, args, dataset_configs) if not args.dry_run else None
     with open(master_log_path, "a", encoding="utf-8") as master_log:
         master_log.write(f"\nablation_end: {now_text()}\n")
         if summary_path:

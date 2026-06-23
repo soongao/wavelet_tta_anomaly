@@ -1,0 +1,29 @@
+script: cache_mvtec_features.py
+args:
+  data_path: /Users/bytedance/Downloads/mvtec_anomaly_detection
+  checkpoint_path: /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth
+  cache_dir: ./cache/mvtec_anomalyclip_features
+  dataset: mvtec
+  features_list:
+  - 6
+  - 12
+  - 18
+  - 24
+  feature_map_layer:
+  - 0
+  - 1
+  - 2
+  - 3
+  image_size: 518
+  depth: 9
+  n_ctx: 12
+  t_n_ctx: 4
+  dpam_layer: 20
+  seed: 111
+  device: auto
+  wavelet_fusion: mean
+  texture_edge_power: 1.0
+  maps_only: false
+  resume: false
+  max_samples: null
+  classes: null

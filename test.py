@@ -7,6 +7,7 @@ from loss import FocalLoss, BinaryDiceLoss
 from utils import normalize
 from dataset import Dataset
 from logger import get_logger, log_run_context
+from config_utils import parse_args_with_config
 from tqdm import tqdm
 
 import os
@@ -454,7 +455,7 @@ def test(args):
     logger.info("\n%s", results)
 
 
-if __name__ == '__main__':
+def build_parser():
     parser = argparse.ArgumentParser("AnomalyCLIP", add_help=True)
     # paths
     parser.add_argument("--data_path", type=str, default="/Users/bytedance/Downloads/mvtec_anomaly_detection", help="path to test dataset")
@@ -549,8 +550,11 @@ if __name__ == '__main__':
     parser.add_argument("--tta_update_abnormal", action="store_true", help="also rectify the abnormal text feature; default rectifies only normal")
     parser.add_argument("--tta_repulsion_weight", type=float, default=0.25, help="normal-text repulsion strength from abnormal visual anchors in wavelet_guided TTA")
     parser.add_argument("--tta_abnormal_alpha_scale", type=float, default=1.0, help="relative abnormal-text update strength in wavelet_guided TTA")
-    
-    args = parser.parse_args()
+    return parser
+
+
+if __name__ == '__main__':
+    args, _ = parse_args_with_config(build_parser())
     print(args)
     setup_seed(args.seed)
     test(args)
