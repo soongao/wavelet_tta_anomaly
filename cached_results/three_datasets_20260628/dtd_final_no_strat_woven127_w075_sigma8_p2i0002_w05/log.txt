@@ -1,0 +1,132 @@
+26-06-29 01:02:26.466 - INFO: 
+===== AnomalyCLIP cached calibration evaluation =====
+command: /Users/bytedance/code/.venv/bin/python eval_cached_calibration.py --cache_dir cache/dtd_synthetic_anomalyclip_features --save_path cached_results/three_datasets_20260628/dtd_final_no_strat_woven127_w075_sigma8_p2i0002_w05 --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --sigma 8 --use_wavelet --wavelet_mode dual_route --wavelet_beta 0.2 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.0 --wavelet_fusion mean --wavelet_levels 2 --wavelet_level_fusion mean --texture_edge_power 1.0 --texture_max_delta_ratio 0.05 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 17 --texture_local_contrast_weight 0.5 --rank_preserve_topk_ratio 0.35 --rank_gate_mode hard --rank_gate_temperature 0.05 --use_wavelet_confidence --wavelet_confidence_power 1.0 --wavelet_min_reliability 0.0 --texture_delta_reliability_power 0.0 --use_multicrop_fusion --multicrop_cache_dir cache/dtd_synthetic_multicrop_maps_grid2_ratio075_no_stratified_woven127 --multicrop_weight 0.75 --multicrop_missing_policy base --use_pixel_to_image_fusion --pixel_to_image_weight 0.5 --pixel_to_image_topk_ratio 0.002
+cwd: /Users/bytedance/code/AnomalyCLIP
+python: 3.9.6 (default, Apr 30 2025, 02:07:17)  [Clang 17.0.0 (clang-1700.0.13.5)]
+platform: macOS-15.7.3-arm64-arm-64bit
+  cuda_available: False
+  cuda_device_count: 0
+  torch_version: 2.0.0
+git_commit: 9b08706
+git_status:
+  ?? analysis_cache/
+  ?? results/three_datasets_20260626/
+  ?? sweep_results/three_datasets_20260628/
+args:
+  aupro_steps: 200
+  cache_dir: cache/dtd_synthetic_anomalyclip_features
+  classes: None
+  config: None
+  dataset: mvtec
+  disable_adaptive_wavelet: False
+  feature_map_layer: [1, 2, 3]
+  image_size: 518
+  image_to_pixel_max_gate: 1.0
+  image_to_pixel_min_gate: 0.0
+  image_to_pixel_power: 1.0
+  image_to_pixel_weight: 0.0
+  layer_consistency_boost: 0.03
+  layer_consistency_condition_power: 1.0
+  layer_consistency_min_layers: 2
+  layer_consistency_suppress: 0.0
+  layer_consistency_topk_ratio: 0.1
+  layer_weight_temperature: 1.0
+  layer_weighting: sum
+  low_rank_clip_gate_mode: hard
+  low_rank_clip_gate_temperature: 0.05
+  low_rank_clip_topk_ratio: 0.35
+  low_rank_condition_power: 2.0
+  low_rank_fusion: mean
+  low_rank_layer_selection: all
+  low_rank_max_delta_ratio: 0.03
+  low_rank_max_rank: 32
+  low_rank_no_center: False
+  low_rank_rank_ratio: 0.15
+  low_rank_sample_patches: 128
+  low_rank_weight: 0.03
+  metrics: image-pixel-level
+  multicrop_cache_dir: cache/dtd_synthetic_multicrop_maps_grid2_ratio075_no_stratified_woven127
+  multicrop_missing_policy: base
+  multicrop_weight: 0.75
+  pixel_to_image_normalize: False
+  pixel_to_image_topk_ratio: 0.002
+  pixel_to_image_weight: 0.5
+  rank_gate_mode: hard
+  rank_gate_temperature: 0.05
+  rank_preserve_topk_ratio: 0.35
+  recompute_maps: False
+  save_path: cached_results/three_datasets_20260628/dtd_final_no_strat_woven127_w075_sigma8_p2i0002_w05
+  sigma: 8.0
+  texture_delta_reliability_power: 0.0
+  texture_edge_power: 1.0
+  texture_local_contrast_kernel: 17
+  texture_local_contrast_weight: 0.5
+  texture_max_delta_ratio: 0.05
+  texture_suppression_weight: 0.0
+  tta_abnormal_alpha_scale: 1.0
+  tta_alpha: 0.2
+  tta_anchor_layers: last
+  tta_min_confidence: 0.0
+  tta_min_confidence_margin: 0.0
+  tta_mode: legacy
+  tta_repulsion_weight: 0.25
+  tta_topk_ratio: 0.05
+  tta_update_abnormal: False
+  use_image_to_pixel_gate: False
+  use_layer_consistency: False
+  use_low_rank_residual: False
+  use_multicrop_fusion: True
+  use_pixel_to_image_fusion: True
+  use_tta_rectification: False
+  use_wavelet: True
+  use_wavelet_confidence: True
+  use_wavelet_residual: False
+  wavelet_beta: 0.2
+  wavelet_condition_power: 2.0
+  wavelet_confidence_power: 1.0
+  wavelet_fusion: mean
+  wavelet_level_fusion: mean
+  wavelet_levels: 2
+  wavelet_min_reliability: 0.0
+  wavelet_mode: dual_route
+  wavelet_reliability_power: 1.0
+  wavelet_reliability_topk_ratio: 0.05
+  wavelet_residual_condition_power: 2.0
+  wavelet_residual_confidence_power: 1.0
+  wavelet_residual_local_contrast_kernel: 17
+  wavelet_residual_local_contrast_weight: 0.5
+  wavelet_residual_max_delta_ratio: 0.03
+  wavelet_residual_rank_gate_mode: hard
+  wavelet_residual_rank_gate_temperature: 0.05
+  wavelet_residual_topk_ratio: 0.35
+  wavelet_residual_weight: 0.03
+  wavelet_suppress_beta: 0.0
+extra:
+  cache_checkpoint_path: checkpoints/9_12_4_multiscale/epoch_15.pth
+  cache_data_path: /Users/bytedance/Downloads/DTD-Synthetic
+  cache_dataset: DTD
+  cache_dir: cache/dtd_synthetic_anomalyclip_features
+  cache_feature_map_layer: [0, 1, 2, 3]
+  cache_features_list: [6, 12, 18, 24]
+  cache_mode: patch_features
+  cache_num_samples: 1304
+  multicrop_cache_dir: cache/dtd_synthetic_multicrop_maps_grid2_ratio075_no_stratified_woven127
+  multicrop_samples: 1044
+  sample_files: 1304
+===== end run context =====
+26-06-29 01:05:45.640 - INFO: 
+| objects        |   pixel_auroc |   pixel_aupro |   image_auroc |   image_ap |
+|:---------------|--------------:|--------------:|--------------:|-----------:|
+| Woven_001      |          99.8 |          99.1 |         100   |      100   |
+| Woven_127      |          92.3 |          83.4 |          93.2 |       94.8 |
+| Woven_104      |          95.9 |          92.7 |          99.5 |       99.9 |
+| Stratified_154 |          99.5 |          98   |          99.4 |       99.8 |
+| Blotchy_099    |          98.9 |          95.2 |          99.4 |       99.9 |
+| Woven_068      |          99.1 |          96.2 |          98.5 |       99.2 |
+| Woven_125      |          99.5 |          96   |         100   |      100   |
+| Marbled_078    |          99.3 |          97.3 |          98.5 |       99.7 |
+| Perforated_037 |          96.1 |          83.9 |          92.4 |       98.1 |
+| Mesh_114       |          95.3 |          74   |          86   |       94.1 |
+| Fibrous_183    |          99.6 |          98.6 |         100   |      100   |
+| Matted_069     |          99.5 |          86.6 |          96.3 |       99.1 |
+| mean           |          97.9 |          91.8 |          96.9 |       98.7 |

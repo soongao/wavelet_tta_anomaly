@@ -1,0 +1,27 @@
+base image_auroc=89.124 image_ap=91.049
+top by image_auroc:
+mode=raw topk=0.1 weight=0.8 image_auroc=91.531 image_ap=91.853
+mode=raw topk=0.08 weight=0.8 image_auroc=91.506 image_ap=91.406
+mode=raw topk=0.05 weight=0.8 image_auroc=91.370 image_ap=90.595
+mode=raw topk=0.08 weight=0.6 image_auroc=91.026 image_ap=91.757
+mode=raw topk=0.1 weight=0.6 image_auroc=90.951 image_ap=91.892
+mode=raw topk=0.03 weight=0.8 image_auroc=90.922 image_ap=89.166
+mode=raw topk=0.05 weight=0.6 image_auroc=90.832 image_ap=90.977
+mode=raw topk=0.002 weight=0.6 image_auroc=90.781 image_ap=89.103
+mode=raw topk=0.003 weight=0.6 image_auroc=90.766 image_ap=89.251
+mode=raw topk=0.001 weight=0.6 image_auroc=90.735 image_ap=88.694
+mode=raw topk=0.05 weight=0.5 image_auroc=90.730 image_ap=91.133
+mode=raw topk=0.005 weight=0.6 image_auroc=90.721 image_ap=89.278
+mode=raw topk=0.02 weight=0.8 image_auroc=90.714 image_ap=88.683
+mode=raw topk=0.03 weight=0.6 image_auroc=90.707 image_ap=90.201
+mode=raw topk=0.0005 weight=0.6 image_auroc=90.702 image_ap=88.411
+mode=raw topk=0.0005 weight=0.5 image_auroc=90.657 image_ap=89.157
+mode=raw topk=0.008 weight=0.6 image_auroc=90.654 image_ap=89.349
+mode=raw topk=0.01 weight=0.6 image_auroc=90.646 image_ap=89.427
+mode=raw topk=0.015 weight=0.8 image_auroc=90.642 image_ap=88.519
+mode=raw topk=0.002 weight=0.4 image_auroc=90.624 image_ap=90.126
+
+Top detail:
+01: 92.128 96.624
+02: 89.117 98.308
+03: 93.348 80.626

@@ -1,0 +1,30 @@
+base image_auroc=73.656 image_ap=76.524
+top by image_auroc:
+mode=raw topk=0.01 weight=0.8 image_auroc=78.287 image_ap=82.437
+mode=raw topk=0.05 weight=0.8 image_auroc=78.194 image_ap=82.185
+mode=raw topk=0.008 weight=0.8 image_auroc=78.146 image_ap=82.424
+mode=raw topk=0.02 weight=0.8 image_auroc=78.060 image_ap=82.074
+mode=raw topk=0.03 weight=0.8 image_auroc=77.946 image_ap=81.932
+mode=raw topk=0.015 weight=0.8 image_auroc=77.937 image_ap=82.063
+mode=raw topk=0.015 weight=0.6 image_auroc=77.748 image_ap=82.068
+mode=raw topk=0.005 weight=0.8 image_auroc=77.729 image_ap=82.196
+mode=raw topk=0.003 weight=0.6 image_auroc=77.724 image_ap=81.800
+mode=raw topk=0.02 weight=0.6 image_auroc=77.670 image_ap=81.995
+mode=raw topk=0.002 weight=0.6 image_auroc=77.654 image_ap=81.660
+mode=raw topk=0.08 weight=0.8 image_auroc=77.629 image_ap=80.734
+mode=raw topk=0.008 weight=0.6 image_auroc=77.623 image_ap=81.988
+mode=raw topk=0.003 weight=0.8 image_auroc=77.607 image_ap=82.218
+mode=raw topk=0.01 weight=0.5 image_auroc=77.583 image_ap=82.005
+mode=raw topk=0.005 weight=0.6 image_auroc=77.577 image_ap=81.883
+mode=raw topk=0.01 weight=0.6 image_auroc=77.535 image_ap=81.821
+mode=raw topk=0.1 weight=0.8 image_auroc=77.523 image_ap=80.578
+mode=raw topk=0.015 weight=0.5 image_auroc=77.455 image_ap=81.321
+mode=raw topk=0.003 weight=0.5 image_auroc=77.421 image_ap=81.650
+
+Top detail:
+bracket_black: 71.875 81.652
+bracket_brown: 54.374 74.853
+bracket_white: 86.889 87.429
+connector: 69.762 55.966
+metal_plate: 90.628 96.431
+tubes: 96.196 98.294

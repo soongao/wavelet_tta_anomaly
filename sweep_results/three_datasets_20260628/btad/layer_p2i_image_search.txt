@@ -1,0 +1,37 @@
+base image_auroc=89.124 image_ap=91.049
+top:
+fused layers=[1] topk=0.15 weight=0.9 image_auroc=92.236 image_ap=92.599
+fused layers=[1, 2] topk=0.15 weight=0.9 image_auroc=92.236 image_ap=92.599
+fused layers=[1, 2, 3] topk=0.15 weight=0.9 image_auroc=92.236 image_ap=92.599
+fused layers=[1] topk=0.2 weight=0.9 image_auroc=92.201 image_ap=92.842
+fused layers=[1, 2] topk=0.2 weight=0.9 image_auroc=92.201 image_ap=92.842
+fused layers=[1, 2, 3] topk=0.2 weight=0.9 image_auroc=92.201 image_ap=92.842
+pixel_only layers=[2] topk=0.2 weight=1 image_auroc=92.003 image_ap=92.844
+fused layers=[2] topk=0.2 weight=1 image_auroc=92.003 image_ap=92.844
+pixel_only layers=[2, 3] topk=0.2 weight=1 image_auroc=92.003 image_ap=92.844
+fused layers=[2, 3] topk=0.2 weight=1 image_auroc=92.003 image_ap=92.844
+fused layers=[2] topk=0.15 weight=0.9 image_auroc=91.998 image_ap=92.391
+fused layers=[2, 3] topk=0.15 weight=0.9 image_auroc=91.998 image_ap=92.391
+fused layers=[1] topk=0.1 weight=0.9 image_auroc=91.973 image_ap=91.892
+fused layers=[1, 2] topk=0.1 weight=0.9 image_auroc=91.973 image_ap=91.892
+fused layers=[1, 2, 3] topk=0.1 weight=0.9 image_auroc=91.973 image_ap=91.892
+fused layers=[2] topk=0.2 weight=0.9 image_auroc=91.959 image_ap=92.608
+fused layers=[2, 3] topk=0.2 weight=0.9 image_auroc=91.959 image_ap=92.608
+fused layers=[1] topk=0.08 weight=0.9 image_auroc=91.922 image_ap=91.440
+fused layers=[1, 2] topk=0.08 weight=0.9 image_auroc=91.922 image_ap=91.440
+fused layers=[1, 2, 3] topk=0.08 weight=0.9 image_auroc=91.922 image_ap=91.440
+fused layers=[2] topk=0.1 weight=0.9 image_auroc=91.777 image_ap=91.651
+fused layers=[2, 3] topk=0.1 weight=0.9 image_auroc=91.777 image_ap=91.651
+fused layers=[2] topk=0.08 weight=0.9 image_auroc=91.662 image_ap=91.209
+fused layers=[2, 3] topk=0.08 weight=0.9 image_auroc=91.662 image_ap=91.209
+pixel_only layers=[2] topk=0.15 weight=1 image_auroc=91.625 image_ap=92.381
+fused layers=[2] topk=0.15 weight=1 image_auroc=91.625 image_ap=92.381
+pixel_only layers=[2, 3] topk=0.15 weight=1 image_auroc=91.625 image_ap=92.381
+fused layers=[2, 3] topk=0.15 weight=1 image_auroc=91.625 image_ap=92.381
+fused layers=[3] topk=0.15 weight=0.9 image_auroc=91.595 image_ap=92.233
+fused layers=[1] topk=0.15 weight=0.8 image_auroc=91.579 image_ap=92.428
+
+Top detail:
+01: 93.878 97.570
+02: 89.050 98.301
+03: 93.780 81.925

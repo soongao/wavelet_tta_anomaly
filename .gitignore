@@ -3,6 +3,21 @@ __pycache__/
 
 cache/
 cached_results*/
+!cached_results/
+cached_results/*
+!cached_results/three_datasets_20260628/
+cached_results/three_datasets_20260628/*
+!cached_results/three_datasets_20260628/FINAL_RESULTS.md
+!cached_results/three_datasets_20260628/mpdd_multicrop_partial_w025_sigma8_p2i/
+cached_results/three_datasets_20260628/mpdd_multicrop_partial_w025_sigma8_p2i/*
+!cached_results/three_datasets_20260628/mpdd_multicrop_partial_w025_sigma8_p2i/log.txt
+!cached_results/three_datasets_20260628/btad_full_multicrop_w085_sigma10_p2i030_w095/
+cached_results/three_datasets_20260628/btad_full_multicrop_w085_sigma10_p2i030_w095/*
+!cached_results/three_datasets_20260628/btad_full_multicrop_w085_sigma10_p2i030_w095/log.txt
+!cached_results/three_datasets_20260628/dtd_final_no_strat_woven127_w075_sigma8_p2i0002_w05/
+cached_results/three_datasets_20260628/dtd_final_no_strat_woven127_w075_sigma8_p2i0002_w05/*
+!cached_results/three_datasets_20260628/dtd_final_no_strat_woven127_w075_sigma8_p2i0002_w05/log.txt
 my_results*/
 
 .DS_Store
+*.pt

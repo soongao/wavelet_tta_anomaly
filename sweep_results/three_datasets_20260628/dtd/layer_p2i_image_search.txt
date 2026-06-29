@@ -1,0 +1,56 @@
+base image_auroc=94.456 image_ap=97.699
+top:
+fused layers=[1] sigma=5 topk=0.001 weight=0.5 image_auroc=96.797 image_ap=98.611
+fused layers=[1, 2] sigma=5 topk=0.001 weight=0.5 image_auroc=96.797 image_ap=98.611
+fused layers=[1, 2, 3] sigma=5 topk=0.001 weight=0.5 image_auroc=96.797 image_ap=98.611
+fused layers=[1] sigma=5 topk=0.002 weight=0.5 image_auroc=96.792 image_ap=98.607
+fused layers=[1, 2] sigma=5 topk=0.002 weight=0.5 image_auroc=96.792 image_ap=98.607
+fused layers=[1, 2, 3] sigma=5 topk=0.002 weight=0.5 image_auroc=96.792 image_ap=98.607
+fused layers=[2] sigma=5 topk=0.001 weight=0.5 image_auroc=96.771 image_ap=98.604
+fused layers=[2, 3] sigma=5 topk=0.001 weight=0.5 image_auroc=96.771 image_ap=98.604
+fused layers=[2] sigma=5 topk=0.002 weight=0.5 image_auroc=96.758 image_ap=98.590
+fused layers=[2, 3] sigma=5 topk=0.002 weight=0.5 image_auroc=96.758 image_ap=98.590
+fused layers=[1] sigma=5 topk=0.003 weight=0.6 image_auroc=96.752 image_ap=98.570
+fused layers=[1, 2] sigma=5 topk=0.003 weight=0.6 image_auroc=96.752 image_ap=98.570
+fused layers=[1, 2, 3] sigma=5 topk=0.003 weight=0.6 image_auroc=96.752 image_ap=98.570
+fused layers=[1] sigma=4 topk=0.002 weight=0.5 image_auroc=96.745 image_ap=98.579
+fused layers=[1, 2] sigma=4 topk=0.002 weight=0.5 image_auroc=96.745 image_ap=98.579
+fused layers=[1, 2, 3] sigma=4 topk=0.002 weight=0.5 image_auroc=96.745 image_ap=98.579
+fused layers=[1] sigma=5 topk=0.005 weight=0.6 image_auroc=96.738 image_ap=98.549
+fused layers=[1, 2] sigma=5 topk=0.005 weight=0.6 image_auroc=96.738 image_ap=98.549
+fused layers=[1, 2, 3] sigma=5 topk=0.005 weight=0.6 image_auroc=96.738 image_ap=98.549
+fused layers=[2] sigma=4 topk=0.002 weight=0.5 image_auroc=96.737 image_ap=98.575
+fused layers=[2, 3] sigma=4 topk=0.002 weight=0.5 image_auroc=96.737 image_ap=98.575
+fused layers=[1] sigma=5 topk=0.002 weight=0.6 image_auroc=96.732 image_ap=98.570
+fused layers=[1, 2] sigma=5 topk=0.002 weight=0.6 image_auroc=96.732 image_ap=98.570
+fused layers=[1, 2, 3] sigma=5 topk=0.002 weight=0.6 image_auroc=96.732 image_ap=98.570
+fused layers=[1] sigma=5 topk=0.003 weight=0.5 image_auroc=96.727 image_ap=98.576
+fused layers=[1, 2] sigma=5 topk=0.003 weight=0.5 image_auroc=96.727 image_ap=98.576
+fused layers=[1, 2, 3] sigma=5 topk=0.003 weight=0.5 image_auroc=96.727 image_ap=98.576
+fused layers=[1] sigma=4 topk=0.003 weight=0.5 image_auroc=96.727 image_ap=98.567
+fused layers=[1, 2] sigma=4 topk=0.003 weight=0.5 image_auroc=96.727 image_ap=98.567
+fused layers=[1, 2, 3] sigma=4 topk=0.003 weight=0.5 image_auroc=96.727 image_ap=98.567
+fused layers=[2] sigma=5 topk=0.003 weight=0.6 image_auroc=96.724 image_ap=98.556
+fused layers=[2, 3] sigma=5 topk=0.003 weight=0.6 image_auroc=96.724 image_ap=98.556
+fused layers=[1] sigma=5 topk=0.0005 weight=0.5 image_auroc=96.721 image_ap=98.591
+fused layers=[1, 2] sigma=5 topk=0.0005 weight=0.5 image_auroc=96.721 image_ap=98.591
+fused layers=[1, 2, 3] sigma=5 topk=0.0005 weight=0.5 image_auroc=96.721 image_ap=98.591
+fused layers=[2] sigma=5 topk=0.005 weight=0.6 image_auroc=96.721 image_ap=98.547
+fused layers=[2, 3] sigma=5 topk=0.005 weight=0.6 image_auroc=96.721 image_ap=98.547
+fused layers=[2] sigma=5 topk=0.003 weight=0.5 image_auroc=96.720 image_ap=98.574
+fused layers=[2, 3] sigma=5 topk=0.003 weight=0.5 image_auroc=96.720 image_ap=98.574
+fused layers=[2] sigma=5 topk=0.0005 weight=0.5 image_auroc=96.718 image_ap=98.592
+
+Top detail:
+Woven_001: 100.000 100.000
+Woven_127: 92.562 94.179
+Woven_104: 99.188 99.804
+Stratified_154: 99.875 99.970
+Blotchy_099: 98.438 99.606
+Woven_068: 96.749 98.243
+Woven_125: 100.000 100.000
+Marbled_078: 98.938 99.741
+Perforated_037: 93.812 98.452
+Mesh_114: 85.104 94.070
+Fibrous_183: 100.000 100.000
+Matted_069: 96.899 99.270

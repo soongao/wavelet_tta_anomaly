@@ -1,0 +1,125 @@
+26-06-28 18:20:07.501 - INFO: 
+===== AnomalyCLIP cached calibration evaluation =====
+command: /Users/bytedance/code/.venv/bin/python eval_cached_calibration.py --cache_dir cache/mpdd_anomalyclip_features --save_path sweep_results/three_datasets_20260628/mpdd/p2i_grid_fast/w0.02_t0.001_n1 --dataset mpdd --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --sigma 5 --use_pixel_to_image_fusion --pixel_to_image_weight 0.02 --pixel_to_image_topk_ratio 0.001 --pixel_to_image_normalize
+cwd: /Users/bytedance/code/AnomalyCLIP
+python: 3.9.6 (default, Apr 30 2025, 02:07:17)  [Clang 17.0.0 (clang-1700.0.13.5)]
+platform: macOS-15.7.3-arm64-arm-64bit
+  cuda_available: False
+  cuda_device_count: 0
+  torch_version: 2.0.0
+git_commit: 9b08706
+git_status:
+  ?? results/three_datasets_20260626/
+  ?? sweep_results/three_datasets_20260628/
+args:
+  aupro_steps: 200
+  cache_dir: cache/mpdd_anomalyclip_features
+  classes: None
+  config: None
+  dataset: mpdd
+  disable_adaptive_wavelet: False
+  feature_map_layer: [1, 2, 3]
+  image_size: 518
+  image_to_pixel_max_gate: 1.0
+  image_to_pixel_min_gate: 0.0
+  image_to_pixel_power: 1.0
+  image_to_pixel_weight: 0.0
+  layer_consistency_boost: 0.03
+  layer_consistency_condition_power: 1.0
+  layer_consistency_min_layers: 2
+  layer_consistency_suppress: 0.0
+  layer_consistency_topk_ratio: 0.1
+  layer_weight_temperature: 1.0
+  layer_weighting: sum
+  low_rank_clip_gate_mode: hard
+  low_rank_clip_gate_temperature: 0.05
+  low_rank_clip_topk_ratio: 0.35
+  low_rank_condition_power: 2.0
+  low_rank_fusion: mean
+  low_rank_layer_selection: all
+  low_rank_max_delta_ratio: 0.03
+  low_rank_max_rank: 32
+  low_rank_no_center: False
+  low_rank_rank_ratio: 0.15
+  low_rank_sample_patches: 128
+  low_rank_weight: 0.03
+  metrics: image-pixel-level
+  multicrop_cache_dir: None
+  multicrop_missing_policy: error
+  multicrop_weight: 0.25
+  pixel_to_image_normalize: True
+  pixel_to_image_topk_ratio: 0.001
+  pixel_to_image_weight: 0.02
+  rank_gate_mode: hard
+  rank_gate_temperature: 0.05
+  rank_preserve_topk_ratio: 0.0
+  recompute_maps: False
+  save_path: sweep_results/three_datasets_20260628/mpdd/p2i_grid_fast/w0.02_t0.001_n1
+  sigma: 5.0
+  texture_delta_reliability_power: 0.0
+  texture_edge_power: 1.0
+  texture_local_contrast_kernel: 0
+  texture_local_contrast_weight: 0.0
+  texture_max_delta_ratio: 0.05
+  texture_suppression_weight: 0.0
+  tta_abnormal_alpha_scale: 1.0
+  tta_alpha: 0.2
+  tta_anchor_layers: last
+  tta_min_confidence: 0.0
+  tta_min_confidence_margin: 0.0
+  tta_mode: legacy
+  tta_repulsion_weight: 0.25
+  tta_topk_ratio: 0.05
+  tta_update_abnormal: False
+  use_image_to_pixel_gate: False
+  use_layer_consistency: False
+  use_low_rank_residual: False
+  use_multicrop_fusion: False
+  use_pixel_to_image_fusion: True
+  use_tta_rectification: False
+  use_wavelet: False
+  use_wavelet_confidence: False
+  use_wavelet_residual: False
+  wavelet_beta: 0.5
+  wavelet_condition_power: 1.0
+  wavelet_confidence_power: 1.0
+  wavelet_fusion: mean
+  wavelet_level_fusion: mean
+  wavelet_levels: 1
+  wavelet_min_reliability: 0.0
+  wavelet_mode: dual_route
+  wavelet_reliability_power: 1.0
+  wavelet_reliability_topk_ratio: 0.05
+  wavelet_residual_condition_power: 2.0
+  wavelet_residual_confidence_power: 1.0
+  wavelet_residual_local_contrast_kernel: 17
+  wavelet_residual_local_contrast_weight: 0.5
+  wavelet_residual_max_delta_ratio: 0.03
+  wavelet_residual_rank_gate_mode: hard
+  wavelet_residual_rank_gate_temperature: 0.05
+  wavelet_residual_topk_ratio: 0.35
+  wavelet_residual_weight: 0.03
+  wavelet_suppress_beta: 0.3
+extra:
+  cache_checkpoint_path: checkpoints/9_12_4_multiscale/epoch_15.pth
+  cache_data_path: /Users/bytedance/Downloads/MPDD
+  cache_dataset: mpdd
+  cache_dir: cache/mpdd_anomalyclip_features
+  cache_feature_map_layer: [0, 1, 2, 3]
+  cache_features_list: [6, 12, 18, 24]
+  cache_mode: patch_features
+  cache_num_samples: 458
+  multicrop_cache_dir: disabled
+  multicrop_samples: 0
+  sample_files: 458
+===== end run context =====
+26-06-28 18:21:25.470 - INFO: 
+| objects       |   pixel_auroc |   pixel_aupro |   image_auroc |   image_ap |
+|:--------------|--------------:|--------------:|--------------:|-----------:|
+| bracket_black |          96.6 |          84.9 |          62.2 |       69.2 |
+| bracket_brown |          95   |          67.4 |          55.2 |       71.6 |
+| bracket_white |          99.8 |          97.4 |          74   |       68.9 |
+| connector     |          95.6 |          79.1 |          71.7 |       60.7 |
+| metal_plate   |          96   |          88.5 |          83.7 |       94.2 |
+| tubes         |          98.3 |          90.3 |          95.6 |       97.9 |
+| mean          |          96.9 |          84.6 |          73.7 |       77.1 |
