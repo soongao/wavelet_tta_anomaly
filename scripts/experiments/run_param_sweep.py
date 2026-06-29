@@ -1,3 +1,11 @@
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = next(parent for parent in Path(__file__).resolve().parents if (parent / "src").is_dir())
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
 import argparse
 import os
 import subprocess
@@ -5,7 +13,7 @@ import sys
 import time
 from datetime import datetime
 
-from config_utils import parse_args_with_config
+from anomalyclip.config_utils import parse_args_with_config
 
 
 PARAMETER_SETS = [
@@ -302,7 +310,7 @@ def make_command(args, params, save_path):
         command = [
             sys.executable,
             "-B",
-            "eval_cached_calibration.py",
+            "scripts/evaluate/eval_cached_calibration.py",
             "--cache_dir",
             args.cache_dir,
             "--save_path",
@@ -312,7 +320,7 @@ def make_command(args, params, save_path):
         command = [
             sys.executable,
             "-B",
-            "test.py",
+            "scripts/evaluate/test.py",
             "--data_path",
             args.data_path,
             "--checkpoint_path",
@@ -501,7 +509,7 @@ def run_one(command, run_dir, master_log_path):
     with open(console_log_path, "w", encoding="utf-8") as console_log:
         process = subprocess.run(
             command,
-            cwd=os.getcwd(),
+            cwd=str(PROJECT_ROOT),
             stdout=console_log,
             stderr=subprocess.STDOUT,
             text=True,

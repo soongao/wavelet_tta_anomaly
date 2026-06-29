@@ -1,9 +1,17 @@
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = next(parent for parent in Path(__file__).resolve().parents if (parent / "src").is_dir())
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
 import argparse
 import os
 
 import torch
 
-from cached_eval_utils import (
+from anomalyclip.cached_eval_utils import (
     build_anomaly_maps_from_patch_features,
     build_structure_texture_gate,
     build_wavelet_gate,
@@ -14,11 +22,11 @@ from cached_eval_utils import (
     selected_classes,
     smooth_anomaly_map,
 )
-from config_utils import parse_args_with_config
-from dataset import generate_class_info
-from logger import get_logger, log_run_context
-from test_time_rectification import rectify_text_features_with_multi_layer_anchors
-from wavelet_calibration import (
+from anomalyclip.config_utils import parse_args_with_config
+from anomalyclip.dataset import generate_class_info
+from anomalyclip.logger import get_logger, log_run_context
+from anomalyclip.test_time_rectification import rectify_text_features_with_multi_layer_anchors
+from anomalyclip.wavelet_calibration import (
     apply_layer_consistency_calibration,
     apply_low_rank_residual_calibration,
     apply_structure_texture_calibration,

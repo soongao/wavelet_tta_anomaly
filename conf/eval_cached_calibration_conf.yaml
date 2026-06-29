@@ -1,4 +1,4 @@
-script: eval_cached_calibration.py
+script: scripts/evaluate/eval_cached_calibration.py
 args:
   cache_dir: ./cache/mvtec_anomalyclip_features
   save_path: ./cached_results_mvtec

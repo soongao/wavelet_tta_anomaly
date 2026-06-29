@@ -113,7 +113,7 @@ VisA 使用：
 日志：`cache/mvtec_anomalyclip_features/log.txt`
 
 ```bash
-/Users/bytedance/code/.venv/bin/python cache_mvtec_features.py --cache_dir cache/mvtec_anomalyclip_features --resume
+/Users/bytedance/code/.venv/bin/python scripts/cache/cache_mvtec_features.py --cache_dir cache/mvtec_anomalyclip_features --resume
 ```
 
 结果：
@@ -130,7 +130,7 @@ VisA 使用：
 日志：`cache/mvtec_multicrop_maps_grid2_ratio075/log.txt`
 
 ```bash
-/Users/bytedance/code/.venv/bin/python cache_multicrop_maps.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --cache_dir ./cache/mvtec_multicrop_maps_grid2_ratio075 --dataset mvtec --feature_map_layer 1 2 3 --crop_grid 2 --crop_ratio 0.75 --crop_forward_batch_size 4 --device cpu --resume
+/Users/bytedance/code/.venv/bin/python scripts/cache/cache_multicrop_maps.py --data_path /Users/bytedance/Downloads/mvtec_anomaly_detection --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth --cache_dir ./cache/mvtec_multicrop_maps_grid2_ratio075 --dataset mvtec --feature_map_layer 1 2 3 --crop_grid 2 --crop_ratio 0.75 --crop_forward_batch_size 4 --device cpu --resume
 ```
 
 参数：
@@ -149,7 +149,7 @@ VisA 使用：
 日志：`cache/visa_anomalyclip_features/log.txt`
 
 ```bash
-/Users/bytedance/code/.venv/bin/python cache_mvtec_features.py --dataset visa --data_path /Users/bytedance/Downloads/VisA_20220922 --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale_visa/epoch_15.pth --cache_dir ./cache/visa_anomalyclip_features --features_list 6 12 18 24 --feature_map_layer 0 1 2 3 --image_size 518 --depth 9 --n_ctx 12 --t_n_ctx 4 --dpam_layer 20 --device cpu --resume
+/Users/bytedance/code/.venv/bin/python scripts/cache/cache_mvtec_features.py --dataset visa --data_path /Users/bytedance/Downloads/VisA_20220922 --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale_visa/epoch_15.pth --cache_dir ./cache/visa_anomalyclip_features --features_list 6 12 18 24 --feature_map_layer 0 1 2 3 --image_size 518 --depth 9 --n_ctx 12 --t_n_ctx 4 --dpam_layer 20 --device cpu --resume
 ```
 
 结果：
@@ -166,7 +166,7 @@ VisA 使用：
 日志：`cache/visa_multicrop_maps_grid2_ratio075/log.txt`
 
 ```bash
-/Users/bytedance/code/.venv/bin/python cache_multicrop_maps.py --dataset visa --data_path /Users/bytedance/Downloads/VisA_20220922 --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale_visa/epoch_15.pth --cache_dir ./cache/visa_multicrop_maps_grid2_ratio075 --feature_map_layer 1 2 3 --crop_grid 2 --crop_ratio 0.75 --crop_forward_batch_size 4 --image_size 518 --depth 9 --n_ctx 12 --t_n_ctx 4 --dpam_layer 20 --device cpu --resume
+/Users/bytedance/code/.venv/bin/python scripts/cache/cache_multicrop_maps.py --dataset visa --data_path /Users/bytedance/Downloads/VisA_20220922 --checkpoint_path /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale_visa/epoch_15.pth --cache_dir ./cache/visa_multicrop_maps_grid2_ratio075 --feature_map_layer 1 2 3 --crop_grid 2 --crop_ratio 0.75 --crop_forward_batch_size 4 --image_size 518 --depth 9 --n_ctx 12 --t_n_ctx 4 --dpam_layer 20 --device cpu --resume
 ```
 
 结果：
@@ -184,7 +184,7 @@ VisA 使用：
 日志：`cached_results/cached_results_layer1_wg_msml_multicrop_w050_p2i010/log.txt`
 
 ```bash
-/Users/bytedance/code/.venv/bin/python eval_cached_calibration.py --cache_dir cache/mvtec_anomalyclip_features --save_path ./cached_results/cached_results_layer1_wg_msml_multicrop_w050_p2i010 --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --sigma 5 --layer_weighting sum --layer_weight_temperature 1.0 --use_wavelet --wavelet_mode dual_route --wavelet_beta 0.20 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.0 --wavelet_fusion mean --wavelet_levels 2 --wavelet_level_fusion mean --texture_edge_power 1.0 --texture_max_delta_ratio 0.05 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 17 --texture_local_contrast_weight 0.5 --rank_preserve_topk_ratio 0.35 --use_tta_rectification --tta_mode wavelet_guided --tta_alpha 0.01 --tta_topk_ratio 0.02 --tta_min_confidence 0.20 --tta_anchor_layers mean --tta_repulsion_weight 0.10 --tta_abnormal_alpha_scale 0.75 --use_wavelet_confidence --wavelet_confidence_power 1.0 --use_multicrop_fusion --multicrop_cache_dir ./cache/mvtec_multicrop_maps_grid2_ratio075 --multicrop_weight 0.50 --use_pixel_to_image_fusion --pixel_to_image_weight 0.10 --pixel_to_image_topk_ratio 0.01
+/Users/bytedance/code/.venv/bin/python scripts/evaluate/eval_cached_calibration.py --cache_dir cache/mvtec_anomalyclip_features --save_path ./cached_results/cached_results_layer1_wg_msml_multicrop_w050_p2i010 --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --sigma 5 --layer_weighting sum --layer_weight_temperature 1.0 --use_wavelet --wavelet_mode dual_route --wavelet_beta 0.20 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.0 --wavelet_fusion mean --wavelet_levels 2 --wavelet_level_fusion mean --texture_edge_power 1.0 --texture_max_delta_ratio 0.05 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 17 --texture_local_contrast_weight 0.5 --rank_preserve_topk_ratio 0.35 --use_tta_rectification --tta_mode wavelet_guided --tta_alpha 0.01 --tta_topk_ratio 0.02 --tta_min_confidence 0.20 --tta_anchor_layers mean --tta_repulsion_weight 0.10 --tta_abnormal_alpha_scale 0.75 --use_wavelet_confidence --wavelet_confidence_power 1.0 --use_multicrop_fusion --multicrop_cache_dir ./cache/mvtec_multicrop_maps_grid2_ratio075 --multicrop_weight 0.50 --use_pixel_to_image_fusion --pixel_to_image_weight 0.10 --pixel_to_image_topk_ratio 0.01
 ```
 
 备注：日志中记录的原始 `--save_path` 是 `./cached_results_layer1_wg_msml_multicrop_w050_p2i010`；当前结果已经整理到 `cached_results/` 目录下，所以复跑建议使用上面的保存路径。
@@ -194,7 +194,7 @@ VisA 使用：
 日志：`cached_results/cached_results_visa_wg_msml_multicrop_w050_p2i010/log.txt`
 
 ```bash
-/Users/bytedance/code/.venv/bin/python eval_cached_calibration.py --cache_dir ./cache/visa_anomalyclip_features --save_path ./cached_results/cached_results_visa_wg_msml_multicrop_w050_p2i010 --dataset visa --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --sigma 5 --layer_weighting sum --layer_weight_temperature 1.0 --use_wavelet --wavelet_mode dual_route --wavelet_beta 0.20 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.0 --wavelet_fusion mean --wavelet_levels 2 --wavelet_level_fusion mean --texture_edge_power 1.0 --texture_max_delta_ratio 0.05 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 17 --texture_local_contrast_weight 0.5 --rank_preserve_topk_ratio 0.35 --use_tta_rectification --tta_mode wavelet_guided --tta_alpha 0.01 --tta_topk_ratio 0.02 --tta_min_confidence 0.20 --tta_anchor_layers mean --tta_repulsion_weight 0.10 --tta_abnormal_alpha_scale 0.75 --use_wavelet_confidence --wavelet_confidence_power 1.0 --use_multicrop_fusion --multicrop_cache_dir ./cache/visa_multicrop_maps_grid2_ratio075 --multicrop_weight 0.50 --use_pixel_to_image_fusion --pixel_to_image_weight 0.10 --pixel_to_image_topk_ratio 0.01
+/Users/bytedance/code/.venv/bin/python scripts/evaluate/eval_cached_calibration.py --cache_dir ./cache/visa_anomalyclip_features --save_path ./cached_results/cached_results_visa_wg_msml_multicrop_w050_p2i010 --dataset visa --metrics image-pixel-level --aupro_steps 200 --feature_map_layer 1 2 3 --sigma 5 --layer_weighting sum --layer_weight_temperature 1.0 --use_wavelet --wavelet_mode dual_route --wavelet_beta 0.20 --wavelet_condition_power 2.0 --wavelet_suppress_beta 0.0 --wavelet_fusion mean --wavelet_levels 2 --wavelet_level_fusion mean --texture_edge_power 1.0 --texture_max_delta_ratio 0.05 --texture_suppression_weight 0.0 --texture_local_contrast_kernel 17 --texture_local_contrast_weight 0.5 --rank_preserve_topk_ratio 0.35 --use_tta_rectification --tta_mode wavelet_guided --tta_alpha 0.01 --tta_topk_ratio 0.02 --tta_min_confidence 0.20 --tta_anchor_layers mean --tta_repulsion_weight 0.10 --tta_abnormal_alpha_scale 0.75 --use_wavelet_confidence --wavelet_confidence_power 1.0 --use_multicrop_fusion --multicrop_cache_dir ./cache/visa_multicrop_maps_grid2_ratio075 --multicrop_weight 0.50 --use_pixel_to_image_fusion --pixel_to_image_weight 0.10 --pixel_to_image_topk_ratio 0.01
 ```
 
 ## 6. 主要结果
@@ -264,7 +264,7 @@ VisA 当前方法分类结果：
 
 ## 7. 调参过程简要记录
 
-### 7.1 早期直接跑 `test.py` 的 wavelet + TTA
+### 7.1 早期直接跑 `scripts/evaluate/test.py` 的 wavelet + TTA
 
 日志目录：`sweep_results/20260618_190501`
 
@@ -393,12 +393,12 @@ VisA：
 
 - `wavelet_calibration.py`：小波校准、dual-route、局部对比度、rank-preserve 等逻辑。
 - `test_time_rectification.py`：TTA rectification 逻辑。
-- `eval_cached_calibration.py`：基于 feature cache 的快速评估入口。
-- `cache_mvtec_features.py`：生成 patch feature cache。
-- `cache_multicrop_maps.py`：生成 multi-crop anomaly map cache。
+- `scripts/evaluate/eval_cached_calibration.py`：基于 feature cache 的快速评估入口。
+- `scripts/cache/cache_mvtec_features.py`：生成 patch feature cache。
+- `scripts/cache/cache_multicrop_maps.py`：生成 multi-crop anomaly map cache。
 - `multicrop_utils.py`：multi-crop fusion 相关工具。
-- `run_param_sweep.py`：顺序跑多组参数的调参脚本。
-- `run_ablation_experiments.py`：顺序跑组件消融和内部设计消融的脚本。
+- `scripts/experiments/run_param_sweep.py`：顺序跑多组参数的调参脚本。
+- `scripts/experiments/run_ablation_experiments.py`：顺序跑组件消融和内部设计消融的脚本。
 
 结果与日志：
 

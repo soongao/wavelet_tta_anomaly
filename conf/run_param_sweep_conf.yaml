@@ -1,4 +1,4 @@
-script: run_param_sweep.py
+script: scripts/experiments/run_param_sweep.py
 args:
   runner: test
   cache_dir: ./cache/mvtec_anomalyclip_features

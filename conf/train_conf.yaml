@@ -1,4 +1,4 @@
-script: train.py
+script: scripts/train.py
 args:
   train_data_path: /Users/bytedance/Downloads/VisA_20220922
   save_path: /Users/bytedance/code/AnomalyCLIP/my_checkpoint/train_on_visa

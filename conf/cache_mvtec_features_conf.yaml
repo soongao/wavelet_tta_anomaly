@@ -1,4 +1,4 @@
-script: cache_mvtec_features.py
+script: scripts/cache/cache_mvtec_features.py
 args:
   data_path: /Users/bytedance/Downloads/mvtec_anomaly_detection
   checkpoint_path: /Users/bytedance/code/AnomalyCLIP/checkpoints/9_12_4_multiscale/epoch_15.pth

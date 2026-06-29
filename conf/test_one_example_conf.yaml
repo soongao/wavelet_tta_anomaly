@@ -1,4 +1,4 @@
-script: test_one_example.py
+script: scripts/evaluate/test_one_example.py
 args:
   image_path: ./data/visa
   checkpoint_path: ./checkpoint/

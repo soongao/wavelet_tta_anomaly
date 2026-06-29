@@ -9,9 +9,9 @@ from scipy.ndimage import gaussian_filter
 from tabulate import tabulate
 
 import AnomalyCLIP_lib
-from metrics import image_level_metrics, pixel_level_metrics
-from prompt_ensemble import AnomalyCLIP_PromptLearner
-from wavelet_calibration import (
+from .metrics import image_level_metrics, pixel_level_metrics
+from .prompt_ensemble import AnomalyCLIP_PromptLearner
+from .wavelet_calibration import (
     compute_wavelet_reliability,
     fuse_wavelet_gates,
     structure_texture_gates_from_patch_features,

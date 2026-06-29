@@ -1,4 +1,4 @@
-script: test.py
+script: scripts/evaluate/test.py
 args:
   data_path: /Users/bytedance/Downloads/mvtec_anomaly_detection
   save_path: ./my_results_mvtec/

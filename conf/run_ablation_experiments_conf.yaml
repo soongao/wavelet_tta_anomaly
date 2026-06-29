@@ -1,4 +1,4 @@
-script: run_ablation_experiments.py
+script: scripts/experiments/run_ablation_experiments.py
 args:
   suite: component
   datasets:

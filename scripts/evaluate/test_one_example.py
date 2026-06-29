@@ -1,15 +1,23 @@
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = next(parent for parent in Path(__file__).resolve().parents if (parent / "src").is_dir())
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
 import AnomalyCLIP_lib
 import torch
 import argparse
 import torch.nn.functional as F
-from prompt_ensemble import AnomalyCLIP_PromptLearner
+from anomalyclip.prompt_ensemble import AnomalyCLIP_PromptLearner
 from PIL import Image
 
 import os
 import random
 import numpy as np
-from utils import get_transform, normalize
-from config_utils import parse_args_with_config
+from anomalyclip.utils import get_transform, normalize
+from anomalyclip.config_utils import parse_args_with_config
 
 def setup_seed(seed):
     torch.manual_seed(seed)
@@ -19,7 +27,7 @@ def setup_seed(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-# from visualization import visualizer
+# from anomalyclip.visualization import visualizer
 import cv2
 
 

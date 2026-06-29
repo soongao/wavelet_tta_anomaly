@@ -1,3 +1,11 @@
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = next(parent for parent in Path(__file__).resolve().parents if (parent / "src").is_dir())
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
 import argparse
 import ast
 import os
@@ -5,7 +13,7 @@ import re
 import shlex
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-from config_utils import parse_args_with_config, write_yaml_config
+from anomalyclip.config_utils import parse_args_with_config, write_yaml_config
 
 
 RESULT_ROOTS = [
@@ -20,15 +28,15 @@ RESULT_ROOTS = [
 ]
 
 SCRIPT_FILES = {
-    "test.py": "test.py",
-    "eval_cached_calibration.py": "eval_cached_calibration.py",
-    "run_param_sweep.py": "run_param_sweep.py",
-    "run_ablation_experiments.py": "run_ablation_experiments.py",
-    "cache_mvtec_features.py": "cache_mvtec_features.py",
-    "cache_multicrop_maps.py": "cache_multicrop_maps.py",
-    "train.py": "train.py",
-    "test_one_example.py": "test_one_example.py",
-    "export_configs.py": "export_configs.py",
+    "test.py": "scripts/evaluate/test.py",
+    "eval_cached_calibration.py": "scripts/evaluate/eval_cached_calibration.py",
+    "run_param_sweep.py": "scripts/experiments/run_param_sweep.py",
+    "run_ablation_experiments.py": "scripts/experiments/run_ablation_experiments.py",
+    "cache_mvtec_features.py": "scripts/cache/cache_mvtec_features.py",
+    "cache_multicrop_maps.py": "scripts/cache/cache_multicrop_maps.py",
+    "train.py": "scripts/train.py",
+    "test_one_example.py": "scripts/evaluate/test_one_example.py",
+    "export_configs.py": "scripts/tools/export_configs.py",
 }
 
 
@@ -54,11 +62,14 @@ def _literal_node(node: ast.AST, default: Any = None, constants: Optional[Dict[s
 
 
 def _script_tree(script: str) -> Optional[ast.Module]:
-    path = SCRIPT_FILES.get(script)
-    if not path or not os.path.exists(path):
+    script_path = SCRIPT_FILES.get(script)
+    if not script_path:
         return None
-    with open(path, "r", encoding="utf-8") as handle:
-        return ast.parse(handle.read(), filename=path)
+    path = PROJECT_ROOT / script_path
+    if not path.exists():
+        return None
+    with path.open("r", encoding="utf-8") as handle:
+        return ast.parse(handle.read(), filename=str(path))
 
 
 def _module_constant(script: str, name: str, default: Any = None) -> Any:
@@ -313,7 +324,7 @@ def _write_default_config(script: str, output_path: str, extra: Optional[Dict[st
     if not defaults:
         raise ValueError(f"no parser available for {script}")
     data: Dict[str, Any] = {
-        "script": script,
+        "script": SCRIPT_FILES.get(script, script),
         "args": defaults,
     }
     if extra:

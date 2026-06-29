@@ -1,4 +1,4 @@
-script: export_configs.py
+script: scripts/tools/export_configs.py
 args:
   conf_dir: ./conf
   results:

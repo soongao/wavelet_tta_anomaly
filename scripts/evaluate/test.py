@@ -1,23 +1,31 @@
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = next(parent for parent in Path(__file__).resolve().parents if (parent / "src").is_dir())
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
 import AnomalyCLIP_lib
 import torch
 import argparse
 import torch.nn.functional as F
-from prompt_ensemble import AnomalyCLIP_PromptLearner
-from loss import FocalLoss, BinaryDiceLoss
-from utils import normalize
-from dataset import Dataset
-from logger import get_logger, log_run_context
-from config_utils import parse_args_with_config
+from anomalyclip.prompt_ensemble import AnomalyCLIP_PromptLearner
+from anomalyclip.loss import FocalLoss, BinaryDiceLoss
+from anomalyclip.utils import normalize
+from anomalyclip.dataset import Dataset
+from anomalyclip.logger import get_logger, log_run_context
+from anomalyclip.config_utils import parse_args_with_config
 from tqdm import tqdm
 
 import os
 import random
 import numpy as np
 from tabulate import tabulate
-from utils import get_transform
-from multicrop_utils import build_multicrop_boxes, output_box_to_pil_box, stitch_crop_maps
+from anomalyclip.utils import get_transform
+from anomalyclip.multicrop_utils import build_multicrop_boxes, output_box_to_pil_box, stitch_crop_maps
 from PIL import Image
-from wavelet_calibration import (
+from anomalyclip.wavelet_calibration import (
     apply_layer_consistency_calibration,
     apply_low_rank_residual_calibration,
     apply_wavelet_calibration,
@@ -32,7 +40,7 @@ from wavelet_calibration import (
     topk_pixel_score,
     wavelet_gate_from_patch_features,
 )
-from test_time_rectification import rectify_text_features_with_multi_layer_anchors
+from anomalyclip.test_time_rectification import rectify_text_features_with_multi_layer_anchors
 
 def setup_seed(seed):
     torch.manual_seed(seed)
@@ -42,9 +50,9 @@ def setup_seed(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-from visualization import visualizer
+from anomalyclip.visualization import visualizer
 
-from metrics import image_level_metrics, pixel_level_metrics
+from anomalyclip.metrics import image_level_metrics, pixel_level_metrics
 from tqdm import tqdm
 from scipy.ndimage import gaussian_filter
 

@@ -1,18 +1,26 @@
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = next(parent for parent in Path(__file__).resolve().parents if (parent / "src").is_dir())
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
 import AnomalyCLIP_lib
 import torch
 import argparse
 import torch.nn.functional as F
-from prompt_ensemble import AnomalyCLIP_PromptLearner
-from loss import FocalLoss, BinaryDiceLoss
-from utils import normalize
-from dataset import Dataset
-from logger import get_logger
+from anomalyclip.prompt_ensemble import AnomalyCLIP_PromptLearner
+from anomalyclip.loss import FocalLoss, BinaryDiceLoss
+from anomalyclip.utils import normalize
+from anomalyclip.dataset import Dataset
+from anomalyclip.logger import get_logger
 from tqdm import tqdm
 import numpy as np
 import os
 import random
-from utils import get_transform
-from config_utils import parse_args_with_config
+from anomalyclip.utils import get_transform
+from anomalyclip.config_utils import parse_args_with_config
 def setup_seed(seed):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
