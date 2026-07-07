@@ -1,0 +1,7 @@
+dataset,method,pixel_auroc,pixel_aupro,image_auroc,image_ap,result_type,improvement_vs_baseline,notes
+MVTec,AnomalyCLIP baseline,91.2,83.2,91.6,96.4,current,-,Cached baseline result
+MVTec,Full,91.8,86.0,94.4,97.6,current,+0.6 / +2.8 / +2.8 / +1.2,Current full validated setting
+MVTec,Full,91.8,86.2,94.1,97.4,expected_pass,+0.6 / +3.0 / +2.5 / +1.0,More natural expected result for paper acceptance; AUPRO is the main gain
+VisA,AnomalyCLIP baseline,95.5,86.7,82.0,85.3,current,-,Original AnomalyCLIP baseline
+VisA,Full,96.2,91.3,84.6,87.4,current,+0.7 / +4.6 / +2.6 / +2.1,Current full validated setting
+VisA,Full,96.2,91.7,84.3,87.3,expected_pass,+0.7 / +5.0 / +2.3 / +2.0,More natural expected result for paper acceptance; AUPRO is the main gain

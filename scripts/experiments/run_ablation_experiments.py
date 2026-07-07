@@ -76,6 +76,26 @@ CURRENT_MULTICROP = {
 }
 
 
+CURRENT_PROTOTYPE = {
+    "proto_temperature": 0.07,
+    "proto_gamma": 1.0,
+    "proto_eta": 1.0,
+    "proto_topk_ratio": 0.20,
+    "proto_alpha0": 0.0,
+    "proto_beta0": 0.01,
+    "proto_tau_a": 0.15,
+    "proto_update_min_abnormal_confidence": 0.06,
+    "proto_wavelet_mix": 0.05,
+    "proto_wavelet_mode": "boundary_aware",
+    "proto_conservative_update": True,
+    "proto_anchor_layers": "last",
+    "proto_layer_fusion": "sum",
+    "proto_percentile_low": 1.0,
+    "proto_percentile_high": 99.0,
+    "direct_wavelet_fusion_weight": 0.5,
+}
+
+
 COMPONENT_ABLATIONS = [
     {
         "name": "cached_baseline_l123",
@@ -118,6 +138,52 @@ COMPONENT_ABLATIONS = [
         "use_tta": True,
         "use_pixel_to_image": True,
         "use_multicrop": True,
+    },
+]
+
+
+PROTOTYPE_ABLATIONS = [
+    {
+        "name": "baseline",
+        "description": "cached AnomalyCLIP baseline, no proposed module",
+    },
+    {
+        "name": "clip_only_proto",
+        "description": "prototype adaptation with CLIP semantic evidence only",
+        "use_prototype_adaptation": True,
+        "proto_wavelet_mode": "none",
+    },
+    {
+        "name": "direct_wavelet_fusion",
+        "description": "ablation: direct S0 and W map fusion, no prototype adaptation",
+        "use_direct_wavelet_fusion": True,
+        "proto_wavelet_mode": "boundary_aware",
+    },
+    {
+        "name": "hf_only_proto",
+        "description": "prototype adaptation using Haar high-frequency reliability only",
+        "use_prototype_adaptation": True,
+        "proto_wavelet_mode": "hf_only",
+    },
+    {
+        "name": "boundary_aware_proto",
+        "description": "prototype adaptation using boundary-aware wavelet reliability",
+        "use_prototype_adaptation": True,
+        "proto_wavelet_mode": "boundary_aware",
+    },
+    {
+        "name": "full_no_conservative",
+        "description": "full prototype adaptation without conservative confidence gating",
+        "use_prototype_adaptation": True,
+        "proto_wavelet_mode": "boundary_aware",
+        "proto_conservative_update": False,
+    },
+    {
+        "name": "full_conservative",
+        "description": "full boundary-aware prototype adaptation with conservative update",
+        "use_prototype_adaptation": True,
+        "proto_wavelet_mode": "boundary_aware",
+        "proto_conservative_update": True,
     },
 ]
 
@@ -170,6 +236,7 @@ def merge_params(ablation, config=None):
     params.update(config.get("current_tta", CURRENT_TTA))
     params.update(config.get("current_pixel_to_image", CURRENT_P2I))
     params.update(config.get("current_multicrop", CURRENT_MULTICROP))
+    params.update(config.get("current_prototype", CURRENT_PROTOTYPE))
     params.update(ablation)
     return params
 
@@ -259,6 +326,47 @@ def add_multicrop_args(command, params, dataset_config):
     ]
 
 
+def add_prototype_args(command, params):
+    if params.get("use_prototype_adaptation", False):
+        command.append("--use_wavelet_prototype_adaptation")
+    if params.get("use_direct_wavelet_fusion", False):
+        command.append("--use_direct_wavelet_fusion")
+    command += [
+        "--proto_temperature",
+        str(params["proto_temperature"]),
+        "--proto_gamma",
+        str(params["proto_gamma"]),
+        "--proto_eta",
+        str(params["proto_eta"]),
+        "--proto_topk_ratio",
+        str(params["proto_topk_ratio"]),
+        "--proto_alpha0",
+        str(params["proto_alpha0"]),
+        "--proto_beta0",
+        str(params["proto_beta0"]),
+        "--proto_tau_a",
+        str(params["proto_tau_a"]),
+        "--proto_update_min_abnormal_confidence",
+        str(params["proto_update_min_abnormal_confidence"]),
+        "--proto_wavelet_mix",
+        str(params["proto_wavelet_mix"]),
+        "--proto_wavelet_mode",
+        params["proto_wavelet_mode"],
+        "--proto_anchor_layers",
+        params["proto_anchor_layers"],
+        "--proto_layer_fusion",
+        params["proto_layer_fusion"],
+        "--proto_percentile_low",
+        str(params["proto_percentile_low"]),
+        "--proto_percentile_high",
+        str(params["proto_percentile_high"]),
+        "--direct_wavelet_fusion_weight",
+        str(params["direct_wavelet_fusion_weight"]),
+    ]
+    if not params.get("proto_conservative_update", True):
+        command.append("--no_proto_conservative_update")
+
+
 def make_command(dataset_name, dataset_config, ablation, save_path, args, config=None):
     params = merge_params(ablation, config=config)
     command = [
@@ -288,6 +396,8 @@ def make_command(dataset_name, dataset_config, ablation, save_path, args, config
     needs_wavelet_gate = params.get("use_wavelet", False) or params.get("use_tta", False)
     if needs_wavelet_gate:
         add_wavelet_gate_args(command, params)
+    if params.get("use_prototype_adaptation", False) or params.get("use_direct_wavelet_fusion", False):
+        add_prototype_args(command, params)
     if params.get("use_wavelet", False):
         add_wavelet_args(command, params)
     if params.get("use_tta", False):
@@ -352,10 +462,14 @@ def run_one(command, run_dir, master_log_path):
 def selected_ablations(suite):
     if suite == "component":
         return COMPONENT_ABLATIONS
+    if suite == "prototype":
+        return PROTOTYPE_ABLATIONS
     if suite == "internal":
         return INTERNAL_ABLATIONS
     if suite == "all":
         return COMPONENT_ABLATIONS + INTERNAL_ABLATIONS
+    if suite == "all_with_prototype":
+        return COMPONENT_ABLATIONS + INTERNAL_ABLATIONS + PROTOTYPE_ABLATIONS
     raise ValueError(f"unknown suite: {suite}")
 
 
@@ -365,15 +479,24 @@ def configured_ablations(suite, config):
         if not isinstance(ablations, list):
             raise ValueError("'ablations' in config must be a list")
         return ablations
-    if "component_ablations" in config or "internal_ablations" in config:
+    if (
+        "component_ablations" in config
+        or "internal_ablations" in config
+        or "prototype_ablations" in config
+    ):
         component = config.get("component_ablations", COMPONENT_ABLATIONS)
         internal = config.get("internal_ablations", INTERNAL_ABLATIONS)
+        prototype = config.get("prototype_ablations", PROTOTYPE_ABLATIONS)
         if suite == "component":
             return component
         if suite == "internal":
             return internal
+        if suite == "prototype":
+            return prototype
         if suite == "all":
             return component + internal
+        if suite == "all_with_prototype":
+            return component + internal + prototype
     return selected_ablations(suite)
 
 
@@ -431,7 +554,7 @@ def write_summary(sweep_dir, rows, args, dataset_configs):
 
 def build_parser():
     parser = argparse.ArgumentParser("Run cached AnomalyCLIP ablation experiments")
-    parser.add_argument("--suite", choices=["component", "internal", "all"], default="component")
+    parser.add_argument("--suite", choices=["component", "prototype", "internal", "all", "all_with_prototype"], default="component")
     parser.add_argument("--datasets", nargs="+", default=["mvtec", "visa"])
     parser.add_argument("--save_root", default="./ablation_results")
     parser.add_argument("--metrics", default="image-pixel-level", choices=["image-level", "pixel-level", "image-pixel-level"])

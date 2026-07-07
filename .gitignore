@@ -1,5 +1,7 @@
 __pycache__/
 *.pyc
+.pycache_check/
+.matplotlib-cache/
 
 cache/
 cached_results*/

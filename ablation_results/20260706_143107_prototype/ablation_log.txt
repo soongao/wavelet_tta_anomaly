@@ -1,0 +1,9 @@
+ablation_start: 2026-07-06 14:31:07
+suite: prototype
+datasets: ['mvtec']
+metrics: image-pixel-level
+aupro_steps: 200
+feature_map_layer: [1, 2, 3]
+
+ablation_end: 2026-07-06 14:31:07
+failures: none

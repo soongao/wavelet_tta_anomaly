@@ -87,3 +87,21 @@ args:
   tta_update_abnormal: false
   tta_repulsion_weight: 0.25
   tta_abnormal_alpha_scale: 1.0
+  use_wavelet_prototype_adaptation: false
+  use_direct_wavelet_fusion: false
+  direct_wavelet_fusion_weight: 0.5
+  proto_temperature: 0.07
+  proto_gamma: 1.0
+  proto_eta: 1.0
+  proto_topk_ratio: 0.2
+  proto_alpha0: 0.0
+  proto_beta0: 0.01
+  proto_tau_a: 0.15
+  proto_update_min_abnormal_confidence: 0.06
+  proto_wavelet_mix: 0.05
+  proto_wavelet_mode: boundary_aware
+  proto_conservative_update: true
+  proto_anchor_layers: last
+  proto_layer_fusion: sum
+  proto_percentile_low: 1.0
+  proto_percentile_high: 99.0

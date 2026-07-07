@@ -1,0 +1,13 @@
+table,row,keep,why,wavelet_use,prototype_adaptation,conservative_update
+Main Result,AnomalyCLIP baseline,required,Hard baseline for the full method,None,No,No
+Main Result,Full wavelet prototype adaptation,required,Final method claim,Patch evidence weighting,Yes,Yes
+Core Component Ablation,Direct wavelet fusion / no adaptation,required,Shows wavelet as final map fusion is not enough,Final map fusion,No,No
+Core Component Ablation,Semantic prototype adaptation,required,Tests whether gains come only from S0-based prototype adaptation,None,Yes,No or same gate disabled
+Core Component Ablation,Wavelet prototype adaptation no conservative,required,Tests whether W helps patch evidence selection,Patch evidence weighting,Yes,No
+Core Component Ablation,Full wavelet prototype adaptation,required,Tests final method after adding conservative update,Patch evidence weighting,Yes,Yes
+Wavelet Design Ablation,HF-only W + prototype adaptation,required,Tests high-frequency cue alone,Patch evidence weighting,Yes,Same as final except W
+Wavelet Design Ablation,Boundary-aware W + prototype adaptation,required,Tests HF * (1 - LF_edge),Patch evidence weighting,Yes,Same as final except W
+Normal Stability,Baseline vs no-conservative vs full,required,Shows conservative update does not increase normal false positives,Patch evidence weighting for adapted rows,Mixed,Compare No vs Yes
+Runtime,Baseline vs full,required,Reports extra cost from Haar DWT and prototype recalculation,Patch evidence weighting,Yes,Yes
+Supplement,Legacy wavelet-only module,optional,Only keep if clearly different from direct fusion and already implemented,Legacy score module,No,No
+Supplement,Boundary-aware weak-mix sensitivity,optional,Hyperparameter sensitivity not a core ablation,Patch evidence weighting,Yes,Same as final

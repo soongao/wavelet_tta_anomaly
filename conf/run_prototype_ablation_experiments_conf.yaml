@@ -1,0 +1,100 @@
+script: scripts/experiments/run_ablation_experiments.py
+args:
+  suite: prototype
+  datasets:
+  - mvtec
+  - visa
+  save_root: ./ablation_results
+  metrics: image-pixel-level
+  aupro_steps: 200
+  feature_map_layer:
+  - 1
+  - 2
+  - 3
+  sigma: 5
+  layer_weighting: sum
+  layer_weight_temperature: 1.0
+  resume: false
+  dry_run: false
+datasets_config:
+  mvtec:
+    cache_dir: ./cache/mvtec_anomalyclip_features
+    multicrop_cache_dir: ./cache/mvtec_multicrop_maps_grid2_ratio075
+    original_log: results/9_12_4_multiscale/zero_shot/log.txt
+    original_mean:
+    - 91.1
+    - 81.4
+    - 91.6
+    - 96.4
+  visa:
+    cache_dir: ./cache/visa_anomalyclip_features
+    multicrop_cache_dir: ./cache/visa_multicrop_maps_grid2_ratio075
+    original_log: results/9_12_4_multiscale_visa/zero_shot/log.txt
+    original_mean:
+    - 95.5
+    - 86.7
+    - 82.0
+    - 85.3
+current_prototype:
+  proto_temperature: 0.07
+  proto_gamma: 1.0
+  proto_eta: 1.0
+  proto_topk_ratio: 0.2
+  proto_alpha0: 0.0
+  proto_beta0: 0.01
+  proto_tau_a: 0.15
+  proto_update_min_abnormal_confidence: 0.06
+  proto_wavelet_mix: 0.05
+  proto_wavelet_mode: boundary_aware
+  proto_conservative_update: true
+  proto_anchor_layers: last
+  proto_layer_fusion: sum
+  proto_percentile_low: 1.0
+  proto_percentile_high: 99.0
+  direct_wavelet_fusion_weight: 0.5
+current_pixel_to_image:
+  pixel_to_image_weight: 0.10
+  pixel_to_image_topk_ratio: 0.01
+current_multicrop:
+  multicrop_weight: 0.50
+prototype_ablations:
+- name: baseline
+  description: cached AnomalyCLIP baseline, no proposed module
+- name: clip_only_proto
+  description: prototype adaptation with CLIP semantic evidence only
+  use_prototype_adaptation: true
+  proto_wavelet_mode: none
+  use_multicrop: true
+  use_pixel_to_image: true
+- name: direct_wavelet_fusion
+  description: ablation direct S0 and W map fusion, no prototype adaptation
+  use_direct_wavelet_fusion: true
+  proto_wavelet_mode: boundary_aware
+  use_multicrop: true
+  use_pixel_to_image: true
+- name: hf_only_proto
+  description: prototype adaptation using Haar high-frequency reliability only
+  use_prototype_adaptation: true
+  proto_wavelet_mode: hf_only
+  use_multicrop: true
+  use_pixel_to_image: true
+- name: boundary_aware_proto
+  description: prototype adaptation using boundary-aware wavelet reliability
+  use_prototype_adaptation: true
+  proto_wavelet_mode: boundary_aware
+  use_multicrop: true
+  use_pixel_to_image: true
+- name: full_no_conservative
+  description: full prototype adaptation without conservative confidence gating
+  use_prototype_adaptation: true
+  proto_wavelet_mode: boundary_aware
+  proto_conservative_update: false
+  use_multicrop: true
+  use_pixel_to_image: true
+- name: full_conservative
+  description: full boundary-aware prototype adaptation with conservative update
+  use_prototype_adaptation: true
+  proto_wavelet_mode: boundary_aware
+  proto_conservative_update: true
+  use_multicrop: true
+  use_pixel_to_image: true

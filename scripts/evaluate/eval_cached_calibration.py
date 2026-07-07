@@ -38,6 +38,11 @@ from anomalyclip.wavelet_calibration import (
     global_image_confidence_gate,
     topk_pixel_score,
 )
+from anomalyclip.prototype_adaptation import (
+    apply_direct_wavelet_fusion,
+    apply_wavelet_prototype_adaptation,
+    compute_image_text_prob_with_adapted_prototypes,
+)
 
 
 def _load_patch_features(sample):
@@ -91,6 +96,8 @@ def _build_maps_and_gate(sample, text_features, args, metadata):
     )
     need_patch_features = (
         args.use_tta_rectification
+        or args.use_wavelet_prototype_adaptation
+        or args.use_direct_wavelet_fusion
         or args.recompute_maps
         or feature_layers_changed
         or needs_texture_gate_recompute
@@ -171,6 +178,64 @@ def _evaluate_sample(sample, text_features, args, metadata, multicrop_index=None
             topk_ratio=args.wavelet_reliability_topk_ratio,
         )
 
+    if args.use_wavelet_prototype_adaptation and args.use_direct_wavelet_fusion:
+        raise ValueError(
+            "--use_wavelet_prototype_adaptation and --use_direct_wavelet_fusion "
+            "are mutually exclusive"
+        )
+    strict_proto_path = args.use_wavelet_prototype_adaptation or args.use_direct_wavelet_fusion
+    legacy_mixins = (
+        args.use_tta_rectification
+        or args.use_wavelet
+        or args.use_layer_consistency
+        or args.use_wavelet_residual
+        or args.use_low_rank_residual
+    )
+    if strict_proto_path and legacy_mixins:
+        raise ValueError(
+            "strict prototype adaptation/direct fusion ablations must be run "
+            "without legacy TTA or legacy map calibration"
+        )
+    if args.use_wavelet_prototype_adaptation:
+        anomaly_map, adapted_text_features, _ = apply_wavelet_prototype_adaptation(
+            selected_patch_features,
+            text_features_for_map,
+            image_size=args.image_size,
+            temperature=args.proto_temperature,
+            gamma=args.proto_gamma,
+            eta=args.proto_eta,
+            topk_ratio=args.proto_topk_ratio,
+            alpha0=args.proto_alpha0,
+            beta0=args.proto_beta0,
+            tau_a=args.proto_tau_a,
+            update_min_abnormal_confidence=args.proto_update_min_abnormal_confidence,
+            wavelet_mix=args.proto_wavelet_mix,
+            wavelet_mode=args.proto_wavelet_mode,
+            conservative_update=args.proto_conservative_update,
+            anchor_layers=args.proto_anchor_layers,
+            layer_fusion=args.proto_layer_fusion,
+            clip_percentile_low=args.proto_percentile_low,
+            clip_percentile_high=args.proto_percentile_high,
+        )
+        text_features_for_map = adapted_text_features
+        text_prob = compute_image_text_prob_with_adapted_prototypes(
+            image_features,
+            adapted_text_features,
+            temperature=args.proto_temperature,
+        )
+    elif args.use_direct_wavelet_fusion:
+        anomaly_map, _ = apply_direct_wavelet_fusion(
+            selected_patch_features,
+            text_features_for_map,
+            image_size=args.image_size,
+            temperature=args.proto_temperature,
+            weight=args.direct_wavelet_fusion_weight,
+            wavelet_mode=args.proto_wavelet_mode,
+            anchor_layers=args.proto_anchor_layers,
+            clip_percentile_low=args.proto_percentile_low,
+            clip_percentile_high=args.proto_percentile_high,
+        )
+
     if args.use_tta_rectification:
         tta_gate = texture_gate if args.wavelet_mode == "dual_route" else wavelet_gate
         rectified_text_features, _ = rectify_text_features_with_multi_layer_anchors(
@@ -205,7 +270,7 @@ def _evaluate_sample(sample, text_features, args, metadata, multicrop_index=None
             anomaly_map, selected_patch_features = map_outputs
             layer_maps = None
         text_prob = compute_image_text_prob(image_features, text_features_for_map)
-    else:
+    elif text_prob is None:
         text_prob = sample.get("text_prob")
         if text_prob is None:
             text_prob = compute_image_text_prob(image_features, text_features_for_map)
@@ -366,6 +431,11 @@ def evaluate_cache(args) -> None:
                 "This cache was created with --maps_only. Rebuild without --maps_only "
                 "to recompute maps or run TTA rectification."
             )
+        if args.use_wavelet_prototype_adaptation or args.use_direct_wavelet_fusion:
+            raise ValueError(
+                "This cache was created with --maps_only. Rebuild without --maps_only "
+                "to run prototype adaptation or direct wavelet fusion."
+            )
         if (
             args.wavelet_mode == "dual_route"
             and "texture_gate" not in torch.load(sample_paths[0], map_location="cpu")
@@ -523,6 +593,25 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--tta_update_abnormal", action="store_true")
     parser.add_argument("--tta_repulsion_weight", type=float, default=0.25)
     parser.add_argument("--tta_abnormal_alpha_scale", type=float, default=1.0)
+    parser.add_argument("--use_wavelet_prototype_adaptation", action="store_true")
+    parser.add_argument("--use_direct_wavelet_fusion", action="store_true")
+    parser.add_argument("--direct_wavelet_fusion_weight", type=float, default=0.5)
+    parser.add_argument("--proto_temperature", type=float, default=0.07)
+    parser.add_argument("--proto_gamma", type=float, default=1.0)
+    parser.add_argument("--proto_eta", type=float, default=1.0)
+    parser.add_argument("--proto_topk_ratio", type=float, default=0.20)
+    parser.add_argument("--proto_alpha0", type=float, default=0.0)
+    parser.add_argument("--proto_beta0", type=float, default=0.01)
+    parser.add_argument("--proto_tau_a", type=float, default=0.15)
+    parser.add_argument("--proto_update_min_abnormal_confidence", type=float, default=0.06)
+    parser.add_argument("--proto_wavelet_mix", type=float, default=0.05)
+    parser.add_argument("--proto_wavelet_mode", type=str, default="boundary_aware", choices=["none", "hf_only", "boundary_aware"])
+    parser.add_argument("--proto_conservative_update", action="store_true", default=True)
+    parser.add_argument("--no_proto_conservative_update", dest="proto_conservative_update", action="store_false")
+    parser.add_argument("--proto_anchor_layers", type=str, default="last", choices=["last", "mean"])
+    parser.add_argument("--proto_layer_fusion", type=str, default="sum", choices=["sum", "mean"])
+    parser.add_argument("--proto_percentile_low", type=float, default=1.0)
+    parser.add_argument("--proto_percentile_high", type=float, default=99.0)
     return parser
 
 

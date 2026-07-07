@@ -40,6 +40,11 @@ from anomalyclip.wavelet_calibration import (
     topk_pixel_score,
     wavelet_gate_from_patch_features,
 )
+from anomalyclip.prototype_adaptation import (
+    apply_direct_wavelet_fusion,
+    apply_wavelet_prototype_adaptation,
+    compute_image_text_prob_with_adapted_prototypes,
+)
 from anomalyclip.test_time_rectification import rectify_text_features_with_multi_layer_anchors
 
 def setup_seed(seed):
@@ -248,6 +253,64 @@ def test(args):
                 wavelet_gate = None
                 texture_gate = None
                 wavelet_reliability = None
+
+            if args.use_wavelet_prototype_adaptation and args.use_direct_wavelet_fusion:
+                raise ValueError(
+                    "--use_wavelet_prototype_adaptation and --use_direct_wavelet_fusion "
+                    "are mutually exclusive"
+                )
+            strict_proto_path = args.use_wavelet_prototype_adaptation or args.use_direct_wavelet_fusion
+            legacy_mixins = (
+                args.use_tta_rectification
+                or args.use_wavelet
+                or args.use_layer_consistency
+                or args.use_wavelet_residual
+                or args.use_low_rank_residual
+            )
+            if strict_proto_path and legacy_mixins:
+                raise ValueError(
+                    "strict prototype adaptation/direct fusion ablations must be run "
+                    "without legacy TTA or legacy map calibration"
+                )
+            if args.use_wavelet_prototype_adaptation:
+                anomaly_map, adapted_text_features, _ = apply_wavelet_prototype_adaptation(
+                    selected_patch_features,
+                    text_features_for_map,
+                    image_size=args.image_size,
+                    temperature=args.proto_temperature,
+                    gamma=args.proto_gamma,
+                    eta=args.proto_eta,
+                    topk_ratio=args.proto_topk_ratio,
+                    alpha0=args.proto_alpha0,
+                    beta0=args.proto_beta0,
+                    tau_a=args.proto_tau_a,
+                    update_min_abnormal_confidence=args.proto_update_min_abnormal_confidence,
+                    wavelet_mix=args.proto_wavelet_mix,
+                    wavelet_mode=args.proto_wavelet_mode,
+                    conservative_update=args.proto_conservative_update,
+                    anchor_layers=args.proto_anchor_layers,
+                    layer_fusion=args.proto_layer_fusion,
+                    clip_percentile_low=args.proto_percentile_low,
+                    clip_percentile_high=args.proto_percentile_high,
+                )
+                text_features_for_map = adapted_text_features
+                text_probs = compute_image_text_prob_with_adapted_prototypes(
+                    image_features,
+                    adapted_text_features,
+                    temperature=args.proto_temperature,
+                )
+            elif args.use_direct_wavelet_fusion:
+                anomaly_map, _ = apply_direct_wavelet_fusion(
+                    selected_patch_features,
+                    text_features_for_map,
+                    image_size=args.image_size,
+                    temperature=args.proto_temperature,
+                    weight=args.direct_wavelet_fusion_weight,
+                    wavelet_mode=args.proto_wavelet_mode,
+                    anchor_layers=args.proto_anchor_layers,
+                    clip_percentile_low=args.proto_percentile_low,
+                    clip_percentile_high=args.proto_percentile_high,
+                )
 
             if args.use_tta_rectification:
                 tta_gate = texture_gate if args.wavelet_mode == "dual_route" else wavelet_gate
@@ -558,6 +621,25 @@ def build_parser():
     parser.add_argument("--tta_update_abnormal", action="store_true", help="also rectify the abnormal text feature; default rectifies only normal")
     parser.add_argument("--tta_repulsion_weight", type=float, default=0.25, help="normal-text repulsion strength from abnormal visual anchors in wavelet_guided TTA")
     parser.add_argument("--tta_abnormal_alpha_scale", type=float, default=1.0, help="relative abnormal-text update strength in wavelet_guided TTA")
+    parser.add_argument("--use_wavelet_prototype_adaptation", action="store_true", help="enable strict wavelet-supervised test-time prototype adaptation")
+    parser.add_argument("--use_direct_wavelet_fusion", action="store_true", help="ablation: directly fuse initial CLIP patch score with wavelet reliability")
+    parser.add_argument("--direct_wavelet_fusion_weight", type=float, default=0.5, help="weight for direct S0/W fusion ablation")
+    parser.add_argument("--proto_temperature", type=float, default=0.07, help="temperature for prototype adaptation logits")
+    parser.add_argument("--proto_gamma", type=float, default=1.0, help="semantic probability exponent for prototype evidence weights")
+    parser.add_argument("--proto_eta", type=float, default=1.0, help="wavelet reliability exponent for prototype evidence weights")
+    parser.add_argument("--proto_topk_ratio", type=float, default=0.20, help="top patch ratio used for visual prototypes")
+    parser.add_argument("--proto_alpha0", type=float, default=0.0, help="base abnormal prototype adaptation strength")
+    parser.add_argument("--proto_beta0", type=float, default=0.01, help="base normal prototype adaptation strength")
+    parser.add_argument("--proto_tau_a", type=float, default=0.15, help="minimum abnormal evidence confidence for conservative abnormal update")
+    parser.add_argument("--proto_update_min_abnormal_confidence", type=float, default=0.06, help="minimum abnormal evidence confidence required for any conservative prototype update")
+    parser.add_argument("--proto_wavelet_mix", type=float, default=0.05, help="mixing strength for wavelet reliability in prototype evidence weights")
+    parser.add_argument("--proto_wavelet_mode", type=str, default="boundary_aware", choices=["none", "hf_only", "boundary_aware"], help="wavelet reliability used by prototype adaptation")
+    parser.add_argument("--proto_conservative_update", action="store_true", default=True, help="gate prototype updates by evidence confidence")
+    parser.add_argument("--no_proto_conservative_update", dest="proto_conservative_update", action="store_false", help="disable conservative prototype update gating")
+    parser.add_argument("--proto_anchor_layers", type=str, default="last", choices=["last", "mean"], help="patch feature layers used to build visual prototypes")
+    parser.add_argument("--proto_layer_fusion", type=str, default="sum", choices=["sum", "mean"], help="fusion for final maps recomputed with adapted prototypes")
+    parser.add_argument("--proto_percentile_low", type=float, default=1.0, help="low percentile for per-image wavelet clipping")
+    parser.add_argument("--proto_percentile_high", type=float, default=99.0, help="high percentile for per-image wavelet clipping")
     return parser
 
 
