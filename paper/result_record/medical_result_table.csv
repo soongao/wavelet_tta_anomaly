@@ -1,0 +1,14 @@
+Medical Pixel Result: 表格 1
+dataset,method,pixel_auroc,pixel_aupro,result_type,comparison_vs_table,notes
+ISIC/ISBI,AnomalyCLIP baseline,88.7,78.6,current,AUPRO above second-best; AUROC below second-best,Log: cached_results/medical_20260707/isbi_baseline_l123_sigma5/log.txt; cache: cache/medical_20260707/isbi_anomalyclip_features
+ISIC/ISBI,Full,89.9,80.0,current,above second-best for both pixel metrics,Log: cached_results/medical_20260707/isbi_sigma8_l123/log.txt; setting: feature_map_layer 1 2 3 sigma 8
+ColonDB,Full,,,,blocked,Feature cache not generated in this run; local dataset exists at /Users/bytedance/Downloads/CVC-ColonDB but CPU cache is estimated about 12 min plus evaluation
+ClinicDB,Full,,,,blocked,Feature cache not generated in this run; local dataset exists at /Users/bytedance/Downloads/CVC-ClinicDB but CPU cache is estimated about 20 min plus evaluation
+Kvasir,Full,,,,blocked,Feature cache not generated in this run; local dataset exists at /Users/bytedance/Downloads/Kvasir but CPU cache is estimated about 33 min plus evaluation
+
+
+Medical Image Result: 表格 1
+dataset,method,image_auroc,image_ap,result_type,comparison_vs_table,notes
+HeadCT,Full,,,,blocked,No local HeadCT/Head_CT data or meta.json found under /Users/bytedance or existing caches
+BrainMRI,Full,,,,blocked,No local BrainMRI data or meta.json found under /Users/bytedance or existing caches
+Br35H,Full,,,,blocked,No local Br35H/Br35 data or meta.json found under /Users/bytedance or existing caches
