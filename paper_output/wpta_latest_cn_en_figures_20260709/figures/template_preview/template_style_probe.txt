@@ -1,0 +1,703 @@
+THEMES
+ppt/theme/theme1.xml
+ppt/theme/theme2.xml
+
+TOP COLORS
+[
+  [
+    "accent1",
+    9865
+  ],
+  [
+    "tx1",
+    3192
+  ],
+  [
+    "lt1",
+    1806
+  ],
+  [
+    "bg1",
+    272
+  ],
+  [
+    "dk1",
+    142
+  ],
+  [
+    "FEFEFE",
+    50
+  ],
+  [
+    "848384",
+    42
+  ],
+  [
+    "ADADAD",
+    41
+  ],
+  [
+    "C1E4F5",
+    40
+  ],
+  [
+    "94AEBB",
+    40
+  ],
+  [
+    "DEEBF7",
+    38
+  ],
+  [
+    "01AF50",
+    38
+  ],
+  [
+    "5B9BD4",
+    38
+  ],
+  [
+    "001F2F",
+    36
+  ],
+  [
+    "C64949",
+    32
+  ],
+  [
+    "77B636",
+    31
+  ],
+  [
+    "566A2B",
+    31
+  ],
+  [
+    "phClr",
+    30
+  ],
+  [
+    "4E5E7D",
+    30
+  ],
+  [
+    "C769A2",
+    27
+  ],
+  [
+    "D2E8F8",
+    27
+  ],
+  [
+    "F4B083",
+    27
+  ],
+  [
+    "C13230",
+    26
+  ],
+  [
+    "F1F1F1",
+    25
+  ],
+  [
+    "884C8B",
+    25
+  ],
+  [
+    "5D6D38",
+    23
+  ],
+  [
+    "FFFFFF",
+    22
+  ],
+  [
+    "DAE8FB",
+    21
+  ],
+  [
+    "E1CFDF",
+    21
+  ],
+  [
+    "B3C6E6",
+    21
+  ],
+  [
+    "FCFCFC",
+    20
+  ],
+  [
+    "735D94",
+    20
+  ],
+  [
+    "F7CCCC",
+    20
+  ],
+  [
+    "AFCDDE",
+    18
+  ],
+  [
+    "F6C5AC",
+    17
+  ],
+  [
+    "95C37C",
+    17
+  ],
+  [
+    "173443",
+    16
+  ],
+  [
+    "D0E6C3",
+    16
+  ],
+  [
+    "CBC0DB",
+    16
+  ],
+  [
+    "F4E0A0",
+    16
+  ]
+]
+
+TOP FILLS
+[
+  [
+    "tx1",
+    1662
+  ],
+  [
+    "bg1",
+    272
+  ],
+  [
+    "FEFEFE",
+    50
+  ],
+  [
+    "848384",
+    42
+  ],
+  [
+    "ADADAD",
+    41
+  ],
+  [
+    "C1E4F5",
+    40
+  ],
+  [
+    "94AEBB",
+    40
+  ],
+  [
+    "DEEBF7",
+    38
+  ],
+  [
+    "01AF50",
+    38
+  ],
+  [
+    "5B9BD4",
+    38
+  ],
+  [
+    "001F2F",
+    36
+  ],
+  [
+    "C64949",
+    32
+  ],
+  [
+    "77B636",
+    31
+  ],
+  [
+    "566A2B",
+    31
+  ],
+  [
+    "4E5E7D",
+    30
+  ],
+  [
+    "C769A2",
+    27
+  ],
+  [
+    "D2E8F8",
+    27
+  ],
+  [
+    "F4B083",
+    27
+  ],
+  [
+    "C13230",
+    26
+  ],
+  [
+    "F1F1F1",
+    25
+  ],
+  [
+    "884C8B",
+    25
+  ],
+  [
+    "5D6D38",
+    23
+  ],
+  [
+    "FFFFFF",
+    22
+  ],
+  [
+    "E1CFDF",
+    21
+  ],
+  [
+    "B3C6E6",
+    21
+  ],
+  [
+    "FCFCFC",
+    20
+  ],
+  [
+    "735D94",
+    20
+  ],
+  [
+    "F7CCCC",
+    20
+  ],
+  [
+    "F6C5AC",
+    17
+  ],
+  [
+    "DAE8FB",
+    17
+  ],
+  [
+    "AFCDDE",
+    17
+  ],
+  [
+    "95C37C",
+    17
+  ],
+  [
+    "173443",
+    16
+  ],
+  [
+    "D0E6C3",
+    16
+  ],
+  [
+    "CBC0DB",
+    16
+  ],
+  [
+    "F4E0A0",
+    16
+  ],
+  [
+    "767070",
+    16
+  ],
+  [
+    "777171",
+    16
+  ],
+  [
+    "666B6A",
+    16
+  ],
+  [
+    "5B95C8",
+    15
+  ]
+]
+
+FONTS
+[
+  [
+    "Times New Roman",
+    433
+  ],
+  [
+    "SimSun-ExtB",
+    28
+  ],
+  [
+    "Estrangelo Edessa",
+    10
+  ],
+  [
+    "Arial",
+    8
+  ],
+  [
+    "Ebrima",
+    6
+  ],
+  [
+    "Wingdings",
+    6
+  ],
+  [
+    "맑은 고딕",
+    4
+  ],
+  [
+    "新細明體",
+    4
+  ],
+  [
+    "Nyala",
+    4
+  ],
+  [
+    "Vrinda",
+    4
+  ],
+  [
+    "Shruti",
+    4
+  ],
+  [
+    "Tunga",
+    4
+  ],
+  [
+    "Raavi",
+    4
+  ],
+  [
+    "Euphemia",
+    4
+  ],
+  [
+    "Plantagenet Cherokee",
+    4
+  ],
+  [
+    "Microsoft Yi Baiti",
+    4
+  ],
+  [
+    "Microsoft Himalaya",
+    4
+  ],
+  [
+    "MV Boli",
+    4
+  ],
+  [
+    "Mangal",
+    4
+  ],
+  [
+    "Gautami",
+    4
+  ],
+  [
+    "Latha",
+    4
+  ],
+  [
+    "Kalinga",
+    4
+  ],
+  [
+    "Kartika",
+    4
+  ],
+  [
+    "DokChampa",
+    4
+  ],
+  [
+    "Iskoola Pota",
+    4
+  ],
+  [
+    "Mongolian Baiti",
+    4
+  ],
+  [
+    "Microsoft Uighur",
+    4
+  ],
+  [
+    "Sylfaen",
+    4
+  ],
+  [
+    "Nirmala UI",
+    4
+  ],
+  [
+    "等线 Light",
+    3
+  ],
+  [
+    "等线",
+    3
+  ],
+  [
+    "游ゴシック Light",
+    2
+  ],
+  [
+    "Angsana New",
+    2
+  ],
+  [
+    "MoolBoran",
+    2
+  ],
+  [
+    "游ゴシック",
+    2
+  ],
+  [
+    "Cordia New",
+    2
+  ],
+  [
+    "DaunPenh",
+    2
+  ],
+  [
+    "Leelawadee UI",
+    2
+  ],
+  [
+    "Microsoft JhengHei",
+    2
+  ],
+  [
+    "Javanese Text",
+    2
+  ]
+]
+
+SAMPLE TEXT
+…
+…
+…
+…
+…
+…
+…
+…
+Long, S., Li, Y., Wu, C., Xu, B., &amp; Fan, W. (2024, October). HPHS: Hierarchical Planning based on Hybrid Frontier Sampling for Unknown Environments Exploration. In 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems
+(IROS)
+(pp. 12056-12063). IEEE.
+PHASE 1
+PHASE 2
+PHASE 3
+Foundation Models for Spatio-Temporal Data Science: A Tutorial and Survey
+The integration of machine learning into traditional Chinese medicine
+C
+C
+GLVMamba
+: A Global–Local Visual State-Space Model for Remote Sensing Image Segmentation
+Human Motion Video Generation: A Survey
+Performance-driven closed-loop optimization and control for smart manufacturing processes in the cloud-edge-device collaborative architecture: A review and new perspectives
+…
+RoboOS
+: A Hierarchical Embodied Framework for Cross-Embodiment and Multi-Agent Collaboration
+2019
+2020
+2020
+2020
+2020
+2020
+2020
+2020
+2020
+2020
+Perception, Reason, Think, and Plan:
+ASurvey
+on Large Multimodal Reasoning Models
+…
+…
+C
+C
+C
+C
+S
+C
+C
+Multi-Robot System for Cooperative Exploration in Unknown Environments: A Survey
+朱晓青,吴家豪,曹志奎,等.可持续迭代的村镇人居环境设计体系研究[J].包装工程,2024,45(16):66-79+120+14.
+Efficient Frequency Domain-based Transformers for High-Quality Image Deblurring
+FBRT-YOLO: Faster and Better for Real-Time Aerial Image Detection
+Zhu, Y., Wang, Z., &amp; Zhu, X. (2023). New reflections on food security and land use strategies based on the evolution of Chinese dietary patterns.  Land Use Policy, 126, 106520.
+C
+C
+=
+=
+C
+C
+F
+F
+MoAT
+: Multi-Modal Augmented Time Series Forecasting
+Towards Robust Multimodal Physiological Foundation Models: Handling Arbitrary Missing Modalities
+C
+C
+C
+C
+C
+C
+C
+T3Time
+：
+Tri-Modal Time Series Forecasting via Adaptive Multi-Head Alignment and Residual Fusion
+…
+DA2-Net: Integrating SAM2 With Domain Adaption and Difference Aggregation for Remote Sensing Change Detection
+P
+P
+Learning Multi-Modal Prototypes for Cross-Domain Few-Shot Object Detection
+SOAR: Semi-Supervised Open-Vocabulary Aerial Object Detection via Dual-Aware Enhanced Prior Denoising
+…
+…
+…
+…
+…
+……
+XXXX
+XXXX
+XXXX
+XXXX
+XXXX
+XXXX
+XXXX
+XXXX
+XXXX
+XXXX
+XXXX
+XXXX
+XXXX
+XXXX
+XXXXXXXXXX
+XXXXXXXX
+XXXXX
+XXXXXX
+XXXXX
+XXXX
+XXXXXX
+XXXXX
+XXXX
+XXXXXX
+XXXXX
+XXXX
+XXXXXX
+XXXX
+XXXXXX
+XXXXX
+XXXX
+XXXXX
+XXXXXX
+XXXXX
+XXXX
+XXXXXX
+XXXXXX
+XXXXXXX
+XXXXXX
+XXXXXXX
+XXXX
+XXXXX
+XXXXXXX
+XXXXXX
+XXXXXXX
+XXXX
+XXXXXX
+XXXX
+XXXXXX
+XXXX
+XXXX
+XXXX
+XXXXXX
+XXXX
+XXXX
+XXXX
+XXXXXX
+XXXX
+XXXX
+XXXX
+XXXXXX
+XXXX
+XXXX
+XXXX
+XXXXXX
+XXXX
+XXXX
+XXXX
+1960
+1961
+1986
+1987
+1989
+1992
+1993
+1998
+2002
+2003
+2004
+2010
+2011
+2013
+2017
+XXXXXX
+XXXX
+XXXX
+XXXXXX
+XXXX
+XXXXXX
+XXX
+XXX
+XXXXX
+XXXXX
+XXX
+XXX
+XXXXX
+XXXXX
+XXX
+XXX
+XXXX
+XXXXX
+XXX
+XXXXX
+XXX
+XXX
+XXXXX
+XXX
+XXX
+XXXXX
+XXX
+XXXXX
+XXX
+XXXXX
+XXX
+XXXXX
+XXX
+Mitochondrial metabolism and cancer therapeutic innovation
+CAR-T cell therapy for cancer: current challenges and future directions
+XXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXX
+XXXX

@@ -35,6 +35,7 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+from anomalyclip.visualization import apply_ad_scoremap  # noqa: E402
 from anomalyclip.test_time_rectification import rectify_text_features_with_multi_layer_anchors  # noqa: E402
 from anomalyclip.wavelet_calibration import (  # noqa: E402
     apply_structure_texture_calibration,
@@ -593,6 +594,17 @@ def _normalize(arr: np.ndarray) -> np.ndarray:
     return (arr - arr.min()) / (arr.max() - arr.min() + 1e-6)
 
 
+def _normalize_with_range(arr: np.ndarray, min_value: float, max_value: float) -> np.ndarray:
+    arr = arr.astype(np.float32)
+    denom = max(float(max_value) - float(min_value), 1e-6)
+    return np.clip((arr - float(min_value)) / denom, 0.0, 1.0)
+
+
+def _overlay_scoremap(image: np.ndarray, scoremap: np.ndarray, min_value: float, max_value: float) -> np.ndarray:
+    mask = _normalize_with_range(scoremap, min_value, max_value)
+    return apply_ad_scoremap(image, mask)
+
+
 def _as_nhw(x: torch.Tensor) -> np.ndarray:
     arr = x.detach().cpu().float().numpy()
     if arr.ndim == 4 and arr.shape[1] == 1:
@@ -872,61 +884,25 @@ def _plot_examples(records: Sequence[dict], save_dir: Path, image_size: int, top
         mask = record["mask"]
         baseline_map = record["baseline_map"]
         method_map = record["method_map"]
-        baseline_pred = record["baseline_pred"]
-        method_pred = record["method_pred"]
-        delta = method_map - baseline_map
         score_min = float(min(baseline_map.min(), method_map.min()))
         score_max = float(max(baseline_map.max(), method_map.max()))
-        delta_limit = max(float(np.abs(delta).max()), 1e-6)
 
-        cols = 7 if image is None else 8
-        fig, axes = plt.subplots(1, cols, figsize=(3.05 * cols, 3.2), dpi=160)
-        ax_idx = 0
+        panels = []
         if image is not None:
-            axes[ax_idx].imshow(image)
-            axes[ax_idx].set_title("image")
-            ax_idx += 1
-        for ax, title, arr, kwargs in [
-            (axes[ax_idx], "GT mask", mask, {"cmap": "gray"}),
-            (
-                axes[ax_idx + 1],
-                "baseline map",
-                baseline_map,
-                {"cmap": "magma", "vmin": score_min, "vmax": score_max},
-            ),
-            (
-                axes[ax_idx + 2],
-                "method map",
-                method_map,
-                {"cmap": "magma", "vmin": score_min, "vmax": score_max},
-            ),
-            (
-                axes[ax_idx + 3],
-                "baseline top-area",
-                _prediction_error_rgb(mask, baseline_pred),
-                {},
-            ),
-            (
-                axes[ax_idx + 4],
-                "method top-area",
-                _prediction_error_rgb(mask, method_pred),
-                {},
-            ),
-            (
-                axes[ax_idx + 5],
-                "method - baseline",
-                delta,
-                {"cmap": "coolwarm", "vmin": -delta_limit, "vmax": delta_limit},
-            ),
-            (
-                axes[ax_idx + 6],
-                "normalized gain",
-                _normalize(method_map) - _normalize(baseline_map),
-                {"cmap": "coolwarm", "vmin": -1.0, "vmax": 1.0},
-            ),
-        ]:
+            panels.append(("Image", image, {}))
+            panels.append(("Baseline heatmap", _overlay_scoremap(image, baseline_map, score_min, score_max), {}))
+            panels.append(("Ours heatmap", _overlay_scoremap(image, method_map, score_min, score_max), {}))
+        else:
+            heatmap_kwargs = {"cmap": "magma", "vmin": score_min, "vmax": score_max}
+            panels.append(("Baseline heatmap", baseline_map, heatmap_kwargs))
+            panels.append(("Ours heatmap", method_map, heatmap_kwargs))
+        panels.insert(1 if image is not None else 0, ("GT", mask, {"cmap": "gray"}))
+
+        cols = len(panels)
+        fig, axes = plt.subplots(1, cols, figsize=(3.0 * cols, 3.2), dpi=160)
+        for ax, (title_text, arr, kwargs) in zip(axes, panels):
             ax.imshow(arr, **kwargs)
-            ax.set_title(title)
+            ax.set_title(title_text)
         for ax in axes:
             ax.set_xticks([])
             ax.set_yticks([])

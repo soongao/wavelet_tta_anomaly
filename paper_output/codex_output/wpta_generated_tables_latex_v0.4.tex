@@ -1,0 +1,161 @@
+% WPTA generated paper tables v0.4.
+% Required packages:
+% \usepackage{booktabs}
+% \usepackage{graphicx}
+% \usepackage{array}
+% Optional for tighter notes:
+% \usepackage{threeparttable}
+
+\begin{table*}[t]
+\centering
+\caption{Main results on five industrial anomaly detection benchmarks. The table reports the final calibrated system rather than attributing all gains to one mechanism. On average, the final system improves the fixed AnomalyCLIP baseline across all four metrics, with the largest gain on pixel AUPRO.}
+\label{tab:main_results}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llccccc}
+\toprule
+Dataset & Method & P-AUROC$\uparrow$ & P-AUPRO$\uparrow$ & I-AUROC$\uparrow$ & I-AP$\uparrow$ & $\Delta$ vs. baseline \\
+\midrule
+MVTec & AnomalyCLIP baseline & 91.2 & 83.2 & 91.6 & 96.4 & -- \\
+MVTec & Final calibrated system & \textbf{91.8} & \textbf{85.6} & \textbf{94.5} & \textbf{97.6} & +0.6 / +2.4 / +2.9 / +1.2 \\
+VisA & AnomalyCLIP baseline & 95.5 & 86.7 & 82.0 & 85.3 & -- \\
+VisA & Final calibrated system & \textbf{96.2} & \textbf{91.3} & \textbf{84.6} & \textbf{87.4} & +0.7 / +4.6 / +2.6 / +2.1 \\
+MPDD & AnomalyCLIP baseline & 96.9 & 84.6 & 73.7 & 76.5 & -- \\
+MPDD & Final calibrated system & \textbf{97.3} & \textbf{89.9} & \textbf{77.8} & \textbf{82.3} & +0.4 / +5.3 / +4.1 / +5.8 \\
+BTAD & AnomalyCLIP baseline & 93.5 & 70.5 & 89.1 & 91.0 & -- \\
+BTAD & Final calibrated system & \textbf{96.3} & \textbf{78.2} & \textbf{93.9} & \textbf{94.9} & +2.8 / +7.7 / +4.8 / +3.9 \\
+DTD-Synthetic & AnomalyCLIP baseline & 97.4 & 89.1 & 94.5 & 97.7 & -- \\
+DTD-Synthetic & Final calibrated system & \textbf{97.9} & \textbf{91.8} & \textbf{96.9} & \textbf{98.7} & +0.5 / +2.7 / +2.4 / +1.0 \\
+\midrule
+Average & AnomalyCLIP baseline & 94.9 & 82.8 & 86.2 & 89.4 & -- \\
+Average & Final calibrated system & \textbf{95.9} & \textbf{87.4} & \textbf{89.5} & \textbf{92.2} & +1.0 / +4.5 / +3.4 / +2.8 \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Core component ablation on MVTec and VisA. Each result cell follows P-AUROC / P-AUPRO / I-AUROC / I-AP. This controlled ablation is the main evidence for the WPTA mechanism. Except for the fixed-baseline row, all prototype/fusion variants use the same multi-crop and pixel-to-image settings; therefore, causal interpretation should focus on relative changes among variants rather than attributing the entire baseline-to-variant gap to WPTA alone.}
+\label{tab:core_ablation}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lccp{0.34\textwidth}}
+\toprule
+Method & MVTec & VisA & Role \\
+\midrule
+Baseline & 91.2 / 83.2 / 91.6 / 96.4 & 95.5 / 86.7 / 82.0 / 85.3 & Fixed AnomalyCLIP prototypes \\
+Direct wavelet fusion / no adaptation & 88.7 / 80.4 / 92.9 / 96.9 & 94.6 / 85.1 / 81.6 / 84.8 & Negative control: use wavelet at final-map level \\
+Semantic prototype adaptation & 91.6 / 85.2 / 93.7 / 97.1 & 96.0 / 90.4 / 83.7 / 86.9 & CLIP semantic evidence only \\
+Wavelet prototype adaptation w/o conservative & 91.7 / 85.8 / 93.9 / 97.2 & 96.1 / 91.3 / 84.1 / 87.0 & Boundary-aware wavelet evidence without conservative update \\
+Full WPTA controlled setting & \textbf{91.8 / 86.2 / 94.1 / 97.4} & \textbf{96.2 / 91.7 / 84.3 / 87.3} & Boundary-aware wavelet evidence with conservative update \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Wavelet reliability design ablation on MVTec and VisA. Each result cell follows P-AUROC / P-AUPRO / I-AUROC / I-AP. Wavelet cues are harmful when used as direct final-map fusion, but useful when used as reliability weights for prototype adaptation.}
+\label{tab:wavelet_design}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lccp{0.34\textwidth}}
+\toprule
+Wavelet setting & MVTec & VisA & Interpretation \\
+\midrule
+Semantic-only prototype adaptation & 91.6 / 85.2 / 93.7 / 97.1 & 96.0 / 90.4 / 83.7 / 86.9 & No wavelet reliability \\
+Direct wavelet fusion & 88.7 / 80.4 / 92.9 / 96.9 & 94.6 / 85.1 / 81.6 / 84.8 & Wavelet as final-map fusion, negative control \\
+HF-only W + prototype adaptation & 91.6 / 85.3 / 94.0 / 97.2 & 96.0 / 90.8 / 84.0 / 86.9 & High-frequency reliability only \\
+Boundary-aware W + prototype adaptation & 91.7 / 85.7 / 93.8 / 97.3 & 96.1 / 91.2 / 83.9 / 87.1 & Suppress structure-boundary pseudo evidence \\
+Full boundary-aware W + conservative & \textbf{91.8 / 86.2 / 94.1 / 97.4} & \textbf{96.2 / 91.7 / 84.3 / 87.3} & Final controlled WPTA setting \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Final-system configuration used in the five-dataset table. This table records which calibration modules are active in each dataset-specific final run, preventing over-attribution of all five-dataset gains to the WPTA mechanism.}
+\label{tab:final_config}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lccccccl}
+\toprule
+Dataset & Result & Wavelet & TTA & Multi-crop & P2I & Key setting & Result log \\
+\midrule
+MVTec & 91.8 / 85.6 / 94.5 / 97.6 & yes & yes & yes & yes & $\sigma$=5, mc=0.50, p2i=0.10 & mvtec/07\_full\_method \\
+VisA & 96.2 / 91.3 / 84.6 / 87.4 & yes & yes & yes & yes & $\sigma$=5, mc=0.50, p2i=0.10 & visa/07\_full\_method \\
+MPDD & 97.3 / 89.9 / 77.8 / 82.3 & no & no & yes & yes & $\sigma$=8, mc=0.25, p2i=0.80 & mpdd\_multicrop\_partial \\
+BTAD & 96.3 / 78.2 / 93.9 / 94.9 & no & no & yes & yes & $\sigma$=10, mc=0.85, p2i=0.95 & btad\_full\_multicrop \\
+DTD-Synthetic & 97.9 / 91.8 / 96.9 / 98.7 & yes & no & yes & yes & $\sigma$=8, mc=0.75, p2i=0.50 & dtd\_final\_no\_strat \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Appendix: system calibration stack ablation on MVTec and VisA. Each result cell follows P-AUROC / P-AUPRO / I-AUROC / I-AP. This table explains the final calibrated system, but should not be used as the causal evidence for prototype adaptation.}
+\label{tab:calibration_stack_ablation}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lccp{0.30\textwidth}}
+\toprule
+Calibration setting & MVTec & VisA & Note \\
+\midrule
+Original AnomalyCLIP log & 91.1 / 81.4 / 91.6 / 96.4 & 95.5 / 86.7 / 82.0 / 85.3 & Original reported log \\
+Cached baseline L1/2/3 & 91.3 / 83.1 / 91.6 / 96.4 & 95.6 / 87.1 / 82.0 / 85.3 & Cached features, no proposed calibration \\
+Wavelet calibration only & 91.3 / 83.1 / 91.6 / 96.4 & 95.6 / 87.1 / 82.0 / 85.3 & Wavelet calibration without downstream fusion modules \\
+TTA only & 91.3 / 83.4 / 91.6 / 96.4 & 95.6 / 87.1 / 82.0 / 85.4 & Test-time rectification only \\
+Wavelet + TTA & 91.3 / 83.4 / 91.6 / 96.4 & 95.6 / 87.1 / 82.0 / 85.4 & Wavelet calibration plus TTA \\
+Wavelet + TTA + pixel-to-image & 91.3 / 83.4 / 94.0 / 97.4 & 95.6 / 87.1 / 83.5 / 86.6 & Mainly improves image-level metrics \\
+Wavelet + TTA + multi-crop & 91.8 / 85.6 / 91.6 / 96.4 & 96.2 / 91.3 / 82.0 / 85.4 & Mainly improves pixel-level metrics \\
+Full calibration stack & \textbf{91.8 / 85.6 / 94.5 / 97.6} & \textbf{96.2 / 91.3 / 84.6 / 87.4} & Combines pixel and image calibration gains \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+\begin{table}[t]
+\centering
+\caption{Appendix: preliminary medical pixel-level result. This result is complete only on ISIC/ISBI and should not be used as the main cross-domain generalization claim.}
+\label{tab:medical_preliminary}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{llccc}
+\toprule
+Dataset & Method & P-AUROC$\uparrow$ & P-AUPRO$\uparrow$ & Status \\
+\midrule
+ISIC/ISBI & AnomalyCLIP baseline & 88.7 & 78.6 & current \\
+ISIC/ISBI & Final calibrated system & \textbf{89.9} & \textbf{80.0} & current \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{table*}[t]
+\centering
+\caption{Appendix: protocol-reference comparison with representative reported methods on MVTec and VisA. External numbers are extracted from a separate manuscript table, while current-system numbers come from the current CSV. Best values are not highlighted because protocol compatibility has not been fully verified.}
+\label{tab:protocol_reference}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llccccc}
+\toprule
+Dataset & Method & P-AUROC$\uparrow$ & P-AUPRO$\uparrow$ & I-AUROC$\uparrow$ & I-AP$\uparrow$ & Source \\
+\midrule
+MVTec & CLIP & 38.4 & 11.3 & 74.1 & 87.6 & extracted \\
+MVTec & WinCLIP & 85.1 & 64.6 & 91.8 & 96.5 & extracted \\
+MVTec & VAND & 87.6 & 44.0 & 86.1 & 93.5 & extracted \\
+MVTec & CoOp & 33.3 & 6.7 & 88.8 & 94.8 & extracted \\
+MVTec & AdaCLIP & 88.7 & 37.8 & 89.2 & 96.4 & extracted \\
+MVTec & AnomalyCLIP & 91.1 & 81.4 & 91.5 & 96.2 & extracted \\
+MVTec & AA-CLIP$\dagger$ & 91.9 & 84.6 & 90.5 & 94.9 & extracted \\
+MVTec & Source Ours (TAAP/INPC) & 91.5 & 85.5 & 92.8 & 96.7 & extracted \\
+MVTec & Current final system & 91.8 & 85.6 & 94.5 & 97.6 & current CSV \\
+VisA & CLIP & 46.6 & 14.8 & 66.4 & 71.5 & extracted \\
+VisA & WinCLIP & 79.6 & 56.8 & 78.1 & 81.2 & extracted \\
+VisA & VAND & 94.2 & 86.8 & 78.0 & 81.4 & extracted \\
+VisA & CoOp & 24.2 & 3.8 & 62.8 & 68.1 & extracted \\
+VisA & AdaCLIP & 95.5 & 56.8 & 85.8 & 84.9 & extracted \\
+VisA & AnomalyCLIP & 95.4 & 87.0 & 82.1 & 85.4 & extracted \\
+VisA & AA-CLIP$\dagger$ & 95.5 & 83.0 & 84.6 & 82.2 & extracted \\
+VisA & Source Ours (TAAP/INPC) & 95.6 & 88.3 & 83.3 & 85.9 & extracted \\
+VisA & Current final system & 96.2 & 91.3 & 84.6 & 87.4 & current CSV \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
