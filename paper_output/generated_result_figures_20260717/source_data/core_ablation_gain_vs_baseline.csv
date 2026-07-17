@@ -1,0 +1,9 @@
+dataset,method,delta_pixel_auroc,delta_pixel_aupro,delta_image_auroc,delta_image_ap
+MVTec,Direct wavelet fusion / no adaptation,-2.5,-2.799999999999997,1.3000000000000114,0.5
+MVTec,Semantic prototype adaptation,0.3999999999999915,2.0,2.1000000000000085,0.6999999999999886
+MVTec,Wavelet prototype adaptation no conservative,0.5,2.5999999999999943,2.3000000000000114,0.7999999999999972
+MVTec,Full wavelet prototype adaptation,0.5999999999999943,3.0,2.5,1.0
+VisA,Direct wavelet fusion / no adaptation,-0.9000000000000057,-1.6000000000000085,-0.4000000000000057,-0.5
+VisA,Semantic prototype adaptation,0.5,3.700000000000003,1.7000000000000028,1.6000000000000085
+VisA,Wavelet prototype adaptation no conservative,0.5999999999999943,4.599999999999994,2.0999999999999943,1.7000000000000028
+VisA,Full wavelet prototype adaptation,0.7000000000000028,5.0,2.299999999999997,2.0

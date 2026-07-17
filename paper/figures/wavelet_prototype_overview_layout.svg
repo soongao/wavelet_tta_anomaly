@@ -1,0 +1,575 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1992" height="1285" viewBox="0 0 1992 1285">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M1.5,1.2 L10.5,6 L1.5,10.8 Z" fill="#111111"/>
+    </marker>
+    <marker id="arrow-soft" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M1.5,1.2 L10.5,6 L1.5,10.8 Z" fill="#555555"/>
+    </marker>
+    <marker id="arrow-text" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M1.5,1.2 L10.5,6 L1.5,10.8 Z" fill="#1f735d"/>
+    </marker>
+    <marker id="arrow-image" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M1.5,1.2 L10.5,6 L1.5,10.8 Z" fill="#334e68"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M1.5,1.2 L10.5,6 L1.5,10.8 Z" fill="#b9463d"/>
+    </marker>
+    <style>
+      .bg { fill: #ffffff; }
+      .text { font-family: Arial, Helvetica, sans-serif; fill: #111111; }
+      .label { font-family: Arial, Helvetica, sans-serif; font-size: 26px; font-weight: 600; fill: #111111; }
+      .mid { font-family: Arial, Helvetica, sans-serif; font-size: 21px; font-weight: 600; fill: #111111; }
+      .small { font-family: Arial, Helvetica, sans-serif; font-size: 17px; fill: #202020; }
+      .tiny { font-family: Arial, Helvetica, sans-serif; font-size: 14px; fill: #202020; }
+      .stage { font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; fill: #555555; }
+      .stage-strip { fill: #fbfcfe; stroke: #d9e0e8; stroke-width: 0.9; }
+      .stage-strip-text { font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; fill: #6b7280; }
+      .badge-text { font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; fill: #ffffff; }
+      .mono { font-family: "Courier New", monospace; font-size: 18px; fill: #111111; }
+      .line { fill: none; stroke: #111111; stroke-width: 2.2; marker-end: url(#arrow); }
+      .line-soft { fill: none; stroke: #555555; stroke-width: 1.75; marker-end: url(#arrow-soft); }
+      .line-text { fill: none; stroke: #1f735d; stroke-width: 2.05; marker-end: url(#arrow-text); }
+      .line-image { fill: none; stroke: #334e68; stroke-width: 2.05; marker-end: url(#arrow-image); }
+      .line-red { fill: none; stroke: #b9463d; stroke-width: 2.05; marker-end: url(#arrow-red); }
+      .dash { fill: none; stroke: #555555; stroke-width: 1.7; stroke-dasharray: 7 7; marker-end: url(#arrow-soft); }
+      .box { fill: #ffffff; stroke: #111111; stroke-width: 1.6; }
+      .system-boundary { fill: #f8fafc; stroke: #c8d0d8; stroke-width: 1.2; stroke-dasharray: 8 8; }
+      .subsystem-boundary { fill: #fffdf7; stroke: #d7b96a; stroke-width: 1.15; stroke-dasharray: 7 7; }
+      .scoring-boundary { fill: #f6fbff; stroke: #bfd3e3; stroke-width: 1.1; stroke-dasharray: 8 8; }
+      .prompt-box { fill: #fff7de; stroke: #111111; stroke-width: 1.35; }
+      .learn { fill: #f0c466; stroke: #8a5a08; stroke-width: 1.05; }
+      .frozen-front { fill: #d7d7d7; stroke: #111111; stroke-width: 1.1; }
+      .frozen-side { fill: #adadad; stroke: #111111; stroke-width: 1.0; }
+      .frozen-top { fill: #e2e2e2; stroke: #111111; stroke-width: 1.0; }
+      .original-front { fill: #c9ced6; stroke: #111111; stroke-width: 1.1; }
+      .original-side { fill: #9fa7b3; stroke: #111111; stroke-width: 1.0; }
+      .original-top { fill: #dce1e8; stroke: #111111; stroke-width: 1.0; }
+      .dpam-front { fill: #8bd1df; stroke: #174f5d; stroke-width: 1.1; }
+      .dpam-side { fill: #58a9bb; stroke: #174f5d; stroke-width: 1.0; }
+      .dpam-top { fill: #bce9ef; stroke: #174f5d; stroke-width: 1.0; }
+      .feat-front { fill: #dcedd3; stroke: #111111; stroke-width: 1.05; }
+      .feat-side { fill: #91a772; stroke: #111111; stroke-width: 1.0; }
+      .feat-top { fill: #c8dda2; stroke: #111111; stroke-width: 1.0; }
+      .feat-blue { fill: #d8e9f6; stroke: #111111; stroke-width: 1.0; }
+      .embed-normal { fill: #d7efe8; stroke: #1f735d; stroke-width: 1.1; }
+      .embed-abnormal { fill: #f5d8d4; stroke: #a93e35; stroke-width: 1.1; }
+      .heat0 { fill: #eff3f8; }
+      .heat1 { fill: #cfe9dc; }
+      .heat2 { fill: #f0d46a; }
+      .heat3 { fill: #ee995c; }
+      .heat4 { fill: #c93e37; }
+      .module-dash { fill: #ffffff; stroke: #555555; stroke-width: 1.25; stroke-dasharray: 6 6; }
+      .token { fill: #f8fbff; stroke: #111111; stroke-width: 1.0; }
+      .token-muted { fill: #e8eef5; stroke: #111111; stroke-width: 1.0; }
+      .token-dpam { fill: #d9f5f8; stroke: #174f5d; stroke-width: 1.0; }
+      .proto-box { fill: #fff7de; stroke: #8a5a08; stroke-width: 1.2; }
+      .sim-node { fill: #ffffff; stroke: #111111; stroke-width: 2; }
+      .sim-hub { fill: none; stroke: #b9463d; stroke-width: 1.3; stroke-dasharray: 4 4; }
+      .text-slot { fill: #f2fbf7; stroke: #1f735d; stroke-width: 1.1; }
+      .image-slot { fill: #f1f6fb; stroke: #334e68; stroke-width: 1.1; }
+      .evidence-chip { fill: #fffdf7; stroke: #8a5a08; stroke-width: 1.0; }
+      .evidence-chip-red { fill: #fff8f7; stroke: #b9463d; stroke-width: 1.0; }
+      .feat-text-label { font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 600; fill: #1f735d; }
+      .feat-image-label { font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 600; fill: #334e68; }
+    </style>
+    <symbol id="layer-frozen" viewBox="0 0 84 138">
+      <path class="frozen-top" d="M0 0 L62 0 L82 18 L20 18 Z"/>
+      <path class="frozen-side" d="M62 0 L82 18 L82 138 L62 120 Z"/>
+      <rect class="frozen-front" x="0" y="0" width="62" height="120" rx="4"/>
+      <text class="tiny" x="31" y="65" text-anchor="middle" transform="rotate(-90 31 65)">Layer</text>
+    </symbol>
+    <symbol id="layer-original" viewBox="0 0 84 138">
+      <path class="original-top" d="M0 0 L62 0 L82 18 L20 18 Z"/>
+      <path class="original-side" d="M62 0 L82 18 L82 138 L62 120 Z"/>
+      <rect class="original-front" x="0" y="0" width="62" height="120" rx="4"/>
+      <text class="tiny" x="31" y="65" text-anchor="middle" transform="rotate(-90 31 65)">Layer</text>
+    </symbol>
+    <symbol id="layer-dpam" viewBox="0 0 84 138">
+      <path class="dpam-top" d="M0 0 L62 0 L82 18 L20 18 Z"/>
+      <path class="dpam-side" d="M62 0 L82 18 L82 138 L62 120 Z"/>
+      <rect class="dpam-front" x="0" y="0" width="62" height="120" rx="4"/>
+      <text class="tiny" x="31" y="65" text-anchor="middle" transform="rotate(-90 31 65)">Layer</text>
+    </symbol>
+    <symbol id="cube-feature" viewBox="0 0 62 62">
+      <path class="feat-top" d="M0 12 L12 0 L58 0 L46 12 Z"/>
+      <path class="feat-side" d="M46 12 L58 0 L58 46 L46 58 Z"/>
+      <rect class="feat-front" x="0" y="12" width="46" height="46"/>
+    </symbol>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1992" height="1285"/>
+
+  <g id="method-boundary">
+    <rect class="system-boundary" x="24" y="26" width="1878" height="1150" rx="8"/>
+    <text class="stage" x="1880" y="58" text-anchor="end">Training-free test-time prototype adaptation</text>
+  </g>
+
+  <g id="scoring-region">
+    <rect class="scoring-boundary" x="1328" y="244" width="558" height="850" rx="8"/>
+    <text class="stage" x="1868" y="270" text-anchor="end">Cross-modal text-image cosine scoring</text>
+  </g>
+
+  <g id="phase-labels">
+    <text class="stage" x="54" y="36">Text branch</text>
+    <text class="stage" x="54" y="706">Image branch: same test image</text>
+  </g>
+
+  <g id="stage-strips">
+    <rect class="stage-strip" x="46" y="506" width="246" height="30" rx="4"/>
+    <text class="stage-strip-text" x="62" y="526">1. prompts &amp; f_T</text>
+    <rect class="stage-strip" x="438" y="382" width="244" height="30" rx="4"/>
+    <text class="stage-strip-text" x="454" y="402">2. frozen encoders</text>
+    <rect class="stage-strip" x="1038" y="674" width="240" height="30" rx="4"/>
+    <text class="stage-strip-text" x="1054" y="694">3. wavelet evidence</text>
+    <rect class="stage-strip" x="1600" y="616" width="190" height="30" rx="4"/>
+    <text class="stage-strip-text" x="1616" y="636">4. re-scoring</text>
+  </g>
+
+  <g id="text-prompts">
+    <text class="mono" x="54" y="84">V1 ... VE</text>
+    <rect class="learn" x="170" y="60" width="40" height="24" rx="2"/>
+    <rect class="learn" x="218" y="60" width="40" height="24" rx="2"/>
+    <text class="small" x="274" y="82">object</text>
+
+    <text class="mono" x="55" y="154">g_n</text>
+    <text class="mid" x="112" y="154">Normal text prompt</text>
+    <rect class="prompt-box" x="64" y="177" width="292" height="54" rx="4"/>
+    <rect class="learn" x="86" y="194" width="28" height="19" rx="2"/>
+    <rect class="learn" x="122" y="194" width="28" height="19" rx="2"/>
+    <rect class="learn" x="158" y="194" width="28" height="19" rx="2"/>
+    <rect class="frozen-front" x="202" y="194" width="61" height="19" rx="2"/>
+    <rect class="frozen-front" x="274" y="194" width="50" height="19" rx="2"/>
+
+    <text class="mono" x="54" y="292">W1 ... WE</text>
+    <rect class="learn" x="170" y="268" width="40" height="24" rx="2"/>
+    <rect class="learn" x="218" y="268" width="40" height="24" rx="2"/>
+    <text class="small" x="274" y="290">damaged object</text>
+
+    <text class="mono" x="55" y="362">g_a</text>
+    <text class="mid" x="112" y="362">Anomalous text prompt</text>
+    <rect class="prompt-box" x="64" y="385" width="292" height="54" rx="4"/>
+    <rect class="learn" x="86" y="402" width="28" height="19" rx="2"/>
+    <rect class="learn" x="122" y="402" width="28" height="19" rx="2"/>
+    <rect class="learn" x="158" y="402" width="28" height="19" rx="2"/>
+    <rect class="frozen-front" x="202" y="402" width="61" height="19" rx="2"/>
+    <rect class="frozen-front" x="274" y="402" width="50" height="19" rx="2"/>
+    <text class="small" x="52" y="478">Object-agnostic learned text prompt</text>
+  </g>
+
+  <path class="line" d="M360 258 C390 230 412 214 444 205"/>
+
+  <g id="text-encoder">
+    <text class="small" x="476" y="82">Layer 1</text>
+    <text class="small" x="936" y="82">Layer N</text>
+    <text class="tiny" x="710" y="102" text-anchor="middle">frozen CLIP text encoder</text>
+    <g transform="translate(446 112)">
+      <use href="#layer-frozen" x="0" y="0" width="84" height="138"/>
+      <use href="#layer-frozen" x="18" y="14" width="84" height="138"/>
+      <use href="#layer-frozen" x="36" y="28" width="84" height="138"/>
+    </g>
+    <text class="label" x="596" y="197">...</text>
+    <g transform="translate(642 112)">
+      <use href="#layer-frozen" x="0" y="0" width="84" height="138"/>
+      <use href="#layer-frozen" x="18" y="14" width="84" height="138"/>
+      <use href="#layer-frozen" x="36" y="28" width="84" height="138"/>
+    </g>
+    <text class="label" x="790" y="197">...</text>
+    <g transform="translate(846 112)">
+      <use href="#layer-frozen" x="0" y="0" width="84" height="138"/>
+      <use href="#layer-frozen" x="18" y="14" width="84" height="138"/>
+      <use href="#layer-frozen" x="36" y="28" width="84" height="138"/>
+    </g>
+    <text class="label" x="615" y="348">Text encoder</text>
+  </g>
+
+  <path class="line" d="M970 200 C1025 176 1060 158 1118 145"/>
+
+  <g id="textual-embedding">
+    <text class="label" x="1154" y="74">Text prototypes f_T</text>
+    <g transform="translate(1160 112)">
+      <path class="embed-normal" d="M0 0 L165 0 L188 20 L23 20 Z"/>
+      <path class="embed-normal" d="M165 0 L188 20 L188 48 L165 28 Z"/>
+      <rect class="embed-normal" x="0" y="0" width="165" height="28" rx="3"/>
+      <line x1="25" y1="14" x2="144" y2="14" stroke="#1f735d" stroke-width="7" stroke-linecap="round"/>
+
+      <path class="embed-normal" d="M14 50 L179 50 L202 70 L37 70 Z"/>
+      <path class="embed-normal" d="M179 50 L202 70 L202 98 L179 78 Z"/>
+      <rect class="embed-normal" x="14" y="50" width="165" height="28" rx="3"/>
+      <line x1="39" y1="64" x2="158" y2="64" stroke="#1f735d" stroke-width="7" stroke-linecap="round"/>
+      <text class="tiny" x="-12" y="69" text-anchor="end">normal</text>
+
+      <path class="embed-abnormal" d="M28 100 L193 100 L216 120 L51 120 Z"/>
+      <path class="embed-abnormal" d="M193 100 L216 120 L216 148 L193 128 Z"/>
+      <rect class="embed-abnormal" x="28" y="100" width="165" height="28" rx="3"/>
+      <line x1="53" y1="114" x2="172" y2="114" stroke="#a93e35" stroke-width="7" stroke-linecap="round"/>
+      <text class="tiny" x="-12" y="119" text-anchor="end">abnormal</text>
+    </g>
+  </g>
+
+  <g id="shared-text-feature">
+    <rect class="module-dash" x="1384" y="112" width="196" height="146" rx="4"/>
+    <text class="feat-text-label" x="1398" y="136">Adapted text prototypes</text>
+    <text class="feat-text-label" x="1490" y="238" text-anchor="middle">f_T'</text>
+    <path class="line-text" d="M1376 190 C1385 190 1393 190 1402 190"/>
+    <g transform="translate(1402 148)">
+      <path class="embed-normal" d="M0 0 L116 0 L138 17 L22 17 Z"/>
+      <path class="embed-normal" d="M116 0 L138 17 L138 49 L116 32 Z"/>
+      <rect class="embed-normal" x="0" y="0" width="116" height="32" rx="3"/>
+      <line x1="19" y1="16" x2="90" y2="16" stroke="#1f735d" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="104" cy="16" r="6" fill="#1f735d"/>
+      <text class="tiny" x="-8" y="20" text-anchor="end">normal</text>
+      <path class="embed-abnormal" d="M14 44 L130 44 L152 61 L36 61 Z"/>
+      <path class="embed-abnormal" d="M130 44 L152 61 L152 93 L130 76 Z"/>
+      <rect class="embed-abnormal" x="14" y="44" width="116" height="32" rx="3"/>
+      <line x1="33" y1="60" x2="104" y2="60" stroke="#a93e35" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="118" cy="60" r="6" fill="#a93e35"/>
+      <text class="tiny" x="-8" y="64" text-anchor="end">abnormal</text>
+    </g>
+  </g>
+
+  <g id="global-similarity">
+    <text class="small" x="1538" y="268" text-anchor="middle">Global text-image</text>
+    <text class="mid" x="1538" y="296" text-anchor="middle">Similarity</text>
+    <circle class="sim-hub" cx="1538" cy="348" r="44"/>
+    <circle class="sim-node" cx="1538" cy="348" r="34"/>
+    <g id="global-similarity-inputs">
+      <rect class="text-slot" x="1386" y="304" width="104" height="28" rx="3"/>
+      <text class="feat-text-label" x="1438" y="323" text-anchor="middle">text f_T'</text>
+      <rect class="image-slot" x="1386" y="366" width="104" height="28" rx="3"/>
+      <text class="feat-image-label" x="1438" y="385" text-anchor="middle">image f_I</text>
+    </g>
+    <path class="line-text" d="M1490 258 C1476 282 1458 296 1438 304"/>
+    <path class="line-image" d="M1402 424 C1418 410 1430 402 1438 394"/>
+    <path class="line-text" d="M1490 318 C1508 322 1524 332 1534 342"/>
+    <path class="line-image" d="M1490 380 C1508 376 1524 366 1534 354"/>
+    <text class="mid" x="1520" y="356">cos</text>
+    <text class="tiny" x="1538" y="394" text-anchor="middle">cos(f_T', f_I)</text>
+    <path class="line" d="M1572 350 C1608 350 1660 354 1698 358"/>
+    <text class="label" x="1708" y="348">Image-level</text>
+    <text class="mid" x="1748" y="381">score</text>
+    <circle cx="1842" cy="362" r="26" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+    <text class="mid" x="1832" y="371">M</text>
+    <path class="line-soft" d="M1778 374 C1802 374 1818 370 1830 366"/>
+  </g>
+
+  <g id="initial-score">
+    <circle cx="1390" cy="414" r="14" fill="#555555"/>
+    <text class="badge-text" x="1390" y="419" text-anchor="middle">1</text>
+    <text class="stage" x="1410" y="416">Initial CLIP patch scoring</text>
+    <text class="small" x="1438" y="456" text-anchor="middle">Initial patch text-image</text>
+    <text class="mid" x="1438" y="484" text-anchor="middle">Similarity</text>
+    <circle class="sim-hub" cx="1438" cy="536" r="44"/>
+    <circle class="sim-node" cx="1438" cy="536" r="34"/>
+    <g id="initial-similarity-inputs">
+      <rect class="text-slot" x="1328" y="496" width="72" height="28" rx="3"/>
+      <text class="feat-text-label" x="1364" y="515" text-anchor="middle">text f_T</text>
+      <rect class="image-slot" x="1328" y="564" width="72" height="28" rx="3"/>
+      <text class="feat-image-label" x="1364" y="583" text-anchor="middle">img f_I^p</text>
+    </g>
+    <path class="line-text" d="M1334 226 C1318 334 1332 438 1364 496"/>
+    <path class="line-image" d="M1390 856 C1362 746 1356 646 1364 592"/>
+    <path class="line-text" d="M1400 510 C1416 514 1428 522 1438 530"/>
+    <path class="line-image" d="M1400 578 C1418 570 1430 554 1438 542"/>
+    <text class="mid" x="1420" y="544">cos</text>
+    <text class="tiny" x="1438" y="588" text-anchor="middle">initial cos(f_T, f_I^p)</text>
+    <path class="line-red" d="M1472 536 C1510 536 1548 526 1588 510"/>
+    <text class="label" x="1590" y="438">Initial score map S0</text>
+    <rect class="box" x="1588" y="462" width="220" height="128" rx="4"/>
+    <g transform="translate(1612 484)">
+      <rect class="heat0" x="0" y="0" width="35" height="35"/>
+      <rect class="heat1" x="39" y="0" width="35" height="35"/>
+      <rect class="heat2" x="78" y="0" width="35" height="35"/>
+      <rect class="heat0" x="117" y="0" width="35" height="35"/>
+      <rect class="heat1" x="0" y="39" width="35" height="35"/>
+      <rect class="heat3" x="39" y="39" width="35" height="35"/>
+      <rect class="heat4" x="78" y="39" width="35" height="35"/>
+      <rect class="heat2" x="117" y="39" width="35" height="35"/>
+    </g>
+  </g>
+
+  <g id="visual-branch">
+    <g id="evidence-adaptation-boundary">
+      <rect class="subsystem-boundary" x="520" y="930" width="870" height="244" rx="6"/>
+      <text class="stage" x="540" y="950">Zoom-in: wavelet-guided prototype adaptation</text>
+    </g>
+
+    <g id="test-image">
+      <text class="label" x="48" y="748">Test image</text>
+      <rect class="box" x="42" y="776" width="178" height="136" rx="4"/>
+      <rect x="62" y="800" width="138" height="88" rx="2" fill="#edf3fb" stroke="#111111" stroke-width="1.15"/>
+      <path d="M70 884 L100 852 L124 870 L151 834 L194 884 Z" fill="#84a3c7"/>
+      <path d="M70 884 L103 863 L127 878 L154 855 L194 884 Z" fill="#5f83ad" opacity="0.52"/>
+      <circle cx="98" cy="824" r="7" fill="#eec75a"/>
+      <line x1="62" y1="818" x2="200" y2="818" stroke="#ffffff" stroke-width="1" opacity="0.65"/>
+      <line x1="62" y1="844" x2="200" y2="844" stroke="#ffffff" stroke-width="1" opacity="0.45"/>
+      <line x1="102" y1="800" x2="102" y2="888" stroke="#ffffff" stroke-width="1" opacity="0.45"/>
+      <line x1="150" y1="800" x2="150" y2="888" stroke="#ffffff" stroke-width="1" opacity="0.45"/>
+    </g>
+
+    <path class="line" d="M220 844 C246 844 266 844 288 844"/>
+
+    <g id="patch-tokens">
+      <text class="label" x="282" y="748">Patch tokens</text>
+      <g transform="translate(286 782)">
+        <g transform="translate(34 -16) skewY(-16)" opacity="0.36">
+          <rect class="token-muted" x="0" y="0" width="112" height="112" rx="2"/>
+        </g>
+        <g transform="translate(22 -6) skewY(-16)" opacity="0.62">
+          <rect class="token-muted" x="0" y="0" width="112" height="112" rx="2"/>
+        </g>
+        <g transform="translate(10 4) skewY(-16)">
+          <rect class="token" x="0" y="0" width="112" height="112" rx="2"/>
+          <rect class="token-muted" x="8" y="8" width="20" height="20"/>
+          <rect class="token" x="32" y="8" width="20" height="20"/>
+          <rect class="token-muted" x="56" y="8" width="20" height="20"/>
+          <rect class="token" x="80" y="8" width="20" height="20"/>
+          <rect class="token" x="8" y="32" width="20" height="20"/>
+          <rect class="token-muted" x="32" y="32" width="20" height="20"/>
+          <rect class="token" x="56" y="32" width="20" height="20"/>
+          <rect class="token-muted" x="80" y="32" width="20" height="20"/>
+          <rect class="token-muted" x="8" y="56" width="20" height="20"/>
+          <rect class="token" x="32" y="56" width="20" height="20"/>
+          <rect class="token-muted" x="56" y="56" width="20" height="20"/>
+          <rect class="token" x="80" y="56" width="20" height="20"/>
+          <rect class="token" x="8" y="80" width="20" height="20"/>
+          <rect class="token-muted" x="32" y="80" width="20" height="20"/>
+          <rect class="token" x="56" y="80" width="20" height="20"/>
+          <rect class="token-muted" x="80" y="80" width="20" height="20"/>
+        </g>
+        <path d="M142 28 L172 48 L172 148 L142 128 Z" fill="#cbd8e8" stroke="#111111" stroke-width="1"/>
+        <path d="M20 116 L142 116 L172 136 L50 136 Z" fill="#e6eff9" stroke="#111111" stroke-width="1"/>
+      </g>
+    </g>
+
+    <path class="line" d="M452 842 C474 842 492 842 512 842"/>
+
+    <g id="vision-encoder">
+      <text class="small" x="522" y="732">Layer 1</text>
+      <text class="small" x="628" y="732">Layer 2</text>
+      <text class="small" x="734" y="732">Layer 3</text>
+      <text class="small" x="922" y="732">Layer N</text>
+      <text class="tiny" x="744" y="708" text-anchor="middle">frozen CLIP vision encoder with DPAM</text>
+      <g transform="translate(508 754)">
+        <use href="#layer-original" x="0" y="0" width="66" height="108"/>
+        <use href="#layer-frozen" x="36" y="0" width="66" height="108"/>
+        <use href="#layer-dpam" x="72" y="0" width="66" height="108"/>
+        <use href="#layer-original" x="108" y="0" width="66" height="108"/>
+        <use href="#layer-dpam" x="144" y="0" width="66" height="108"/>
+        <use href="#layer-frozen" x="180" y="0" width="66" height="108"/>
+        <use href="#layer-dpam" x="216" y="0" width="66" height="108"/>
+        <text class="label" x="318" y="68">...</text>
+        <use href="#layer-original" x="360" y="0" width="66" height="108"/>
+        <use href="#layer-dpam" x="396" y="0" width="66" height="108"/>
+      </g>
+      <path d="M520 872 C635 902 840 902 982 872" fill="none" stroke="#111111" stroke-width="1.1"/>
+      <text class="label" x="660" y="912">Vision encoder</text>
+    </g>
+
+    <path class="line-image" d="M980 836 C1000 836 1018 836 1036 836"/>
+    <path class="dash" d="M884 878 C814 920 768 958 730 996"/>
+
+    <g id="visual-feature">
+      <text class="label" x="1044" y="740">Patch feature grid</text>
+      <g transform="translate(1036 784)">
+        <path class="feat-blue" d="M0 0 L166 0 L196 22 L30 22 Z"/>
+        <path class="feat-side" d="M166 0 L196 22 L196 54 L166 32 Z"/>
+        <rect class="feat-blue" x="0" y="0" width="166" height="32" rx="3"/>
+        <path class="feat-blue" d="M16 42 L182 42 L212 64 L46 64 Z"/>
+        <path class="feat-side" d="M182 42 L212 64 L212 96 L182 74 Z"/>
+        <rect class="feat-blue" x="16" y="42" width="166" height="32" rx="3"/>
+        <path class="feat-front" d="M32 84 L198 84 L228 106 L62 106 Z"/>
+        <path class="feat-side" d="M198 84 L228 106 L228 138 L198 116 Z"/>
+        <rect class="feat-front" x="32" y="84" width="166" height="32" rx="3"/>
+        <line x1="24" y1="16" x2="132" y2="16" stroke="#334e68" stroke-width="7" stroke-linecap="round"/>
+        <line x1="44" y1="58" x2="154" y2="58" stroke="#334e68" stroke-width="7" stroke-linecap="round"/>
+        <g transform="translate(86 90)">
+          <rect class="heat0" x="0" y="0" width="18" height="18"/>
+          <rect class="heat1" x="22" y="0" width="18" height="18"/>
+          <rect class="heat2" x="44" y="0" width="18" height="18"/>
+          <rect class="heat1" x="66" y="0" width="18" height="18"/>
+        </g>
+      </g>
+    </g>
+
+    <g id="haar-dwt">
+      <rect class="box" x="540" y="968" width="190" height="96" rx="4"/>
+      <text class="mid" x="635" y="994" text-anchor="middle">Haar DWT</text>
+      <text class="tiny" x="635" y="1016" text-anchor="middle">patch feature grid</text>
+      <g transform="translate(563 1026)">
+        <rect class="heat0" x="0" y="0" width="18" height="18"/>
+        <rect class="heat1" x="22" y="0" width="18" height="18"/>
+        <rect class="heat2" x="44" y="0" width="18" height="18"/>
+        <rect class="heat3" x="66" y="0" width="18" height="18"/>
+        <text class="tiny" x="10" y="34" text-anchor="middle">LL</text>
+        <text class="tiny" x="32" y="34" text-anchor="middle">LH</text>
+        <text class="tiny" x="54" y="34" text-anchor="middle">HL</text>
+        <text class="tiny" x="76" y="34" text-anchor="middle">HH</text>
+      </g>
+    </g>
+
+    <path class="line-soft" d="M730 1012 C742 1012 756 1012 770 1012"/>
+
+    <g id="wavelet-reliability">
+      <circle cx="752" cy="982" r="14" fill="#555555"/>
+      <text class="badge-text" x="752" y="987" text-anchor="middle">2</text>
+      <rect class="proto-box" x="770" y="976" width="255" height="72" rx="4"/>
+      <text class="mid" x="792" y="1002">Wavelet reliability W</text>
+      <text class="small" x="810" y="1028">HF x (1 - LF_edge)</text>
+      <path d="M808 1038 C820 1028 832 1048 844 1038 C856 1028 868 1048 880 1038" fill="none" stroke="#8a5a08" stroke-width="2"/>
+      <path d="M902 1038 C914 1028 926 1048 938 1038 C950 1028 962 1048 974 1038" fill="none" stroke="#b9463d" stroke-width="2"/>
+    </g>
+
+    <path class="line" d="M1025 1012 C1042 1020 1054 1034 1066 1041"/>
+
+    <g id="patch-evidence-prototypes">
+      <circle cx="1028" cy="996" r="14" fill="#555555"/>
+      <text class="badge-text" x="1028" y="1001" text-anchor="middle">3</text>
+      <text class="label" x="1048" y="978">Patch evidence</text>
+      <text class="label" x="1078" y="1014">selection</text>
+      <g id="evidence-input-chips">
+        <rect class="evidence-chip-red" x="1256" y="964" width="58" height="24" rx="3"/>
+        <text class="tiny" x="1285" y="981" text-anchor="middle">S0</text>
+        <rect class="evidence-chip" x="1256" y="996" width="58" height="24" rx="3"/>
+        <text class="tiny" x="1285" y="1013" text-anchor="middle">W</text>
+        <text class="tiny" x="1285" y="956" text-anchor="middle">evidence weights</text>
+      </g>
+      <g transform="translate(1060 1022)">
+        <g transform="translate(236 6)">
+          <rect class="heat0" x="0" y="0" width="14" height="14"/>
+          <rect class="heat2" x="17" y="0" width="14" height="14"/>
+          <rect class="heat4" x="34" y="0" width="14" height="14"/>
+          <rect class="heat1" x="0" y="17" width="14" height="14"/>
+          <rect class="heat3" x="17" y="17" width="14" height="14"/>
+          <rect class="heat0" x="34" y="17" width="14" height="14"/>
+          <rect x="-4" y="-4" width="56" height="39" fill="none" stroke="#b9463d" stroke-width="1.4" stroke-dasharray="4 4"/>
+        </g>
+        <path class="token-dpam" d="M0 0 L178 0 L208 22 L30 22 Z"/>
+        <path class="dpam-side" d="M178 0 L208 22 L208 58 L178 36 Z"/>
+        <rect class="token-dpam" x="0" y="0" width="178" height="36" rx="3"/>
+        <line x1="24" y1="18" x2="136" y2="18" stroke="#174f5d" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="156" cy="18" r="7" fill="#174f5d"/>
+        <text class="tiny" x="174" y="23" text-anchor="middle">v_a</text>
+        <text class="tiny" x="34" y="42">abnormal prototype</text>
+        <path class="feat-blue" d="M16 52 L194 52 L224 74 L46 74 Z"/>
+        <path class="feat-side" d="M194 52 L224 74 L224 110 L194 88 Z"/>
+        <rect class="feat-blue" x="16" y="52" width="178" height="36" rx="3"/>
+        <line x1="42" y1="70" x2="154" y2="70" stroke="#334e68" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="174" cy="70" r="7" fill="#334e68"/>
+        <text class="tiny" x="192" y="75" text-anchor="middle">v_n</text>
+        <text class="tiny" x="50" y="94">normal prototype</text>
+        <text class="tiny" x="264" y="58" text-anchor="middle">top patches</text>
+        <text class="tiny" x="112" y="116" text-anchor="middle">weighted visual prototypes</text>
+      </g>
+    </g>
+
+    <path class="line-red" d="M1588 590 C1476 732 1362 886 1314 972"/>
+    <path class="line-soft" d="M1025 1012 C1112 1002 1190 1000 1256 1008"/>
+    <path class="dash" d="M1228 1044 C1326 888 1390 528 1440 250"/>
+    <text class="tiny" x="1248" y="898">test-time prototype adaptation</text>
+    <text class="tiny" x="1166" y="1166" text-anchor="middle">conservative calibration: f_T -> f_T'</text>
+
+    <g id="global-image-feature">
+      <text class="feat-image-label" x="1262" y="394">Global image feature f_I</text>
+      <path class="line-image" d="M1186 806 C1224 650 1240 486 1268 442"/>
+      <g transform="translate(1268 406)">
+        <path class="feat-blue" d="M0 0 L112 0 L134 17 L22 17 Z"/>
+        <path class="feat-side" d="M112 0 L134 17 L134 49 L112 32 Z"/>
+        <rect class="feat-blue" x="0" y="0" width="112" height="32" rx="3"/>
+        <line x1="18" y1="16" x2="86" y2="16" stroke="#334e68" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="100" cy="16" r="6" fill="#334e68"/>
+      </g>
+    </g>
+
+    <g id="patch-image-feature">
+      <text class="feat-image-label" x="1236" y="826">Patch image feature f_I^p</text>
+      <path class="line-image" d="M1228 858 C1242 858 1254 858 1268 858"/>
+      <g transform="translate(1268 842)">
+        <path class="token-dpam" d="M0 0 L118 0 L140 17 L22 17 Z"/>
+        <path class="dpam-side" d="M118 0 L140 17 L140 49 L118 32 Z"/>
+        <rect class="token-dpam" x="0" y="0" width="118" height="32" rx="3"/>
+        <line x1="18" y1="16" x2="90" y2="16" stroke="#174f5d" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="104" cy="16" r="6" fill="#174f5d"/>
+      </g>
+    </g>
+
+  <g id="local-similarity">
+      <circle cx="1374" cy="612" r="14" fill="#555555"/>
+      <text class="badge-text" x="1374" y="617" text-anchor="middle">4</text>
+      <text class="small" x="1456" y="612" text-anchor="middle">Adapted patch text-image</text>
+      <text class="mid" x="1456" y="640" text-anchor="middle">Similarity</text>
+      <circle class="sim-hub" cx="1456" cy="692" r="44"/>
+      <circle class="sim-node" cx="1456" cy="692" r="34"/>
+      <g id="local-similarity-inputs">
+        <rect class="text-slot" x="1332" y="652" width="82" height="28" rx="3"/>
+        <text class="feat-text-label" x="1373" y="671" text-anchor="middle">text f_T'</text>
+        <rect class="image-slot" x="1332" y="720" width="82" height="28" rx="3"/>
+        <text class="feat-image-label" x="1373" y="739" text-anchor="middle">img f_I^p</text>
+      </g>
+      <path class="line-text" d="M1518 258 C1518 406 1452 570 1373 652"/>
+      <path class="line-image" d="M1408 858 C1382 812 1368 776 1373 748"/>
+      <path class="line-text" d="M1414 666 C1430 670 1440 680 1450 688"/>
+      <path class="line-image" d="M1414 734 C1432 728 1444 710 1450 698"/>
+      <text class="mid" x="1438" y="700">cos</text>
+      <text class="tiny" x="1456" y="744" text-anchor="middle">adapted cos(f_T', f_I^p)</text>
+    </g>
+
+    <path class="line-red" d="M1488 704 C1504 734 1516 762 1532 790"/>
+
+    <g id="similarity-map">
+      <text class="label" x="1643" y="748" text-anchor="middle">Similarity map</text>
+      <rect class="box" x="1518" y="778" width="250" height="214" rx="4"/>
+      <g transform="translate(1542 804)">
+        <rect class="heat0" x="0" y="0" width="36" height="36"/>
+        <rect class="heat1" x="40" y="0" width="36" height="36"/>
+        <rect class="heat2" x="80" y="0" width="36" height="36"/>
+        <rect class="heat0" x="120" y="0" width="36" height="36"/>
+        <rect class="heat1" x="160" y="0" width="36" height="36"/>
+        <rect class="heat1" x="0" y="40" width="36" height="36"/>
+        <rect class="heat2" x="40" y="40" width="36" height="36"/>
+        <rect class="heat3" x="80" y="40" width="36" height="36"/>
+        <rect class="heat2" x="120" y="40" width="36" height="36"/>
+        <rect class="heat0" x="160" y="40" width="36" height="36"/>
+        <rect class="heat0" x="0" y="80" width="36" height="36"/>
+        <rect class="heat3" x="40" y="80" width="36" height="36"/>
+        <rect class="heat4" x="80" y="80" width="36" height="36"/>
+        <rect class="heat3" x="120" y="80" width="36" height="36"/>
+        <rect class="heat1" x="160" y="80" width="36" height="36"/>
+        <rect class="heat0" x="0" y="120" width="36" height="36"/>
+        <rect class="heat2" x="40" y="120" width="36" height="36"/>
+        <rect class="heat3" x="80" y="120" width="36" height="36"/>
+        <rect class="heat4" x="120" y="120" width="36" height="36"/>
+        <rect class="heat2" x="160" y="120" width="36" height="36"/>
+      </g>
+      <text class="label" x="1568" y="1020">Anomaly score-map</text>
+      <text class="tiny" x="1594" y="1044">recomputed with f_T'</text>
+      <path class="line-soft" d="M1744 992 C1774 998 1792 1010 1802 1018"/>
+      <circle cx="1806" cy="1032" r="28" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+      <text class="mid" x="1796" y="1041">M</text>
+      <text class="label" x="1840" y="1041">Maximum</text>
+    </g>
+  </g>
+
+  <g id="legend">
+    <rect class="learn" x="70" y="1224" width="42" height="28" rx="2"/>
+    <text class="small" x="126" y="1245">Learned token</text>
+    <rect class="frozen-front" x="250" y="1224" width="42" height="28" rx="2"/>
+    <text class="small" x="306" y="1245">Frozen</text>
+
+    <rect class="dpam-front" x="426" y="1224" width="78" height="28" rx="2"/>
+    <text class="small" x="520" y="1245">DPAM layer</text>
+    <rect class="original-front" x="688" y="1224" width="78" height="28" rx="2"/>
+    <text class="small" x="784" y="1245">Original layer</text>
+
+    <circle class="sim-hub" cx="1018" cy="1238" r="23"/>
+    <circle cx="1018" cy="1238" r="17" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+    <path d="M1008 1238 C1014 1227 1024 1249 1030 1238" fill="none" stroke="#111111" stroke-width="1.8"/>
+    <text class="small" x="1048" y="1245">Cross-modal cosine scoring</text>
+
+    <path class="line-text" d="M1370 1238 C1390 1238 1408 1238 1426 1238"/>
+    <text class="small" x="1442" y="1245">Text/prototype flow</text>
+    <path class="line-image" d="M1642 1238 C1662 1238 1680 1238 1698 1238"/>
+    <text class="small" x="1714" y="1245">Image feature flow</text>
+
+  </g>
+</svg>

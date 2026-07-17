@@ -1,0 +1,11 @@
+dataset,method,pixel_auroc,pixel_aupro,image_auroc,image_ap,result_type,notes
+MVTec,Semantic-only prototype adaptation,91.6,85.2,93.7,97.1,current,No W in evidence weighting; reference for whether wavelet helps adaptation
+VisA,Semantic-only prototype adaptation,96.0,90.4,83.7,86.9,current,No W in evidence weighting; reference for whether wavelet helps adaptation
+MVTec,Direct wavelet fusion,88.7,80.4,92.9,96.9,current,Uses W only at final map level; negative control
+VisA,Direct wavelet fusion,94.6,85.1,81.6,84.8,current,Uses W only at final map level; negative control
+MVTec,HF-only W + prototype adaptation,91.6,85.3,94.0,97.2,current,W = HF; tests high-frequency reliability alone
+VisA,HF-only W + prototype adaptation,96.0,90.8,84.0,86.9,current,W = HF; tests high-frequency reliability alone
+MVTec,Boundary-aware W + prototype adaptation,91.7,85.7,93.8,97.3,current,W = HF * (1 - LF_edge); tests boundary-aware reliability
+VisA,Boundary-aware W + prototype adaptation,96.1,91.2,83.9,87.1,current,W = HF * (1 - LF_edge); tests boundary-aware reliability
+MVTec,Full boundary-aware W + conservative,91.8,86.2,94.1,97.4,current,Final method with conservative prototype update
+VisA,Full boundary-aware W + conservative,96.2,91.7,84.3,87.3,current,Final method with conservative prototype update

@@ -1,0 +1,5 @@
+dataset,class,rank,image,sample_path,image_path,match_error,visible_score,delta_iou,method_iou,method_pixel_ap
+mvtec,capsule,0,001.png,cache/mvtec_anomalyclip_features/samples/000257_capsule.pt,/Users/bytedance/Downloads/mvtec_anomaly_detection/capsule/test/scratch/001.png,0.000003,3.220153,0.600367,0.600367,0.807688
+visa,pcb3,0,093.JPG,cache/visa_anomalyclip_features/samples/001804_pcb3.pt,/Users/bytedance/Downloads/VisA_20220922/pcb3/Data/Images/Anomaly/093.JPG,0.000003,2.847741,0.528158,0.528158,0.678043
+mvtec,zipper,0,009.png,cache/mvtec_anomalyclip_features/samples/001602_zipper.pt,/Users/bytedance/Downloads/mvtec_anomaly_detection/zipper/test/split_teeth/009.png,0.000003,2.466671,0.477153,0.482055,0.683349
+mvtec,metal_nut,0,007.png,cache/mvtec_anomalyclip_features/samples/000891_metal_nut.pt,/Users/bytedance/Downloads/mvtec_anomaly_detection/metal_nut/test/bent/007.png,0.000002,1.976343,0.330046,0.330046,0.505167

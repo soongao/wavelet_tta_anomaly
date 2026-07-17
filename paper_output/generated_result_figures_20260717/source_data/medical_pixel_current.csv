@@ -1,0 +1,3 @@
+dataset,method,pixel_auroc,pixel_aupro,result_type,notes
+ISIC/ISBI,AnomalyCLIP baseline,88.7,78.6,current,Log: cached_results/medical_20260707/isbi_baseline_l123_sigma5/log.txt; cache: cache/medical_20260707/isbi_anomalyclip_features
+ISIC/ISBI,Full,89.9,80.0,current,Log: cached_results/medical_20260707/isbi_sigma8_l123/log.txt; setting: feature_map_layer 1 2 3 sigma 8

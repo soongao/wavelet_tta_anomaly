@@ -1,0 +1,11 @@
+dataset,method,pixel_auroc,pixel_aupro,image_auroc,image_ap,result_type,notes
+MVTec,AnomalyCLIP baseline,91.2,83.2,91.6,96.4,current,Cached baseline result
+MVTec,Full,91.8,85.6,94.5,97.6,current,Log: ablation_results/20260622_094146_component/mvtec/07_full_method/log.txt; vs table baselines = pAUROC second / pAUPRO best / iAUROC best / iAP best
+VisA,AnomalyCLIP baseline,95.5,86.7,82.0,85.3,current,Original AnomalyCLIP baseline
+VisA,Full,96.2,91.3,84.6,87.4,current,Log: ablation_results/20260622_094146_component/visa/07_full_method/log.txt; vs table baselines = pAUROC best / pAUPRO best / iAUROC second / iAP best
+MPDD,AnomalyCLIP baseline,96.9,84.6,73.7,76.5,current,Log: cached_results/three_datasets_20260628/mpdd_cached_baseline_l123/log.txt
+MPDD,Full,97.3,89.9,77.8,82.3,current,Log: cached_results/goal_20260707/mpdd_multicrop_partial_w025_sigma8_p2i/log.txt; vs table baselines = pAUROC best / pAUPRO best / iAUROC best / iAP best
+BTAD,AnomalyCLIP baseline,93.5,70.5,89.1,91.0,current,Log: cached_results/three_datasets_20260628/btad_cached_baseline_l123/log.txt
+BTAD,Full,96.3,78.2,93.9,94.9,current,Log: cached_results/goal_20260707/btad_full_multicrop_w085_sigma10_p2i030_w095/log.txt; vs table baselines = pAUROC second / pAUPRO best / iAUROC second / iAP second
+DTD-Synthetic,AnomalyCLIP baseline,97.4,89.1,94.5,97.7,current,Log: cached_results/three_datasets_20260628/dtd_cached_baseline_l123/log.txt
+DTD-Synthetic,Full,97.9,91.8,96.9,98.7,current,Log: cached_results/goal_20260707/dtd_final_no_strat_woven127_w075_sigma8_p2i0002_w05/log.txt; vs table baselines = pAUROC best-tie / pAUPRO second / iAUROC best / iAP best
