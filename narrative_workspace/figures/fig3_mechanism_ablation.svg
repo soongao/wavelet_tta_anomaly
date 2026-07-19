@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="470" viewBox="0 0 1120 470" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1120" height="470" fill="#ffffff"/>
+  <text x="560" y="32" text-anchor="middle" font-size="19" font-weight="bold" fill="#333">Where does the normal reference come from? — the mechanism ablation</text>
+
+  <!-- Four column cards, each = one variant -->
+  <!-- geometry -->
+  <!-- x centers: 150, 400, 650, 940(wider for Ours) -->
+
+  <!-- ===== DirectHF ===== -->
+  <rect x="40" y="70" width="220" height="300" rx="12" fill="#fbeeee" stroke="#e2b6b6"/>
+  <text x="150" y="98" text-anchor="middle" font-size="14" font-weight="bold" fill="#9c4b4b">DirectHF</text>
+  <text x="150" y="118" text-anchor="middle" font-size="11" fill="#9c4b4b">read HF, no reference</text>
+  <!-- diagram: HF -> directly to map -->
+  <rect x="70" y="135" width="70" height="40" rx="5" fill="#d9efe7" stroke="#9fccbb"/>
+  <text x="105" y="160" text-anchor="middle" font-size="11" fill="#2f6b57">HF</text>
+  <rect x="160" y="135" width="70" height="40" rx="5" fill="#f7dede" stroke="#d99"/>
+  <text x="195" y="160" text-anchor="middle" font-size="11" fill="#9c4b4b">Map</text>
+  <line x1="140" y1="155" x2="158" y2="155" stroke="#9c4b4b" stroke-width="2"/>
+  <text x="150" y="215" text-anchor="middle" font-size="12" fill="#9c4b4b" font-weight="bold">✗ pixel map collapses</text>
+  <!-- mini bar -->
+  <text x="150" y="245" text-anchor="middle" font-size="11" fill="#666">pixel AUROC</text>
+  <rect x="70" y="255" width="160" height="16" rx="3" fill="#eee"/>
+  <rect x="70" y="255" width="66" height="16" rx="3" fill="#d98b80"/>
+  <text x="150" y="290" text-anchor="middle" font-size="15" font-weight="bold" fill="#9c4b4b">82.5</text>
+  <text x="150" y="345" text-anchor="middle" font-size="10" fill="#9c4b4b">HF must not be used raw</text>
+
+  <!-- ===== GlobalRef ===== -->
+  <rect x="290" y="70" width="220" height="300" rx="12" fill="#fbf6ec" stroke="#e4d3a6"/>
+  <text x="400" y="98" text-anchor="middle" font-size="14" font-weight="bold" fill="#8a6d2e">GlobalRef</text>
+  <text x="400" y="118" text-anchor="middle" font-size="11" fill="#8a6d2e">HF, one fixed level</text>
+  <!-- diagram: dataset -> single threshold -->
+  <rect x="330" y="135" width="60" height="40" rx="5" fill="#e9e0c6" stroke="#cbbd93"/>
+  <text x="360" y="160" text-anchor="middle" font-size="10" fill="#8a6d2e">dataset</text>
+  <rect x="410" y="145" width="70" height="20" rx="3" fill="#f0e6c8" stroke="#cbbd93"/>
+  <text x="445" y="159" text-anchor="middle" font-size="10" fill="#8a6d2e">1 threshold</text>
+  <line x1="390" y1="155" x2="408" y2="155" stroke="#8a6d2e" stroke-width="2"/>
+  <text x="400" y="215" text-anchor="middle" font-size="12" fill="#8a6d2e" font-weight="bold">~ barely above baseline</text>
+  <text x="400" y="245" text-anchor="middle" font-size="11" fill="#666">pixel AUPRO</text>
+  <rect x="320" y="255" width="160" height="16" rx="3" fill="#eee"/>
+  <rect x="320" y="255" width="118" height="16" rx="3" fill="#d9c07a"/>
+  <text x="400" y="290" text-anchor="middle" font-size="15" font-weight="bold" fill="#8a6d2e">83.2</text>
+  <text x="400" y="345" text-anchor="middle" font-size="10" fill="#8a6d2e">one level can't fit all materials</text>
+
+  <!-- ===== SelfRef ===== -->
+  <rect x="540" y="70" width="220" height="300" rx="12" fill="#eef2f8" stroke="#b7c6dc"/>
+  <text x="650" y="98" text-anchor="middle" font-size="14" font-weight="bold" fill="#3d5a7d">SelfRef</text>
+  <text x="650" y="118" text-anchor="middle" font-size="11" fill="#3d5a7d">per-image, CLIP-only</text>
+  <!-- diagram: CLIP -> CLIP (closed loop) -->
+  <circle cx="620" cy="155" r="20" fill="#d6e4f0" stroke="#9dbdd8"/>
+  <text x="620" y="159" text-anchor="middle" font-size="10" fill="#2f4a63">CLIP</text>
+  <path d="M640,150 a18,14 0 1 1 0,10" fill="none" stroke="#3d5a7d" stroke-width="2"/>
+  <text x="695" y="159" text-anchor="middle" font-size="10" fill="#3d5a7d">self-loop</text>
+  <text x="650" y="215" text-anchor="middle" font-size="12" fill="#3d5a7d" font-weight="bold">strong, but blind to</text>
+  <text x="650" y="231" text-anchor="middle" font-size="12" fill="#3d5a7d" font-weight="bold">CLIP's own misses</text>
+  <text x="650" y="252" text-anchor="middle" font-size="11" fill="#666">pixel AUPRO</text>
+  <rect x="570" y="260" width="160" height="16" rx="3" fill="#eee"/>
+  <rect x="570" y="260" width="139" height="16" rx="3" fill="#7f9cc0"/>
+  <text x="650" y="295" text-anchor="middle" font-size="15" font-weight="bold" fill="#3d5a7d">84.6</text>
+  <text x="650" y="345" text-anchor="middle" font-size="10" fill="#3d5a7d">reference from CLIP alone → ceiling</text>
+
+  <!-- ===== Ours ===== -->
+  <rect x="790" y="60" width="290" height="320" rx="12" fill="#fdeae4" stroke="#e29a8e" stroke-width="2"/>
+  <text x="935" y="90" text-anchor="middle" font-size="15" font-weight="bold" fill="#8a3f34">Ours</text>
+  <text x="935" y="110" text-anchor="middle" font-size="11" fill="#8a3f34">per-image ref, HF-guided selection</text>
+  <!-- diagram: CLIP + HF -> per-image ref -->
+  <circle cx="835" cy="150" r="18" fill="#d6e4f0" stroke="#9dbdd8"/>
+  <text x="835" y="154" text-anchor="middle" font-size="9" fill="#2f4a63">CLIP</text>
+  <rect x="815" y="180" width="40" height="26" rx="4" fill="#d9efe7" stroke="#9fccbb"/>
+  <text x="835" y="197" text-anchor="middle" font-size="9" fill="#2f6b57">HF</text>
+  <rect x="905" y="158" width="120" height="42" rx="6" fill="#fbd9d0" stroke="#e29a8e"/>
+  <text x="965" y="178" text-anchor="middle" font-size="10" fill="#8a3f34">per-image</text>
+  <text x="965" y="192" text-anchor="middle" font-size="10" fill="#8a3f34">normal reference</text>
+  <line x1="853" y1="152" x2="903" y2="172" stroke="#8a3f34" stroke-width="2"/>
+  <line x1="855" y1="193" x2="903" y2="184" stroke="#8a3f34" stroke-width="2"/>
+  <text x="935" y="232" text-anchor="middle" font-size="12" font-weight="bold" fill="#8a3f34">✓ best; recovers CLIP's misses</text>
+  <text x="935" y="255" text-anchor="middle" font-size="11" fill="#666">pixel AUPRO</text>
+  <rect x="815" y="263" width="240" height="18" rx="3" fill="#eee"/>
+  <rect x="815" y="263" width="215" height="18" rx="3" fill="#e57f70"/>
+  <text x="935" y="308" text-anchor="middle" font-size="17" font-weight="bold" fill="#8a3f34">85.8</text>
+  <text x="935" y="352" text-anchor="middle" font-size="10" fill="#8a3f34">per-image + HF-external signal</text>
+
+  <!-- monotonic chain arrow at bottom -->
+  <text x="560" y="415" text-anchor="middle" font-size="13" fill="#444" font-weight="bold">Reading (pixel AUPRO):  DirectHF 73.0  &lt;  Baseline 81.4  &lt;  GlobalRef 83.2  &lt;  SelfRef 84.6  &lt;  Ours 85.8</text>
+  <text x="560" y="440" text-anchor="middle" font-size="12" fill="#666" font-style="italic">Each removed component drops the score in a specific, interpretable way — this ordering is the mechanism evidence.</text>
+</svg>

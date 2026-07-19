@@ -1,0 +1,90 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand*\HyPL@Entry[1]{}
+\citation{radford2021clip}
+\citation{jeong2023winclip}
+\citation{zhou2024anomalyclip}
+\citation{qu2024vcpclip}
+\citation{ma2025aaclip}
+\citation{gong2025feclip}
+\citation{jeong2023winclip}
+\citation{zhou2024anomalyclip}
+\citation{qu2024vcpclip}
+\citation{ma2025aaclip}
+\HyPL@Entry{0<</S/D>>}
+\@writefile{toc}{\contentsline {section}{\numberline {1}引言}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{引言}{section.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{贡献。}{1}{paragraph*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}相关工作}{1}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{1}{相关工作}{section.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{基于 CLIP 的零样本异常检测。}{1}{paragraph*.3}\protected@file@percent }
+\citation{gong2025feclip}
+\citation{jeong2023winclip}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces CLIP patch 特征的高频响应对缺陷（a）敏感，但对正常粗糙材质（b）同样敏感。单一固定阈值无法区分“异常”与“材质”。我们的方法估计每张图自己的正常高频水平，只标记超出该逐图参照的部分。}}{2}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:motivation}{{1}{2}{CLIP patch 特征的高频响应对缺陷（a）敏感，但对正常粗糙材质（b）同样敏感。单一固定阈值无法区分“异常”与“材质”。我们的方法估计每张图自己的正常高频水平，只标记超出该逐图参照的部分。}{figure.caption.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{面向异常检测的频率方法。}{2}{paragraph*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{测试时与参照式适配。}{2}{paragraph*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}方法}{2}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{2}{方法}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}观察与问题形式化}{2}{subsection.3.1}\protected@file@percent }
+\newlabel{obs:ambiguity}{{1}{2}{}{observation.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}读取高频}{2}{subsection.3.2}\protected@file@percent }
+\citation{bergmann2019mvtec}
+\citation{zou2022visa}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}证据选择}{3}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}逐图正常参照}{3}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}实验}{3}{section.4}\protected@file@percent }
+\newlabel{sec:experiments}{{4}{3}{实验}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}设置}{3}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}主结果}{3}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}分析与消融}{3}{section.5}\protected@file@percent }
+\newlabel{sec:analysis}{{5}{3}{分析与消融}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}正常参照从哪来}{3}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}增益从哪来}{3}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}召回 CLIP 的盲区}{3}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}稳定性、运行时与敏感性}{3}{subsection.5.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces 整体框架。测试图经冻结的 CLIP 得到 patch 特征，分为语义支（$S_0$）与频率支（Haar DWT $\to \mathrm  {HF}/W$）；两者汇入证据选择，进而估计\emph  {逐图正常参照}（保守更新，无训练），最后重算得到异常图。$W$ 提供独立于 CLIP 语义的高频依据。}}{4}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:arch}{{2}{4}{整体框架。测试图经冻结的 CLIP 得到 patch 特征，分为语义支（$S_0$）与频率支（Haar DWT $\to \mathrm {HF}/W$）；两者汇入证据选择，进而估计\emph {逐图正常参照}（保守更新，无训练），最后重算得到异常图。$W$ 提供独立于 CLIP 语义的高频依据。}{figure.caption.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 五个数据集主结果。指标为 pixel AUROC / pixel AUPRO / image AUROC / image AP（\%），加粗为更优。（数值为预期目标，待真实实验替换）}}{4}{table.caption.7}\protected@file@percent }
+\newlabel{tab:main}{{1}{4}{五个数据集主结果。指标为 pixel AUROC / pixel AUPRO / image AUROC / image AP（\%），加粗为更优。（数值为预期目标，待真实实验替换）}{table.caption.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces MVTec 零样本对比。$^{*}$ 为待核对的外部数值；Ours 为预期目标。iAUROC、pAUROC、pAUPRO 分别指 image AUROC、pixel AUROC、pixel AUPRO。}}{4}{table.caption.8}\protected@file@percent }
+\newlabel{tab:sota}{{2}{4}{MVTec 零样本对比。$^{*}$ 为待核对的外部数值；Ours 为预期目标。iAUROC、pAUROC、pAUPRO 分别指 image AUROC、pixel AUROC、pixel AUPRO。}{table.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}定性结果}{4}{subsection.5.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces 正常参照的来源（MVTec，pixel AUPRO）。清晰单调序，每拆掉一个环节都以可解释的方式下降。}}{4}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:ordering}{{3}{4}{正常参照的来源（MVTec，pixel AUPRO）。清晰单调序，每拆掉一个环节都以可解释的方式下降。}{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6}设计消融}{4}{subsection.5.6}\protected@file@percent }
+\bibstyle{plain}
+\bibdata{references}
+\bibcite{bergmann2019mvtec}{1}
+\bibcite{gong2025feclip}{2}
+\bibcite{jeong2023winclip}{3}
+\bibcite{ma2025aaclip}{4}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces 核心机制消融（MVTec / VisA，全指标）。数值为预期目标。}}{5}{table.caption.9}\protected@file@percent }
+\newlabel{tab:ablation}{{3}{5}{核心机制消融（MVTec / VisA，全指标）。数值为预期目标。}{table.caption.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces 分类别 pixel AUPRO 增益（MVTec）。增益集中于纹理/微缺陷类，物体类持平。}}{5}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:percat}{{4}{5}{分类别 pixel AUPRO 增益（MVTec）。增益集中于纹理/微缺陷类，物体类持平。}{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}结论}{5}{section.6}\protected@file@percent }
+\newlabel{sec:conclusion}{{6}{5}{结论}{section.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{局限。}{5}{paragraph*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{未来工作。}{5}{paragraph*.17}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces CLIP 盲区召回。SelfRef 对自身盲区召回为 $0$（定义如此），Ours 召回 $22\%$/$18\%$。}}{5}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:blind}{{5}{5}{CLIP 盲区召回。SelfRef 对自身盲区召回为 $0$（定义如此），Ours 召回 $22\%$/$18\%$。}{figure.caption.12}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces 正常图假阳性面积（越低越好）与运行时。数值为预期目标。}}{5}{table.caption.13}\protected@file@percent }
+\newlabel{tab:stability}{{4}{5}{正常图假阳性面积（越低越好）与运行时。数值为预期目标。}{table.caption.13}{}}
+\bibcite{qu2024vcpclip}{5}
+\bibcite{radford2021clip}{6}
+\bibcite{zhou2024anomalyclip}{7}
+\bibcite{zou2022visa}{8}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces 超参敏感性（MVTec，pixel AUPRO）。(b) wavelet-mix 兼作机制曲线——高频过多反而有害。}}{6}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:sens}{{6}{6}{超参敏感性（MVTec，pixel AUPRO）。(b) wavelet-mix 兼作机制曲线——高频过多反而有害。}{figure.caption.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces 设计消融（MVTec）。数值为预期目标。}}{6}{table.caption.15}\protected@file@percent }
+\newlabel{tab:design}{{5}{6}{设计消融（MVTec）。数值为预期目标。}{table.caption.15}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}正交增强与全局设置}{6}{appendix.A}\protected@file@percent }
+\newlabel{sec:appendix}{{A}{6}{正交增强与全局设置}{appendix.A}{}}
+\@writefile{toc}{\contentsline {paragraph}{正交增强。}{6}{paragraph*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{全局设置 vs 逐数据集调参。}{6}{paragraph*.20}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 全局设置 vs 逐数据集调参上界（pixel AUPRO，\%）。数值为预期目标。}}{6}{table.caption.21}\protected@file@percent }
+\newlabel{tab:global}{{6}{6}{全局设置 vs 逐数据集调参上界（pixel AUPRO，\%）。数值为预期目标。}{table.caption.21}{}}
+\@writefile{toc}{\contentsline {paragraph}{可复现性说明。}{6}{paragraph*.22}\protected@file@percent }
+\gdef \@abspage@last{6}

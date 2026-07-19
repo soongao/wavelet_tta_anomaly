@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="560" viewBox="0 0 1280 560" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#5b5b5b"/>
+    </marker>
+    <marker id="arrowLight" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#9aa7b5"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1280" height="560" fill="#ffffff"/>
+
+  <!-- title -->
+  <text x="640" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">Per-Image Normal Reference Estimation for CLIP's High-Frequency Anomaly Cues</text>
+
+  <!-- ================= INPUT ================= -->
+  <rect x="30" y="220" width="90" height="90" rx="8" fill="#eef1f4" stroke="#c9d3dd"/>
+  <text x="75" y="200" text-anchor="middle" font-size="13" fill="#555">Test Image</text>
+  <rect x="42" y="232" width="66" height="66" rx="4" fill="#dfe6ee"/>
+  <rect x="70" y="258" width="16" height="10" rx="2" fill="#f2b7b0"/>
+  <text x="75" y="330" text-anchor="middle" font-size="11" fill="#888">(one image, no labels)</text>
+
+  <!-- ================= CLIP ENCODER (frozen) ================= -->
+  <rect x="160" y="205" width="120" height="120" rx="10" fill="#d6e4f0" stroke="#9dbdd8"/>
+  <text x="220" y="252" text-anchor="middle" font-size="14" font-weight="bold" fill="#2f4a63">CLIP</text>
+  <text x="220" y="270" text-anchor="middle" font-size="12" fill="#2f4a63">Visual Encoder</text>
+  <!-- lock icon (frozen) -->
+  <rect x="205" y="285" width="30" height="22" rx="3" fill="#f7fbff" stroke="#6f93b3"/>
+  <path d="M212,285 v-6 a8,8 0 0 1 16,0 v6" fill="none" stroke="#6f93b3" stroke-width="2"/>
+  <text x="220" y="322" text-anchor="middle" font-size="10" fill="#6f93b3">frozen</text>
+
+  <!-- patch feature grid -->
+  <rect x="315" y="215" width="100" height="100" rx="6" fill="#eef4fa" stroke="#b9cfe2"/>
+  <g stroke="#b9cfe2" fill="#dbe8f4">
+    <rect x="323" y="223" width="26" height="26"/><rect x="352" y="223" width="26" height="26"/><rect x="381" y="223" width="26" height="26"/>
+    <rect x="323" y="252" width="26" height="26"/><rect x="352" y="252" width="26" height="26"/><rect x="381" y="252" width="26" height="26"/>
+    <rect x="323" y="281" width="26" height="26"/><rect x="352" y="281" width="26" height="26"/><rect x="381" y="281" width="26" height="26"/>
+  </g>
+  <text x="365" y="335" text-anchor="middle" font-size="12" fill="#555">Patch Features (H×W×C)</text>
+
+  <!-- arrows input->clip->grid -->
+  <line x1="120" y1="265" x2="156" y2="265" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="280" y1="265" x2="311" y2="265" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ================= BRANCH A: SEMANTIC ================= -->
+  <rect x="470" y="120" width="150" height="90" rx="10" fill="#dfeaf6" stroke="#a9c5de"/>
+  <text x="545" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="#2f4a63">Semantic Score</text>
+  <text x="545" y="172" text-anchor="middle" font-size="12" fill="#40607d">normal / abnormal</text>
+  <text x="545" y="189" text-anchor="middle" font-size="12" fill="#40607d">text prototypes → S0</text>
+
+  <!-- ================= BRANCH B: FREQUENCY ================= -->
+  <rect x="470" y="330" width="150" height="120" rx="10" fill="#d9efe7" stroke="#9fccbb"/>
+  <text x="545" y="356" text-anchor="middle" font-size="13" font-weight="bold" fill="#2f6b57">Read High-Freq.</text>
+  <text x="545" y="376" text-anchor="middle" font-size="12" fill="#356b58">Haar DWT on features</text>
+  <text x="545" y="396" text-anchor="middle" font-size="11" fill="#356b58">LL = structure (low)</text>
+  <text x="545" y="412" text-anchor="middle" font-size="11" fill="#356b58">HF = |LH|+|HL|+|HH|</text>
+  <text x="545" y="434" text-anchor="middle" font-size="11" fill="#356b58">W = HF · (1 − LF_edge)</text>
+
+  <!-- grid -> branches -->
+  <path d="M415,245 C440,245 445,165 466,165" fill="none" stroke="#9aa7b5" stroke-width="2" marker-end="url(#arrowLight)"/>
+  <path d="M415,285 C440,285 445,385 466,385" fill="none" stroke="#9aa7b5" stroke-width="2" marker-end="url(#arrowLight)"/>
+
+  <!-- ================= EVIDENCE SELECTION ================= -->
+  <rect x="675" y="215" width="150" height="130" rx="10" fill="#fbebcb" stroke="#e6c78a"/>
+  <text x="750" y="245" text-anchor="middle" font-size="13" font-weight="bold" fill="#7a5a1e">Evidence Select</text>
+  <text x="750" y="268" text-anchor="middle" font-size="11" fill="#7a5a1e">trustworthy-normal</text>
+  <text x="750" y="284" text-anchor="middle" font-size="11" fill="#7a5a1e">= low S0 &amp; low W</text>
+  <text x="750" y="306" text-anchor="middle" font-size="11" fill="#7a5a1e">abnormal-evidence</text>
+  <text x="750" y="322" text-anchor="middle" font-size="11" fill="#7a5a1e">= high S0 &amp; high W</text>
+
+  <!-- branches -> evidence -->
+  <path d="M620,165 C650,165 650,255 671,255" fill="none" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M620,390 C650,390 650,305 671,305" fill="none" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ================= PER-IMAGE NORMAL REFERENCE ================= -->
+  <rect x="875" y="205" width="165" height="150" rx="10" fill="#fbe0da" stroke="#e6a89f"/>
+  <text x="957" y="233" text-anchor="middle" font-size="13" font-weight="bold" fill="#8a3f34">Per-Image Normal</text>
+  <text x="957" y="250" text-anchor="middle" font-size="13" font-weight="bold" fill="#8a3f34">Reference</text>
+  <text x="957" y="274" text-anchor="middle" font-size="11" fill="#8a3f34">estimate v_normal , v_abn</text>
+  <text x="957" y="292" text-anchor="middle" font-size="11" fill="#8a3f34">from selected patches</text>
+  <text x="957" y="314" text-anchor="middle" font-size="11" fill="#8a3f34">conservative update</text>
+  <text x="957" y="330" text-anchor="middle" font-size="11" fill="#8a3f34">(no training / backprop)</text>
+  <rect x="905" y="337" width="30" height="14" rx="3" fill="#fff3f0" stroke="#c98a7f"/>
+  <path d="M911,337 v-4 a5,5 0 0 1 10,0 v4" fill="none" stroke="#c98a7f" stroke-width="1.5"/>
+
+  <line x1="825" y1="280" x2="871" y2="280" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ================= OUTPUT ================= -->
+  <rect x="1095" y="225" width="150" height="110" rx="10" fill="#eef1f4" stroke="#c9d3dd"/>
+  <text x="1170" y="252" text-anchor="middle" font-size="13" font-weight="bold" fill="#444">Anomaly Map</text>
+  <text x="1170" y="272" text-anchor="middle" font-size="11" fill="#666">recompute score vs</text>
+  <text x="1170" y="288" text-anchor="middle" font-size="11" fill="#666">per-image reference</text>
+  <rect x="1130" y="298" width="80" height="30" rx="3" fill="#f7e8e6"/>
+  <ellipse cx="1160" cy="313" rx="12" ry="8" fill="#e57f70"/>
+
+  <line x1="1040" y1="280" x2="1091" y2="280" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- deviation label -->
+  <text x="1067" y="270" text-anchor="middle" font-size="10" fill="#8a3f34">deviation</text>
+
+  <!-- legend -->
+  <rect x="30" y="500" width="16" height="12" fill="#d6e4f0" stroke="#9dbdd8"/>
+  <text x="52" y="510" font-size="11" fill="#555">CLIP / semantic</text>
+  <rect x="180" y="500" width="16" height="12" fill="#d9efe7" stroke="#9fccbb"/>
+  <text x="202" y="510" font-size="11" fill="#555">frequency (read HF)</text>
+  <rect x="345" y="500" width="16" height="12" fill="#fbebcb" stroke="#e6c78a"/>
+  <text x="367" y="510" font-size="11" fill="#555">evidence selection</text>
+  <rect x="500" y="500" width="16" height="12" fill="#fbe0da" stroke="#e6a89f"/>
+  <text x="522" y="510" font-size="11" fill="#555">per-image reference (TTA, training-free)</text>
+
+  <text x="957" y="380" text-anchor="middle" font-size="11" fill="#8a3f34" font-style="italic">key module: normal reference is estimated per image</text>
+</svg>

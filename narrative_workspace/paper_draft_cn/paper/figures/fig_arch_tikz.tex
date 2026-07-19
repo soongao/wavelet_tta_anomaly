@@ -1,0 +1,37 @@
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[
+  font=\footnotesize,
+  node distance=6mm,
+  mod/.style={rounded corners=3pt,draw=black!35,thick,minimum height=1.05cm,align=center,inner sep=3pt},
+  flow/.style={-{Latex[length=2mm]},thick,black!55},
+]
+% input
+\node[mod,fill=cBase!30,minimum width=1.5cm] (img) {测试图\\\scriptsize 无标签};
+% CLIP frozen
+\node[mod,fill=cClip!30,right=of img,minimum width=1.7cm] (clip) {CLIP 编码器\\\scriptsize（冻结）};
+% patch features
+\node[mod,fill=cClip!15,right=of clip,minimum width=1.7cm] (feat) {Patch 特征\\\scriptsize $H\times W\times C$};
+% semantic branch
+\node[mod,fill=cClip!25,above right=2mm and 8mm of feat,minimum width=2.0cm] (sem) {语义分数\\\scriptsize normal/abnormal $\to S_0$};
+% frequency branch
+\node[mod,fill=cFreq!25,below right=2mm and 8mm of feat,minimum width=2.2cm] (freq) {读取高频\\\scriptsize Haar DWT: $\mathrm{HF}$\\\scriptsize $W=\mathrm{HF}\cdot(1-\mathrm{LF\text{-}edge})$};
+% evidence
+\node[mod,fill=cGlobal!25,right=14mm of feat,minimum width=2.0cm,yshift=0mm] (evi) {证据选择\\\scriptsize 正常: 低$S_0$ \& 低$W$\\\scriptsize 异常: 高$S_0$ \& 高$W$};
+% per-image reference (highlight)
+\node[mod,fill=cOurs!25,draw=cOurs!70,very thick,right=of evi,minimum width=2.2cm] (ref) {\textbf{逐图正常参照}\\\scriptsize 估计 $v_\mathrm{n},v_\mathrm{a}$\\\scriptsize 保守更新，无训练};
+% output
+\node[mod,fill=cBase!30,right=of ref,minimum width=1.6cm] (out) {异常图\\\scriptsize 相对参照的偏离};
+
+\draw[flow] (img)--(clip);
+\draw[flow] (clip)--(feat);
+\draw[flow] (feat.east) to[out=30,in=180] (sem.west);
+\draw[flow] (feat.east) to[out=-30,in=180] (freq.west);
+\draw[flow] (sem.east) to[out=0,in=110] (evi.north);
+\draw[flow] (freq.east) to[out=0,in=-110] (evi.south);
+\draw[flow] (evi)--(ref);
+\draw[flow] (ref)--(out);
+\end{tikzpicture}
+\caption{整体框架。测试图经冻结的 CLIP 得到 patch 特征，分为语义支（$S_0$）与频率支（Haar DWT $\to \mathrm{HF}/W$）；两者汇入证据选择，进而估计\emph{逐图正常参照}（保守更新，无训练），最后重算得到异常图。$W$ 提供独立于 CLIP 语义的高频依据。}
+\label{fig:arch}
+\end{figure*}

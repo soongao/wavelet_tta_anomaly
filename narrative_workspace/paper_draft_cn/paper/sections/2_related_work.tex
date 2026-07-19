@@ -1,0 +1,11 @@
+\section{相关工作}
+\label{sec:related}
+
+\paragraph{基于 CLIP 的零样本异常检测。}
+WinCLIP~\cite{jeong2023winclip} 首次将 CLIP 用于 ZSAD，采用组合式提示集成与多尺度窗口特征对齐；它明确指出 CLIP 只在全局 embedding 上对齐，密集像素级对齐是困难的，其失败案例正是微小缺陷与需要参照的逻辑异常。AnomalyCLIP~\cite{zhou2024anomalyclip} 学习物体无关（object-agnostic）的文本原型，以聚焦“哪里不对”而非“是什么物体”。VCP-CLIP~\cite{qu2024vcpclip} 将视觉上下文注入文本提示，AA-CLIP~\cite{ma2025aaclip} 在文本与视觉空间构建“异常感知”表征。这些方法都是在语义、文本或特征空间\emph{增加能力}；我们则主张这种能力部分已经存在，缺的是校准。
+
+\paragraph{面向异常检测的频率方法。}
+FE-CLIP~\cite{gong2025feclip} 用 DCT 把频率信息经适配器注入 CLIP 视觉编码器特征。相关工作进一步在 CLIP 特征上做小波分解或按频域截止分高/低频双分支。这些工作表明“频率对 ZSAD 有用”已是共识，但它们都把频率作为\emph{特征融入}（fuse-in），且大多需要训练。我们与之的根本区别是\emph{读取并建参照}（read-and-reference）而非融入：我们不引入新特征、不训练，只读取 CLIP 已有的高频，并将其用于估计逐图参照；直接融合在我们这里是\emph{负控}，它会使异常图崩盘（见 \secref{sec:analysis}）。
+
+\paragraph{测试时与参照式适配。}
+WinCLIP+~\cite{jeong2023winclip} 需要少量正常参照图。近期的测试时方法或用高置信伪标签更新可学习提示，或用合成伪异常做适配，或用记忆检索。这些方法要么需要参照图、合成或检索，要么其引导信号来自 CLIP 自身，易陷入自证闭环。据我们所知，尚无工作用一个\emph{独立于 CLIP 语义}的信号，在单张测试图上估计正常参照——这正是本文的定位。

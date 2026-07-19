@@ -1,0 +1,80 @@
+\documentclass[10pt,twocolumn,fontset=none]{ctexart}
+\usepackage{xeCJK}
+% 按文件路径加载 CJK 字体（最稳健，避免按名查找失败）
+\setCJKmainfont{Songti.ttc}[Path=/System/Library/Fonts/Supplemental/,BoldFont=STHeiti Medium.ttc,BoldFeatures={Path=/System/Library/Fonts/}]
+\setCJKsansfont{STHeiti Medium.ttc}[Path=/System/Library/Fonts/]
+\setCJKmonofont{STHeiti Light.ttc}[Path=/System/Library/Fonts/]
+\setCJKfamilyfont{zhsong}{Songti.ttc}[Path=/System/Library/Fonts/Supplemental/]
+\setCJKfamilyfont{zhhei}{STHeiti Medium.ttc}[Path=/System/Library/Fonts/]
+\setCJKfamilyfont{zhkai}{STHeiti Light.ttc}[Path=/System/Library/Fonts/]
+\setCJKfamilyfont{zhfs}{STHeiti Light.ttc}[Path=/System/Library/Fonts/]
+
+% ==== 页面与排版 ====
+\usepackage[a4paper,margin=1.9cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,backgrounds}
+\usepackage[hidelinks]{hyperref}
+% cleveref 不可用，改用带中文类型前缀的引用宏
+\newcommand{\figref}[1]{图~\ref{#1}}
+\newcommand{\tabref}[1]{表~\ref{#1}}
+\newcommand{\secref}[1]{第~\ref{#1}~节}
+\newcommand{\obsref}[1]{观察~\ref{#1}}
+\newcommand{\eqnref}[1]{式~(\ref{#1})}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{enumitem}
+
+\graphicspath{{figures/}}
+\captionsetup{font=small,labelfont=bf}
+\setlength{\parskip}{0.15em}
+\setlength{\emergencystretch}{2em}  % 吸收中英混排长行，避免 overfull
+
+% ==== 颜色（与图示统一）====
+\definecolor{cBase}{HTML}{B8C4D0}
+\definecolor{cClip}{HTML}{7F9CC0}
+\definecolor{cFreq}{HTML}{7CC0A6}
+\definecolor{cGlobal}{HTML}{D9C07A}
+\definecolor{cBad}{HTML}{D98B80}
+\definecolor{cOurs}{HTML}{E57F70}
+\definecolor{cInk}{HTML}{333333}
+
+% ==== 数学记号 ====
+\input{math_commands}
+
+% ==== 定理环境 ====
+\newtheorem{observation}{观察}
+
+\title{\bfseries 读取而非融合：面向零样本异常检测的\\ CLIP 高频异常线索逐图正常参照估计}
+\author{匿名作者}
+\date{}
+
+\begin{document}
+\twocolumn[
+\begin{@twocolumnfalse}
+\maketitle
+\begin{abstract}
+\input{sections/0_abstract}
+\end{abstract}
+\vspace{1.2em}
+\end{@twocolumnfalse}
+]
+
+\input{sections/1_introduction}
+\input{sections/2_related_work}
+\input{sections/3_method}
+\input{sections/4_experiments}
+\input{sections/5_analysis}
+\input{sections/6_conclusion}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\appendix
+\input{sections/A_appendix}
+
+\end{document}
