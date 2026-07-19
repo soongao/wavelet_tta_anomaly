@@ -380,6 +380,11 @@ INPUT ./figures/fig_blindspot.pdf
 INPUT ./figures/fig_blindspot.pdf
 INPUT ./figures/fig_sensitivity.pdf
 INPUT ./figures/fig_sensitivity.pdf
+INPUT ./figures/fig_qualitative_placeholder.tex
+INPUT ./figures/fig_qualitative_placeholder.tex
+INPUT ./figures/fig_qualitative_placeholder.tex
+INPUT ./figures/fig_qualitative_placeholder.tex
+INPUT figures/fig_qualitative_placeholder.tex
 INPUT ./sections/6_conclusion.tex
 INPUT ./sections/6_conclusion.tex
 INPUT ./sections/6_conclusion.tex

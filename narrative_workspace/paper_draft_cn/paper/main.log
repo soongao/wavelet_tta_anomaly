@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.4.21)  19 JUL 2026 17:17
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.4.21)  19 JUL 2026 17:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1310,11 +1310,11 @@ File: figures/fig_blindspot.pdf Graphic file (type pdf)
 <use figures/fig_blindspot.pdf>
 File: figures/fig_sensitivity.pdf Graphic file (type pdf)
 <use figures/fig_sensitivity.pdf>
-[3]
+[3] (./figures/fig_qualitative_placeholder.tex)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-Overfull \hbox (4.28221pt too wide) in paragraph at lines 109--118
+Overfull \hbox (4.28221pt too wide) in paragraph at lines 111--120
  [][] 
  []
 
@@ -1337,7 +1337,7 @@ Underfull \hbox (badness 5954) in paragraph at lines 59--64
 []\TU/lmr/m/n/10 Yang Zou, Jongheon Jeong, Latha Pemula,
  []
 
-) (./sections/A_appendix.tex) [6] (./main.aux)
+) (./sections/A_appendix.tex) [6] [7] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2022/07/14>
@@ -1346,12 +1346,12 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: ED5C474A852C388C0BCC6FC0B0085026;1744.
  ) 
 Here is how much of TeX's memory you used:
- 30149 strings out of 469709
- 676877 string characters out of 5466023
- 1085186 words of memory out of 5000000
- 58252 multiletter control sequences out of 15000+600000
- 637940 words of font info for 116 fonts, out of 8000000 for 9000
+ 30175 strings out of 469709
+ 677617 string characters out of 5466023
+ 1108573 words of memory out of 5000000
+ 58274 multiletter control sequences out of 15000+600000
+ 637948 words of font info for 117 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 93i,10n,104p,700b,835s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,15n,104p,700b,835s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.xdv (6 pages, 187012 bytes).
+Output written on main.xdv (7 pages, 219596 bytes).

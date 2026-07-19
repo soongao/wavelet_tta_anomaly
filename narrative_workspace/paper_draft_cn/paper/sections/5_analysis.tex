@@ -95,7 +95,9 @@ SelfRef & 96.1 & 89.8 & 84.4 & 87.3 \\
 \end{figure}
 
 \subsection{定性结果}
-我们进一步展示异常图热力图对比（输入 / 真值 / Baseline / SelfRef / 高频图 $W$ / Ours）：高频图 $W$ 在正常粗糙材质上同样明亮（印证 \obsref{obs:ambiguity} 的歧义），SelfRef 在纹理类缺陷上漏检而 Ours 能捞回，且 Ours 在物体类不劣于 SelfRef（不退化）。该图需真实推理结果生成，此处从略。
+我们进一步展示异常图热力图对比（输入 / 真值 / Baseline / SelfRef / 高频图 $W$ / Ours），如 \figref{fig:qualitative} 所示。预期呈现：高频图 $W$ 在正常粗糙材质上同样明亮（印证 \obsref{obs:ambiguity} 的歧义），SelfRef 在纹理类缺陷上漏检而 Ours 能捞回，且 Ours 在物体类不劣于 SelfRef（不退化）。该图为占位版，待真实推理结果生成后替换。
+
+\input{figures/fig_qualitative_placeholder}
 
 \subsection{设计消融}
 \tabref{tab:design} 表明：边界感知（减结构边界）相对裸高频提升 pixel AUPRO $+0.8$；保守更新相对 NoCons 不降检测且正常图更稳。

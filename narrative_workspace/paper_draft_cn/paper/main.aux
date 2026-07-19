@@ -66,8 +66,8 @@
 \newlabel{fig:percat}{{4}{5}{分类别 pixel AUPRO 增益（MVTec）。增益集中于纹理/微缺陷类，物体类持平。}{figure.caption.11}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}结论}{5}{section.6}\protected@file@percent }
 \newlabel{sec:conclusion}{{6}{5}{结论}{section.6}{}}
-\@writefile{toc}{\contentsline {paragraph}{局限。}{5}{paragraph*.16}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{未来工作。}{5}{paragraph*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{局限。}{5}{paragraph*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{未来工作。}{5}{paragraph*.18}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces CLIP 盲区召回。SelfRef 对自身盲区召回为 $0$（定义如此），Ours 召回 $22\%$/$18\%$。}}{5}{figure.caption.12}\protected@file@percent }
 \newlabel{fig:blind}{{5}{5}{CLIP 盲区召回。SelfRef 对自身盲区召回为 $0$（定义如此），Ours 召回 $22\%$/$18\%$。}{figure.caption.12}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces 正常图假阳性面积（越低越好）与运行时。数值为预期目标。}}{5}{table.caption.13}\protected@file@percent }
@@ -78,13 +78,15 @@
 \bibcite{zou2022visa}{8}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces 超参敏感性（MVTec，pixel AUPRO）。(b) wavelet-mix 兼作机制曲线——高频过多反而有害。}}{6}{figure.caption.14}\protected@file@percent }
 \newlabel{fig:sens}{{6}{6}{超参敏感性（MVTec，pixel AUPRO）。(b) wavelet-mix 兼作机制曲线——高频过多反而有害。}{figure.caption.14}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces 设计消融（MVTec）。数值为预期目标。}}{6}{table.caption.15}\protected@file@percent }
-\newlabel{tab:design}{{5}{6}{设计消融（MVTec）。数值为预期目标。}{table.caption.15}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces 设计消融（MVTec）。数值为预期目标。}}{6}{table.caption.16}\protected@file@percent }
+\newlabel{tab:design}{{5}{6}{设计消融（MVTec）。数值为预期目标。}{table.caption.16}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {A}正交增强与全局设置}{6}{appendix.A}\protected@file@percent }
 \newlabel{sec:appendix}{{A}{6}{正交增强与全局设置}{appendix.A}{}}
-\@writefile{toc}{\contentsline {paragraph}{正交增强。}{6}{paragraph*.19}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{全局设置 vs 逐数据集调参。}{6}{paragraph*.20}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 全局设置 vs 逐数据集调参上界（pixel AUPRO，\%）。数值为预期目标。}}{6}{table.caption.21}\protected@file@percent }
-\newlabel{tab:global}{{6}{6}{全局设置 vs 逐数据集调参上界（pixel AUPRO，\%）。数值为预期目标。}{table.caption.21}{}}
-\@writefile{toc}{\contentsline {paragraph}{可复现性说明。}{6}{paragraph*.22}\protected@file@percent }
-\gdef \@abspage@last{6}
+\@writefile{toc}{\contentsline {paragraph}{正交增强。}{6}{paragraph*.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{全局设置 vs 逐数据集调参。}{6}{paragraph*.21}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 全局设置 vs 逐数据集调参上界（pixel AUPRO，\%）。数值为预期目标。}}{6}{table.caption.22}\protected@file@percent }
+\newlabel{tab:global}{{6}{6}{全局设置 vs 逐数据集调参上界（pixel AUPRO，\%）。数值为预期目标。}{table.caption.22}{}}
+\@writefile{toc}{\contentsline {paragraph}{可复现性说明。}{6}{paragraph*.23}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \textbf  {定性对比（占位图，待真实推理结果替换）}。列依次为：输入、真值掩码、Baseline 异常图、SelfRef（纯 CLIP 语义参照）异常图、高频可靠性图 $W$、Ours 异常图。前四行为 MVTec（纹理类 carpet/grid/wood + 物体类 bottle），末行为 VisA。预期呈现：$W$ 列在正常粗糙材质上整片明亮（印证 观察~\ref {obs:ambiguity} 的歧义），SelfRef 列在纹理与微缺陷上漏检，Ours 列准确捞回；物体类（bottle）Ours 与 SelfRef 相当，不退化。热力图统一采用同一色标与归一化。}}{7}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:qualitative}{{7}{7}{\textbf {定性对比（占位图，待真实推理结果替换）}。列依次为：输入、真值掩码、Baseline 异常图、SelfRef（纯 CLIP 语义参照）异常图、高频可靠性图 $W$、Ours 异常图。前四行为 MVTec（纹理类 carpet/grid/wood + 物体类 bottle），末行为 VisA。预期呈现：$W$ 列在正常粗糙材质上整片明亮（印证 \obsref {obs:ambiguity} 的歧义），SelfRef 列在纹理与微缺陷上漏检，Ours 列准确捞回；物体类（bottle）Ours 与 SelfRef 相当，不退化。热力图统一采用同一色标与归一化。}{figure.caption.15}{}}
+\gdef \@abspage@last{7}
