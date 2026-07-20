@@ -102,7 +102,7 @@ HFProto & 96.2 & 90.3 & 84.7 & 87.6 \\
 \subsection{定性结果}
 我们规划展示输入、真值、Baseline、SemanticProto、频谱可靠性 $W$ 与 Ours，如 \figref{fig:qualitative} 所示。定性图需要同时说明两点：$W$ 可以在缺陷附近响应，但在正常纹理和结构边界上也可能明亮；Ours 并非复制 $W$，而是通过校准语义原型抑制不可靠响应。该图为占位版，待真实推理结果生成后替换。
 
-\input{figures/fig_qualitative_placeholder}
+\input{figures/paper/fig_qualitative_placeholder}
 
 \subsection{设计消融}
 \tabref{tab:design} 规划比较裸高频、边界感知可靠性和保守更新。只有当边界感知相对 HFProto 提升，且保守更新在不损失平均指标的同时降低正常图误报，才能分别支持两个设计。

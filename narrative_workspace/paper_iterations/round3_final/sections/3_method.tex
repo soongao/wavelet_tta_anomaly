@@ -61,6 +61,6 @@ $t_{\mathrm n},t_{\mathrm a}\in\R^C$。初始语义异常概率为
 
 最后，使用 $\tilde t_{\mathrm n},\tilde t_{\mathrm a}$ 在各选定层重新计算 \eqnref{eq:s0}，并对层级结果求和或平均得到最终异常图。频率图不参与最终分数融合。新增模块在测试时不反传，也不更新 CLIP 或 AnomalyCLIP 参数；目标类别标签与像素标注只用于评测。\figref{fig:arch} 给出整体框架。
 
-\input{figures/fig_arch_tikz}
+\input{figures/paper/fig_arch_tikz}
 
 multi-crop 聚合与 pixel-to-image 融合属于与本文机制正交的评测增强。为避免把工程增益与核心贡献混淆，正文将纯原型路径和带增强路径分开报告，并在\secref{sec:appendix}说明其作用。

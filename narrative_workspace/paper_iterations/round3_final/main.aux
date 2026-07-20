@@ -1,0 +1,101 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand*\HyPL@Entry[1]{}
+\citation{radford2021clip}
+\citation{jeong2023winclip}
+\citation{zhou2024anomalyclip}
+\citation{jeong2023winclip}
+\citation{li2024promptad}
+\citation{zhou2024anomalyclip}
+\citation{cao2024adaclip}
+\citation{qu2024vcpclip}
+\citation{ma2025aaclip}
+\HyPL@Entry{0<</S/D>>}
+\@writefile{toc}{\contentsline {section}{\numberline {1}引言}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{引言}{section.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{贡献。}{1}{paragraph*.2}\protected@file@percent }
+\citation{gong2025feclip}
+\citation{jeong2023winclip}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces CLIP patch 特征的高频响应对缺陷（a）敏感，但对正常粗糙材质（b）同样敏感。高频因而不能独立充当异常分数。本文将其作为语义证据的可靠性因子，用于构造逐图视觉原型，而最终异常图仍由校准后的语义原型产生。}}{2}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:motivation}{{1}{2}{CLIP patch 特征的高频响应对缺陷（a）敏感，但对正常粗糙材质（b）同样敏感。高频因而不能独立充当异常分数。本文将其作为语义证据的可靠性因子，用于构造逐图视觉原型，而最终异常图仍由校准后的语义原型产生。}{figure.caption.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}相关工作}{2}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{2}{相关工作}{section.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{基于 CLIP 的零样本异常检测。}{2}{paragraph*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{面向异常检测的频率方法。}{2}{paragraph*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{测试时与参照式适配。}{2}{paragraph*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}方法}{2}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{2}{方法}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}问题设定与初始语义分数}{2}{subsection.3.1}\protected@file@percent }
+\newlabel{eq:s0}{{1}{2}{问题设定与初始语义分数}{equation.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}读取高频}{2}{subsection.3.2}\protected@file@percent }
+\newlabel{eq:hf}{{2}{2}{读取高频}{equation.2}{}}
+\newlabel{eq:w}{{3}{2}{读取高频}{equation.3}{}}
+\citation{bergmann2019mvtec}
+\citation{zou2022visa}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}语义--频谱证据权重}{3}{subsection.3.3}\protected@file@percent }
+\newlabel{eq:wa}{{4}{3}{语义--频谱证据权重}{equation.4}{}}
+\newlabel{eq:wn}{{5}{3}{语义--频谱证据权重}{equation.5}{}}
+\newlabel{eq:vproto}{{6}{3}{语义--频谱证据权重}{equation.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}保守的逐图文本原型校准}{3}{subsection.3.4}\protected@file@percent }
+\newlabel{eq:update}{{8}{3}{保守的逐图文本原型校准}{equation.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}实验}{3}{section.4}\protected@file@percent }
+\newlabel{sec:experiments}{{4}{3}{实验}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}设置}{3}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{两条报告口径。}{3}{paragraph*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{预注册分析协议。}{3}{paragraph*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}主结果}{3}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}分析与消融}{3}{section.5}\protected@file@percent }
+\newlabel{sec:analysis}{{5}{3}{分析与消融}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}频谱可靠性在逐图原型中的作用}{3}{subsection.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces 整体框架。测试图经冻结的 CLIP 得到 patch 特征，分为语义支（$S_0$）与频率支（Haar DWT $\to \mathrm  {HF}/W$）；$W$ 以弱调制方式改变正常/异常 patch 的证据权重，进而构造逐图视觉原型并保守校准固定文本原型。最终异常图由校准后的语义相似度重算得到，而非由频率图直接融合。}}{4}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:arch}{{2}{4}{整体框架。测试图经冻结的 CLIP 得到 patch 特征，分为语义支（$S_0$）与频率支（Haar DWT $\to \mathrm {HF}/W$）；$W$ 以弱调制方式改变正常/异常 patch 的证据权重，进而构造逐图视觉原型并保守校准固定文本原型。最终异常图由校准后的语义相似度重算得到，而非由频率图直接融合。}{figure.caption.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Enhanced 口径下五个数据集的主结果骨架。指标为 pixel AUROC / pixel AUPRO / image AUROC / image AP（\%）。所有数字均为预期目标，仅用于冻结实验判据。}}{4}{table.caption.9}\protected@file@percent }
+\newlabel{tab:main}{{1}{4}{Enhanced 口径下五个数据集的主结果骨架。指标为 pixel AUROC / pixel AUPRO / image AUROC / image AP（\%）。所有数字均为预期目标，仅用于冻结实验判据。}{table.caption.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces MVTec 零样本对比。$^{*}$ 为待核对的外部数值；Ours 为预期目标。iAUROC、pAUROC、pAUPRO 分别指 image AUROC、pixel AUROC、pixel AUPRO。}}{4}{table.caption.10}\protected@file@percent }
+\newlabel{tab:sota}{{2}{4}{MVTec 零样本对比。$^{*}$ 为待核对的外部数值；Ours 为预期目标。iAUROC、pAUROC、pAUPRO 分别指 image AUROC、pixel AUROC、pixel AUPRO。}{table.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces 逐图原型与频谱可靠性的作用（MVTec，pixel AUPRO，占位目标）。正式版本应以真实结果检验 Baseline、SemanticProto、HFProto 与 Ours 的差异。}}{4}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:ordering}{{3}{4}{逐图原型与频谱可靠性的作用（MVTec，pixel AUPRO，占位目标）。正式版本应以真实结果检验 Baseline、SemanticProto、HFProto 与 Ours 的差异。}{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}增益从哪来}{4}{subsection.5.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces 核心机制消融骨架（MVTec / VisA，全指标）。数值为预期目标。}}{5}{table.caption.11}\protected@file@percent }
+\newlabel{tab:ablation}{{3}{5}{核心机制消融骨架（MVTec / VisA，全指标）。数值为预期目标。}{table.caption.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces 分类别 pixel AUPRO 的目标模式（MVTec，占位图）。正式版本比较 Ours 与 SemanticProto，检验增益是否集中在纹理/微缺陷类。}}{5}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:percat}{{4}{5}{分类别 pixel AUPRO 的目标模式（MVTec，占位图）。正式版本比较 Ours 与 SemanticProto，检验增益是否集中在纹理/微缺陷类。}{figure.caption.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}语义原型漏检子集}{5}{subsection.5.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 语义原型漏检子集的召回目标（占位图）。正式版本必须报告阈值来源、子集规模、召回增量、非子集误报增量及置信区间。}}{5}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:blind}{{5}{5}{语义原型漏检子集的召回目标（占位图）。正式版本必须报告阈值来源、子集规模、召回增量、非子集误报增量及置信区间。}{figure.caption.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces 正常图假阳性面积（越低越好）与运行时。数值为预期目标。}}{5}{table.caption.15}\protected@file@percent }
+\newlabel{tab:stability}{{4}{5}{正常图假阳性面积（越低越好）与运行时。数值为预期目标。}{table.caption.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}稳定性、运行时与敏感性}{5}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}定性结果}{5}{subsection.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6}设计消融}{5}{subsection.5.6}\protected@file@percent }
+\bibstyle{plain}
+\bibdata{references}
+\bibcite{bergmann2019mvtec}{1}
+\bibcite{cao2024adaclip}{2}
+\bibcite{gong2025feclip}{3}
+\bibcite{jeong2023winclip}{4}
+\bibcite{li2024promptad}{5}
+\bibcite{ma2025aaclip}{6}
+\bibcite{qu2024vcpclip}{7}
+\bibcite{radford2021clip}{8}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces 超参敏感性（MVTec，pixel AUPRO）。(b) wavelet-mix 兼作机制曲线——高频过多反而有害。}}{6}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:sens}{{6}{6}{超参敏感性（MVTec，pixel AUPRO）。(b) wavelet-mix 兼作机制曲线——高频过多反而有害。}{figure.caption.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces 设计消融（MVTec）。数值为预期目标。}}{6}{table.caption.18}\protected@file@percent }
+\newlabel{tab:design}{{5}{6}{设计消融（MVTec）。数值为预期目标。}{table.caption.18}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}结论}{6}{section.6}\protected@file@percent }
+\newlabel{sec:conclusion}{{6}{6}{结论}{section.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{局限。}{6}{paragraph*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{未来工作。}{6}{paragraph*.20}\protected@file@percent }
+\bibcite{zhou2024anomalyclip}{9}
+\bibcite{zou2022visa}{10}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \textbf  {定性对比（占位图，待真实推理结果替换）}。列依次为：输入、真值掩码、Baseline 异常图、SemanticProto（纯语义逐图原型）异常图、频谱可靠性 $W$、Ours 异常图。前四行为 MVTec（纹理类 carpet/grid/wood + 物体类 bottle），末行为 VisA。正式结果应展示：$W$ 在缺陷附近响应，但在正常纹理与结构边界上也可能明亮；SemanticProto 在部分纹理与微缺陷上漏检；Ours 通过原型校准改善定位，同时在物体类上不退化。热力图统一采用同一色标与归一化。}}{7}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:qualitative}{{7}{7}{\textbf {定性对比（占位图，待真实推理结果替换）}。列依次为：输入、真值掩码、Baseline 异常图、SemanticProto（纯语义逐图原型）异常图、频谱可靠性 $W$、Ours 异常图。前四行为 MVTec（纹理类 carpet/grid/wood + 物体类 bottle），末行为 VisA。正式结果应展示：$W$ 在缺陷附近响应，但在正常纹理与结构边界上也可能明亮；SemanticProto 在部分纹理与微缺陷上漏检；Ours 通过原型校准改善定位，同时在物体类上不退化。热力图统一采用同一色标与归一化。}{figure.caption.17}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}正交增强与全局设置}{7}{appendix.A}\protected@file@percent }
+\newlabel{sec:appendix}{{A}{7}{正交增强与全局设置}{appendix.A}{}}
+\@writefile{toc}{\contentsline {paragraph}{Pure / Enhanced 口径。}{7}{paragraph*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{全局设置 vs 逐数据集调参。}{7}{paragraph*.23}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 全局设置 vs 逐数据集调参上界（pixel AUPRO，\%）。数值为预期目标。}}{7}{table.caption.24}\protected@file@percent }
+\newlabel{tab:global}{{6}{7}{全局设置 vs 逐数据集调参上界（pixel AUPRO，\%）。数值为预期目标。}{table.caption.24}{}}
+\@writefile{toc}{\contentsline {paragraph}{可复现性说明。}{8}{paragraph*.25}\protected@file@percent }
+\gdef \@abspage@last{8}
