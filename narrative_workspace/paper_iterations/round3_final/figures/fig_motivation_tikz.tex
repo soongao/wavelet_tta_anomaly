@@ -1,0 +1,48 @@
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[
+  font=\small,
+  box/.style={rounded corners=2pt,draw=black!30,thick},
+  lbl/.style={font=\footnotesize\bfseries,text=cInk},
+]
+% ===== 左：光滑物体+缺陷 =====
+\node[lbl] at (1.6,3.3) {(a) 光滑物体 + 缺陷};
+% input
+\node[box,fill=cBase!35,minimum width=2.4cm,minimum height=1.5cm] (ia) at (1.6,2.2) {};
+\fill[cBad] (1.35,2.35) rectangle (2.05,2.5);
+\node[font=\scriptsize,text=black!55] at (1.6,1.25) {输入};
+% HF response
+\node[box,fill=cFreq!22,minimum width=2.4cm,minimum height=1.5cm] (ha) at (1.6,-0.6) {};
+\fill[cFreq] (1.35,-0.45) rectangle (2.05,-0.3);
+\node[font=\scriptsize,text=cFreq!60!black] at (1.6,-1.55) {缺陷凸显（好）};
+
+% ===== 右：粗糙正常纹理 =====
+\node[lbl] at (6.0,3.3) {(b) 粗糙材质，正常};
+\node[box,fill=cBase!35,minimum width=2.4cm,minimum height=1.5cm] (ib) at (6.0,2.2) {};
+\foreach \y in {1.65,1.85,2.05,2.25,2.45,2.65}{\draw[black!35,line width=0.5pt] (4.85,\y)--(7.15,\y);}
+\node[font=\scriptsize,text=black!55] at (6.0,1.25) {无缺陷};
+\node[box,fill=cFreq!22,minimum width=2.4cm,minimum height=1.5cm] (hb) at (6.0,-0.6) {};
+\foreach \y in {-1.15,-0.95,-0.75,-0.55,-0.35,-0.15}{\draw[cFreq!80!black,line width=0.6pt,opacity=0.75] (4.85,\y)--(7.15,\y);}
+\node[font=\scriptsize,text=cGlobal!45!black] at (6.0,-1.55) {整片变亮（坏）};
+
+% 行标题
+\node[lbl,rotate=90,text=cFreq!60!black] at (-0.35,-0.6) {CLIP 高频响应};
+\node[lbl,rotate=90,text=black!55] at (-0.35,2.2) {输入 / 真值};
+
+% 箭头
+\draw[-{Latex[length=2mm]},black!55] (ia) -- (ha);
+\draw[-{Latex[length=2mm]},black!55] (ib) -- (hb);
+
+% ===== 中间洞察框 =====
+\node[box,fill=cGlobal!18,draw=cGlobal!70,minimum width=3.2cm,align=center,font=\footnotesize] (ins) at (9.9,1.7)
+{\textbf{相同的高频幅度}\\[1pt] 在 (a) 是异常\\ 在 (b) 是正常\\[2pt]\textbf{$\Rightarrow$ 固定阈值失效}};
+
+% ===== 解法框 =====
+\node[box,fill=cOurs!18,draw=cOurs!70,minimum width=6.6cm,align=center,font=\footnotesize] (sol) at (11.6,-0.9)
+{\textbf{本文思路：} 高频不直接评分；它只调制语义证据，\\用于构造逐图视觉原型并校准固定文本原型};
+
+\draw[-{Latex[length=2mm]},cOurs!70,thick] (ins) -- (sol);
+\end{tikzpicture}
+\caption{CLIP patch 特征的高频响应对缺陷（a）敏感，但对正常粗糙材质（b）同样敏感。高频因而不能独立充当异常分数。本文将其作为语义证据的可靠性因子，用于构造逐图视觉原型，而最终异常图仍由校准后的语义原型产生。}
+\label{fig:motivation}
+\end{figure*}

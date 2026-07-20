@@ -1,0 +1,58 @@
+\begin{figure*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.0}
+% —— 占位定性图：待真实推理结果生成后替换为 \includegraphics ——
+% 每个格子标注该位置应放的图像内容；灰底=占位框
+\newcommand{\ph}[2]{% #1=底色, #2=格内说明
+  \begin{tikzpicture}
+    \node[draw=black!25,fill=#1,minimum width=2.05cm,minimum height=2.05cm,
+          inner sep=1pt,align=center,font=\scriptsize,text=black!55]{#2};
+  \end{tikzpicture}}
+\begin{tabular}{c cccccc}
+ & \textbf{输入} & \textbf{真值 GT} & \textbf{Baseline} & \textbf{SemanticProto} & \textbf{可靠性 $W$} & \textbf{Ours} \\[2pt]
+% ---- 行1：纹理类 carpet ----
+\rotatebox{90}{\scriptsize carpet}
+ & \ph{black!6}{原图}
+ & \ph{black!6}{GT\\掩码}
+ & \ph{cClip!12}{异常图\\偏弱}
+ & \ph{cClip!12}{语义原型\\漏检}
+ & \ph{cFreq!14}{全片亮\\(含正常纹理)}
+ & \ph{cOurs!16}{准确\\定位} \\
+% ---- 行2：纹理类 grid ----
+\rotatebox{90}{\scriptsize grid}
+ & \ph{black!6}{原图}
+ & \ph{black!6}{GT\\掩码}
+ & \ph{cClip!12}{异常图\\偏弱}
+ & \ph{cClip!12}{语义原型\\漏检}
+ & \ph{cFreq!14}{全片亮}
+ & \ph{cOurs!16}{准确\\定位} \\
+% ---- 行3：纹理类 wood ----
+\rotatebox{90}{\scriptsize wood}
+ & \ph{black!6}{原图}
+ & \ph{black!6}{GT\\掩码}
+ & \ph{cClip!12}{异常图\\偏弱}
+ & \ph{cClip!12}{部分\\漏检}
+ & \ph{cFreq!14}{全片亮}
+ & \ph{cOurs!16}{准确\\定位} \\
+% ---- 行4：物体类 bottle（展示不退化）----
+\rotatebox{90}{\scriptsize bottle}
+ & \ph{black!6}{原图}
+ & \ph{black!6}{GT\\掩码}
+ & \ph{cClip!12}{可定位}
+ & \ph{cClip!12}{可定位}
+ & \ph{cFreq!14}{缺陷处亮}
+ & \ph{cOurs!16}{与语义原型\\相当} \\
+% ---- 行5：VisA pcb（跨数据集）----
+\rotatebox{90}{\scriptsize \shortstack{VisA\\pcb}}
+ & \ph{black!6}{原图}
+ & \ph{black!6}{GT\\掩码}
+ & \ph{cClip!12}{异常图\\偏弱}
+ & \ph{cClip!12}{漏检\\微缺陷}
+ & \ph{cFreq!14}{全片亮}
+ & \ph{cOurs!16}{捞回\\微缺陷} \\
+\end{tabular}
+\caption{\textbf{定性对比（占位图，待真实推理结果替换）}。列依次为：输入、真值掩码、Baseline 异常图、SemanticProto（纯语义逐图原型）异常图、频谱可靠性 $W$、Ours 异常图。前四行为 MVTec（纹理类 carpet/grid/wood + 物体类 bottle），末行为 VisA。正式结果应展示：$W$ 在缺陷附近响应，但在正常纹理与结构边界上也可能明亮；SemanticProto 在部分纹理与微缺陷上漏检；Ours 通过原型校准改善定位，同时在物体类上不退化。热力图统一采用同一色标与归一化。}
+\label{fig:qualitative}
+\end{figure*}

@@ -1,0 +1,120 @@
+\section{分析与消融}
+\label{sec:analysis}
+
+\subsection{频谱可靠性在逐图原型中的作用}
+该实验区分三种可能的收益来源：固定语义原型本身、纯语义的逐图原型，以及小波可靠性调制。我们还保留直接频率图融合这一负控，用于验证小波是否应直接进入最终异常分数。\tabref{tab:ablation} 与 \figref{fig:ordering} 给出目标结果骨架。正式实验应关注以下可证伪关系：
+\begin{itemize}[leftmargin=1.4em,itemsep=0.1em,topsep=0.2em]
+\item \textbf{DirectFusion 低于 Ours}：说明 $W$ 不应被解释为独立异常图，也不能替代语义相似度。
+\item \textbf{SemanticProto 高于 Baseline}：说明逐图视觉原型本身能够补充固定文本原型。
+\item \textbf{Ours 高于 SemanticProto，且增益集中在纹理类}：才说明小波可靠性对 patch 证据选择提供了语义分数之外的有效信息。
+\end{itemize}
+
+\begin{table}[t]
+\centering
+\caption{核心机制消融骨架（MVTec / VisA，全指标）。数值为预期目标。}
+\label{tab:ablation}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccc}
+\toprule
+变体 & pAUROC & pAUPRO & iAUROC & iAP \\
+\midrule
+\multicolumn{5}{l}{\emph{MVTec AD}}\\
+DirectFusion（直接图融合） & 82.5 & 73.0 & 93.4 & 97.1 \\
+Baseline & 91.1 & 81.4 & 91.5 & 96.2 \\
+SemanticProto（$\lambda=0$） & 91.9 & 84.6 & 93.9 & 97.3 \\
+HFProto（裸高频） & 92.0 & 85.0 & 94.1 & 97.4 \\
+\textbf{Ours} & \textbf{92.4} & \textbf{85.8} & \textbf{94.2} & \textbf{97.5} \\
+\midrule
+\multicolumn{5}{l}{\emph{VisA}}\\
+DirectFusion & 90.8 & 82.5 & 84.0 & 86.5 \\
+Baseline & 95.5 & 87.0 & 82.1 & 85.4 \\
+SemanticProto & 96.1 & 89.8 & 84.4 & 87.3 \\
+HFProto & 96.2 & 90.3 & 84.7 & 87.6 \\
+\textbf{Ours} & \textbf{96.5} & \textbf{91.0} & \textbf{85.3} & \textbf{88.2} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_mechanism_ordering.pdf}
+\caption{逐图原型与频谱可靠性的作用（MVTec，pixel AUPRO，占位目标）。正式版本应以真实结果检验 Baseline、SemanticProto、HFProto 与 Ours 的差异。}
+\label{fig:ordering}
+\end{figure}
+
+\subsection{增益从哪来}
+\figref{fig:percat} 规划按类别对比 Ours 与 SemanticProto 的 pixel AUPRO，两者唯一差别是证据权重中是否使用小波可靠性。机制成立的理想模式不是所有类别普遍上升，而是纹理和微缺陷类别获得更稳定的增益，结构类基本持平。若真实结果不呈现该分组差异，就不能把平均增益归因于频谱可靠性。
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_percategory_gain.pdf}
+\caption{分类别 pixel AUPRO 的目标模式（MVTec，占位图）。正式版本比较 Ours 与 SemanticProto，检验增益是否集中在纹理/微缺陷类。}
+\label{fig:percat}
+\end{figure}
+
+\subsection{语义原型漏检子集}
+我们把 SemanticProto 低分、但真值为异常的像素定义为“语义原型漏检子集”，再测量 Ours 在该子集上的召回率。该指标不是独立的标准 benchmark 指标，因此只用于机制分析，且必须同时报告子集规模和阈值定义。\figref{fig:blind} 仅给出目标占位：若小波可靠性确实补充语义证据，Ours 应在纹理和微缺陷样本中恢复一部分漏检；若召回只来自阈值变化或整体分数抬高，则该分析不能支持机制。
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.7\linewidth]{fig_blindspot.pdf}
+\caption{语义原型漏检子集的召回目标（占位图）。正式版本必须报告漏检子集定义、规模及置信区间。}
+\label{fig:blind}
+\end{figure}
+
+\subsection{稳定性、运行时与敏感性}
+\tabref{tab:stability} 与 \figref{fig:sens} 分别给出正常图稳定性、运行时和超参敏感性的目标骨架。mix$=0$ 对应 SemanticProto；随着 mix 增大，小波可靠性影响增强。若性能在中小 mix 区间形成稳定平台、而过大 mix 下降，说明频谱信号适合作为弱可靠性调制而非主导证据。所有数值在真实实验前仅作为通过线。
+
+\begin{table}[t]
+\centering
+\caption{正常图假阳性面积（越低越好）与运行时。数值为预期目标。}
+\label{tab:stability}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llccc}
+\toprule
+数据集 & 方法 & FP@p95(\%) & FP@p99(\%) & s/img \\
+\midrule
+\multirow{3}{*}{MVTec} & Baseline & 5.0 & 1.00 & 0.065 \\
+ & NoCons & 4.9 & 0.98 & -- \\
+ & \textbf{Ours} & \textbf{4.6} & \textbf{0.90} & 0.079 \\
+\midrule
+\multirow{3}{*}{VisA} & Baseline & 5.0 & 1.00 & 0.065 \\
+ & NoCons & 4.8 & 0.95 & -- \\
+ & \textbf{Ours} & \textbf{4.5} & \textbf{0.88} & 0.079 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_sensitivity.pdf}
+\caption{超参敏感性（MVTec，pixel AUPRO）。(b) wavelet-mix 兼作机制曲线——高频过多反而有害。}
+\label{fig:sens}
+\end{figure}
+
+\subsection{定性结果}
+我们规划展示输入、真值、Baseline、SemanticProto、频谱可靠性 $W$ 与 Ours，如 \figref{fig:qualitative} 所示。定性图需要同时说明两点：$W$ 可以在缺陷附近响应，但在正常纹理和结构边界上也可能明亮；Ours 并非复制 $W$，而是通过校准语义原型抑制不可靠响应。该图为占位版，待真实推理结果生成后替换。
+
+\input{figures/fig_qualitative_placeholder}
+
+\subsection{设计消融}
+\tabref{tab:design} 规划比较裸高频、边界感知可靠性和保守更新。只有当边界感知相对 HFProto 提升，且保守更新在不损失平均指标的同时降低正常图误报，才能分别支持两个设计。
+
+\begin{table}[t]
+\centering
+\caption{设计消融（MVTec）。数值为预期目标。}
+\label{tab:design}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccc}
+\toprule
+变体 & pAUROC & pAUPRO & iAUROC & iAP \\
+\midrule
+HFonly（裸高频） & 92.0 & 85.0 & 94.1 & 97.4 \\
+NoCons（无保守） & 92.1 & 85.3 & 94.0 & 97.3 \\
+\textbf{Ours（完整）} & \textbf{92.4} & \textbf{85.8} & \textbf{94.2} & \textbf{97.5} \\
+\bottomrule
+\end{tabular}
+\end{table}

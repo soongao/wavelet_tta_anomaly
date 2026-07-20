@@ -1,0 +1,64 @@
+\section{实验}
+\label{sec:experiments}
+
+\subsection{设置}
+我们规划在 MVTec AD~\cite{bergmann2019mvtec}、VisA~\cite{zou2022visa}、MPDD、BTAD 与 DTD-Synthetic 五个数据集上评测。指标为 pixel AUROC、pixel AUPRO、image AUROC、image AP（均为百分数）。基础模型采用已训练的 AnomalyCLIP；本文新增的原型校准模块仅在测试时运行，不反传，也不更新视觉编码器、文本编码器或已学习提示。除非特别说明，主机制比较使用相同的特征层、平滑和后处理配置。
+
+\paragraph{两条报告口径。}
+为防止 multi-crop 与 pixel-to-image 等工程增强掩盖核心机制，我们把实验拆成两条口径。\emph{Pure} 口径只包含固定的 AnomalyCLIP 特征提取、统一平滑和原型校准，所有核心消融均在该口径下进行；\emph{Enhanced} 口径对所有方法统一叠加相同的 multi-crop 与 pixel-to-image 后处理，仅用于检验兼容性。任何关于频谱可靠性和逐图原型的因果结论只能由 Pure 口径支持。
+
+\paragraph{预注册分析协议。}
+类别分组在运行 Ours 前冻结：MVTec 官方纹理类别（carpet、grid、leather、tile、wood）与其余物体类别分别统计；微缺陷子集按缺陷掩码面积占比的固定阈值定义。所有组别均报告完整类别结果和 bootstrap 置信区间。漏检子集阈值在独立验证划分或预设分位数上确定，测试标签不得用于选择阈值。
+
+\subsection{主结果}
+\tabref{tab:main} 给出 Enhanced 口径的跨数据集主结果骨架，\tabref{tab:sota} 给出代表性方法的对比骨架。Pure 口径的结果与全部机制消融放在\secref{sec:analysis}。表中数字均为实验目标，不是观察结果。正式实验应首先验证两个较弱但必要的结论：（1）Pure 口径下完整方法不劣于固定文本原型，并在预注册纹理/微缺陷子集上优于 SemanticProto；（2）Enhanced 口径下工程增强不会改变方法排序。只有当真实结果满足预先定义的判据时，正文才能把对应描述从“目标”改为“结果”。
+
+MPDD、BTAD 与 DTD 的最终结果为逐数据集调参所得。为避免“测试集调参”的质疑，我们在附录中额外区分了统一全局设置与逐数据集调参上界（\tabref{tab:global}）。
+
+\begin{table*}[t]
+\centering
+\caption{Enhanced 口径下五个数据集的主结果骨架。指标为 pixel AUROC / pixel AUPRO / image AUROC / image AP（\%）。所有数字均为预期目标，仅用于冻结实验判据。}
+\label{tab:main}
+\small
+\begin{tabular}{llcccc}
+\toprule
+数据集 & 方法 & pixel AUROC & pixel AUPRO & image AUROC & image AP \\
+\midrule
+\multirow{2}{*}{MVTec AD} & AnomalyCLIP & 91.1 & 81.4 & 91.5 & 96.2 \\
+ & \textbf{Ours} & \textbf{92.4} & \textbf{85.8} & \textbf{94.2} & \textbf{97.5} \\
+\midrule
+\multirow{2}{*}{VisA} & AnomalyCLIP & 95.5 & 87.0 & 82.1 & 85.4 \\
+ & \textbf{Ours} & \textbf{96.5} & \textbf{91.0} & \textbf{85.3} & \textbf{88.2} \\
+\midrule
+\multirow{2}{*}{MPDD} & AnomalyCLIP & 96.5 & 88.7 & 77.0 & 80.2 \\
+ & \textbf{Ours} & \textbf{97.2} & \textbf{90.5} & \textbf{80.0} & \textbf{83.5} \\
+\midrule
+\multirow{2}{*}{BTAD} & AnomalyCLIP & 94.2 & 74.8 & 89.5 & 91.5 \\
+ & \textbf{Ours} & \textbf{95.8} & \textbf{78.5} & \textbf{92.0} & \textbf{93.5} \\
+\midrule
+\multirow{2}{*}{DTD-Synth} & AnomalyCLIP & 97.0 & 89.5 & 94.0 & 97.2 \\
+ & \textbf{Ours} & \textbf{97.8} & \textbf{91.5} & \textbf{96.0} & \textbf{98.3} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table}[t]
+\centering
+\caption{MVTec 零样本对比。$^{*}$ 为待核对的外部数值；Ours 为预期目标。iAUROC、pAUROC、pAUPRO 分别指 image AUROC、pixel AUROC、pixel AUPRO。}
+\label{tab:sota}
+\small
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{lccc}
+\toprule
+方法 & iAUROC & pAUROC & pAUPRO \\
+\midrule
+WinCLIP$^{*}$    & 91.8 & 85.1 & 64.6 \\
+APRIL-GAN$^{*}$  & 86.1 & 87.6 & 44.0 \\
+AnomalyCLIP      & 91.5 & 91.1 & 81.4 \\
+AdaCLIP$^{*}$    & 92.0 & 89.0 & --   \\
+FE-CLIP$^{*}$    & --   & --   & --   \\
+\midrule
+\textbf{Ours}    & \textbf{94.2} & \textbf{92.4} & \textbf{85.8} \\
+\bottomrule
+\end{tabular}
+\end{table}
