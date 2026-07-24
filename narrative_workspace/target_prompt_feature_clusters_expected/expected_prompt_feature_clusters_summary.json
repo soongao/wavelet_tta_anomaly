@@ -1,0 +1,22 @@
+{
+  "type": "expected_target_pattern_not_measured_result",
+  "generic_prompt": [
+    0.0,
+    0.0
+  ],
+  "visual_cue_center": [
+    0.36,
+    0.6
+  ],
+  "frequency_cue_center": [
+    0.7,
+    0.38
+  ],
+  "detailed_prompt_center": [
+    0.86,
+    0.4
+  ],
+  "distance_visual_to_detail": 0.5385164807134504,
+  "distance_frequency_to_detail": 0.16124515496597103,
+  "intended_relation": "frequency cue cluster is closer to detailed prompt cluster than visual cue cluster"
+}
