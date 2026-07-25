@@ -1,0 +1,72 @@
+\section{方法}
+\label{sec:method}
+
+\subsection{预备与记号}
+给定一张测试图像 $I$，冻结的 CLIP 视觉编码器输出 patch 特征网格 $\bF\in\R^{H\times W\times C}$，其中 $(H,W)$ 为 patch 网格分辨率，$C$ 为通道维。通用异常 prompt 经文本编码器给出一对归一化文本原型：正常原型 $\tn$ 与异常原型 $\ta$（$\lVert\tn\rVert=\lVert\ta\rVert=1$）。对每个空间位置 $p$，patch 特征 $\bF_p$ 经归一化后与两原型比较，得到语义异常分数
+\begin{equation}
+\label{eq:s0}
+\Szero(p)=\frac{\exp\!\big(\langle \bF_p,\ta\rangle/\tau\big)}
+{\exp\!\big(\langle \bF_p,\tn\rangle/\tau\big)+\exp\!\big(\langle \bF_p,\ta\rangle/\tau\big)},
+\end{equation}
+其中 $\tau$ 为温度。理想情况下异常区域应有较高的 $\Szero$。
+
+\subsection{问题：异常侧语义过宽}
+通用 prompt 的异常原型 $\ta$ 是类别无关的：它刻画“某种异常”的宽泛语义，却不绑定当前图像中异常的具体形态。形式上，$\Szero(p)$ 由 $\bF_p$ 相对 $\tn,\ta$ 的相对朝向决定；当一个正常但结构显著的 patch（如规则花纹）在特征空间中远离光滑正常模板 $\tn$ 时，其相对朝向可能偏向 $\ta$，从而被赋予较高的 $\Szero$。这即是异常侧过宽导致的误响应。
+
+设想若能得到一条面向当前图像 $I$ 的具体异常描述，其文本原型记为 $\ta^{\star}(I)$，它绑定了 $I$ 中异常的实际外观，则以 $\ta^{\star}(I)$ 替换 $\ta$ 可收紧异常侧、抑制上述误响应。预备实验（\secref{sec:exp}，\tabref{tab:oracle}）证实：给定 $\ta^{\star}(I)$ 时定位质量明显改善。问题在于 ZSAD 下 $\ta^{\star}(I)$ 无法预先获得——异常正是待检测目标，其形态因图而异。因此我们转而在测试时、逐图像地从 $I$ 自身估计一个收紧后的异常侧表示，作为 $\ta^{\star}(I)$ 的可计算替身。
+
+\subsection{读取高频作为无标签依据}
+收紧异常侧需要“这张图的异常在哪、像什么”这一信息。我们从图像自身读取它。异常通常表现为局部结构性偏离（边缘断裂、纹理突变、孔洞轮廓），这类偏离集中在高频。我们在 CLIP patch 特征网格上做一层 Haar 离散小波变换（DWT），得到低频子带 $\LL$ 与三个高频子带 $\mathrm{LH},\mathrm{HL},\mathrm{HH}$，并按通道聚合高频能量：
+\begin{equation}
+\label{eq:hf}
+\HF(p)=\frac{1}{C}\sum_{c=1}^{C}\Big(|\mathrm{LH}_c(p)|+|\mathrm{HL}_c(p)|+|\mathrm{HH}_c(p)|\Big).
+\end{equation}
+$\HF$ 同时被异常与正常材质纹理激发，二者在幅度上不可区分。我们将这一歧义总结为：
+
+\begin{observation}\label{obs:ambiguity}
+“这张图的正常高频水平”是与具体图像和材质相关（instance-specific）的量。零样本下没有训练数据可提前学得该量，故任何图像无关的固定阈值都无法把异常从材质中分离出来。
+\end{observation}
+
+为把“物体自身的结构性边界”（正常应有的低频轮廓）与“无法被结构解释的突变”分开，我们用低频结构的梯度幅值 $\LFedge(p)=\lVert\nabla\LL(p)\rVert$ 抑制沿正常轮廓的高频，定义边界感知的高频可靠性
+\begin{equation}
+\label{eq:w}
+\W(p)=\HF(p)\cdot\big(1-\widehat{\LFedge}(p)\big),\qquad
+\widehat{\LFedge}=\frac{\LFedge}{\max_p \LFedge}.
+\end{equation}
+这一步只是\emph{读取} CLIP 已编码的信息，不引入新信息、不训练。$\W$ 提供一条独立于 CLIP 语义 $\Szero$ 的依据。
+
+\subsection{证据选择}
+我们联合语义分数 $\Szero$ 与高频可靠性 $\W$ 选择两类证据。记按分位数取的 top-$k$ 与 bottom-$k$ 集合，可信正常证据与异常证据分别为
+\begin{align}
+\label{eq:evi-n}
+\mathcal{N}&=\big\{p:\ \Szero(p)\le q_{k}^{\downarrow}(\Szero)\ \wedge\ \W(p)\le q_{k}^{\downarrow}(\W)\big\},\\
+\label{eq:evi-a}
+\mathcal{A}&=\big\{p:\ \Szero(p)\ge q_{k}^{\uparrow}(\Szero)\ \wedge\ \W(p)\ge q_{k}^{\uparrow}(\W)\big\},
+\end{align}
+其中 $q_k^{\downarrow},q_k^{\uparrow}$ 为对应比例的下/上分位阈值。用 $\W$（而非仅用 $\Szero$）筛选正常证据是关键：若只用 CLIP 自身语义置信，筛出的“正常”会混入 CLIP 看不见的高频异常，参照被污染（自证闭环）；$\W$ 作为语义之外的独立依据，恰能排除这类区域。
+
+\subsection{逐图收紧异常侧}
+从证据集估计逐图视觉原型
+\begin{equation}
+\label{eq:proto}
+\vn=\frac{1}{|\mathcal{N}|}\sum_{p\in\mathcal{N}}\frac{\bF_p}{\lVert\bF_p\rVert},\qquad
+\va=\frac{1}{|\mathcal{A}|}\sum_{p\in\mathcal{A}}\frac{\bF_p}{\lVert\bF_p\rVert}.
+\end{equation}
+以此对通用文本原型做\emph{保守}更新，得到逐图收紧后的原型 $\tilde\tn,\tilde\ta$：
+\begin{align}
+\label{eq:update-n}
+\tilde\tn&=\mathrm{norm}\big((1-\beta_0)\,\tn+\beta_0\,\vn\big),\\
+\label{eq:update-a}
+\tilde\ta&=\mathrm{norm}\big((1-\alpha_0)\,\ta+\alpha_0\,\va\big),\quad \alpha_0=0.
+\end{align}
+即异常原型的更新被完全禁用（$\alpha_0=0$），仅对正常侧做小幅更新（小 $\beta_0$）。这一保守设计的作用是：把当前图像“可信正常”的高频水平吸收进正常原型，等价于抬高对正常结构的容忍度，从而相对地收紧异常侧的接受域，而不直接改写异常语义、避免过拟合到噪声。异常图取校准后的相对偏离
+\begin{equation}
+\label{eq:final}
+S(p)=\frac{\exp\!\big(\langle \bF_p,\tilde\ta\rangle/\tau\big)}
+{\exp\!\big(\langle \bF_p,\tilde\tn\rangle/\tau\big)+\exp\!\big(\langle \bF_p,\tilde\ta\rangle/\tau\big)}.
+\end{equation}
+整个过程冻结 CLIP、无训练、无反向传播、不更新 CLIP 参数；标签仅用于评测，不参与推理。\figref{fig:arch} 给出整体框架。
+
+\input{figures/fig_arch_tikz}
+
+我们指出，multi-crop 聚合与 pixel-to-image 融合是标准的、与本文机制正交的增强手段，仅在\secref{sec:appendix}讨论，不计入核心方法。

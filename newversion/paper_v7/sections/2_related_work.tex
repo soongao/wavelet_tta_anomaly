@@ -1,0 +1,14 @@
+\section{相关工作}
+\label{sec:related}
+
+\paragraph{基于 CLIP 的零样本异常检测。}
+CLIP~\cite{radford2021clip} 将图像与文本映射到共享嵌入空间，使得仅凭文本 prompt 即可进行开放词表的识别。WinCLIP~\cite{jeong2023winclip} 首先将其引入零样本异常检测，通过窗口化的图像编码与人工设计的正常/异常 prompt 得到逐像素分数。AnomalyCLIP~\cite{zhou2024anomalyclip} 进一步提出物体无关的可学习 prompt，将“正常/异常”的语义与具体类别解耦，从而在未见类别上取得强泛化。VCP-CLIP~\cite{qu2024vcpclip} 与 AA-CLIP~\cite{ma2025aaclip} 分别从视觉上下文提示与异常感知的角度改进文本侧表示。这些方法共享同一范式：用一套\emph{通用}的异常文本表述覆盖所有类别。本文关注的正是这一范式的代价——通用 prompt 的异常侧语义过宽，缺乏对当前图像具体异常形态的刻画，从而在正常纹理上产生误响应。我们不改变通用 prompt 的训练，而是在测试阶段逐图收紧其异常侧。
+
+\paragraph{频域信息与异常检测。}
+异常往往以局部结构突变的形式出现，这类突变在频域高频分量中被集中表达。FE-CLIP~\cite{gong2025feclip} 将频率增强引入 CLIP 以提升零样本异常分割。与其在特征层面注入频率增强不同，本文并不把高频直接作为异常信号——因为高频同时包含异常与正常材质纹理，二者在幅度上不可区分（\obsref{obs:ambiguity}）。我们将高频视为一条独立于 CLIP 语义的、可在无标签下计算的\emph{证据}，用于挑选可信区域并逐图收紧异常侧语义。
+
+\paragraph{测试时自适应。}
+测试时自适应（test-time adaptation, TTA）在推理阶段利用测试样本自身的信息调整模型，以应对分布偏移，且通常不依赖测试标签。本文的自适应发生在文本原型一侧：被调整的是过宽的异常侧表示，调整逐图进行、无训练、无反向传播，仅用当前图像的高频证据作为驱动。这与需要梯度更新或熵最小化的典型 TTA 方案不同，代价可忽略。
+
+\paragraph{基准。}
+我们在 MVTec AD~\cite{bergmann2019mvtec}、VisA~\cite{zou2022visa} 以及 MPDD、BTAD、DTD-Synthetic 上评测，覆盖物体类与纹理类缺陷，后者正是通用 prompt 最易误响应的场景。

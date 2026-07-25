@@ -1,0 +1,52 @@
+\begin{figure*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.0}
+% —— 占位定性图：待真实推理结果生成后替换为 \includegraphics ——
+\newcommand{\ph}[2]{%
+  \begin{tikzpicture}
+    \node[draw=black!25,fill=#1,minimum width=2.05cm,minimum height=2.05cm,
+          inner sep=1pt,align=center,font=\scriptsize,text=black!55]{#2};
+  \end{tikzpicture}}
+\begin{tabular}{c cccccc}
+ & \textbf{输入} & \textbf{真值 GT} & \textbf{通用 prompt} & \textbf{SelfRef} & \textbf{高频图 $W$} & \textbf{Ours} \\[2pt]
+\rotatebox{90}{\scriptsize carpet}
+ & \ph{black!6}{原图}
+ & \ph{black!6}{GT\\掩码}
+ & \ph{cClip!12}{花纹\\被误响应}
+ & \ph{cClip!12}{漏检\\缺陷}
+ & \ph{cFreq!14}{高频\\依据}
+ & \ph{cOurs!16}{准确\\定位} \\
+\rotatebox{90}{\scriptsize grid}
+ & \ph{black!6}{原图}
+ & \ph{black!6}{GT\\掩码}
+ & \ph{cClip!12}{花纹\\被误响应}
+ & \ph{cClip!12}{漏检\\缺陷}
+ & \ph{cFreq!14}{高频\\依据}
+ & \ph{cOurs!16}{准确\\定位} \\
+\rotatebox{90}{\scriptsize wood}
+ & \ph{black!6}{原图}
+ & \ph{black!6}{GT\\掩码}
+ & \ph{cClip!12}{纹理\\被误响应}
+ & \ph{cClip!12}{部分\\漏检}
+ & \ph{cFreq!14}{高频\\依据}
+ & \ph{cOurs!16}{准确\\定位} \\
+\rotatebox{90}{\scriptsize bottle}
+ & \ph{black!6}{原图}
+ & \ph{black!6}{GT\\掩码}
+ & \ph{cClip!12}{可定位}
+ & \ph{cClip!12}{可定位}
+ & \ph{cFreq!14}{缺陷处\\亮}
+ & \ph{cOurs!16}{与 SelfRef\\相当} \\
+\rotatebox{90}{\scriptsize \shortstack{VisA\\pcb}}
+ & \ph{black!6}{原图}
+ & \ph{black!6}{GT\\掩码}
+ & \ph{cClip!12}{异常图\\偏弱}
+ & \ph{cClip!12}{漏检\\微缺陷}
+ & \ph{cFreq!14}{高频\\依据}
+ & \ph{cOurs!16}{捞回\\微缺陷} \\
+\end{tabular}
+\caption{\textbf{定性对比（占位图，待真实推理结果替换）}。列依次为：输入、真值掩码、通用异常 prompt 的异常图、SelfRef（纯 CLIP 语义参照）异常图、高频可靠性图 $W$、Ours 异常图。前四行为 MVTec（纹理类 carpet/grid/wood + 物体类 bottle），末行为 VisA。预期呈现：通用 prompt 在规则花纹/纹理上产生误响应（把正常结构划入异常一侧），Ours 借助逐图收紧使响应对齐真实异常区域；物体类（bottle）Ours 与 SelfRef 相当，不退化。热力图统一采用同一色标与归一化。}
+\label{fig:qualitative}
+\end{figure*}

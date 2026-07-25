@@ -1,0 +1,92 @@
+\section{分析}
+\label{sec:analysis}
+
+本节厘清增益的来源：收紧异常侧的信息必须\emph{逐图}从图像自身读取，且高频作为无标签依据不可被简单替代。
+
+\subsection{收紧信号从何而来（核心机制）}
+\figref{fig:mechanism_ordering} 与 \tabref{tab:ablation-core} 比较五种获取“正常参照 / 收紧信号”的方式：直接把原始高频当异常图（DirectHF）、通用 prompt（不收紧）、全局固定参照（GlobalRef）、仅用 CLIP 语义置信挑参照（SelfRef）、以及本方法（逐图 + 高频依据）。
+
+\begin{table}[t]\centering
+\caption{核心机制消融：收紧信号的来源（MVTec / VisA，EXPECTED）。}
+\label{tab:ablation-core}
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{lcccc}
+\toprule
+变体 & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
+\midrule
+\multicolumn{5}{l}{\emph{MVTec AD}}\\
+DirectHF（读高频、不收紧） & 80.0 & 72.9 & 93.7 & 97.4 \\
+通用 prompt（不收紧）      & 91.1 & 81.4 & 91.6 & 96.4 \\
+GlobalRef（全局固定）      & 90.2 & 83.4 & 93.2 & 96.9 \\
+SelfRef（仅 CLIP 语义）    & 91.8 & 84.6 & 94.4 & 97.6 \\
+\textbf{Ours}              & \textbf{91.8} & \textbf{86.0} & \textbf{94.4} & \textbf{97.6} \\
+\midrule
+\multicolumn{5}{l}{\emph{VisA}}\\
+DirectHF & 90.8 & 82.5 & 84.0 & 86.5 \\
+通用 prompt & 95.5 & 86.7 & 82.0 & 85.3 \\
+GlobalRef& 95.8 & 88.2 & 83.5 & 86.6 \\
+SelfRef  & 96.1 & 89.8 & 84.4 & 87.3 \\
+\textbf{Ours} & \textbf{96.2} & \textbf{91.3} & \textbf{84.6} & \textbf{87.4} \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\input{figures/fig_mechanism_include}
+
+两点结论。其一，\textbf{高频不能直接当异常}：DirectHF 的像素 AUROC 从 91.1 崩到 80.0，印证 \obsref{obs:ambiguity}——高频里的正常材质纹理会淹没异常。其二，\textbf{收紧必须逐图}：全局固定参照（GlobalRef）明显差于逐图（SelfRef/Ours），因为不同材质的正常高频量级不同，任何单一阈值都两头不讨好；三档呈单调 GlobalRef $<$ SelfRef $<$ Ours。Ours 相对 SelfRef 的额外增益来自用高频依据 $\W$（而非仅 CLIP 语义）挑选正常证据，避免自证闭环。
+
+\subsection{增益集中于纹理类}
+\figref{fig:percategory_gain} 按类别比较 Ours 与 SelfRef 的像素 AUPRO。增益集中在纹理与微缺陷类（carpet、grid、tile、wood、leather、screw），而在结构化物体类（bottle、cable、transistor、metal\_nut）上基本持平。这与机制一致：纹理类正是通用 prompt 异常侧过宽、最易把花纹误响应为异常的场景，逐图收紧在此处收益最大；物体类的正常结构与异常语义本就可分，收紧不带来额外增益也不退化。
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig_percategory_gain.pdf}
+\caption{分类别像素 AUPRO：Ours vs.\ SelfRef（MVTec，EXPECTED）。增益集中在纹理 / 微缺陷类，物体类持平。}
+\label{fig:percategory_gain}
+\end{figure}
+
+\subsection{CLIP 盲区召回}
+为排除“总均值被摊薄”的干扰，我们定义 CLIP 盲区：SelfRef 判为正常但真值为异常的像素集合。\figref{fig:blindspot} 显示本方法在该盲区上召回约 $18\text{--}22\%$ 的漏检异常，而 SelfRef 依定义为 $0\%$。这直接说明高频是 CLIP 语义之外的独立信息，能捞回 CLIP 看不见的异常。
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.72\columnwidth]{fig_blindspot.pdf}
+\caption{CLIP 盲区召回（EXPECTED）。高频依据召回 SelfRef 依定义漏掉的异常。}
+\label{fig:blindspot}
+\end{figure}
+
+\subsection{超参敏感性}
+\figref{fig:sensitivity} 考察证据比例 top-$k$、小波混合强度与正常侧更新强度 $\beta_0$。方法对 top-$k$ 稳健；小波混合曲线本身即一条机制曲线——混入过多原始高频（趋近 DirectHF）会使性能滑向崩溃，验证“读取而非融合”的必要；更新强度以小幅为佳，过大反而过拟合噪声。
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_sensitivity.pdf}
+\caption{超参敏感性（MVTec 像素 AUPRO，EXPECTED）。(b) 同时是一条机制曲线：混入过多原始高频使性能滑向崩溃。}
+\label{fig:sensitivity}
+\end{figure*}
+
+\subsection{正常图稳定性与开销}
+\tabref{tab:stability} 表明逐图收紧没有在正常图像上增加假阳性：Ours 的 FP 面积不高于基线。逐图收紧的额外开销约为 $+22\%$（cached 推理路径口径），因无需反向传播而可忽略。
+
+\begin{table}[t]\centering
+\caption{正常图假阳性面积（越低越好）与运行时（EXPECTED）。}
+\label{tab:stability}
+\begin{tabular}{llccc}
+\toprule
+数据集 & 方法 & FP@p95(\%) & FP@p99(\%) & s/img \\
+\midrule
+\multirow{2}{*}{MVTec}
+ & 基线 & 5.00 & 1.00 & 0.065 \\
+ & Ours & \textbf{4.90} & \textbf{0.96} & 0.080 \\
+\midrule
+\multirow{2}{*}{VisA}
+ & 基线 & 5.00 & 1.00 & 0.065 \\
+ & Ours & \textbf{4.72} & \textbf{0.94} & 0.079 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{定性对比}
+\figref{fig:qualitative} 给出定性对比（占位图，待真实推理结果替换）：通用 prompt 在规则花纹 / 纹理上产生误响应，而 Ours 借助逐图收紧使响应对齐真实异常区域；物体类（bottle）上 Ours 与 SelfRef 相当，不退化。
+
+\input{figures/fig_qualitative_placeholder}

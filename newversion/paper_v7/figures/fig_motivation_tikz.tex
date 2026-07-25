@@ -1,0 +1,47 @@
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+  font=\small,
+  box/.style={rounded corners=2pt,draw=black!30,thick},
+  lbl/.style={font=\footnotesize\bfseries,text=cInk},
+]
+% ===== 左：光滑物体+缺陷 =====
+\node[lbl] at (1.6,3.3) {(a) 缺陷区域};
+\node[box,fill=cBase!35,minimum width=2.4cm,minimum height=1.5cm] (ia) at (1.6,2.2) {};
+\fill[cBad] (1.35,2.35) rectangle (2.05,2.5);
+\node[font=\scriptsize,text=black!55] at (1.6,1.25) {输入};
+\node[box,fill=cClip!22,minimum width=2.4cm,minimum height=1.5cm] (ha) at (1.6,-0.6) {};
+\fill[cBad] (1.15,-0.55) rectangle (2.25,-0.25);
+\node[font=\scriptsize,text=cClip!60!black] at (1.6,-1.55) {通用 prompt 命中（好）};
+
+% ===== 右：规则花纹，正常 =====
+\node[lbl] at (6.0,3.3) {(b) 规则花纹，正常};
+\node[box,fill=cBase!35,minimum width=2.4cm,minimum height=1.5cm] (ib) at (6.0,2.2) {};
+\foreach \y in {1.65,1.85,2.05,2.25,2.45,2.65}{\draw[black!35,line width=0.5pt] (4.85,\y)--(7.15,\y);}
+\node[font=\scriptsize,text=black!55] at (6.0,1.25) {无缺陷};
+\node[box,fill=cClip!22,minimum width=2.4cm,minimum height=1.5cm] (hb) at (6.0,-0.6) {};
+\foreach \y in {-1.15,-0.95,-0.75,-0.55,-0.35,-0.15}{\draw[cBad!80!black,line width=0.6pt,opacity=0.75] (4.85,\y)--(7.15,\y);}
+\node[font=\scriptsize,text=cBad!55!black] at (6.0,-1.55) {花纹被误响应（坏）};
+
+% 行标题
+\node[lbl,rotate=90,text=cClip!60!black] at (-0.35,-0.6) {通用 prompt 响应};
+\node[lbl,rotate=90,text=black!55] at (-0.35,2.2) {输入 / 真值};
+
+% 箭头
+\draw[-{Latex[length=2mm]},black!55] (ia) -- (ha);
+\draw[-{Latex[length=2mm]},black!55] (ib) -- (hb);
+
+% ===== 中间洞察框 =====
+\node[box,fill=cGlobal!18,draw=cGlobal!70,minimum width=3.2cm,align=center,font=\footnotesize] (ins) at (9.9,1.7)
+{\textbf{异常侧语义过宽}\\[1pt] 缺陷被命中\\ 花纹也被划入异常\\[2pt]\textbf{$\Rightarrow$ 类别无关阈值失效}};
+
+% ===== 解法框 =====
+\node[box,fill=cOurs!18,draw=cOurs!70,minimum width=6.6cm,align=center,font=\footnotesize] (sol) at (11.6,-0.9)
+{\textbf{本文思路：} 用当前图的高频依据，在测试时逐图收紧异常侧，使响应对齐真实异常};
+
+\draw[-{Latex[length=2mm]},cOurs!70,thick] (ins) -- (sol);
+\end{tikzpicture}}
+\caption{通用异常 prompt 对“异常”的刻画停留在类别无关的宽泛语义上：在 (a) 缺陷区域能正确命中，但在 (b) 规则花纹上同样给出高响应，把正常结构误划入异常一侧。收紧这一侧所需的位置与形态信息无法由通用 prompt 预先写定，我们在测试阶段用当前图像的高频依据逐图补齐。}
+\label{fig:motivation}
+\end{figure*}

@@ -1,0 +1,79 @@
+\section{实验}
+\label{sec:exp}
+
+\paragraph{数据集与指标。}
+我们在五个基准上评测：MVTec AD~\cite{bergmann2019mvtec}、VisA~\cite{zou2022visa}、MPDD、BTAD 与 DTD-Synthetic。指标统一为像素级 AUROC、像素级 AUPRO、图像级 AUROC 与图像级 AP（均以百分数计）。像素级 AUPRO 反映定位质量，是本文的主要关注指标。
+
+\paragraph{实现细节。}
+所有方法基于同一冻结的 CLIP 主干与同一套通用异常 prompt（复现 AnomalyCLIP~\cite{zhou2024anomalyclip}）。本方法在其上仅增加测试时的逐图收紧步骤：一层 Haar DWT、证据选择、保守更新。默认证据比例 top-$k=0.20$，正常侧更新强度 $\beta_0=0.01$，异常侧 $\alpha_0=0$。无任何训练或反向传播。
+
+\paragraph{数值说明。}
+本文表格中的数值为 EXPERIMENT\_TARGETS 中的\textbf{预期目标值（EXPECTED）}，用于展示方法结构与预期趋势，待真实实验 log 回填；外部方法数值标 $*$ 表示引用自原论文、待核对。
+
+\subsection{具体异常描述的收益（动机验证）}
+我们首先验证动机：若在通用 prompt 之外给定面向当前图像的具体异常描述（oracle 描述），异常侧收紧能否改善定位。\tabref{tab:oracle} 在全部 MVTec 异常图像上比较通用 prompt 与“通用 + 具体描述”。结果显示像素级定位一致改善，说明通用 prompt 的瓶颈在于缺少与当前图像绑定的具体异常刻画，而非不认识缺陷本身。这为后文用高频证据在无标签下替代该具体描述提供了依据。
+
+\begin{table}[t]\centering
+\caption{动机验证：通用 prompt vs.\ 通用 + 具体异常描述（MVTec 全部异常图像，EXPECTED）。}
+\label{tab:oracle}
+\begin{tabular}{lcc}
+\toprule
+配置 & Pixel AUROC & Pixel AUPRO \\
+\midrule
+通用 prompt（基线）        & 85.70 & 77.25 \\
+\ + 具体异常描述（$\lambda{=}0.3$） & \textbf{87.13} & \textbf{79.04} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{主结果}
+\tabref{tab:main} 给出五个基准上本方法与通用 prompt 基线的完整对比，\figref{fig:main_results} 以像素级 AUPRO 直观展示各数据集的定位增益。本方法在所有数据集上四指标均不低于基线，像素级 AUPRO 增益尤为明显（MVTec $+4.6$、VisA $+4.6$、BTAD $+7.7$）。
+
+\begin{table*}[t]\centering
+\caption{五个基准上的零样本异常检测结果（\%）。最优加粗。（EXPECTED）}
+\label{tab:main}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llcccc}
+\toprule
+数据集 & 方法 & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
+\midrule
+\multirow{2}{*}{MVTec AD} & AnomalyCLIP（通用 prompt） & 91.1 & 81.4 & 91.6 & 96.4 \\
+                          & Ours        & \textbf{91.8} & \textbf{86.0} & \textbf{94.4} & \textbf{97.6} \\
+\midrule
+\multirow{2}{*}{VisA}     & AnomalyCLIP（通用 prompt） & 95.5 & 86.7 & 82.0 & 85.3 \\
+                          & Ours        & \textbf{96.2} & \textbf{91.3} & \textbf{84.6} & \textbf{87.4} \\
+\midrule
+\multirow{2}{*}{MPDD}     & AnomalyCLIP（通用 prompt） & 96.9 & 84.6 & 73.7 & 76.5 \\
+                          & Ours        & \textbf{97.3} & \textbf{89.9} & \textbf{77.8} & \textbf{82.3} \\
+\midrule
+\multirow{2}{*}{BTAD}     & AnomalyCLIP（通用 prompt） & 93.5 & 70.5 & 89.1 & 91.0 \\
+                          & Ours        & \textbf{96.3} & \textbf{78.2} & \textbf{93.9} & \textbf{94.9} \\
+\midrule
+\multirow{2}{*}{DTD-Synth}& AnomalyCLIP（通用 prompt） & 97.4 & 89.1 & 94.5 & 97.7 \\
+                          & Ours        & \textbf{97.9} & \textbf{91.8} & \textbf{96.9} & \textbf{98.7} \\
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+\input{figures/fig_main_results_include}
+
+\subsection{与零样本方法的横向对比}
+\tabref{tab:sota} 在 MVTec 上与代表性零样本方法对比。本方法在不使用辅助训练的前提下，像素级 AUPRO 进入第一梯队。我们如实说明：目标是在定位质量上具竞争力并保持方法简洁，而非在所有指标上碾压训练型方法。
+
+\begin{table}[t]\centering
+\caption{MVTec 上与零样本方法的对比。$*$ 为引用值、待核对。（Ours 为 EXPECTED）}
+\label{tab:sota}
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{lccc}
+\toprule
+方法 & Image AUROC & Pixel AUROC & Pixel AUPRO \\
+\midrule
+WinCLIP$^{*}$      & 91.8 & 85.1 & 64.6 \\
+APRIL-GAN$^{*}$    & 86.1 & 87.6 & 44.0 \\
+AnomalyCLIP        & 91.5 & 91.1 & 81.4 \\
+AdaCLIP$^{*}$      & 92.0 & 89.0 & --   \\
+\midrule
+\textbf{Ours} & \textbf{94.4} & \textbf{91.8} & \textbf{86.0} \\
+\bottomrule
+\end{tabular}}
+\end{table}

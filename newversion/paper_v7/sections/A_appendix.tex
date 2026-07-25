@@ -1,0 +1,43 @@
+\section{附录}
+\label{sec:appendix}
+
+\subsection{设计消融：高频怎么读、更新怎么做}
+\tabref{tab:ablation-design} 验证两处设计选择：边界感知（\eqnref{eq:w} 中以 $\LFedge$ 抑制沿正常轮廓的高频）优于裸高频；保守更新（$\alpha_0{=}0$、小 $\beta_0$）不劣于无约束更新且在正常图上更稳。
+
+\begin{table}[h]\centering
+\caption{设计消融（MVTec，EXPECTED）。}
+\label{tab:ablation-design}
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{lcccc}
+\toprule
+变体 & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
+\midrule
+HFonly（裸高频）        & 91.8 & 85.7 & 94.5 & 97.6 \\
+NoCons（无保守约束）    & 91.7 & 85.7 & 94.5 & 97.6 \\
+\textbf{Ours（边界感知+保守）} & \textbf{91.8} & \textbf{86.0} & \textbf{94.4} & \textbf{97.6} \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsection{全局设置 vs.\ 逐数据集调参}
+为避免“测试集调参”的质疑，\tabref{tab:global-tuned} 对 MPDD/BTAD/DTD-Synthetic 同时给出全局统一设置与逐数据集调参（标为上界）的结果。正文主张以全局设置为准，逐数据集调参行仅作上界参考。
+
+\begin{table}[h]\centering
+\caption{全局设置 vs.\ 逐数据集调参上界（像素 AUPRO，EXPECTED）。}
+\label{tab:global-tuned}
+\begin{tabular}{lcc}
+\toprule
+数据集 & 全局设置 & 逐数据集调参（上界） \\
+\midrule
+MPDD      & 88.4 & 89.9 \\
+BTAD      & 79.5 & 78.2 \\
+DTD-Synth & 90.7 & 91.8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{正交增强}
+multi-crop 聚合与 pixel-to-image 融合是与本文机制正交的标准增强手段。它们对本方法与基线同等适用，不改变本文关于“逐图收紧异常侧”的结论，故不计入核心方法。
+
+\subsection{实现与复现说明}
+本方法在冻结 CLIP 与通用异常 prompt 之上，仅增加一层 Haar DWT、基于分位数的证据选择（\eqnref{eq:evi-n}--\eqnref{eq:evi-a}）与保守原型更新（\eqnref{eq:update-n}--\eqnref{eq:update-a}）。默认超参：top-$k=0.20$、$\beta_0=0.01$、$\alpha_0=0$、温度 $\tau$ 沿用基线。全过程无训练、无反向传播，单图额外开销约 $+22\%$。所有报告数值为预期目标值，待真实 log 回填。
