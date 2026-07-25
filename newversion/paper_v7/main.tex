@@ -1,4 +1,4 @@
-\documentclass[10pt,twocolumn,fontset=none]{ctexart}
+\documentclass[11pt,fontset=none]{ctexart}
 \usepackage{xeCJK}
 % 按文件路径加载 CJK 字体（最稳健，避免按名查找失败）
 \setCJKmainfont{Songti.ttc}[Path=/System/Library/Fonts/Supplemental/,BoldFont=STHeiti Medium.ttc,BoldFeatures={Path=/System/Library/Fonts/}]
@@ -54,15 +54,11 @@
 \date{}
 
 \begin{document}
-\twocolumn[
-\begin{@twocolumnfalse}
 \maketitle
 \begin{abstract}
 \input{sections/0_abstract}
 \end{abstract}
-\vspace{1.2em}
-\end{@twocolumnfalse}
-]
+\vspace{0.6em}
 
 \input{sections/1_introduction}
 \input{sections/2_related_work}
