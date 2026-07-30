@@ -1,4 +1,4 @@
-# WPTA 实现细节审计 v0.2
+# Ours 实现细节审计 v0.2
 
 审计对象：`outputs/wpta_cvpr_paper_draft_zh_v1.4.md`
 

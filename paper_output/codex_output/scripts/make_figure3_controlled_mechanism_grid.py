@@ -56,14 +56,14 @@ CASES = [
 
 # Source strip columns:
 # 0 Input, 1 GT target, 2 Fixed prototype map, 3 Direct wavelet cue,
-# 4 Boundary-aware reliability, 5 Selected evidence, 6 WPTA final map.
+# 4 Boundary-aware reliability, 5 Selected evidence, 6 Ours final map.
 SELECTED_COLUMNS = [
     (0, "Input"),
     (1, "GT target"),
     (2, "Fixed map"),
     (4, "Reliability W"),
     (5, "Selected evidence"),
-    (6, "WPTA map"),
+    (6, "Ours map"),
 ]
 
 
@@ -161,7 +161,7 @@ def build_figure(case_panels: list[list[Image.Image]]) -> plt.Figure:
     fig.text(
         0.125,
         0.941,
-        "All panels are cropped from real WPTA mechanism strips; heatmaps and evidence overlays are unchanged.",
+        "All panels are cropped from real Ours mechanism strips; heatmaps and evidence overlays are unchanged.",
         ha="left",
         va="top",
         fontsize=8.0,

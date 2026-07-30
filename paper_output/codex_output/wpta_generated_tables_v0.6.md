@@ -1,4 +1,4 @@
-# WPTA 可生成论文表格 v0.6
+# Ours 可生成论文表格 v0.6
 
 本文件汇总当前已有真实数值可以生成的论文表格。所有指标均为百分比；斜杠形式的单元格统一采用 `P-AUROC / P-AUPRO / I-AUROC / I-AP`，分别对应 pixel AUROC、pixel AUPRO、image AUROC、image AP，且数值越高越好。
 
@@ -14,10 +14,10 @@
 
 证据边界：
 
-- Table 1 支撑“最终校准系统相对固定 AnomalyCLIP baseline 在五个工业数据集上取得系统级提升”。
-- Table 2 和 Table 3 支撑“WPTA 机制在 MVTec/VisA 受控设置中有效”。
-- Table 4 用于限制因果归因，说明五数据集 final system 的启用模块不同。
-- Appendix Table A1 是系统校准栈附录表，不等同于 WPTA 原型机制消融。
+- Table 1 支撑“系统级 Ours 设置相对固定 AnomalyCLIP baseline 在五个工业数据集上取得系统级提升”。
+- Table 2 和 Table 3 支撑“Ours 机制在 MVTec/VisA 受控设置中有效”。
+- Table 4 用于限制因果归因，说明五数据集 system-level Ours setting 的启用模块不同。
+- Appendix Table A1 是系统校准栈附录表，不等同于 Ours 原型机制消融。
 - Appendix Table A2 只能作为 ISIC/ISBI 初步补充观察。
 - Appendix Table B1a/B1b 尚未完成协议核验，只能作为 protocol-reference，不得用于外部最佳方法结论。
 
@@ -25,10 +25,10 @@
 
 | ID | 建议位置 | 当前状态 | 主要用途 |
 |---|---|---|---|
-| Table 1 | 主文 Experiments | 可直接使用 | 五数据集主结果，证明 final calibrated system 的系统级提升 |
-| Table 2 | 主文 Ablation | 可直接使用 | WPTA 核心组件消融 |
+| Table 1 | 主文 Experiments | 可直接使用 | 五数据集主结果，证明 system-level Ours setting 的系统级提升 |
+| Table 2 | 主文 Ablation | 可直接使用 | Ours 核心组件消融 |
 | Table 3 | 主文 Ablation 或附录 | 可直接使用 | 小波可靠性设计消融 |
-| Table 4 | 主文或附录靠前位置 | 可直接使用 | final setting 配置审计，避免越界归因 |
+| Table 4 | 主文或附录靠前位置 | 可直接使用 | system-level setting 配置审计，避免越界归因 |
 | Appendix Table A1 | 附录 | 可直接使用 | 系统校准栈消融，用于解释主结果中的工程模块 |
 | Appendix Table A2 | 附录 | 可直接使用但只能弱表述 | ISIC/ISBI 医学补充结果 |
 | Appendix Table B1a | 附录或暂存 | protocol-reference only | 五数据集外部方法 pixel-level 候选比较 |
@@ -36,30 +36,30 @@
 
 ## Table 1. 五个工业异常检测基准上的主结果
 
-本表展示最终校准系统与固定 AnomalyCLIP baseline 的比较。平均来看，最终系统在四个指标上均提升，其中 P-AUPRO 的平均提升最大。
+本表展示系统级 Ours 设置与固定 AnomalyCLIP baseline 的比较。平均来看，系统级 Ours 设置在四个指标上均提升，其中 P-AUPRO 的平均提升最大。
 
 | Dataset | Method | P-AUROC ↑ | P-AUPRO ↑ | I-AUROC ↑ | I-AP ↑ | Δ vs. baseline |
 |---|---|---:|---:|---:|---:|---:|
 | MVTec | AnomalyCLIP baseline | 91.2 | 83.2 | 91.6 | 96.4 | - |
-| MVTec | Final calibrated system | **91.8** | **85.6** | **94.5** | **97.6** | +0.6 / +2.4 / +2.9 / +1.2 |
+| MVTec | Ours (unnamed; system-level) | **91.8** | **85.6** | **94.5** | **97.6** | +0.6 / +2.4 / +2.9 / +1.2 |
 | VisA | AnomalyCLIP baseline | 95.5 | 86.7 | 82.0 | 85.3 | - |
-| VisA | Final calibrated system | **96.2** | **91.3** | **84.6** | **87.4** | +0.7 / +4.6 / +2.6 / +2.1 |
+| VisA | Ours (unnamed; system-level) | **96.2** | **91.3** | **84.6** | **87.4** | +0.7 / +4.6 / +2.6 / +2.1 |
 | MPDD | AnomalyCLIP baseline | 96.9 | 84.6 | 73.7 | 76.5 | - |
-| MPDD | Final calibrated system | **97.3** | **89.9** | **77.8** | **82.3** | +0.4 / +5.3 / +4.1 / +5.8 |
+| MPDD | Ours (unnamed; system-level) | **97.3** | **89.9** | **77.8** | **82.3** | +0.4 / +5.3 / +4.1 / +5.8 |
 | BTAD | AnomalyCLIP baseline | 93.5 | 70.5 | 89.1 | 91.0 | - |
-| BTAD | Final calibrated system | **96.3** | **78.2** | **93.9** | **94.9** | +2.8 / +7.7 / +4.8 / +3.9 |
+| BTAD | Ours (unnamed; system-level) | **96.3** | **78.2** | **93.9** | **94.9** | +2.8 / +7.7 / +4.8 / +3.9 |
 | DTD-Synthetic | AnomalyCLIP baseline | 97.4 | 89.1 | 94.5 | 97.7 | - |
-| DTD-Synthetic | Final calibrated system | **97.9** | **91.8** | **96.9** | **98.7** | +0.5 / +2.7 / +2.4 / +1.0 |
+| DTD-Synthetic | Ours (unnamed; system-level) | **97.9** | **91.8** | **96.9** | **98.7** | +0.5 / +2.7 / +2.4 / +1.0 |
 | Average | AnomalyCLIP baseline | 94.9 | 82.8 | 86.2 | 89.4 | - |
-| Average | Final calibrated system | **95.9** | **87.4** | **89.5** | **92.2** | +1.0 / +4.5 / +3.4 / +2.8 |
+| Average | Ours (unnamed; system-level) | **95.9** | **87.4** | **89.5** | **92.2** | +1.0 / +4.5 / +3.4 / +2.8 |
 
 推荐表述：
 
-> 最终校准系统在五个工业基准上均超过固定 AnomalyCLIP baseline，平均提升为 +1.0 / +4.5 / +3.4 / +2.8，其中最大平均收益来自 P-AUPRO。
+> 系统级 Ours 设置在五个工业基准上均超过固定 AnomalyCLIP baseline，平均提升为 +1.0 / +4.5 / +3.4 / +2.8，其中最大平均收益来自 P-AUPRO。
 
-## Table 2. WPTA 核心组件消融
+## Table 2. Ours 核心组件消融
 
-本表是 WPTA 机制的主要证据。直接把小波响应融合到最终异常图会伤害定位；相比之下，语义原型适配、小波引导 evidence weighting 和 conservative update 在受控设置中逐步改善结果。
+本表是 Ours 机制的主要证据。直接把小波响应融合到最终异常图会伤害定位；相比之下，语义原型适配、小波引导 evidence weighting 和 conservative update 在受控设置中逐步改善结果。
 
 | Method | MVTec | VisA | 作用 |
 |---|---:|---:|---|
@@ -67,9 +67,9 @@
 | Direct wavelet fusion / no adaptation | 88.7 / 80.4 / 92.9 / 96.9 | 94.6 / 85.1 / 81.6 / 84.8 | negative control: use wavelet at final-map level |
 | Semantic prototype adaptation | 91.6 / 85.2 / 93.7 / 97.1 | 96.0 / 90.4 / 83.7 / 86.9 | CLIP semantic evidence only |
 | Wavelet prototype adaptation w/o conservative | 91.7 / 85.8 / 93.9 / 97.2 | 96.1 / 91.3 / 84.1 / 87.0 | boundary-aware wavelet evidence, no conservative update |
-| Full WPTA controlled setting | **91.8 / 86.2 / 94.1 / 97.4** | **96.2 / 91.7 / 84.3 / 87.3** | boundary-aware wavelet evidence + conservative update |
+| Ours (controlled setting) | **91.8 / 86.2 / 94.1 / 97.4** | **96.2 / 91.7 / 84.3 / 87.3** | boundary-aware wavelet evidence + conservative update |
 
-表注建议：除 Baseline 外，prototype/fusion variants 使用相同的 multi-crop 与 pixel-to-image 设置：`multicrop_weight=0.50`，`pixel_to_image_weight=0.10`，`pixel_to_image_topk_ratio=0.01`。因此，本表的因果解释应主要比较 variants 之间的相对变化，而不是把 baseline 到任一增强行的差值单独归因为 WPTA。
+表注建议：除 Baseline 外，prototype/fusion variants 使用相同的 multi-crop 与 pixel-to-image 设置：`multicrop_weight=0.50`，`pixel_to_image_weight=0.10`，`pixel_to_image_topk_ratio=0.01`。因此，本表的因果解释应主要比较 variants 之间的相对变化，而不是把 baseline 到任一增强行的差值单独归因为 Ours。
 
 ## Table 3. 小波可靠性设计消融
 
@@ -79,17 +79,17 @@
 |---|---:|---:|---|
 | Semantic-only prototype adaptation | 91.6 / 85.2 / 93.7 / 97.1 | 96.0 / 90.4 / 83.7 / 86.9 | no wavelet reliability |
 | Direct wavelet fusion | 88.7 / 80.4 / 92.9 / 96.9 | 94.6 / 85.1 / 81.6 / 84.8 | wavelet as final-map fusion, negative control |
-| HF-only W + prototype adaptation | 91.6 / 85.3 / 94.0 / 97.2 | 96.0 / 90.8 / 84.0 / 86.9 | high-frequency reliability only |
-| Boundary-aware W + prototype adaptation | 91.7 / 85.7 / 93.8 / 97.3 | 96.1 / 91.2 / 83.9 / 87.1 | suppress structure-boundary pseudo evidence |
-| Full boundary-aware W + conservative | **91.8 / 86.2 / 94.1 / 97.4** | **96.2 / 91.7 / 84.3 / 87.3** | final controlled WPTA setting |
+| HF-only reliability + prototype adaptation | 91.6 / 85.3 / 94.0 / 97.2 | 96.0 / 90.8 / 84.0 / 86.9 | high-frequency reliability only |
+| Boundary-aware reliability + prototype adaptation | 91.7 / 85.7 / 93.8 / 97.3 | 96.1 / 91.2 / 83.9 / 87.1 | suppress structure-boundary pseudo evidence |
+| Ours (unnamed) | **91.8 / 86.2 / 94.1 / 97.4** | **96.2 / 91.7 / 84.3 / 87.3** | final controlled Ours setting |
 
 推荐表述：
 
 > Boundary-aware wavelet reliability is more useful than high-frequency response alone, while direct final-map fusion is a negative control.
 
-## Table 4. 五数据集 final system 配置审计
+## Table 4. 五数据集 system-level Ours setting 配置审计
 
-本表用于防止论文叙事越界。五数据集主结果证明的是 final calibrated system 的系统级有效性；WPTA 机制本身由 Table 2 和 Table 3 的 MVTec/VisA 受控消融支撑。
+本表用于防止论文叙事越界。五数据集主结果证明的是 system-level Ours setting 的系统级有效性；Ours 机制本身由 Table 2 和 Table 3 的 MVTec/VisA 受控消融支撑。
 
 | Dataset | Final result | Wavelet reliability | TTA rectification | Multi-crop fusion | Pixel-to-image fusion | Key setting | Result log |
 |---|---:|---|---|---|---|---|---|
@@ -101,11 +101,11 @@
 
 推荐表述：
 
-> 五数据集结果应解释为 system-level result，因为各数据集 final settings 启用了不同的校准模块。
+> 五数据集结果应解释为 system-level result，因为各数据集 system-level settings 启用了不同的校准模块。
 
 ## Appendix Table A1. MVTec/VisA 系统校准栈消融
 
-本表来自 `component` suite，用于解释 MVTec/VisA final calibrated system 中各工程模块的贡献。它不是 WPTA 原型机制消融；机制证据仍应引用 Table 2 和 Table 3。
+本表来自 `component` suite，用于解释 MVTec/VisA system-level Ours setting 中各工程模块的贡献。它不是 Ours 原型机制消融；机制证据仍应引用 Table 2 和 Table 3。
 
 | Calibration setting | MVTec | VisA | 说明 |
 |---|---:|---:|---|
@@ -116,7 +116,7 @@
 | Wavelet + TTA | 91.3 / 83.4 / 91.6 / 96.4 | 95.6 / 87.1 / 82.0 / 85.4 | wavelet calibration plus TTA |
 | Wavelet + TTA + pixel-to-image | 91.3 / 83.4 / 94.0 / 97.4 | 95.6 / 87.1 / 83.5 / 86.6 | mainly improves image-level metrics |
 | Wavelet + TTA + multi-crop | 91.8 / 85.6 / 91.6 / 96.4 | 96.2 / 91.3 / 82.0 / 85.4 | mainly improves pixel-level metrics |
-| Full calibration stack | **91.8 / 85.6 / 94.5 / 97.6** | **96.2 / 91.3 / 84.6 / 87.4** | combines pixel and image calibration gains |
+| Ours (unnamed; system-level) | **91.8 / 85.6 / 94.5 / 97.6** | **96.2 / 91.3 / 84.6 / 87.4** | combines pixel and image calibration gains |
 
 ## Appendix Table A2. 医学补充结果
 
@@ -125,7 +125,7 @@
 | Dataset | Method | P-AUROC ↑ | P-AUPRO ↑ | Status | Note |
 |---|---|---:|---:|---|---|
 | ISIC/ISBI | AnomalyCLIP baseline | 88.7 | 78.6 | current | `isbi_baseline_l123_sigma5/log.txt` |
-| ISIC/ISBI | Final calibrated system | **89.9** | **80.0** | current | `isbi_sigma8_l123/log.txt` |
+| ISIC/ISBI | Ours (unnamed; system-level) | **89.9** | **80.0** | current | `isbi_sigma8_l123/log.txt` |
 
 ## Appendix Table B1a. 五数据集外部方法 pixel-level 协议参考
 
@@ -157,13 +157,13 @@
 
 [TABLE_DATA_PROMPT:external_protocol_verified_table]
 
-请核验并生成一个可进入主文的外部方法比较表。候选方法包括 CLIP、WinCLIP、VAND、CoOp、AdaCLIP、AnomalyCLIP、AA-CLIP、TAAP/INPC、Current final system；候选数据集包括 MVTec AD、VisA、MPDD、BTAD、DTD-Synthetic。逐项核验 split、backbone、input resolution、preprocessing、post-processing、prompt setting、是否使用 auxiliary training/fine-tuning、evaluation script 和 metric implementation。输出 CSV 字段：`dataset, method, p_auroc, p_aupro, i_auroc, i_ap, source_file_or_paper, source_line_or_table, citation_key, protocol_match, mismatch_notes, allowed_placement`。只有 `protocol_match=yes` 的行可以进入主文；`partial/no` 的行只能进入附录或删除。
+请核验并生成一个可进入主文的外部方法比较表。候选方法包括 CLIP、WinCLIP、VAND、CoOp、AdaCLIP、AnomalyCLIP、AA-CLIP、TAAP/INPC、Ours (unnamed; system-level)；候选数据集包括 MVTec AD、VisA、MPDD、BTAD、DTD-Synthetic。逐项核验 split、backbone、input resolution、preprocessing、post-processing、prompt setting、是否使用 auxiliary training/fine-tuning、evaluation script 和 metric implementation。输出 CSV 字段：`dataset, method, p_auroc, p_aupro, i_auroc, i_ap, source_file_or_paper, source_line_or_table, citation_key, protocol_match, mismatch_notes, allowed_placement`。只有 `protocol_match=yes` 的行可以进入主文；`partial/no` 的行只能进入附录或删除。
 
 [/TABLE_DATA_PROMPT]
 
 [TABLE_DATA_PROMPT:medical_complete_table]
 
-请补齐医学异常检测补充表，只保留完成可比评估的数据集。候选数据集包括 ISIC/ISBI、ColonDB、ClinicDB、Kvasir、HeadCT、BrainMRI、Br35H。对每个数据集输出 baseline 与 final calibrated system 的 pixel-level 或 image-level 指标，并标明是否具备同一 evaluation script、同一 cache generation setting 和同一 metric implementation。输出 CSV 字段：`dataset, task_level, method, p_auroc, p_aupro, i_auroc, i_ap, cache_dir, result_log, eval_script, status, exclusion_reason`。缺失或不可比的数据集不得填数，只写 exclusion_reason。
+请补齐医学异常检测补充表，只保留完成可比评估的数据集。候选数据集包括 ISIC/ISBI、ColonDB、ClinicDB、Kvasir、HeadCT、BrainMRI、Br35H。对每个数据集输出 baseline 与 system-level Ours setting 的 pixel-level 或 image-level 指标，并标明是否具备同一 evaluation script、同一 cache generation setting 和同一 metric implementation。输出 CSV 字段：`dataset, task_level, method, p_auroc, p_aupro, i_auroc, i_ap, cache_dir, result_log, eval_script, status, exclusion_reason`。缺失或不可比的数据集不得填数，只写 exclusion_reason。
 
 [/TABLE_DATA_PROMPT]
 
@@ -175,6 +175,6 @@
 
 [TABLE_DATA_PROMPT:classwise_breakdown_table]
 
-请为 MVTec、VisA、MPDD、BTAD 和 DTD-Synthetic 生成类别级结果表。每个类别至少包含 baseline 与 final calibrated system 的 `p_auroc, p_aupro, i_auroc, i_ap`，并给出差值。输出 CSV 字段：`dataset, category, method, p_auroc, p_aupro, i_auroc, i_ap, delta_vs_baseline, result_log, status`。若某类别没有可追溯日志或评价协议不同，将 `status` 标为 `missing_or_incomparable`，不要补数。
+请为 MVTec、VisA、MPDD、BTAD 和 DTD-Synthetic 生成类别级结果表。每个类别至少包含 baseline 与 system-level Ours setting 的 `p_auroc, p_aupro, i_auroc, i_ap`，并给出差值。输出 CSV 字段：`dataset, category, method, p_auroc, p_aupro, i_auroc, i_ap, delta_vs_baseline, result_log, status`。若某类别没有可追溯日志或评价协议不同，将 `status` 标为 `missing_or_incomparable`，不要补数。
 
 [/TABLE_DATA_PROMPT]

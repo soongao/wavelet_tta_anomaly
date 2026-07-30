@@ -1,4 +1,4 @@
-# WPTA Round 9 投稿前自审
+# Ours Round 9 投稿前自审
 
 审阅对象：`outputs/wpta_cvpr_paper_draft_zh_v1.4.md`
 
@@ -22,8 +22,8 @@
 
 | # | Finding | Severity | Suggested fix |
 |---|---|---|---|
-| 1 | 第 216 行写道：“正式版本需要二选一：要么完成外部方法 protocol verification... 要么把论文定位为 AnomalyCLIP inference-stack calibration 与 WPTA 机制研究”。当前稿件仍停在策略声明，没有完成外部协议核验，也没有把标题、摘要、贡献和实验主表完全改造成机制研究论文。 | CRITICAL | 下一版必须选择投稿定位。若目标仍是 CVPR/ICCV 主会，优先完成同协议外部比较；若短期无法完成，标题和贡献需要明确降到 inference-stack calibration study，并把外部比较移出主文。 |
-| 2 | 第 29 至 31 行已经很好地区分系统级证据与机制级证据，但第 222 行“最终校准系统在所有数据集上均超过固定 AnomalyCLIP baseline”仍容易被读成完整 benchmark claim。 | MAJOR | 在主结果段首加入“相对固定 baseline、非外部方法排名”的限定，并把 Table 4 作为解释 Table 1 的必读表。 |
+| 1 | 第 216 行写道：“正式版本需要二选一：要么完成外部方法 protocol verification... 要么把论文定位为 AnomalyCLIP inference-stack calibration 与 Ours 机制研究”。当前稿件仍停在策略声明，没有完成外部协议核验，也没有把标题、摘要、贡献和实验主表完全改造成机制研究论文。 | CRITICAL | 下一版必须选择投稿定位。若目标仍是 CVPR/ICCV 主会，优先完成同协议外部比较；若短期无法完成，标题和贡献需要明确降到 inference-stack calibration study，并把外部比较移出主文。 |
+| 2 | 第 29 至 31 行已经很好地区分系统级证据与机制级证据，但第 222 行“系统级 Ours 设置在所有数据集上均超过固定 AnomalyCLIP baseline”仍容易被读成完整 benchmark claim。 | MAJOR | 在主结果段首加入“相对固定 baseline、非外部方法排名”的限定，并把 Table 4 作为解释 Table 1 的必读表。 |
 | 3 | 第 35 至 38 行四条贡献与实验验证基本能对齐，但稿件缺少贡献到实验的矩阵。 | MAJOR | 在 Claim-evidence map 前增加 contribution-validation matrix，逐条写明贡献、方法位置、实验表格和禁止外推边界。 |
 
 ## Dimension 2: Writing Details
@@ -71,9 +71,9 @@
 
 | Claim | Verdict | Evidence used | Suggested wording |
 |---|---|---|---|
-| Final calibrated system improves fixed AnomalyCLIP baseline on five industrial datasets. | keep with scope | Table 1 and Table 4 | “最终校准系统相对固定 AnomalyCLIP baseline 在五个工业基准上取得系统级提升。” |
-| WPTA mechanism is validated across all five industrial datasets. | remove | Table 4 contradicts this broad scope | “WPTA 机制由 MVTec/VisA 受控消融支撑，五数据集结果支撑 final calibrated system。” |
-| Direct wavelet fusion is a negative control. | keep | Table 2 and Table 3 | “Direct wavelet fusion 在受控消融中低于固定 baseline 或 WPTA，说明小波不适合作为最终图直接加性分数。” |
+| Ours (unnamed; system-level) improves fixed AnomalyCLIP baseline on five industrial datasets. | keep with scope | Table 1 and Table 4 | “系统级 Ours 设置相对固定 AnomalyCLIP baseline 在五个工业基准上取得系统级提升。” |
+| Ours mechanism is validated across all five industrial datasets. | remove | Table 4 contradicts this broad scope | “Ours 机制由 MVTec/VisA 受控消融支撑，五数据集结果支撑 system-level Ours setting。” |
+| Direct wavelet fusion is a negative control. | keep | Table 2 and Table 3 | “Direct wavelet fusion 在受控消融中低于固定 baseline 或 Ours，说明小波不适合作为最终图直接加性分数。” |
 | Current system is externally best among prior methods. | remove | External protocol not verified | “外部方法表仅作为 protocol-reference，不能用于主文排名。” |
 
 ## Integrity Gate Result

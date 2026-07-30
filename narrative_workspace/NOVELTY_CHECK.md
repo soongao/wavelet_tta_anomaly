@@ -1,17 +1,17 @@
 # Novelty Check 结论（2026-07-19）
 
-> 针对 NARRATIVE.md 主线做的定向查新。结论直接影响叙事，必须诚实记录。
+> 针对 NARRATIVE.md 数据口径做的定向查新。结论直接影响叙事，必须诚实记录。
 
 ## 一句话结论
 
-**主线的前半"异常 = CLIP 特征场的高频残差 / 频率有助于 ZSAD"已被多篇顶会占据（FE-CLIP ICCV25、WMoE-CLIP、HarmoniAD），不能作为核心 novelty。**
+**数据口径的前半"异常 = CLIP 特征场的高频残差 / 频率有助于 ZSAD"已被多篇顶会占据（FE-CLIP ICCV25、WMoE-CLIP、HarmoniAD），不能作为核心 novelty。**
 **但后半"用一个编码器外部信号做逐图正常场重估（representation-level 证据选择），而非分数/特征级融合"这个机制位基本是空的——这必须成为新的叙事核心。**
 
 ---
 
 ## 一、频率轴的占位情况（已被占，需让位）
 
-| 工作 | 载体 | 变换 | 是否训练 | 与我们主线前半的重合度 |
+| 工作 | 载体 | 变换 | 是否训练 | 与我们数据口径前半的重合度 |
 |---|---|---|---|---|
 | **FE-CLIP** (ICCV 2025) | 注入 CLIP 视觉编码器**特征**（非输入图） | DCT | **是**（FFE + LFS 两个 adapter，需辅助数据微调） | 高：明确说"高频分量=细节=异常线索(soft borders)"，且强调注入的是 CLIP 特征而非原图频率 |
 | **WMoE-CLIP** (2026) | CLIP 特征 | **Haar 小波**，`HF=LH+HL+HH` | 是（MoE prompt learning） | **极高**：和我们的 Haar 分解、HF 聚合公式几乎一模一样 |
@@ -39,7 +39,7 @@
 
 ## 三、叙事修正：核心必须从"频率"移到"融合位置 / 注入方式"
 
-原主线把 novelty 压在"异常=高频残差"上 → 现在被 WMoE-CLIP 打穿。**修正后的核心 claim：**
+原数据口径把 novelty 压在"异常=高频残差"上 → 现在被 WMoE-CLIP 打穿。**修正后的核心 claim：**
 
 > 频率线索对 ZSAD 有用已是共识（FE-CLIP/WMoE/HarmoniAD 均用**训练式 adapter/prompt 把频率融进 CLIP 特征或分数**）。**但我们发现：频率信号的"注入位置"才是决定成败的关键机制变量——把同一个频率可靠性信号用于分数级/特征级融合会灾难性地破坏 CLIP 的异常图（MVTec 91.8→80.0），而把它仅用作"挑选可信正常 patch 的 oracle"、去逐图重估正常原型，才是安全且有效的。** 换言之：频率是一个编码器正交的"可靠性 oracle"，它该指导 evidence selection，不该做 map/feature fusion。
 

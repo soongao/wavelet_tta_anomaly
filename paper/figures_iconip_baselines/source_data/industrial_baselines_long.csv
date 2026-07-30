@@ -1,0 +1,169 @@
+dataset,method,metric,value
+MVTec AD,CLIP,Image-AUROC,74.1
+MVTec AD,CLIP,Image-AP,87.6
+MVTec AD,CLIP,Pixel-AUROC,38.4
+MVTec AD,CLIP,Pixel-AUPRO,11.3
+MVTec AD,WinCLIP,Image-AUROC,91.8
+MVTec AD,WinCLIP,Image-AP,96.5
+MVTec AD,WinCLIP,Pixel-AUROC,85.1
+MVTec AD,WinCLIP,Pixel-AUPRO,64.6
+MVTec AD,VAND,Image-AUROC,86.1
+MVTec AD,VAND,Image-AP,93.5
+MVTec AD,VAND,Pixel-AUROC,87.6
+MVTec AD,VAND,Pixel-AUPRO,44.0
+MVTec AD,CoOp,Image-AUROC,88.8
+MVTec AD,CoOp,Image-AP,94.8
+MVTec AD,CoOp,Pixel-AUROC,33.3
+MVTec AD,CoOp,Pixel-AUPRO,6.7
+MVTec AD,AdaCLIP,Image-AUROC,89.2
+MVTec AD,AdaCLIP,Image-AP,96.4
+MVTec AD,AdaCLIP,Pixel-AUROC,88.7
+MVTec AD,AdaCLIP,Pixel-AUPRO,37.8
+MVTec AD,AnomalyCLIP,Image-AUROC,91.5
+MVTec AD,AnomalyCLIP,Image-AP,96.2
+MVTec AD,AnomalyCLIP,Pixel-AUROC,91.1
+MVTec AD,AnomalyCLIP,Pixel-AUPRO,81.4
+MVTec AD,AA-CLIP,Image-AUROC,90.5
+MVTec AD,AA-CLIP,Image-AP,94.9
+MVTec AD,AA-CLIP,Pixel-AUROC,91.9
+MVTec AD,AA-CLIP,Pixel-AUPRO,84.6
+VisA,CLIP,Image-AUROC,66.4
+VisA,CLIP,Image-AP,71.5
+VisA,CLIP,Pixel-AUROC,46.6
+VisA,CLIP,Pixel-AUPRO,14.8
+VisA,WinCLIP,Image-AUROC,78.1
+VisA,WinCLIP,Image-AP,81.2
+VisA,WinCLIP,Pixel-AUROC,79.6
+VisA,WinCLIP,Pixel-AUPRO,56.8
+VisA,VAND,Image-AUROC,78.0
+VisA,VAND,Image-AP,81.4
+VisA,VAND,Pixel-AUROC,94.2
+VisA,VAND,Pixel-AUPRO,86.8
+VisA,CoOp,Image-AUROC,62.8
+VisA,CoOp,Image-AP,68.1
+VisA,CoOp,Pixel-AUROC,24.2
+VisA,CoOp,Pixel-AUPRO,3.8
+VisA,AdaCLIP,Image-AUROC,85.8
+VisA,AdaCLIP,Image-AP,84.9
+VisA,AdaCLIP,Pixel-AUROC,95.5
+VisA,AdaCLIP,Pixel-AUPRO,56.8
+VisA,AnomalyCLIP,Image-AUROC,82.1
+VisA,AnomalyCLIP,Image-AP,85.4
+VisA,AnomalyCLIP,Pixel-AUROC,95.4
+VisA,AnomalyCLIP,Pixel-AUPRO,87.0
+VisA,AA-CLIP,Image-AUROC,84.6
+VisA,AA-CLIP,Image-AP,82.2
+VisA,AA-CLIP,Pixel-AUROC,95.5
+VisA,AA-CLIP,Pixel-AUPRO,83.0
+MPDD,CLIP,Image-AUROC,54.3
+MPDD,CLIP,Image-AP,65.4
+MPDD,CLIP,Pixel-AUROC,62.1
+MPDD,CLIP,Pixel-AUPRO,33.0
+MPDD,WinCLIP,Image-AUROC,63.6
+MPDD,WinCLIP,Image-AP,69.9
+MPDD,WinCLIP,Pixel-AUROC,76.4
+MPDD,WinCLIP,Pixel-AUPRO,48.9
+MPDD,VAND,Image-AUROC,73.0
+MPDD,VAND,Image-AP,80.2
+MPDD,VAND,Pixel-AUROC,94.1
+MPDD,VAND,Pixel-AUPRO,83.2
+MPDD,CoOp,Image-AUROC,55.1
+MPDD,CoOp,Image-AP,64.2
+MPDD,CoOp,Pixel-AUROC,15.4
+MPDD,CoOp,Pixel-AUPRO,2.3
+MPDD,AdaCLIP,Image-AUROC,76.0
+MPDD,AdaCLIP,Image-AP,80.4
+MPDD,AdaCLIP,Pixel-AUROC,96.1
+MPDD,AdaCLIP,Pixel-AUPRO,60.3
+MPDD,AnomalyCLIP,Image-AUROC,77.0
+MPDD,AnomalyCLIP,Image-AP,82.0
+MPDD,AnomalyCLIP,Pixel-AUROC,96.5
+MPDD,AnomalyCLIP,Pixel-AUPRO,88.7
+MPDD,AA-CLIP,Image-AUROC,75.1
+MPDD,AA-CLIP,Image-AP,80.1
+MPDD,AA-CLIP,Pixel-AUROC,96.7
+MPDD,AA-CLIP,Pixel-AUPRO,76.5
+BTAD,CLIP,Image-AUROC,34.5
+BTAD,CLIP,Image-AP,52.5
+BTAD,CLIP,Pixel-AUROC,30.6
+BTAD,CLIP,Pixel-AUPRO,4.4
+BTAD,WinCLIP,Image-AUROC,68.2
+BTAD,WinCLIP,Image-AP,70.9
+BTAD,WinCLIP,Pixel-AUROC,72.7
+BTAD,WinCLIP,Pixel-AUPRO,27.3
+BTAD,VAND,Image-AUROC,73.6
+BTAD,VAND,Image-AP,68.6
+BTAD,VAND,Pixel-AUROC,60.8
+BTAD,VAND,Pixel-AUPRO,25.0
+BTAD,CoOp,Image-AUROC,66.8
+BTAD,CoOp,Image-AP,77.4
+BTAD,CoOp,Pixel-AUROC,28.6
+BTAD,CoOp,Pixel-AUPRO,3.8
+BTAD,AdaCLIP,Image-AUROC,88.6
+BTAD,AdaCLIP,Image-AP,92.4
+BTAD,AdaCLIP,Pixel-AUROC,92.1
+BTAD,AdaCLIP,Pixel-AUPRO,32.5
+BTAD,AnomalyCLIP,Image-AUROC,88.3
+BTAD,AnomalyCLIP,Image-AP,87.3
+BTAD,AnomalyCLIP,Pixel-AUROC,94.2
+BTAD,AnomalyCLIP,Pixel-AUPRO,74.8
+BTAD,AA-CLIP,Image-AUROC,94.8
+BTAD,AA-CLIP,Image-AP,97.9
+BTAD,AA-CLIP,Pixel-AUROC,97.0
+BTAD,AA-CLIP,Pixel-AUPRO,69.0
+DTD-Synthetic,CLIP,Image-AUROC,71.6
+DTD-Synthetic,CLIP,Image-AP,85.7
+DTD-Synthetic,CLIP,Pixel-AUROC,33.9
+DTD-Synthetic,CLIP,Pixel-AUPRO,12.5
+DTD-Synthetic,WinCLIP,Image-AUROC,93.2
+DTD-Synthetic,WinCLIP,Image-AP,92.6
+DTD-Synthetic,WinCLIP,Pixel-AUROC,83.9
+DTD-Synthetic,WinCLIP,Pixel-AUPRO,57.8
+DTD-Synthetic,VAND,Image-AUROC,86.4
+DTD-Synthetic,VAND,Image-AP,95.0
+DTD-Synthetic,VAND,Pixel-AUROC,95.3
+DTD-Synthetic,VAND,Pixel-AUPRO,86.9
+DTD-Synthetic,CoOp,Image-AUROC,
+DTD-Synthetic,CoOp,Image-AP,
+DTD-Synthetic,CoOp,Pixel-AUROC,
+DTD-Synthetic,CoOp,Pixel-AUPRO,
+DTD-Synthetic,AdaCLIP,Image-AUROC,95.5
+DTD-Synthetic,AdaCLIP,Image-AP,97.0
+DTD-Synthetic,AdaCLIP,Pixel-AUROC,97.7
+DTD-Synthetic,AdaCLIP,Pixel-AUPRO,75.0
+DTD-Synthetic,AnomalyCLIP,Image-AUROC,93.5
+DTD-Synthetic,AnomalyCLIP,Image-AP,97.0
+DTD-Synthetic,AnomalyCLIP,Pixel-AUROC,97.9
+DTD-Synthetic,AnomalyCLIP,Pixel-AUPRO,92.3
+DTD-Synthetic,AA-CLIP,Image-AUROC,93.3
+DTD-Synthetic,AA-CLIP,Image-AP,97.8
+DTD-Synthetic,AA-CLIP,Pixel-AUROC,96.4
+DTD-Synthetic,AA-CLIP,Pixel-AUPRO,85.9
+Average,CLIP,Image-AUROC,60.2
+Average,CLIP,Image-AP,72.5
+Average,CLIP,Pixel-AUROC,42.3
+Average,CLIP,Pixel-AUPRO,15.2
+Average,WinCLIP,Image-AUROC,79.0
+Average,WinCLIP,Image-AP,82.2
+Average,WinCLIP,Pixel-AUROC,79.5
+Average,WinCLIP,Pixel-AUPRO,51.1
+Average,VAND,Image-AUROC,79.4
+Average,VAND,Image-AP,83.7
+Average,VAND,Pixel-AUROC,86.4
+Average,VAND,Pixel-AUPRO,65.2
+Average,CoOp,Image-AUROC,68.4
+Average,CoOp,Image-AP,76.1
+Average,CoOp,Pixel-AUROC,25.4
+Average,CoOp,Pixel-AUPRO,4.2
+Average,AdaCLIP,Image-AUROC,87.0
+Average,AdaCLIP,Image-AP,90.2
+Average,AdaCLIP,Pixel-AUROC,94.0
+Average,AdaCLIP,Pixel-AUPRO,52.5
+Average,AnomalyCLIP,Image-AUROC,86.5
+Average,AnomalyCLIP,Image-AP,89.6
+Average,AnomalyCLIP,Pixel-AUROC,95.0
+Average,AnomalyCLIP,Pixel-AUPRO,84.8
+Average,AA-CLIP,Image-AUROC,87.7
+Average,AA-CLIP,Image-AP,90.6
+Average,AA-CLIP,Pixel-AUROC,95.5
+Average,AA-CLIP,Pixel-AUPRO,79.8

@@ -3,7 +3,7 @@
 ## Figure ID
 
 - Figure: Figure 2
-- Title: WPTA method overview
+- Title: Ours overview
 - Role: Methodology solution overview
 - Current assets:
   - `outputs/figures/figure2_wpta_method_overview.pdf`
@@ -12,7 +12,7 @@
 
 ## Caption Draft
 
-WPTA uses wavelet cues as reliability for per-image prototype adaptation, not as final-map fusion. Given a test image, a frozen CLIP visual encoder extracts patch features `F`, while text prompts provide fixed abnormal and normal prototypes `t_a` and `t_n`. The initial semantic anomaly map `S0` and a boundary-aware wavelet reliability map `W` select visual anchors `v_a` and `v_n`; these anchors calibrate the prototypes at test time without target-domain training or backpropagation. The final anomaly map is computed by comparing patch features with the calibrated prototypes, so wavelet information affects the reliability of adaptation rather than replacing semantic scoring.
+Ours uses wavelet cues as reliability for per-image prototype adaptation, not as final-map fusion. Given a test image, a frozen CLIP visual encoder extracts patch features `F`, while text prompts provide fixed abnormal and normal prototypes `t_a` and `t_n`. The initial semantic anomaly map `S0` and a boundary-aware wavelet reliability map `W` select visual anchors `v_a` and `v_n`; these anchors calibrate the prototypes at test time without target-domain training or backpropagation. The final anomaly map is computed by comparing patch features with the calibrated prototypes, so wavelet information affects the reliability of adaptation rather than replacing semantic scoring.
 
 ## Element Definitions
 
@@ -31,7 +31,7 @@ WPTA uses wavelet cues as reliability for per-image prototype adaptation, not as
 - Drawing backend: Matplotlib primitives.
 - Asset type: schematic method diagram.
 - Embedded data: no screenshots, no heatmaps, no experimental images, no embedded bitmap.
-- Source content: WPTA method design from the current paper draft and result interpretation.
+- Source content: Ours method design from the current paper draft and result interpretation.
 - Experimental claim status: schematic only; no metric or ranking claim is encoded in this figure.
 
 ## QA Notes

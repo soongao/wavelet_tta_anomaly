@@ -1,8 +1,10 @@
-# 论文结果呈现规划（result_charts/）
+# 论文结果呈现规划（目标占位图表草案 / result_charts/）
 
 > 核心原则：**顶会论文里数值结果默认用表格，图只留给"表格表达不了的视觉论证"。**
 > 本目录据此重做，把原来"能画就画"的 8 张图收敛为 4 张真正该当图的 + 表格骨架 + 定性图规格。
-> 所有数值为 EXPERIMENT_PLAN_PAPER 的 **EXPECTED 目标值**，做完实验用真实 log 替换。
+> 数据说明（2026-07-30）：本目录基于目标占位数值生成，不是当前结果口径。
+> 当前已复现结果以 `../../paper/tables/*.csv`、`../../paper/prototype_main_result_table.md`
+> 和 `../EXPERIMENT_TARGETS.md` 为准；本目录只可作为图表结构参考。
 
 ## 为什么这样分工
 数值结果（多方法×多指标）塞进柱状图会丢信息、且不如表精确 → 用表。
@@ -44,7 +46,7 @@ MPLCONFIGDIR=./.mplcache /Users/bytedance/code/.venv/bin/python make_charts.py
 配色与 `../figures/` 一致（Baseline 灰 / CLIP 蓝 / 频率绿 / GlobalRef 黄 / Ours 红）。
 
 ## 诚实清单（定稿前）
-- 图/表标题带 `EXPECTED` → 实验后去掉。
+- 图/表标题若仍显示 target placeholder → 定稿前用当前实测结果重生成。
 - SOTA 外部数值 `*` → 翻原论文核实。
 - 定性图 → 用真实推理结果生成。
 - DirectHF 崩盘（易复现）建议第一个跑，优先落地为真值。

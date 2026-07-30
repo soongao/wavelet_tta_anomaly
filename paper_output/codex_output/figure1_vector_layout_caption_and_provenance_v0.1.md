@@ -12,19 +12,19 @@
 
 ## Caption draft
 
-**图 1. 小波线索适合作为原型适配证据的可靠性监督，而不是直接替代语义异常分数。** 该 MVTec cable 样例展示了输入图像、目标缺陷区域、固定原型异常图、直接小波线索、boundary-aware reliability、selected evidence 与 WPTA final map 的对应关系。直接使用小波响应容易激活结构边界或局部高频纹理；WPTA 将小波线索限制在 evidence selection 层面，并用语义分数 `S0` 与 reliability `W` 共同选择 visual anchors，最终异常图仍由校准后的 CLIP prototypes 产生。
+**图 1. 小波线索适合作为原型适配证据的可靠性监督，而不是直接替代语义异常分数。** 该 MVTec cable 样例展示了输入图像、目标缺陷区域、固定原型异常图、直接小波线索、boundary-aware reliability、selected evidence 与 Ours final map 的对应关系。直接使用小波响应容易激活结构边界或局部高频纹理；Ours 将小波线索限制在 evidence selection 层面，并用语义分数 `S0` 与 reliability `W` 共同选择 visual anchors，最终异常图仍由校准后的 CLIP prototypes 产生。
 
 ## Provenance
 
-该图来自真实模型输出。七个 panel 的 raster 像素内容保持不变，包括输入图像、目标区域、固定原型异常图、direct wavelet cue、boundary-aware reliability、selected evidence 和 WPTA final map。当前脚本只重绘论文排版元素：标题、panel labels、边框、箭头、legend 和底部机制说明。
+该图来自真实模型输出。七个 panel 的 raster 像素内容保持不变，包括输入图像、目标区域、固定原型异常图、direct wavelet cue、boundary-aware reliability、selected evidence 和 Ours final map。当前脚本只重绘论文排版元素：标题、panel labels、边框、箭头、legend 和底部机制说明。
 
 由于 panel 本身是模型输出 raster，SVG 中预期包含 base64-encoded `<image>` 元素。该现象不表示热图被重新绘制；它只说明真实模型输出 panel 以 raster 方式嵌入。标题、标签、legend、箭头和说明文字由 Matplotlib 以矢量元素输出。
 
 ## Claim boundary
 
-- 可支撑：MVTec cable 单例机制解释，展示 direct wavelet cue、boundary-aware reliability、selected evidence 与 WPTA final map 的关系。
+- 可支撑：MVTec cable 单例机制解释，展示 direct wavelet cue、boundary-aware reliability、selected evidence 与 Ours final map 的关系。
 - 不可支撑：跨数据集 qualitative conclusion。
-- 不可支撑：五数据集 WPTA 机制因果验证。
+- 不可支撑：五数据集 Ours 机制因果验证。
 - 不可替代：Figure 3 qualitative grid。Figure 3 仍需覆盖多个工业数据集，并且必须按 dataset-specific final modules 正确标注 evidence 类型。
 
 ## Asset QA

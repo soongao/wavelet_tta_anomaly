@@ -1,0 +1,20 @@
+\begin{table}[htbp]
+  \centering
+  \caption{Pixel-level zero-shot anomaly localization baseline results on four medical benchmarks. The best and second-best baseline results are marked in \textbf{bold} and \underline{underline}. $^{\dagger}$ denotes results reproduced in the referenced table. The reference Ours column is omitted.}
+  \label{tab:medical_pixel_baselines}
+  \resizebox{\textwidth}{!}{%
+    \begin{tabular}{llllllllll}
+      \toprule
+      Metric & Datasets & CLIP & WinCLIP & VAND & CoOp & MVFA$^{\dagger}$ & AdaCLIP & AnomalyCLIP & AA-CLIP$^{\dagger}$ \\
+      \midrule
+      \multirow{4}{*}{\shortstack{(Pixel-AUROC, \\ Pixel-AUPRO)}}
+       & ISIC & (33.1, 5.8) & (83.3, 55.1) & (\underline{89.4}, \underline{77.2}) & (51.7, 15.9) & (84.5, 69.1) & (89.3, 33.1) & (83.0, 63.8) & (\textbf{93.9}, \textbf{87.0}) \\
+       & ColonDB & (49.5, 15.8) & (70.3, 32.5) & (78.4, 64.6) & (40.5, 2.6) & (80.8, \underline{65.9}) & (\textbf{90.4}, 56.8) & (-, -) & (\underline{84.0}, \textbf{67.5}) \\
+       & ClinicDB & (47.5, 18.9) & (51.2, 13.8) & (80.5, 60.7) & (34.8, 2.4) & (82.8, 66.3) & (84.4, 56.1) & (\textbf{92.4}, \textbf{82.9}) & (\underline{89.9}, \underline{70.1}) \\
+       & Kvasir & (44.6, 17.7) & (69.7, 24.5) & (75.0, 36.2) & (44.1, 3.5) & (81.9, 43.7) & (77.5, 41.3) & (\textbf{92.5}, \textbf{61.5}) & (\underline{87.2}, \underline{52.6}) \\
+      \midrule
+      \multicolumn{2}{l}{\textbf{Average}} & (43.7, 14.6) & (68.6, 31.5) & (80.8, 59.7) & (42.8, 6.1) & (82.5, 61.3) & (85.4, 46.8) & (\textbf{89.3}, \textbf{69.4}) & (\underline{88.7}, \underline{69.3}) \\
+      \bottomrule
+    \end{tabular}%
+  }
+\end{table}

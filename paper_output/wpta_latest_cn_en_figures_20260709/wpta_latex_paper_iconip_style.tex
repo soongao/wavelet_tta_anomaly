@@ -13,8 +13,8 @@
 
 \urlstyle{rm}
 
-\title{Wavelet-Supervised Test-Time Prototype Adaptation for Zero-Shot Anomaly Detection}
-\titlerunning{Wavelet-Supervised Prototype Adaptation for ZSAD}
+\title{Ours (unnamed) for Zero-Shot Anomaly Detection}
+\titlerunning{Ours (unnamed) for ZSAD}
 \author{Anonymous Author(s)}
 \authorrunning{Anonymous Author(s)}
 \institute{Anonymous Institution}
@@ -26,7 +26,7 @@
 \maketitle
 
 \begin{abstract}
-Zero-shot industrial anomaly detection requires image-level anomaly recognition and pixel-level anomaly localization without target-category training images or anomaly annotations. Existing CLIP-based methods usually rely on fixed normal/abnormal text prototypes, which cannot fully capture instance-specific defect appearances and may confuse true defects with normal material textures or structural boundaries. We propose Wavelet-Supervised Test-Time Prototype Adaptation (WPTA), which uses Haar wavelet cues as patch evidence reliability for test-time prototype adaptation rather than as an additive anomaly map. WPTA freezes CLIP, constructs boundary-aware wavelet reliability on the CLIP patch feature grid, combines it with the initial semantic anomaly prior to select visual normal/abnormal anchors, and calibrates prototypes through confidence-gated conservative updates. Controlled ablations on MVTec and VisA show that direct wavelet fusion degrades localization, while semantic-spectral evidence selection and conservative calibration improve test-time prototype adaptation. Across five industrial benchmarks, the calibrated inference system improves the fixed AnomalyCLIP baseline by $+1.0/+4.5/+3.4/+2.8$ on average in P-AUROC/P-AUPRO/I-AUROC/I-AP.
+Zero-shot industrial anomaly detection requires image-level anomaly recognition and pixel-level anomaly localization without target-category training images or anomaly annotations. Existing CLIP-based methods usually rely on fixed normal/abnormal text prototypes, which cannot fully capture instance-specific defect appearances and may confuse true defects with normal material textures or structural boundaries. We propose Ours (unnamed), which uses Haar wavelet cues as patch evidence reliability for test-time prototype adaptation rather than as an additive anomaly map. Ours freezes CLIP, constructs boundary-aware wavelet reliability on the CLIP patch feature grid, combines it with the initial semantic anomaly prior to select visual normal/abnormal anchors, and calibrates prototypes through confidence-gated conservative updates. Controlled ablations on MVTec and VisA show that direct wavelet fusion degrades localization, while semantic-spectral evidence selection and conservative calibration improve test-time prototype adaptation. Across five industrial benchmarks, the calibrated inference system improves the fixed AnomalyCLIP baseline by $+1.0/+4.5/+3.4/+2.8$ on average in P-AUROC/P-AUPRO/I-AUROC/I-AP.
 \keywords{Zero-shot anomaly detection \and CLIP \and Test-time adaptation \and Wavelet reliability}
 \end{abstract}
 
@@ -36,16 +36,16 @@ Zero-shot anomaly detection (ZSAD) aims to detect and localize anomalies on unse
 
 Frequency and wavelet cues provide useful but risky complementary information. Many industrial defects manifest as local high-frequency disturbances, and Haar wavelets can separate high-frequency details from low-frequency structures on feature grids. Nevertheless, high-frequency response is not equivalent to anomaly evidence. Normal object contours, reflective surfaces, and fine-grained textures can also produce strong wavelet responses. In controlled tests, direct wavelet fusion lowers pixel-level (AUROC, AUPRO) on MVTec from $(91.2,83.2)$ to $(88.7,80.4)$, and on VisA from $(95.5,86.7)$ to $(94.6,85.1)$.
 
-We therefore reposition wavelet cues from final-map scoring to evidence reliability for test-time prototype adaptation. WPTA first computes an initial semantic anomaly prior $S_0$ using fixed normal/abnormal prototypes. It then applies Haar decomposition to the CLIP patch feature grid, estimates high-frequency texture energy and low-frequency structural edges, and constructs a boundary-aware reliability map. The semantic prior $S_0$ provides the anomaly direction, while the wavelet reliability $W$ constrains whether local evidence is trustworthy. The selected visual anchors are used to conservatively calibrate prototypes without backpropagation or CLIP parameter updates.
+We therefore reposition wavelet cues from final-map scoring to evidence reliability for test-time prototype adaptation. Ours first computes an initial semantic anomaly prior $S_0$ using fixed normal/abnormal prototypes. It then applies Haar decomposition to the CLIP patch feature grid, estimates high-frequency texture energy and low-frequency structural edges, and constructs a boundary-aware reliability map. The semantic prior $S_0$ provides the anomaly direction, while the wavelet reliability $W$ constrains whether local evidence is trustworthy. The selected visual anchors are used to conservatively calibrate prototypes without backpropagation or CLIP parameter updates.
 
-Our evidence is organized at two levels. First, controlled MVTec/VisA ablations validate the WPTA mechanism: semantic-only prototype adaptation improves over fixed prototypes, wavelet-guided reliability further improves localization, and conservative update gives additional gains. Second, five industrial benchmarks report the system-level effect of the calibrated inference stack. Since the five-dataset final systems use dataset-specific calibration modules, we explicitly separate system-level gains from the causal evidence for WPTA.
+Our evidence is organized at two levels. First, controlled MVTec/VisA ablations validate Ours mechanism: semantic-only prototype adaptation improves over fixed prototypes, wavelet-guided reliability further improves localization, and conservative update gives additional gains. Second, five industrial benchmarks report the system-level effect of the calibrated inference stack. Since the five-dataset system-level Ours settings use dataset-specific calibration modules, we explicitly separate system-level gains from the causal evidence for Ours.
 
 The contributions are summarized as follows:
 \begin{itemize}
-  \item We propose WPTA, which turns Haar wavelet cues into patch evidence reliability for test-time prototype adaptation rather than direct final-map fusion.
+  \item We propose Ours, which turns Haar wavelet cues into patch evidence reliability for test-time prototype adaptation rather than direct final-map fusion.
   \item We design semantic-spectral evidence selection, jointly using the semantic anomaly prior and boundary-aware wavelet reliability to construct visual normal/abnormal anchors.
   \item We perform conservative, training-free prototype calibration with frozen CLIP and validate the mechanism through controlled MVTec/VisA ablations.
-  \item We report five industrial benchmark results with a configuration audit that separates calibrated-system gains from WPTA mechanism evidence.
+  \item We report five industrial benchmark results with a configuration audit that separates calibrated-system gains from Ours mechanism evidence.
 \end{itemize}
 
 \begin{figure}[t]
@@ -63,30 +63,30 @@ CLIP~\cite{radford2021clip} provides a general image--text alignment foundation 
 
 \paragraph{Test-time adaptation.}\mbox{}\\
 \noindent
-Test-time adaptation uses information from the test sample to mitigate distribution shifts. TPT~\cite{shu2022tpt} performs test-time prompt tuning for vision-language models through confidence selection and view consistency. Anomaly detection is more challenging because abnormal regions are sparse, unknown, and often adjacent to normal boundaries or textures. WPTA avoids updating CLIP parameters or adapting from the whole image. It aggregates only patch evidence jointly supported by the semantic prior and wavelet reliability.
+Test-time adaptation uses information from the test sample to mitigate distribution shifts. TPT~\cite{shu2022tpt} performs test-time prompt tuning for vision-language models through confidence selection and view consistency. Anomaly detection is more challenging because abnormal regions are sparse, unknown, and often adjacent to normal boundaries or textures. Ours avoids updating CLIP parameters or adapting from the whole image. It aggregates only patch evidence jointly supported by the semantic prior and wavelet reliability.
 
 \paragraph{Frequency and wavelet cues.}\mbox{}\\
 \noindent
-Wavelet representations decompose low-frequency structures and high-frequency details at multiple resolutions~\cite{daubechies1988orthonormal,mallat1989theory}. In industrial anomaly localization, high-frequency disturbances may indicate scratches, cracks, or texture damage. However, direct frequency scoring is vulnerable to normal boundaries and textures. WPTA limits wavelet cues to evidence reliability and leaves final anomaly decisions to calibrated CLIP prototypes.
+Wavelet representations decompose low-frequency structures and high-frequency details at multiple resolutions~\cite{daubechies1988orthonormal,mallat1989theory}. In industrial anomaly localization, high-frequency disturbances may indicate scratches, cracks, or texture damage. However, direct frequency scoring is vulnerable to normal boundaries and textures. Ours limits wavelet cues to evidence reliability and leaves final anomaly decisions to calibrated CLIP prototypes.
 
 \section{Method}
 
 \subsection{Problem Setting and Overall Framework}
 
-Given a test image $x$, ZSAD predicts a pixel-level anomaly map $M$ and an image-level anomaly score $s_{\mathrm{img}}$. The frozen CLIP image encoder extracts patch features $\{f_i\}_{i=1}^{N}$, and the text encoder provides a normal prototype $t_n$ and an abnormal prototype $t_a$. WPTA performs inference without target-domain training images, anomaly annotations, backpropagation, or CLIP parameter updates.
+Given a test image $x$, ZSAD predicts a pixel-level anomaly map $M$ and an image-level anomaly score $s_{\mathrm{img}}$. The frozen CLIP image encoder extracts patch features $\{f_i\}_{i=1}^{N}$, and the text encoder provides a normal prototype $t_n$ and an abnormal prototype $t_a$. Ours performs inference without target-domain training images, anomaly annotations, backpropagation, or CLIP parameter updates.
 
 The method has four steps, as shown in Fig.~\ref{fig:architecture}. First, initial semantic scoring computes a patch-level anomaly prior $S_0$. Second, boundary-aware Haar wavelet reliability estimates a reliability map $W$ on the CLIP patch feature grid. Third, semantic-spectral evidence selection aggregates visual normal/abnormal anchors. Fourth, conservative prototype calibration recomputes anomaly probabilities using calibrated prototypes.
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/figure2_wpta_method_overview.pdf}
-  \caption{Overall architecture of WPTA. Wavelet cues supervise evidence reliability for test-time prototype adaptation rather than directly producing the final anomaly map.}
+  \caption{Overall architecture of Ours. Wavelet cues supervise evidence reliability for test-time prototype adaptation rather than directly producing the final anomaly map.}
   \label{fig:architecture}
 \end{figure}
 
 \subsection{Initial Semantic Anomaly Score}
 
-For each patch feature $f_i$, WPTA computes the initial semantic anomaly prior by a softmax over similarities to normal and abnormal prototypes:
+For each patch feature $f_i$, Ours computes the initial semantic anomaly prior by a softmax over similarities to normal and abnormal prototypes:
 \begin{equation}
 S_0(i)=
 \frac{\exp(\simi(f_i,t_a)/\tau)}
@@ -96,11 +96,11 @@ Here $\simi(\cdot,\cdot)$ denotes normalized similarity and $\tau$ is the temper
 
 \subsection{Boundary-Aware Haar Wavelet Reliability}
 
-WPTA reshapes patch features into $F\in\mathbb{R}^{H\times W\times C}$ and applies one-level Haar DWT to obtain $LL$, $LH$, $HL$, and $HH$ components. The high-frequency texture energy is
+Ours reshapes patch features into $F\in\mathbb{R}^{H\times W\times C}$ and applies one-level Haar DWT to obtain $LL$, $LH$, $HL$, and $HH$ components. The high-frequency texture energy is
 \begin{equation}
 HF(i)=\frac{1}{C}\sum_{c=1}^{C}\left(|LH_i^c|+|HL_i^c|+|HH_i^c|\right).
 \end{equation}
-Since high-frequency energy can also arise from normal structural boundaries, WPTA estimates a low-frequency structural edge response $LF_{\mathrm{edge}}$ from $LL$ and constructs
+Since high-frequency energy can also arise from normal structural boundaries, Ours estimates a low-frequency structural edge response $LF_{\mathrm{edge}}$ from $LL$ and constructs
 \begin{equation}
 W(i)=\normop(HF(i))\cdot\left(1-\normop(LF_{\mathrm{edge}}(i))\right).
 \end{equation}
@@ -136,19 +136,19 @@ The update strengths are controlled by confidence gates. In the default controll
 \subsubsection{Datasets and Metrics}
 \mbox{}\\
 \noindent
-We evaluate on five industrial anomaly detection benchmarks: MVTec AD~\cite{bergmann2019mvtec,bergmann2021mvtec}, VisA~\cite{zou2022visa}, MPDD~\cite{jezek2021deep}, BTAD~\cite{mishra2021vt}, and DTD-Synthetic~\cite{aota2023zero}. MVTec and VisA are used for controlled WPTA mechanism ablations. The five-dataset table reports system-level results of the calibrated inference stack.
+We evaluate on five industrial anomaly detection benchmarks: MVTec AD~\cite{bergmann2019mvtec,bergmann2021mvtec}, VisA~\cite{zou2022visa}, MPDD~\cite{jezek2021deep}, BTAD~\cite{mishra2021vt}, and DTD-Synthetic~\cite{aota2023zero}. MVTec and VisA are used for controlled Ours mechanism ablations. The five-dataset table reports system-level results of the calibrated inference stack.
 
 We report Pixel-AUROC, Pixel-AUPRO, Image-AUROC, and Image-AP. Pixel-AUPRO is emphasized because it better reflects region-level anomaly localization quality. All results are deterministic reports without multi-seed confidence intervals or significance tests.
 
 \subsubsection{Implementation Details}
-All experiments use the AnomalyCLIP checkpoint \texttt{9\_12\_4\_multiscale/epoch\_15.pth} and CLIP ViT-L/14@336px. Images are resized and center-cropped to $518\times518$ with OpenAI CLIP normalization. Cached features are extracted from layers $\{6,12,18,24\}$, while controlled WPTA ablations aggregate feature map layers $\{1,2,3\}$. Layer fusion uses summation, Gaussian smoothing uses $\sigma=5$, and AUPRO uses 200 thresholds.
+All experiments use the AnomalyCLIP checkpoint \texttt{9\_12\_4\_multiscale/epoch\_15.pth} and CLIP ViT-L/14@336px. Images are resized and center-cropped to $518\times518$ with OpenAI CLIP normalization. Cached features are extracted from layers $\{6,12,18,24\}$, while controlled Ours ablations aggregate feature map layers $\{1,2,3\}$. Layer fusion uses summation, Gaussian smoothing uses $\sigma=5$, and AUPRO uses 200 thresholds.
 
 Prototype adaptation uses temperature $0.07$, semantic sharpening $\gamma=1.0$, wavelet evidence exponent $\eta=1.0$, and evidence top-$k$ ratio $0.2$. Boundary-aware wavelet reliability uses boundary-aware mode with mix weight $0.05$. Except for the fixed-baseline row, prototype/fusion variants in controlled ablations share the same multi-crop and pixel-to-image settings.
 
 \subsection{Results}
 
 \subsubsection{Industrial Results}
-Table~\ref{tab:industry_result} follows the compact multi-method layout of the referenced LNCS paper. It reports representative CLIP-based ZSAD methods together with our current fixed AnomalyCLIP baseline and WPTA results. External rows are used as protocol-reference positioning; the same-protocol claim remains the improvement over the current fixed AnomalyCLIP baseline and the controlled ablations below.
+Table~\ref{tab:industry_result} follows the compact multi-method layout of the referenced LNCS paper. It reports representative CLIP-based ZSAD methods together with our current fixed AnomalyCLIP baseline and Ours results. External rows are used as protocol-reference positioning; the same-protocol claim remains the improvement over the current fixed AnomalyCLIP baseline and the controlled ablations below.
 
 \begin{table}[htbp]
   \centering
@@ -159,7 +159,7 @@ Table~\ref{tab:industry_result} follows the compact multi-method layout of the r
       \toprule
       \multicolumn{10}{c}{\textbf{Image-level results (Image-AUROC, Image-AP)}} \\
       \midrule
-      Dataset & CLIP & WinCLIP & VAND & CoOp & AdaCLIP & AnomalyCLIP$^{\ddagger}$ & AA-CLIP$^{\dagger}$ & TAAP/INPC & WPTA \\
+      Dataset & CLIP & WinCLIP & VAND & CoOp & AdaCLIP & AnomalyCLIP$^{\ddagger}$ & AA-CLIP$^{\dagger}$ & TAAP/INPC & Ours \\
       \midrule
       MVTec AD & (74.1, 87.6) & (91.8, 96.5) & (86.1, 93.5) & (88.8, 94.8) & (89.2, 96.4) & (91.6, 96.4) & (90.5, 94.9) & (\underline{92.8}, \underline{96.7}) & (\textbf{94.5}, \textbf{97.6}) \\
       VisA & (66.4, 71.5) & (78.1, 81.2) & (78.0, 81.4) & (62.8, 68.1) & (\textbf{85.8}, 84.9) & (82.0, 85.3) & (\underline{84.6}, 82.2) & (83.3, \underline{85.9}) & (\underline{84.6}, \textbf{87.4}) \\
@@ -184,7 +184,7 @@ Table~\ref{tab:industry_result} follows the compact multi-method layout of the r
 \end{table}
 
 \subsubsection{Core Component Ablation}
-Table~\ref{tab:core_ablation} validates the WPTA mechanism on MVTec and VisA. Direct wavelet fusion is worse than the fixed baseline, showing that wavelet responses should not be used as final anomaly scores. Semantic prototype adaptation improves over fixed prototypes, while wavelet-guided adaptation and conservative update further improve Pixel-AUPRO.
+Table~\ref{tab:core_ablation} validates Ours mechanism on MVTec and VisA. Direct wavelet fusion is worse than the fixed baseline, showing that wavelet responses should not be used as final anomaly scores. Semantic prototype adaptation improves over fixed prototypes, while wavelet-guided adaptation and conservative update further improve Pixel-AUPRO.
 
 \begin{table}[htbp]
   \centering
@@ -199,7 +199,7 @@ Table~\ref{tab:core_ablation} validates the WPTA mechanism on MVTec and VisA. Di
       Direct wavelet fusion / no adaptation & (88.7, 80.4) / (92.9, 96.9) & (94.6, 85.1) / (81.6, 84.8) \\
       Semantic prototype adaptation & (91.6, 85.2) / (93.7, 97.1) & (96.0, 90.4) / (83.7, 86.9) \\
       Wavelet prototype adaptation w/o conservative & (91.7, 85.8) / (93.9, 97.2) & (96.1, 91.3) / (84.1, 87.0) \\
-      Full WPTA controlled setting & \textbf{(91.8, 86.2) / (94.1, 97.4)} & \textbf{(96.2, 91.7) / (84.3, 87.3)} \\
+      Ours (controlled setting) & \textbf{(91.8, 86.2) / (94.1, 97.4)} & \textbf{(96.2, 91.7) / (84.3, 87.3)} \\
       \bottomrule
     \end{tabular}%
   }
@@ -219,9 +219,9 @@ Table~\ref{tab:wavelet_design} studies the role of wavelet reliability. HF-only 
       \midrule
       Semantic-only prototype adaptation & (91.6, 85.2) / (93.7, 97.1) & (96.0, 90.4) / (83.7, 86.9) \\
       Direct wavelet fusion & (88.7, 80.4) / (92.9, 96.9) & (94.6, 85.1) / (81.6, 84.8) \\
-      HF-only W + prototype adaptation & (91.6, 85.3) / (94.0, 97.2) & (96.0, 90.8) / (84.0, 86.9) \\
-      Boundary-aware W + prototype adaptation & (91.7, 85.7) / (93.8, 97.3) & (96.1, 91.2) / (83.9, 87.1) \\
-      Full boundary-aware W + conservative & \textbf{(91.8, 86.2) / (94.1, 97.4)} & \textbf{(96.2, 91.7) / (84.3, 87.3)} \\
+      HF-only reliability + prototype adaptation & (91.6, 85.3) / (94.0, 97.2) & (96.0, 90.8) / (84.0, 86.9) \\
+      Boundary-aware reliability + prototype adaptation & (91.7, 85.7) / (93.8, 97.3) & (96.1, 91.2) / (83.9, 87.1) \\
+      Ours (unnamed) & \textbf{(91.8, 86.2) / (94.1, 97.4)} & \textbf{(96.2, 91.7) / (84.3, 87.3)} \\
       \bottomrule
     \end{tabular}%
   }
@@ -230,7 +230,7 @@ Table~\ref{tab:wavelet_design} studies the role of wavelet reliability. HF-only 
 \subsubsection{Configuration Audit}
 \mbox{}\\
 \noindent
-Table~\ref{tab:final_config} records which modules are active in each dataset-specific final system. It prevents over-attributing all five-dataset gains to the WPTA mechanism.
+Table~\ref{tab:final_config} records which modules are active in each dataset-specific system-level Ours setting. It prevents over-attributing all five-dataset gains to Ours mechanism.
 
 \begin{table}[htbp]
   \centering
@@ -255,19 +255,19 @@ Table~\ref{tab:final_config} records which modules are active in each dataset-sp
 
 \paragraph{Why wavelet reliability, not wavelet scoring.}\mbox{}\\
 \noindent
-Wavelets provide local frequency structure rather than semantic anomaly decisions. The direct-fusion negative control shows that adding wavelet response to the anomaly map hurts localization. WPTA instead uses wavelets only as evidence reliability and lets calibrated CLIP prototypes produce the final anomaly map.
+Wavelets provide local frequency structure rather than semantic anomaly decisions. The direct-fusion negative control shows that adding wavelet response to the anomaly map hurts localization. Ours instead uses wavelets only as evidence reliability and lets calibrated CLIP prototypes produce the final anomaly map.
 
 \paragraph{Why conservative calibration.}\mbox{}\\
 \noindent
-Unlabeled test-time calibration can suffer from prototype drift. WPTA uses confidence-gated conservative updates so that visual anchors affect prototypes only when the evidence is reliable. In the default setting, the abnormal prototype update strength is zero, and abnormal evidence mainly controls the update gate. This makes the method conservative rather than a large bidirectional prototype shift.
+Unlabeled test-time calibration can suffer from prototype drift. Ours uses confidence-gated conservative updates so that visual anchors affect prototypes only when the evidence is reliable. In the default setting, the abnormal prototype update strength is zero, and abnormal evidence mainly controls the update gate. This makes the method conservative rather than a large bidirectional prototype shift.
 
 \paragraph{Scope and limitations.}\mbox{}\\
 \noindent
-The five-dataset final systems use dataset-specific configurations and therefore support system-level gains over the fixed AnomalyCLIP baseline, not a causal claim that WPTA is isolated on all five datasets. The WPTA mechanism is validated by controlled MVTec/VisA ablations. External method comparisons require careful protocol alignment before being used for ranking claims.
+The five-dataset system-level Ours settings use dataset-specific configurations and therefore support system-level gains over the fixed AnomalyCLIP baseline, not a causal claim that Ours is isolated on all five datasets. The Ours mechanism is validated by controlled MVTec/VisA ablations. External method comparisons require careful protocol alignment before being used for ranking claims.
 
 \section{Conclusion}
 
-We proposed WPTA for CLIP-based zero-shot anomaly detection. The central idea is to use Haar wavelet cues as patch evidence reliability for test-time prototype adaptation instead of direct final-map fusion. Controlled MVTec/VisA ablations show that direct wavelet fusion hurts localization, while semantic-spectral evidence selection and conservative prototype calibration improve test-time adaptation. Across five industrial benchmarks, the calibrated inference system improves the fixed AnomalyCLIP baseline, especially on Pixel-AUPRO. These results support a conservative conclusion: wavelet cues are more useful as evidence reliability than as anomaly scores, and test-time prototype calibration can reduce the mismatch between fixed CLIP prototypes and instance-specific defect appearances.
+We proposed Ours for CLIP-based zero-shot anomaly detection. The central idea is to use Haar wavelet cues as patch evidence reliability for test-time prototype adaptation instead of direct final-map fusion. Controlled MVTec/VisA ablations show that direct wavelet fusion hurts localization, while semantic-spectral evidence selection and conservative prototype calibration improve test-time adaptation. Across five industrial benchmarks, the calibrated inference system improves the fixed AnomalyCLIP baseline, especially on Pixel-AUPRO. These results support a conservative conclusion: wavelet cues are more useful as evidence reliability than as anomaly scores, and test-time prototype calibration can reduce the mismatch between fixed CLIP prototypes and instance-specific defect appearances.
 
 \bibliographystyle{splncs04}
 \bibliography{wpta_references_v0.1}

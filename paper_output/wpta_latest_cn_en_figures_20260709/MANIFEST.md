@@ -1,4 +1,4 @@
-# WPTA latest Chinese/English paper package
+# Ours latest Chinese/English paper package
 
 Created: 2026-07-09
 

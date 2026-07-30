@@ -1,4 +1,4 @@
-# WPTA 实现细节与叙事一致性审计
+# Ours 实现细节与叙事一致性审计
 
 审计来源：
 
@@ -11,13 +11,13 @@
 
 | Dataset | Final result | Enabled modules in final command | Narrative risk |
 |---|---:|---|---|
-| MVTec | 91.8 / 85.6 / 94.5 / 97.6 | wavelet, wavelet confidence, TTA rectification, multicrop, pixel-to-image fusion | Can be discussed as full system with WPTA components. |
-| VisA | 96.2 / 91.3 / 84.6 / 87.4 | wavelet, wavelet confidence, TTA rectification, multicrop, pixel-to-image fusion | Can be discussed as full system with WPTA components. |
+| MVTec | 91.8 / 85.6 / 94.5 / 97.6 | wavelet, wavelet confidence, TTA rectification, multicrop, pixel-to-image fusion | Can be discussed as full system with Ours components. |
+| VisA | 96.2 / 91.3 / 84.6 / 87.4 | wavelet, wavelet confidence, TTA rectification, multicrop, pixel-to-image fusion | Can be discussed as full system with Ours components. |
 | MPDD | 97.3 / 89.9 / 77.8 / 82.3 | multicrop, pixel-to-image fusion; no wavelet/TTA flags in final command | Cannot attribute gain to wavelet-guided prototype adaptation without extra ablation. |
 | BTAD | 96.3 / 78.2 / 93.9 / 94.9 | multicrop, pixel-to-image fusion; no wavelet/TTA flags in final command | Cannot attribute gain to wavelet-guided prototype adaptation without extra ablation. |
-| DTD-Synthetic | 97.9 / 91.8 / 96.9 / 98.7 | wavelet, wavelet confidence, multicrop, pixel-to-image fusion; no TTA rectification flag | Can support wavelet reliability in final system, but not test-time prototype adaptation. |
+| DTD-Synthetic | 97.9 / 91.8 / 96.9 / 98.7 | wavelet, wavelet confidence, multicrop, pixel-to-image fusion; no TTA rectification flag | Can support wavelet reliability in system-level Ours setting, but not test-time prototype adaptation. |
 
-## 2. Controlled WPTA setting on MVTec/VisA
+## 2. Controlled Ours setting on MVTec/VisA
 
 The controlled component ablation uses:
 
@@ -51,29 +51,29 @@ The controlled component ablation uses:
 - pixel-to-image weight: 0.1
 - pixel-to-image top-k ratio: 0.01
 
-This setting supports the WPTA method claim on MVTec and VisA.
+This setting supports Ours claim on MVTec and VisA.
 
 ## 3. Required narrative correction
 
 The paper must distinguish two claims:
 
-1. **WPTA method claim**: On MVTec and VisA controlled ablations, wavelet-guided prototype adaptation improves over semantic-only adaptation and direct wavelet fusion.
-2. **Final system result claim**: A final calibrated system improves over AnomalyCLIP baseline across five industrial datasets.
+1. **Ours claim**: On MVTec and VisA controlled ablations, wavelet-guided prototype adaptation improves over semantic-only adaptation and direct wavelet fusion.
+2. **Final system result claim**: A system-level Ours setting improves over AnomalyCLIP baseline across five industrial datasets.
 
 It is not currently valid to claim:
 
-- “WPTA prototype adaptation improves all five datasets,” because MPDD and BTAD final commands do not enable wavelet/TTA.
-- “Every five-dataset gain comes from wavelet-supervised prototype adaptation,” because several final settings include multicrop and pixel-to-image fusion as main active modules.
+- “Ours prototype adaptation improves all five datasets,” because MPDD and BTAD final commands do not enable wavelet/TTA.
+- “Every five-dataset gain comes from wavelet-supervised prototype adaptation,” because several system-level settings include multicrop and pixel-to-image fusion as main active modules.
 
 ## 4. Recommended v0.4 wording
 
 Use:
 
-> The full calibrated system improves the AnomalyCLIP baseline on five industrial benchmarks. The WPTA mechanism itself is validated through controlled MVTec/VisA ablations, where direct wavelet fusion degrades performance while wavelet-guided evidence selection and conservative prototype calibration improve AUPRO.
+> The full calibrated system improves the AnomalyCLIP baseline on five industrial benchmarks. The Ours mechanism itself is validated through controlled MVTec/VisA ablations, where direct wavelet fusion degrades performance while wavelet-guided evidence selection and conservative prototype calibration improve AUPRO.
 
 Avoid:
 
-> WPTA improves all five datasets through wavelet-supervised prototype adaptation.
+> Ours improves all five datasets through wavelet-supervised prototype adaptation.
 
 ## 5. Impact on score
 

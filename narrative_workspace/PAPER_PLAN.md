@@ -8,7 +8,7 @@
 **Page budget**: 8 pages main body (CVPR; references/appendix not counted).
 **Section count**: 6.
 
-> 数值来自 `EXPERIMENT_PLAN_PAPER.md` 的 EXPECTED 目标值，成稿前用真实 log 替换。
+> 数值口径更新（2026-07-30）：`EXPERIMENT_PLAN_PAPER.md` 是目标占位数值。当前 MVTec/VisA 受控真实结果以 `paper/tables/*.csv`、`paper/prototype_main_result_table.md` 和 `EXPERIMENT_TARGETS.md` 为准。正式方法名未定，表格先用 `Ours (unnamed)`。
 > 叙事依据 `NARRATIVE.md`；查新边界见 `NOVELTY_CHECK.md`（频率本身非卖点，卖点是"逐图正常参照"）。
 
 ---
@@ -18,15 +18,15 @@
 | # | Claim | Evidence | Status | Section |
 |---|-------|----------|--------|---------|
 | C1 | CLIP patch features already respond to anomaly-induced high-frequency change, but normal rough materials respond just as strongly → HF alone is ambiguous | Fig 1 motivation; qualitative HF map column; per-category analysis | Core diagnostic | §1, §3.1, §5 |
-| C2 | Using HF directly (score/feature fusion) without a reference collapses the anomaly map | Table 3 DirectHF 82.5/73.0 vs Ours 92.4/85.8 | Supported (target) | §5.1 |
-| C3 | A single global HF threshold is insufficient; the normal reference must be estimated per image | Table 3 GlobalRef 83.2 vs Ours 85.8 (pAUPRO); monotone chain | Supported (target) | §5.1 |
-| C4 | The signal used to pick trustworthy-normal patches must be external to CLIP semantics (HF), else it inherits CLIP's blind spot | Table 3 SelfRef 84.6 vs Ours 85.8; Table 5 blind-spot recall 22%/18% | Supported (target) | §5.1, §5.3 |
+| C2 | Using HF directly (score/feature fusion) without a reference degrades the anomaly map | Controlled direct fusion vs Ours: MVTec P-AUPRO 80.4 vs 86.2; VisA 85.1 vs 91.7 | Supported (reproduced) | §5.1 |
+| C3 | A single global HF threshold is insufficient; the normal reference must be estimated per image | GlobalRef experiment still pending; keep as future mechanism test | Pending | §5.1 |
+| C4 | The signal used to pick trustworthy-normal patches must be external to CLIP semantics (HF), else it inherits CLIP's blind spot | Controlled Ours vs semantic-only improves all four metrics: MVTec `91.6/85.2/93.7/97.1` to `91.8/86.2/94.1/97.4`; VisA `96.0/90.4/83.7/86.9` to `96.2/91.7/84.3/87.3`. Blind-spot recall still pending for attribution. | Supported with scoped attribution | §5.1, §5.3 |
 | C5 | Gains concentrate on texture/micro-defect classes (where CLIP is frequency-blind), not object classes | Fig per-category (texture +3.1 avg, object +0.1) | Supported (target) | §5.2 |
-| C6 | Method improves over AnomalyCLIP across 5 datasets without auxiliary training | Table 1 main results | Supported (target) | §4 |
-| C7 | Per-image reference does not increase false positives on normal images; overhead ≤ 25% | Table 5 stability + runtime | Supported (target) | §5.4 |
+| C6 | Method improves over AnomalyCLIP across 5 datasets without auxiliary training | MVTec/VisA controlled Ours reproduced; MPDD/BTAD/DTD remain system-level rows that need global-vs-tuned labeling | Supported with scope | §4 |
+| C7 | Per-image reference does not increase false positives on normal images; overhead ≤ 25% | Stability + runtime summaries | Supported (reproduced) | §5.4 |
 
 **Known weaknesses (be honest in paper):**
-- vs CLIP-only prototype adaptation (SelfRef), the total-mean gain is small; mechanism is carried by blind-spot recall + per-category + collapse controls, not by mean domination. → State as limitation.
+- vs CLIP-only / semantic-only prototype adaptation, the reproduced controlled gain is small but positive across all four metrics and should be scoped to MVTec/VisA. Blind-spot recall + per-category analysis would strengthen mechanism attribution.
 - MPDD/BTAD/DTD use dataset-tuned settings; must separate global vs tuned (Table 6).
 - Frequency usefulness for ZSAD is prior consensus (FE-CLIP/WMoE) → do NOT claim it; claim the reference.
 
@@ -81,7 +81,7 @@
 
 ### §6 Conclusion (0.5 pages)
 - **Restatement**: the anomaly cue is already in CLIP; the missing piece is a per-image reference, supplied training-free.
-- **Limitations**: small mean gain over CLIP-only prototype adaptation; dataset-tuned settings on 3 datasets; logical anomalies still hard.
+- **Limitations**: small but consistent gain over CLIP-only prototype adaptation; dataset-tuned settings on 3 datasets; logical anomalies still hard.
 - **Future work**: per-image reference for other frozen encoders; combining with lightweight adaptation.
 
 ---
@@ -126,7 +126,7 @@
 - Cross-review with GPT-5.4 (Codex MCP) **not run** in this environment (no OpenAI review configured). Recommended before freezing: run Step 6 of `paper-plan` on this file, focusing on (i) whether §5 mechanism evidence is strong enough to carry the paper given the small mean gain over SelfRef, and (ii) related-work positioning vs FE-CLIP/WMoE.
 
 ## Next Steps
-- [ ] Run experiments; replace all EXPECTED numbers with real logs (start with DirectHF collapse — easiest, is the mechanism keystone).
+- [ ] Replace historical target numbers with reproduced tables where available; run remaining GlobalRef, blind-spot recall, and per-category mechanism checks.
 - [ ] Verify external SOTA numbers (Table 2) and all `[VERIFY]` citations from source papers.
 - [ ] Generate Fig 5 qualitative heatmaps from real inference (per QUALITATIVE_SPEC.md).
 - [ ] /paper-write to draft LaTeX section by section from this plan.

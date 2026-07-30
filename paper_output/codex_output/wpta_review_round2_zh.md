@@ -1,4 +1,4 @@
-# WPTA 中文顶会稿 v0.3 预投稿评审 Round 2
+# Ours 中文顶会稿 v0.3 预投稿评审 Round 2
 
 评审对象：`outputs/wpta_cvpr_paper_draft_zh_v0.3.md`
 

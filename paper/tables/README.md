@@ -2,7 +2,7 @@
 
 This folder contains paper-ready LaTeX tables generated from the current experiment results.
 
-- `main_results.tex`: main comparison between AnomalyCLIP and the current full method on MVTec and VisA.
+- `main_results.tex`: main comparison between AnomalyCLIP and the current Ours on MVTec and VisA.
 - `component_ablation.tex`: component-level ablation for wavelet, TTA, pixel-to-image fusion, and multi-crop fusion.
 - `internal_ablation.tex`: internal design ablation for wavelet confidence, rank preserve, and local contrast.
 

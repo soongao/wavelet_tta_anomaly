@@ -1,4 +1,4 @@
-# WPTA 中文顶会稿 v0.5 预投稿评审 Round 3
+# Ours 中文顶会稿 v0.5 预投稿评审 Round 3
 
 评审对象：`outputs/wpta_cvpr_paper_draft_zh_v0.5.md`
 
@@ -10,13 +10,13 @@
 - Overall score: 7.8 / 10
 - Submission recommendation: Needs moderate-to-major revision before submission.
 
-v0.5 相比 v0.3/v0.4 的最大进步是修正了因果归因边界：五数据集结果现在只写成 final calibrated system 的系统级提升，WPTA 机制只由 MVTec/VisA 受控消融支撑。这个修正确实解决了最危险的 reviewer attack point。当前稿件已经适合作为合作者技术评审稿，但还没有达到 CVPR/ICCV 投稿闭环。
+v0.5 相比 v0.3/v0.4 的最大进步是修正了因果归因边界：五数据集结果现在只写成 system-level Ours setting 的系统级提升，Ours 机制只由 MVTec/VisA 受控消融支撑。这个修正确实解决了最危险的 reviewer attack point。当前稿件已经适合作为合作者技术评审稿，但还没有达到 CVPR/ICCV 投稿闭环。
 
 ## Dimension 1: Macro Logic
 
 | # | Finding | Severity | Suggested fix |
 |---|---|---|---|
-| 1 | “证据边界：WPTA 机制本身由 MVTec/VisA 受控消融支撑；五数据集主结果支撑的是最终校准系统...” | MINOR | 这是正确修正，应保留。英文投稿版可把这段转成 Experiment Setup 的 protocol paragraph，而不是作为写作边界前言。 |
+| 1 | “证据边界：Ours 机制本身由 MVTec/VisA 受控消融支撑；五数据集主结果支撑的是系统级 Ours 设置...” | MINOR | 这是正确修正，应保留。英文投稿版可把这段转成 Experiment Setup 的 protocol paragraph，而不是作为写作边界前言。 |
 | 2 | “本文采用两层实验叙事...” | MINOR | 逻辑清楚，但正式论文不应显得像作者在解释防御策略。改成自然实验组织：first validate mechanism, then report final-system results. |
 | 3 | “为保证受控消融中 adaptation variants 的可比性，除 baseline 外...” | MAJOR | 这句话暴露了 baseline 与 variants 不完全同配置。需要在表注里明确 baseline 是否包含 multi-crop/p2i，否则 reviewer 会质疑 Table 2 中 baseline-to-method delta 的公平性。 |
 
@@ -25,14 +25,14 @@ v0.5 相比 v0.3/v0.4 的最大进步是修正了因果归因边界：五数据�
 | # | Finding | Severity | Suggested fix |
 |---|---|---|---|
 | 1 | Abstract 当前是一整段长句群，超过顶会摘要的可读阈值。 | MINOR | 英文版按五句式重写：task, challenge, insight, method, results。 |
-| 2 | “Full controlled WPTA 在 AUPRO 上达到 86.2/91.7。” | MINOR | 摘要中只给 AUPRO 可能显得选择性报告；建议写 “on MVTec/VisA” 并说明指标。 |
+| 2 | “Ours 在 AUPRO 上达到 86.2/91.7。” | MINOR | 摘要中只给 AUPRO 可能显得选择性报告；建议写 “on MVTec/VisA” 并说明指标。 |
 | 3 | Related Work 全部是 `[CITATION-NEEDED]`。 | CRITICAL | 不能投稿。至少补齐 CLIP、AnomalyCLIP、WinCLIP、AdaCLIP、CLIP-AD/PromptAD、TTA、MVTec、VisA、MPDD、BTAD、DTD 的真实 BibTeX。 |
 
 ## Dimension 3: Claim-Evidence Audit
 
 | # | Finding | Severity | Suggested fix |
 |---|---|---|---|
-| 1 | “Final calibrated system improves AnomalyCLIP baseline on five industrial datasets.” | PASS | Table 1 支撑，Table 4 约束归因边界。 |
+| 1 | “Ours (unnamed; system-level) improves AnomalyCLIP baseline on five industrial datasets.” | PASS | Table 1 支撑，Table 4 约束归因边界。 |
 | 2 | “Wavelet reliability adds value beyond semantic-only adaptation.” | PASS with scope | Table 2 支撑 MVTec/VisA，正文必须始终带这个范围。 |
 | 3 | “当前系统在 MVTec/VisA 的 P-AUPRO 上具有较强位置...” | MAJOR | Table 5 协议未核验，建议放附录，主文只保留一句 protocol-reference。 |
 | 4 | ISIC/ISBI 附录观察 | PASS with scope | 已正确降级为 appendix-only，不应进入摘要/贡献。 |

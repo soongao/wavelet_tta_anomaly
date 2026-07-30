@@ -1,0 +1,24 @@
+\begin{table*}[t]
+\centering
+\caption{Wavelet reliability design ablation on MVTec and VisA. All metrics are reported in percent; the best result within each dataset and metric is marked in bold.}
+\label{tab:wavelet-design-ablation}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llcccc}
+\toprule
+Dataset & Variant & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
+\midrule
+MVTec & Direct wavelet fusion & 88.7 & 80.4 & 92.9 & 96.9 \\
+MVTec & Semantic-only prototype adaptation & 91.6 & 85.2 & 93.7 & 97.1 \\
+MVTec & HF-only reliability + prototype adaptation & 91.6 & 85.3 & 94.0 & 97.2 \\
+MVTec & Boundary-aware reliability + prototype adaptation & 91.7 & 85.7 & 93.8 & 97.3 \\
+MVTec & Ours (unnamed) & \textbf{91.8} & \textbf{86.2} & \textbf{94.1} & \textbf{97.4} \\
+\midrule
+VisA & Direct wavelet fusion & 94.6 & 85.1 & 81.6 & 84.8 \\
+VisA & Semantic-only prototype adaptation & 96.0 & 90.4 & 83.7 & 86.9 \\
+VisA & HF-only reliability + prototype adaptation & 96.0 & 90.8 & 84.0 & 86.9 \\
+VisA & Boundary-aware reliability + prototype adaptation & 96.1 & 91.2 & 83.9 & 87.1 \\
+VisA & Ours (unnamed) & \textbf{96.2} & \textbf{91.7} & \textbf{84.3} & \textbf{87.3} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}

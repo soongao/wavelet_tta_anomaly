@@ -955,7 +955,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 Overfull \hbox (5.74101pt too wide) in paragraph at lines 69--70
 []\TU/Songti.ttc(0)/m/n/10 报 告 五 个 工 业 基 准 上 的 最 终 校 准 推 理 系 统 结 果，|  并 用 \TU/l
 mr/m/n/10 configuration audit \TU/Songti.ttc(0)/m/n/10 明 确 区 分 系 统 级 提 升 和 \TU/
-lmr/m/n/10 WPTA
+lmr/m/n/10 Ours
  []
 
 File: figures/figure1_motivated_example_mvtec_cable_vector_layout.pdf Graphic f

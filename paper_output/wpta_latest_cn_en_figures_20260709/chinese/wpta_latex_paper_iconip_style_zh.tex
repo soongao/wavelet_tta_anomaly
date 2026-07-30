@@ -18,8 +18,8 @@
 
 \urlstyle{rm}
 
-\title{面向零样本异常检测的小波监督测试时原型适配}
-\titlerunning{小波监督测试时原型适配}
+\title{面向零样本异常检测的Ours（未命名）}
+\titlerunning{Ours（未命名）}
 \author{Anonymous Author(s)}
 \authorrunning{Anonymous Author(s)}
 \institute{Anonymous Institution}
@@ -31,7 +31,7 @@
 \maketitle
 
 \begin{abstract}
-零样本工业异常检测需要在不使用目标类别训练图像和异常标注的条件下，同时完成图像级异常判别与像素级异常定位。现有 CLIP-based 方法通常依赖固定 normal/abnormal 文本原型，但固定原型难以覆盖每张测试图像中的实例化缺陷外观，也容易把真实缺陷、正常材料纹理和结构边界混淆。本文提出 Wavelet-Supervised Test-Time Prototype Adaptation (WPTA)，将 Haar 小波线索用作测试时原型适配的 patch evidence reliability，而不是作为直接叠加到最终异常图上的频域分数。WPTA 冻结 CLIP，在 CLIP patch feature grid 上构造 boundary-aware wavelet reliability，并与初始语义异常先验共同选择 visual normal/abnormal anchors，再通过 confidence-gated conservative update 校准原型。MVTec 和 VisA 上的受控消融表明，direct wavelet fusion 会损害定位表现，而 semantic-spectral evidence selection 与 conservative calibration 能改善测试时原型适配。五个工业基准上，最终校准推理系统相对当前固定 AnomalyCLIP baseline 平均提升 $+1.0/+4.5/+3.4/+2.8$，指标顺序为 P-AUROC/P-AUPRO/I-AUROC/I-AP。
+零样本工业异常检测需要在不使用目标类别训练图像和异常标注的条件下，同时完成图像级异常判别与像素级异常定位。现有 CLIP-based 方法通常依赖固定 normal/abnormal 文本原型，但固定原型难以覆盖每张测试图像中的实例化缺陷外观，也容易把真实缺陷、正常材料纹理和结构边界混淆。本文提出 Ours (unnamed)，将 Haar 小波线索用作测试时原型适配的 patch evidence reliability，而不是作为直接叠加到最终异常图上的频域分数。Ours 冻结 CLIP，在 CLIP patch feature grid 上构造 boundary-aware wavelet reliability，并与初始语义异常先验共同选择 visual normal/abnormal anchors，再通过 confidence-gated conservative update 校准原型。MVTec 和 VisA 上的受控消融表明，direct wavelet fusion 会损害定位表现，而 semantic-spectral evidence selection 与 conservative calibration 能改善测试时原型适配。五个工业基准上，系统级 Ours 设置相对当前固定 AnomalyCLIP baseline 平均提升 $+1.0/+4.5/+3.4/+2.8$，指标顺序为 P-AUROC/P-AUPRO/I-AUROC/I-AP。
 \keywords{零样本异常检测 \and CLIP \and 测试时适配 \and 小波可靠性}
 \end{abstract}
 
@@ -41,16 +41,16 @@
 
 频域和小波线索提供了有用但危险的补充信息。许多工业缺陷表现为局部高频扰动，Haar 小波可以在特征网格上分离高频细节与低频结构。然而，高频响应并不等价于异常证据。普通物体轮廓、反光表面和细粒度正常纹理同样会产生强小波响应。受控实验支持这一点：direct wavelet fusion 使 MVTec 的 pixel-level (AUROC, AUPRO) 从 $(91.2,83.2)$ 降到 $(88.7,80.4)$，也使 VisA 从 $(95.5,86.7)$ 降到 $(94.6,85.1)$。
 
-本文因此把小波线索从 final-map scoring 重新定位为测试时原型适配的 evidence reliability。WPTA 首先用固定 normal/abnormal prototypes 得到初始语义异常先验 $S_0$；随后对 CLIP patch feature grid 做 Haar 分解，估计高频纹理能量与低频结构边界，并构造 boundary-aware reliability map。语义先验 $S_0$ 提供 anomaly direction，小波可靠性 $W$ 约束 local evidence 是否可信。最终，WPTA 聚合被两者共同支持的 visual anchors，并在不反向传播、不更新 CLIP 参数的条件下保守校准 prototypes。
+本文因此把小波线索从 final-map scoring 重新定位为测试时原型适配的 evidence reliability。Ours 首先用固定 normal/abnormal prototypes 得到初始语义异常先验 $S_0$；随后对 CLIP patch feature grid 做 Haar 分解，估计高频纹理能量与低频结构边界，并构造 boundary-aware reliability map。语义先验 $S_0$ 提供 anomaly direction，小波可靠性 $W$ 约束 local evidence 是否可信。最终，Ours 聚合被两者共同支持的 visual anchors，并在不反向传播、不更新 CLIP 参数的条件下保守校准 prototypes。
 
-本文将证据分为两层。第一层是 MVTec/VisA 受控消融，用于验证 WPTA 机制：semantic-only prototype adaptation 强于固定原型，wavelet-guided reliability 进一步改善定位，conservative update 带来额外收益。第二层是五个工业基准上的最终校准推理系统结果。由于五数据集最终系统使用了数据集特定校准模块，本文显式区分系统级收益和 WPTA 机制的因果证据。
+本文将证据分为两层。第一层是 MVTec/VisA 受控消融，用于验证 Ours 机制：semantic-only prototype adaptation 强于固定原型，wavelet-guided reliability 进一步改善定位，conservative update 带来额外收益。第二层是五个工业基准上的系统级 Ours 设置结果。由于五数据集系统级 Ours 设置使用了数据集特定校准模块，本文显式区分系统级收益和 Ours 机制的因果证据。
 
 本文贡献如下：
 \begin{itemize}
-  \item 提出 WPTA，将 Haar 小波线索转化为测试时原型适配的 patch evidence reliability，而不是直接进行 final-map fusion。
+  \item 提出 Ours，将 Haar 小波线索转化为测试时原型适配的 patch evidence reliability，而不是直接进行 final-map fusion。
   \item 设计 semantic-spectral evidence selection，用语义异常先验和 boundary-aware wavelet reliability 共同构造 visual normal/abnormal anchors。
   \item 在冻结 CLIP、无目标训练数据、无反向传播的条件下进行 conservative prototype calibration，并通过 MVTec/VisA 受控消融验证机制有效性。
-  \item 报告五个工业基准结果，并通过 configuration audit 明确区分校准推理系统收益和 WPTA 机制证据。
+  \item 报告五个工业基准结果，并通过 configuration audit 明确区分校准推理系统收益和 Ours 机制证据。
 \end{itemize}
 
 \begin{figure}[t]
@@ -68,30 +68,30 @@ CLIP~\cite{radford2021clip} 为开放词汇识别提供了图文对齐基础。W
 
 \paragraph{测试时适配。}\mbox{}\\
 \noindent
-Test-time adaptation 利用测试样本自身信息缓解分布偏移。TPT~\cite{shu2022tpt} 通过 confidence selection 和 view consistency 在测试时调整 vision-language model prompts。异常检测中的测试时适配更困难，因为异常区域稀疏、未知，并常与正常边界或纹理相邻。WPTA 不更新 CLIP 参数，也不从整张图像直接适配；它只聚合同时被语义先验和小波可靠性支持的 patch evidence。
+Test-time adaptation 利用测试样本自身信息缓解分布偏移。TPT~\cite{shu2022tpt} 通过 confidence selection 和 view consistency 在测试时调整 vision-language model prompts。异常检测中的测试时适配更困难，因为异常区域稀疏、未知，并常与正常边界或纹理相邻。Ours 不更新 CLIP 参数，也不从整张图像直接适配；它只聚合同时被语义先验和小波可靠性支持的 patch evidence。
 
 \paragraph{频域与小波线索。}\mbox{}\\
 \noindent
-小波表示提供了低频结构和高频细节的多分辨率分解~\cite{daubechies1988orthonormal,mallat1989theory}。在工业异常定位中，高频扰动可能对应划痕、裂纹或纹理破坏；但直接频域评分容易受到正常边界和正常纹理干扰。WPTA 将小波线索限制为 evidence reliability，并让校准后的 CLIP prototypes 负责最终 anomaly decision。
+小波表示提供了低频结构和高频细节的多分辨率分解~\cite{daubechies1988orthonormal,mallat1989theory}。在工业异常定位中，高频扰动可能对应划痕、裂纹或纹理破坏；但直接频域评分容易受到正常边界和正常纹理干扰。Ours 将小波线索限制为 evidence reliability，并让校准后的 CLIP prototypes 负责最终 anomaly decision。
 
 \section{方法}
 
 \subsection{问题设置与整体框架}
 
-给定测试图像 $x$，ZSAD 需要预测像素级 anomaly map $M$ 和图像级 anomaly score $s_{\mathrm{img}}$。冻结的 CLIP image encoder 提取 patch features $\{f_i\}_{i=1}^{N}$，text encoder 提供 normal prototype $t_n$ 和 abnormal prototype $t_a$。WPTA 在推理阶段不使用目标域训练图像、异常标注、反向传播或 CLIP 参数更新。
+给定测试图像 $x$，ZSAD 需要预测像素级 anomaly map $M$ 和图像级 anomaly score $s_{\mathrm{img}}$。冻结的 CLIP image encoder 提取 patch features $\{f_i\}_{i=1}^{N}$，text encoder 提供 normal prototype $t_n$ 和 abnormal prototype $t_a$。Ours 在推理阶段不使用目标域训练图像、异常标注、反向传播或 CLIP 参数更新。
 
-如图~\ref{fig:architecture} 所示，WPTA 包含四个步骤。第一，initial semantic scoring 计算 patch-level anomaly prior $S_0$。第二，boundary-aware Haar wavelet reliability 在 CLIP patch feature grid 上估计 reliability map $W$。第三，semantic-spectral evidence selection 聚合 visual normal/abnormal anchors。第四，conservative prototype calibration 用校准后的 prototypes 重新计算 anomaly probabilities。后续小节按这一执行顺序展开，并分别说明每个模块解决的误差来源。
+如图~\ref{fig:architecture} 所示，Ours 包含四个步骤。第一，initial semantic scoring 计算 patch-level anomaly prior $S_0$。第二，boundary-aware Haar wavelet reliability 在 CLIP patch feature grid 上估计 reliability map $W$。第三，semantic-spectral evidence selection 聚合 visual normal/abnormal anchors。第四，conservative prototype calibration 用校准后的 prototypes 重新计算 anomaly probabilities。后续小节按这一执行顺序展开，并分别说明每个模块解决的误差来源。
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/figure2_wpta_method_overview.pdf}
-  \caption{WPTA 方法总览。小波线索用于监督测试时原型适配的 evidence reliability，而不是直接生成最终 anomaly map。}
+  \caption{Ours 方法总览。小波线索用于监督测试时原型适配的 evidence reliability，而不是直接生成最终 anomaly map。}
   \label{fig:architecture}
 \end{figure}
 
 \subsection{初始语义异常分数}
 
-初始语义异常分数用于提供 evidence selection 的异常方向。对每个 patch feature $f_i$，WPTA 通过 normal/abnormal prototypes 的相似度 softmax 计算初始语义异常先验：
+初始语义异常分数用于提供 evidence selection 的异常方向。对每个 patch feature $f_i$，Ours 通过 normal/abnormal prototypes 的相似度 softmax 计算初始语义异常先验：
 \begin{equation}
 S_0(i)=
 \frac{\exp(\simi(f_i,t_a)/\tau)}
@@ -107,7 +107,7 @@ m_0(i)=\simi(f_i,t_a)-\simi(f_i,t_n).
 \end{equation}
 当通用 abnormal prototype $t_a$ 与当前图像中的具体缺陷外观不匹配时，真实异常 patch 的 $m_0(i)$ 可能偏低；当 normal prototype $t_n$ 无法覆盖当前材料纹理或结构边界时，正常 patch 的 $m_0(i)$ 也可能被错误抬高。因此，仅依赖固定 prototypes 会同时带来 false negative 和 false positive。
 
-WPTA 将被筛选出的 visual anchors 视为当前测试图像的局部视觉参考。理想的校准 prototypes 应当让 abnormal anchor 更接近 abnormal prototype，同时让 normal anchor 更接近 normal prototype：
+Ours 将被筛选出的 visual anchors 视为当前测试图像的局部视觉参考。理想的校准 prototypes 应当让 abnormal anchor 更接近 abnormal prototype，同时让 normal anchor 更接近 normal prototype：
 \begin{equation}
 m'_a=\simi(v_a,t'_a)-\simi(v_a,t'_n),\qquad
 m'_n=\simi(v_n,t'_n)-\simi(v_n,t'_a).
@@ -119,15 +119,15 @@ m'_n=\simi(v_n,t'_n)-\simi(v_n,t'_a).
 \lambda_a\|t'_a-t_a\|_2^2+
 \lambda_n\|t'_n-t_n\|_2^2 .
 \end{equation}
-前两项把 prototypes 拉向当前图像的 visual anchors，后两项把 prototypes 约束在原始文本先验附近，防止无标签测试时出现 prototype drift。WPTA 使用的 confidence-gated interpolation 可以看作该目标的一步保守近似：当 evidence 可靠时允许小幅校准，当 evidence 不可靠时保留原始文本 prototypes。
+前两项把 prototypes 拉向当前图像的 visual anchors，后两项把 prototypes 约束在原始文本先验附近，防止无标签测试时出现 prototype drift。Ours 使用的 confidence-gated interpolation 可以看作该目标的一步保守近似：当 evidence 可靠时允许小幅校准，当 evidence 不可靠时保留原始文本 prototypes。
 
 \subsection{Boundary-aware Haar wavelet reliability}
 
-Boundary-aware Haar wavelet reliability 用于判断局部 evidence 是否可信，而不是产生新的异常分数。WPTA 将 patch features reshape 为 $F\in\mathbb{R}^{H\times W\times C}$，并进行一级 Haar DWT，得到 $LL$、$LH$、$HL$ 和 $HH$ 分量。实现中，各分量响应被映射回原 CLIP patch grid，以便与 $S_0$ 和 patch features 对齐。高频纹理能量定义为
+Boundary-aware Haar wavelet reliability 用于判断局部 evidence 是否可信，而不是产生新的异常分数。Ours 将 patch features reshape 为 $F\in\mathbb{R}^{H\times W\times C}$，并进行一级 Haar DWT，得到 $LL$、$LH$、$HL$ 和 $HH$ 分量。实现中，各分量响应被映射回原 CLIP patch grid，以便与 $S_0$ 和 patch features 对齐。高频纹理能量定义为
 \begin{equation}
 HF(i)=\frac{1}{C}\sum_{c=1}^{C}\left(|LH_i^c|+|HL_i^c|+|HH_i^c|\right).
 \end{equation}
-由于高频能量也可能来自正常结构边界，WPTA 从 $LL$ 估计低频结构边缘响应 $LF_{\mathrm{edge}}$，并构造
+由于高频能量也可能来自正常结构边界，Ours 从 $LL$ 估计低频结构边缘响应 $LF_{\mathrm{edge}}$，并构造
 \begin{equation}
 W(i)=\normop(HF(i))\cdot\left(1-\normop(LF_{\mathrm{edge}}(i))\right).
 \end{equation}
@@ -156,7 +156,7 @@ t'_n=\operatorname{Norm}\left((1-\beta)t_n+\beta v_n\right).
 \end{equation}
 更新强度由 confidence gates 控制。上式给出通用形式；在默认受控设置中，$\alpha_0=0.0$、$\beta_0=0.01$，因此 abnormal evidence 主要控制更新门控，实际 prototype displacement 主要作用于 normal prototype。这样可以降低无标签测试时校准中的 prototype drift 风险。
 
-校准后，WPTA 用 $t'_a$ 和 $t'_n$ 重新计算 patch-level anomaly probability：
+校准后，Ours 用 $t'_a$ 和 $t'_n$ 重新计算 patch-level anomaly probability：
 \begin{equation}
 S(i)=
 \frac{\exp(\simi(f_i,t'_a)/\tau)}
@@ -171,14 +171,14 @@ S(i)=
 \subsubsection{数据集与指标}
 \mbox{}\\
 \noindent
-本文在五个工业异常检测基准上评估：MVTec AD~\cite{bergmann2019mvtec,bergmann2021mvtec}、VisA~\cite{zou2022visa}、MPDD~\cite{jezek2021deep}、BTAD~\cite{mishra2021vt} 和 DTD-Synthetic~\cite{aota2023zero}。MVTec 和 VisA 用于 WPTA 受控机制消融；五数据集表报告最终校准推理系统的系统级结果。
+本文在五个工业异常检测基准上评估：MVTec AD~\cite{bergmann2019mvtec,bergmann2021mvtec}、VisA~\cite{zou2022visa}、MPDD~\cite{jezek2021deep}、BTAD~\cite{mishra2021vt} 和 DTD-Synthetic~\cite{aota2023zero}。MVTec 和 VisA 用于 Ours 受控机制消融；五数据集表报告系统级 Ours 设置的系统级结果。
 
 本文报告 Pixel-AUROC、Pixel-AUPRO、Image-AUROC 和 Image-AP。Pixel-AUPRO 更直接反映区域级异常定位质量，因此是主要分析指标。所有 slash-form 数值的顺序固定为 P-AUROC / P-AUPRO / I-AUROC / I-AP。所有结果均为确定性报告，不包含多 seed 置信区间或统计显著性检验。
 
 \subsubsection{实现细节}
 \mbox{}\\
 \noindent
-所有实验使用 AnomalyCLIP checkpoint \texttt{9\_12\_4\_multiscale/epoch\_15.pth} 和 CLIP ViT-L/14@336px。图像 resize 并 center-crop 到 $518\times518$，使用 OpenAI CLIP normalization。缓存特征来自 layers $\{6,12,18,24\}$，受控 WPTA 消融聚合 feature map layers $\{1,2,3\}$。Layer fusion 使用 summation，Gaussian smoothing 使用 $\sigma=5$，AUPRO 使用 200 个 thresholds。
+所有实验使用 AnomalyCLIP checkpoint \texttt{9\_12\_4\_multiscale/epoch\_15.pth} 和 CLIP ViT-L/14@336px。图像 resize 并 center-crop 到 $518\times518$，使用 OpenAI CLIP normalization。缓存特征来自 layers $\{6,12,18,24\}$，受控 Ours 消融聚合 feature map layers $\{1,2,3\}$。Layer fusion 使用 summation，Gaussian smoothing 使用 $\sigma=5$，AUPRO 使用 200 个 thresholds。
 
 Prototype adaptation 使用 temperature $0.07$、semantic sharpening $\gamma=1.0$、wavelet evidence exponent $\eta=1.0$ 和 evidence top-$k$ ratio $0.2$。Boundary-aware wavelet reliability 使用 boundary-aware mode，mix weight 为 $0.05$。Conservative update 的默认强度为 $\alpha_0=0.0$、$\beta_0=0.01$。除固定 baseline 行外，受控消融中的 prototype/fusion variants 使用相同 multi-crop 和 pixel-to-image 设置：multi-crop weight 为 $0.50$，pixel-to-image weight 为 $0.10$，pixel-to-image top-$k$ ratio 为 $0.01$。
 
@@ -187,7 +187,7 @@ Prototype adaptation 使用 temperature $0.07$、semantic sharpening $\gamma=1.0
 \subsubsection{工业主结果}
 \mbox{}\\
 \noindent
-表~\ref{tab:industry_result} 遵循参考 LNCS 论文的紧凑多方法布局。它同时报告代表性 CLIP-based ZSAD 方法、当前固定 AnomalyCLIP baseline 和 WPTA 结果。外部方法用于 protocol-reference positioning；同协议主 claim 仍来自当前固定 AnomalyCLIP baseline 的提升和后续受控消融。由于外部方法与当前结果可能存在训练条件、split、输入尺寸和后处理差异，表中的 best/second-best 标记仅用于读表定位，不作为严格排序结论。
+表~\ref{tab:industry_result} 遵循参考 LNCS 论文的紧凑多方法布局。它同时报告代表性 CLIP-based ZSAD 方法、当前固定 AnomalyCLIP baseline 和 Ours 结果。外部方法用于 protocol-reference positioning；同协议主 claim 仍来自当前固定 AnomalyCLIP baseline 的提升和后续受控消融。由于外部方法与当前结果可能存在训练条件、split、输入尺寸和后处理差异，表中的 best/second-best 标记仅用于读表定位，不作为严格排序结论。
 
 \begin{table}[htbp]
   \centering
@@ -199,7 +199,7 @@ Prototype adaptation 使用 temperature $0.07$、semantic sharpening $\gamma=1.0
       \toprule
       \multicolumn{10}{c}{\textbf{Image-level results (Image-AUROC, Image-AP)}} \\
       \midrule
-      Dataset & CLIP & WinCLIP & VAND & CoOp & AdaCLIP & AnomalyCLIP$^{\ddagger}$ & AA-CLIP$^{\dagger}$ & TAAP/INPC & WPTA \\
+      Dataset & CLIP & WinCLIP & VAND & CoOp & AdaCLIP & AnomalyCLIP$^{\ddagger}$ & AA-CLIP$^{\dagger}$ & TAAP/INPC & Ours \\
       \midrule
       MVTec AD & (74.1, 87.6) & (91.8, 96.5) & (86.1, 93.5) & (88.8, 94.8) & (89.2, 96.4) & (91.6, 96.4) & (90.5, 94.9) & (\underline{92.8}, \underline{96.7}) & (\textbf{94.5}, \textbf{97.6}) \\
       VisA & (66.4, 71.5) & (78.1, 81.2) & (78.0, 81.4) & (62.8, 68.1) & (\textbf{85.8}, 84.9) & (82.0, 85.3) & (\underline{84.6}, 82.2) & (83.3, \underline{85.9}) & (\underline{84.6}, \textbf{87.4}) \\
@@ -223,12 +223,12 @@ Prototype adaptation 使用 temperature $0.07$、semantic sharpening $\gamma=1.0
   }
 \end{table}
 
-从当前固定 AnomalyCLIP baseline 到 WPTA，五数据集平均结果由 $94.9/82.8/86.2/89.4$ 提升到 $95.9/87.4/89.5/92.2$，对应 $+1.0/+4.5/+3.4/+2.8$。最大收益来自 Pixel-AUPRO，说明校准推理系统主要改善异常区域覆盖质量。MPDD 和 BTAD 的最终系统未启用 wavelet reliability 或 prototype rectification，因此这些数据集的提升只作为系统级结果解释；WPTA 机制证据由下方 MVTec/VisA 受控消融给出。
+从当前固定 AnomalyCLIP baseline 到 Ours，五数据集平均结果由 $94.9/82.8/86.2/89.4$ 提升到 $95.9/87.4/89.5/92.2$，对应 $+1.0/+4.5/+3.4/+2.8$。最大收益来自 Pixel-AUPRO，说明校准推理系统主要改善异常区域覆盖质量。MPDD 和 BTAD 的系统级 Ours 设置未启用 wavelet reliability 或 prototype rectification，因此这些数据集的提升只作为系统级结果解释；Ours 机制证据由下方 MVTec/VisA 受控消融给出。
 
 \subsubsection{核心组件消融}
 \mbox{}\\
 \noindent
-表~\ref{tab:core_ablation} 在 MVTec 和 VisA 上验证 WPTA 机制。Direct wavelet fusion 低于固定 baseline，说明小波响应不应直接作为最终 anomaly score。Semantic prototype adaptation 已经强于固定原型，wavelet-guided adaptation 与 conservative update 进一步提升 Pixel-AUPRO。
+表~\ref{tab:core_ablation} 在 MVTec 和 VisA 上验证 Ours 机制。Direct wavelet fusion 低于固定 baseline，说明小波响应不应直接作为最终 anomaly score。Semantic prototype adaptation 已经强于固定原型，wavelet-guided adaptation 与 conservative update 进一步提升 Pixel-AUPRO。
 
 \begin{table}[htbp]
   \centering
@@ -243,13 +243,13 @@ Prototype adaptation 使用 temperature $0.07$、semantic sharpening $\gamma=1.0
       Direct wavelet fusion / no adaptation & (88.7, 80.4) / (92.9, 96.9) & (94.6, 85.1) / (81.6, 84.8) \\
       Semantic prototype adaptation & (91.6, 85.2) / (93.7, 97.1) & (96.0, 90.4) / (83.7, 86.9) \\
       Wavelet prototype adaptation w/o conservative & (91.7, 85.8) / (93.9, 97.2) & (96.1, 91.3) / (84.1, 87.0) \\
-      Full WPTA controlled setting & \textbf{(91.8, 86.2) / (94.1, 97.4)} & \textbf{(96.2, 91.7) / (84.3, 87.3)} \\
+      Ours (controlled setting) & \textbf{(91.8, 86.2) / (94.1, 97.4)} & \textbf{(96.2, 91.7) / (84.3, 87.3)} \\
       \bottomrule
     \end{tabular}%
   }
 \end{table}
 
-该消融直接支撑本文的核心设计选择。相比 semantic-only prototype adaptation，Full WPTA 在 MVTec/VisA 上分别带来 $+1.0/+1.3$ 的 P-AUPRO 提升；相比去掉 conservative update 的版本，Full WPTA 进一步提升 $+0.4/+0.4$ P-AUPRO。这说明小波可靠性和保守更新的收益不是来自直接增强 anomaly map，而是来自更可靠的测试时 evidence selection 和更受控的 prototype calibration。
+该消融直接支撑本文的核心设计选择。相比 semantic-only prototype adaptation，Ours 在 MVTec/VisA 上分别带来 $+1.0/+1.3$ 的 P-AUPRO 提升；相比去掉 conservative update 的版本，Ours 进一步提升 $+0.4/+0.4$ P-AUPRO。这说明小波可靠性和保守更新的收益不是来自直接增强 anomaly map，而是来自更可靠的测试时 evidence selection 和更受控的 prototype calibration。
 
 \subsubsection{小波设计消融}
 \mbox{}\\
@@ -267,9 +267,9 @@ Prototype adaptation 使用 temperature $0.07$、semantic sharpening $\gamma=1.0
       \midrule
       Semantic-only prototype adaptation & (91.6, 85.2) / (93.7, 97.1) & (96.0, 90.4) / (83.7, 86.9) \\
       Direct wavelet fusion & (88.7, 80.4) / (92.9, 96.9) & (94.6, 85.1) / (81.6, 84.8) \\
-      HF-only W + prototype adaptation & (91.6, 85.3) / (94.0, 97.2) & (96.0, 90.8) / (84.0, 86.9) \\
-      Boundary-aware W + prototype adaptation & (91.7, 85.7) / (93.8, 97.3) & (96.1, 91.2) / (83.9, 87.1) \\
-      Full boundary-aware W + conservative & \textbf{(91.8, 86.2) / (94.1, 97.4)} & \textbf{(96.2, 91.7) / (84.3, 87.3)} \\
+      HF-only reliability + prototype adaptation & (91.6, 85.3) / (94.0, 97.2) & (96.0, 90.8) / (84.0, 86.9) \\
+      Boundary-aware reliability + prototype adaptation & (91.7, 85.7) / (93.8, 97.3) & (96.1, 91.2) / (83.9, 87.1) \\
+      Ours (unnamed) & \textbf{(91.8, 86.2) / (94.1, 97.4)} & \textbf{(96.2, 91.7) / (84.3, 87.3)} \\
       \bottomrule
     \end{tabular}%
   }
@@ -280,11 +280,11 @@ Prototype adaptation 使用 temperature $0.07$、semantic sharpening $\gamma=1.0
 \subsubsection{配置审计}
 \mbox{}\\
 \noindent
-表~\ref{tab:final_config} 记录每个 dataset-specific final system 启用的模块，避免把五数据集所有收益都归因于 WPTA 机制。
+表~\ref{tab:final_config} 记录每个 dataset-specific system-level Ours setting 启用的模块，避免把五数据集所有收益都归因于 Ours 机制。
 
 \begin{table}[htbp]
   \centering
-  \caption{五数据集最终校准推理系统的配置审计。}
+  \caption{五数据集系统级 Ours 设置的配置审计。}
   \label{tab:final_config}
   \resizebox{\textwidth}{!}{%
     \begin{tabular}{lccccc}
@@ -305,19 +305,19 @@ Prototype adaptation 使用 temperature $0.07$、semantic sharpening $\gamma=1.0
 
 \paragraph{为什么使用 wavelet reliability 而不是 wavelet scoring。}\mbox{}\\
 \noindent
-小波提供的是局部频率结构，而不是语义异常判别。Direct-fusion 负对照表明，把 wavelet response 直接加入 anomaly map 会损害定位表现。WPTA 仅将小波用作 evidence reliability，并让校准后的 CLIP prototypes 产生最终 anomaly map。
+小波提供的是局部频率结构，而不是语义异常判别。Direct-fusion 负对照表明，把 wavelet response 直接加入 anomaly map 会损害定位表现。Ours 仅将小波用作 evidence reliability，并让校准后的 CLIP prototypes 产生最终 anomaly map。
 
 \paragraph{为什么需要 conservative calibration。}\mbox{}\\
 \noindent
-无标签测试时校准容易出现 prototype drift。WPTA 使用 confidence-gated conservative updates，使 visual anchors 只有在 evidence 可靠时影响 prototypes。默认设置中 abnormal prototype update strength 为零，abnormal evidence 主要控制 update gate。因此，该方法是保守校准，而不是大幅双向 prototype shift。
+无标签测试时校准容易出现 prototype drift。Ours 使用 confidence-gated conservative updates，使 visual anchors 只有在 evidence 可靠时影响 prototypes。默认设置中 abnormal prototype update strength 为零，abnormal evidence 主要控制 update gate。因此，该方法是保守校准，而不是大幅双向 prototype shift。
 
 \paragraph{范围与局限。}\mbox{}\\
 \noindent
-五数据集 final systems 使用 dataset-specific configurations，因此它们支持的是相对固定 AnomalyCLIP baseline 的系统级收益，而不是 WPTA 在所有五个数据集上的完全因果隔离。WPTA 机制由 MVTec/VisA 受控消融验证。外部方法比较需要进一步对齐 protocol 后才能用于严格 ranking claim。
+五数据集 system-level Ours settings 使用 dataset-specific configurations，因此它们支持的是相对固定 AnomalyCLIP baseline 的系统级收益，而不是 Ours 在所有五个数据集上的完全因果隔离。Ours 机制由 MVTec/VisA 受控消融验证。外部方法比较需要进一步对齐 protocol 后才能用于严格 ranking claim。
 
 \section{结论}
 
-本文提出 WPTA，用于 CLIP-based zero-shot anomaly detection。核心思想是把 Haar 小波线索作为测试时原型适配的 patch evidence reliability，而不是直接进行 final-map fusion。MVTec/VisA 受控消融表明，direct wavelet fusion 会损害定位表现，而 semantic-spectral evidence selection 和 conservative prototype calibration 能改善测试时适配。五个工业基准上，最终校准推理系统相对固定 AnomalyCLIP baseline 获得提升，尤其体现在 Pixel-AUPRO。整体结果支持一个保守结论：小波线索作为 evidence reliability 比作为 anomaly score 更合适，测试时原型校准能够缓解固定 CLIP prototypes 与实例化缺陷外观之间的不匹配。
+本文提出 Ours，用于 CLIP-based zero-shot anomaly detection。核心思想是把 Haar 小波线索作为测试时原型适配的 patch evidence reliability，而不是直接进行 final-map fusion。MVTec/VisA 受控消融表明，direct wavelet fusion 会损害定位表现，而 semantic-spectral evidence selection 和 conservative prototype calibration 能改善测试时适配。五个工业基准上，系统级 Ours 设置相对固定 AnomalyCLIP baseline 获得提升，尤其体现在 Pixel-AUPRO。整体结果支持一个保守结论：小波线索作为 evidence reliability 比作为 anomaly score 更合适，测试时原型校准能够缓解固定 CLIP prototypes 与实例化缺陷外观之间的不匹配。
 
 \bibliographystyle{splncs04}
 \bibliography{wpta_references_v0.1}

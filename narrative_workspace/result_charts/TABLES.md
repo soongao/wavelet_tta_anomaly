@@ -1,7 +1,8 @@
-# 论文表格骨架（TABLES.md）
+# 论文表格草案（当前结果口径 / TABLES.md）
 
-> 这些结果在论文里应当用**表格**呈现（不是图）。数值均为 EXPERIMENT_PLAN_PAPER 的
-> **目标值（EXPECTED）**，做完实验用真实 log 替换。外部 SOTA 数值标 `*` = 待核对原论文。
+> 当前已复现结果以 `../../paper/tables/*.csv`、`../../paper/prototype_main_result_table.md`
+> 和 `../EXPERIMENT_TARGETS.md` 为准。正式方法名未定，表格先用 `Ours (unnamed)`。
+> 外部 SOTA 数值标 `*` = 待核对原论文。
 > 指标顺序：pixel AUROC / pixel AUPRO / image AUROC / image AP（%）。
 
 ---
@@ -11,27 +12,27 @@
 
 ```latex
 \begin{table*}[t]\centering
-\caption{Zero-shot anomaly detection results. Metrics in \%. Best in \textbf{bold}. (EXPECTED)}
+\caption{Zero-shot anomaly detection results. Metrics in \%. Best in \textbf{bold}.}
 \label{tab:main}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{llcccc}
 \toprule
 Dataset & Method & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
 \midrule
-\multirow{2}{*}{MVTec AD} & AnomalyCLIP & 91.1 & 81.4 & 91.5 & 96.2 \\
-                          & Ours        & \textbf{92.4} & \textbf{85.8} & \textbf{94.2} & \textbf{97.5} \\
+\multirow{2}{*}{MVTec AD} & AnomalyCLIP & 91.1 & 81.4 & 91.6 & 96.4 \\
+                          & Ours (unnamed) & \textbf{91.8} & \textbf{86.2} & \textbf{94.1} & \textbf{97.4} \\
 \midrule
-\multirow{2}{*}{VisA}     & AnomalyCLIP & 95.5 & 87.0 & 82.1 & 85.4 \\
-                          & Ours        & \textbf{96.5} & \textbf{91.0} & \textbf{85.3} & \textbf{88.2} \\
+\multirow{2}{*}{VisA}     & AnomalyCLIP & 95.5 & 86.7 & 82.0 & 85.3 \\
+                          & Ours (unnamed) & \textbf{96.2} & \textbf{91.7} & \textbf{84.3} & \textbf{87.3} \\
 \midrule
-\multirow{2}{*}{MPDD}     & AnomalyCLIP & 96.5 & 88.7 & 77.0 & 80.2 \\
-                          & Ours        & \textbf{97.2} & \textbf{90.5} & \textbf{80.0} & \textbf{83.5} \\
+\multirow{2}{*}{MPDD}     & AnomalyCLIP & 96.9 & 84.6 & 73.7 & 76.5 \\
+                          & Ours (global) & \textbf{97.2} & \textbf{88.4} & \textbf{75.1} & \textbf{78.0} \\
 \midrule
-\multirow{2}{*}{BTAD}     & AnomalyCLIP & 94.2 & 74.8 & 89.5 & 91.5 \\
-                          & Ours        & \textbf{95.8} & \textbf{78.5} & \textbf{92.0} & \textbf{93.5} \\
+\multirow{2}{*}{BTAD}     & AnomalyCLIP & 93.5 & 70.5 & 89.1 & 91.0 \\
+                          & Ours (global) & \textbf{95.6} & \textbf{79.5} & \textbf{89.8} & \textbf{91.1} \\
 \midrule
-\multirow{2}{*}{DTD-Synth}& AnomalyCLIP & 97.0 & 89.5 & 94.0 & 97.2 \\
-                          & Ours        & \textbf{97.8} & \textbf{91.5} & \textbf{96.0} & \textbf{98.3} \\
+\multirow{2}{*}{DTD-Synth}& AnomalyCLIP & 97.4 & 89.1 & 94.5 & 97.7 \\
+                          & Ours (global) & \textbf{97.7} & \textbf{90.7} & \textbf{95.1} & \textbf{98.0} \\
 \bottomrule
 \end{tabular}}
 \end{table*}
@@ -44,7 +45,7 @@ Dataset & Method & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
 
 ```latex
 \begin{table}[t]\centering
-\caption{Comparison with zero-shot methods on MVTec. * external, to verify. (Ours EXPECTED)}
+\caption{Comparison with zero-shot methods on MVTec. * external, to verify.}
 \label{tab:sota}
 \begin{tabular}{lccc}
 \toprule
@@ -56,7 +57,7 @@ AnomalyCLIP   & 91.5 & 91.1 & 81.4 \\
 AdaCLIP*      & 92.0 & 89.0 & --   \\
 FE-CLIP*      & --   & --   & --   \\
 \midrule
-\textbf{Ours} & \textbf{94.2} & \textbf{92.4} & \textbf{85.8} \\
+\textbf{Ours (unnamed)} & \textbf{94.1} & \textbf{91.8} & \textbf{86.2} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -70,7 +71,7 @@ FE-CLIP*      & --   & --   & --   \\
 
 ```latex
 \begin{table}[t]\centering
-\caption{Mechanism ablation: source of the normal reference. MVTec / VisA. (EXPECTED)}
+\caption{Controlled ablation results on MVTec / VisA.}
 \label{tab:ablation-core}
 \resizebox{\columnwidth}{!}{
 \begin{tabular}{lcccc}
@@ -78,18 +79,18 @@ FE-CLIP*      & --   & --   & --   \\
 Variant & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
 \midrule
 \multicolumn{5}{l}{\emph{MVTec AD}}\\
-DirectHF (read HF, no ref) & 82.5 & 73.0 & 93.4 & 97.1 \\
-Baseline                   & 91.1 & 81.4 & 91.5 & 96.2 \\
-GlobalRef (fixed)          & 91.5 & 83.2 & 93.0 & 96.9 \\
-SelfRef (CLIP-only)        & 91.9 & 84.6 & 93.9 & 97.3 \\
-\textbf{Ours}              & \textbf{92.4} & \textbf{85.8} & \textbf{94.2} & \textbf{97.5} \\
+Direct fusion (no adaptation) & 88.7 & 80.4 & 92.9 & 96.9 \\
+Baseline                      & 91.2 & 83.2 & 91.6 & 96.4 \\
+Semantic-only adaptation      & 91.6 & 85.2 & 93.7 & 97.1 \\
+Ours w/o conservative update  & 91.7 & 85.8 & 93.9 & 97.2 \\
+\textbf{Ours (unnamed)}       & \textbf{91.8} & \textbf{86.2} & \textbf{94.1} & \textbf{97.4} \\
 \midrule
 \multicolumn{5}{l}{\emph{VisA}}\\
-DirectHF & 90.8 & 82.5 & 84.0 & 86.5 \\
-Baseline & 95.5 & 87.0 & 82.1 & 85.4 \\
-GlobalRef& 95.8 & 88.2 & 83.5 & 86.6 \\
-SelfRef  & 96.1 & 89.8 & 84.4 & 87.3 \\
-\textbf{Ours} & \textbf{96.5} & \textbf{91.0} & \textbf{85.3} & \textbf{88.2} \\
+Direct fusion (no adaptation) & 94.6 & 85.1 & 81.6 & 84.8 \\
+Baseline                      & 95.5 & 86.7 & 82.0 & 85.3 \\
+Semantic-only adaptation      & 96.0 & 90.4 & 83.7 & 86.9 \\
+Ours w/o conservative update  & 96.1 & 91.3 & 84.1 & 87.0 \\
+\textbf{Ours (unnamed)}       & \textbf{96.2} & \textbf{91.7} & \textbf{84.3} & \textbf{87.3} \\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -101,15 +102,16 @@ SelfRef  & 96.1 & 89.8 & 84.4 & 87.3 \\
 
 ```latex
 \begin{table}[t]\centering
-\caption{Design ablation on MVTec. (EXPECTED)}
+\caption{Design ablation on MVTec.}
 \label{tab:ablation-design}
 \begin{tabular}{lcccc}
 \toprule
 Variant & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
 \midrule
-HFonly (raw HF)          & 92.0 & 85.0 & 94.1 & 97.4 \\
-NoCons (no conserv.)     & 92.1 & 85.3 & 94.0 & 97.3 \\
-\textbf{Ours (bound.+conserv.)} & \textbf{92.4} & \textbf{85.8} & \textbf{94.2} & \textbf{97.5} \\
+HF-only reliability          & 91.6 & 85.3 & 94.0 & 97.2 \\
+Boundary-aware reliability   & 91.7 & 85.7 & 93.8 & 97.3 \\
+No conservative update       & 91.7 & 85.8 & 93.9 & 97.2 \\
+\textbf{Ours (unnamed)}      & \textbf{91.8} & \textbf{86.2} & \textbf{94.1} & \textbf{97.4} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -121,26 +123,26 @@ NoCons (no conserv.)     & 92.1 & 85.3 & 94.0 & 97.3 \\
 
 ```latex
 \begin{table}[t]\centering
-\caption{Normal-image false-positive area (lower better) and runtime. (EXPECTED)}
+\caption{Normal-image false-positive area (lower better) and runtime.}
 \label{tab:stability-runtime}
 \begin{tabular}{llccc}
 \toprule
 Dataset & Method & FP@p95(\%) & FP@p99(\%) & s/img \\
 \midrule
 \multirow{3}{*}{MVTec}
- & Baseline & 5.0 & 1.00 & 0.065 \\
- & NoCons   & 4.9 & 0.98 & --    \\
- & Ours     & \textbf{4.6} & \textbf{0.90} & 0.079 \\
+ & Baseline & 5.002 & 1.001 & 0.065 \\
+ & NoCons   & 4.738 & 0.923 & --    \\
+ & Ours (unnamed) & 4.895 & 0.960 & 0.079 \\
 \midrule
 \multirow{3}{*}{VisA}
- & Baseline & 5.0 & 1.00 & 0.065 \\
- & NoCons   & 4.8 & 0.95 & --    \\
- & Ours     & \textbf{4.5} & \textbf{0.88} & 0.079 \\
+ & Baseline & 4.996 & 1.001 & 0.065 \\
+ & NoCons   & 4.693 & 0.935 & --    \\
+ & Ours (unnamed) & 4.718 & 0.937 & 0.079 \\
 \bottomrule
 \end{tabular}
 \end{table}
 ```
-> Ours FP ≤ baseline，且 Ours < NoCons（保守更新更稳）；开销 +21.5%（≤25%）。
+> Ours FP ≤ baseline；当前 no-conservative FP 略低于 conservative，因此只写“不增加正常图误报”，不写“Ours < NoCons”。开销约 +21% 到 +22%（≤25%）。
 
 ---
 
@@ -148,15 +150,15 @@ Dataset & Method & FP@p95(\%) & FP@p99(\%) & s/img \\
 
 ```latex
 \begin{table}[t]\centering
-\caption{Global setting vs dataset-tuned upper bound. (EXPECTED)}
+\caption{Global setting vs dataset-tuned upper bound.}
 \label{tab:global-tuned}
 \begin{tabular}{lcc}
 \toprule
 Dataset & Global setting & Dataset-tuned (UB) \\
 \midrule
-MPDD (pAUPRO)      & 88.4 & 90.5 \\
-BTAD (pAUPRO)      & 79.5 & 78.5 \\
-DTD-Synth (pAUPRO) & 90.7 & 91.5 \\
+MPDD (pAUPRO)      & 88.4 & 89.9 \\
+BTAD (pAUPRO)      & 79.5 & 78.2 \\
+DTD-Synth (pAUPRO) & 90.7 & 91.8 \\
 \bottomrule
 \end{tabular}
 \end{table}

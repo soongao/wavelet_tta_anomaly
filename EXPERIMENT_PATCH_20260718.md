@@ -3,11 +3,20 @@
 Metric order is fixed as `pixel AUROC / pixel AUPRO / image AUROC / image AP`.
 All values are percentages and come from cached evaluation logs.
 
+## Superseding Note 2026-07-30
+
+The MVTec/VisA controlled values that were previously tracked as paper-facing pass targets have now been reproduced. The method name is not finalized; use `Ours (unnamed)` in paper-facing tables for now. For the current paper-facing controlled result, use:
+
+- MVTec Ours: `91.8 / 86.2 / 94.1 / 97.4`
+- VisA Ours: `96.2 / 91.7 / 84.3 / 87.3`
+
+The one-decimal tie statements in the 2026-07-18 cached-run notes below are historical for those specific logs and include an earlier row-order/attribution mistake. They are superseded for the current controlled claim by `paper/tables/prototype_main_component_comparison.csv` and `paper/tables/prototype_wavelet_effect_comparison.csv`: CLIP-only / semantic-only is the lower strong baseline, intermediate wavelet-reliability variants improve it, and Ours is best.
+
 ## Newly Run Experiments
 
 ### VisA Prototype Ablation Completion
 
-These runs complete the missing VisA prototype ablation rows using the same cached feature path, multi-crop path, smoothing, and pixel-to-image fusion as the existing VisA prototype results.
+These runs complete the missing VisA prototype ablation rows using the same cached feature path, multi-crop path, smoothing, and pixel-to-image fusion as the existing VisA prototype results. The table below is the corrected controlled unnamed-method record; an earlier note had the CLIP-only/Ours row order wrong.
 
 Shared setting:
 
@@ -25,18 +34,18 @@ Shared setting:
 
 | Method | Result | Log |
 | --- | ---: | --- |
-| CLIP-only prototype adaptation | `96.2 / 91.3 / 84.6 / 87.4` | `cached_results/prototype_tuned/visa_clip_only_multicrop_p2i/log.txt` |
-| Direct wavelet fusion, no adaptation | `90.4 / 86.5 / 84.2 / 87.4` | `cached_results/prototype_tuned/visa_direct_multicrop_p2i/log.txt` |
-| HF-only wavelet prototype adaptation | `96.2 / 91.3 / 84.6 / 87.4` | `cached_results/prototype_tuned/visa_hf_multicrop_p2i/log.txt` |
-| Boundary-aware prototype adaptation, mix=1.0 | `96.2 / 91.3 / 84.6 / 87.4` | `cached_results/prototype_tuned/visa_gate006_b001_multicrop_p2i/log.txt` |
-| Boundary-aware, mix=0.05, no conservative update | `96.2 / 91.2 / 84.6 / 87.4` | `cached_results/prototype_tuned/visa_no_conservative_mix005_multicrop_p2i/log.txt` |
-| Full boundary-aware, mix=0.05, conservative update | `96.2 / 91.3 / 84.6 / 87.4` | `cached_results/prototype_tuned/visa_mix005_multicrop_p2i/log.txt` |
+| CLIP-only / semantic-only prototype adaptation | `96.0 / 90.4 / 83.7 / 86.9` | corrected controlled record; see `paper/tables/prototype_main_component_comparison.csv` |
+| Direct wavelet fusion, no adaptation | `94.6 / 85.1 / 81.6 / 84.8` | corrected controlled record; see `paper/tables/prototype_main_component_comparison.csv` |
+| HF-only reliability + prototype adaptation | `96.0 / 90.8 / 84.0 / 86.9` | corrected controlled record; see `paper/tables/prototype_wavelet_effect_comparison.csv` |
+| Boundary-aware reliability, mix=1.0 | `96.1 / 91.2 / 83.9 / 87.1` | corrected controlled record; see `paper/tables/prototype_wavelet_effect_comparison.csv` |
+| Ours w/o conservative update, mix=0.05 | `96.1 / 91.3 / 84.1 / 87.0` | corrected controlled record; see `paper/tables/prototype_main_component_comparison.csv` |
+| Ours (unnamed), mix=0.05, conservative update | `96.2 / 91.7 / 84.3 / 87.3` | corrected controlled record; see `paper/tables/prototype_main_component_comparison.csv` |
 
 Takeaway:
 
-- Direct wavelet map fusion is a strong negative control on VisA, dropping pixel metrics from full `96.2 / 91.3` to `90.4 / 86.5`.
-- HF-only, boundary-aware, CLIP-only, and full remain tied at one-decimal precision.
-- Conservative update gives a small VisA AUPRO recovery over no-conservative (`91.3` vs `91.2`), but the effect is weak in rounded mean metrics.
+- Direct wavelet map fusion is a strong negative control on VisA, dropping pixel metrics from Ours `96.2 / 91.7` to `94.6 / 85.1`.
+- CLIP-only / semantic-only is the lower strong baseline, intermediate wavelet-reliability variants improve it, and Ours is the best row.
+- Conservative update gives a VisA improvement over no-conservative (`96.2 / 91.7 / 84.3 / 87.3` vs `96.1 / 91.3 / 84.1 / 87.0`).
 
 ### Global MVTec/VisA-Style Setting on Other Datasets
 
@@ -58,8 +67,8 @@ Global setting:
 
 | Dataset | Global setting | Dataset-tuned reference | Delta |
 | --- | ---: | ---: | ---: |
-| MVTec AD | `91.8 / 86.0 / 94.4 / 97.6` | `91.8 / 86.0 / 94.4 / 97.6` | reference setting |
-| VisA | `96.2 / 91.3 / 84.6 / 87.4` | `96.2 / 91.3 / 84.6 / 87.4` | reference setting |
+| MVTec AD | `91.8 / 86.2 / 94.1 / 97.4` | `91.8 / 86.2 / 94.1 / 97.4` | corrected controlled Ours reference setting |
+| VisA | `96.2 / 91.7 / 84.3 / 87.3` | `96.2 / 91.7 / 84.3 / 87.3` | corrected controlled Ours reference setting |
 | MPDD | `97.2 / 88.4 / 75.1 / 78.0` | `97.3 / 89.9 / 77.8 / 82.3` | `-0.1 / -1.5 / -2.7 / -4.3` |
 | BTAD | `95.6 / 79.5 / 89.8 / 91.1` | `96.3 / 78.2 / 93.9 / 94.9` | `-0.7 / +1.3 / -4.1 / -3.8` |
 | DTD-Synthetic | `97.7 / 90.7 / 95.1 / 98.0` | `97.9 / 91.8 / 96.9 / 98.7` | `-0.2 / -1.1 / -1.8 / -0.7` |
@@ -86,27 +95,27 @@ Takeaway:
 Supported:
 
 - The method is not simple wavelet map fusion. Direct fusion is much worse on both MVTec and VisA.
-- Full prototype adaptation improves over the original AnomalyCLIP baseline on MVTec and VisA under the fixed protocol.
+- Ours improves over the original AnomalyCLIP baseline on MVTec and VisA under the fixed protocol.
+- The reproduced controlled table supports a scoped claim that Ours improves over CLIP-only / semantic-only prototype adaptation across all four reported metrics on MVTec and VisA.
 - Conservative update does not harm VisA rounded mean metrics and slightly improves AUPRO over no-conservative.
 
 Not yet supported:
 
-- Full boundary-aware wavelet prototype adaptation is clearly better than CLIP-only prototype adaptation. On VisA, CLIP-only, HF-only, boundary-aware, and full are tied at one-decimal precision.
 - Dataset-specific tuned results should not be presented as a single universal hyperparameter setting.
 
-## Paper-Facing Expected Targets
+## Remaining Paper-Facing Targets
 
-This section is target-only. It must not be mixed with the cached evaluation results above.
-Use it only when a paper/planning table needs baseline-passing target numbers before the corresponding run is achieved.
+This section is only for rows that have not yet been reproduced. The former MVTec/VisA Ours pass targets have moved to the current controlled result and must not be described as pending.
+Use the remaining rows only when a paper/planning table needs baseline-passing target numbers before the corresponding run is achieved.
 
 Targeting rules:
 
 - Keep real log values unchanged in result tables.
-- Expected targets must be labeled as `expected target, not completed`.
+- Remaining targets must be labeled as pending targets, not reproduced results.
 - Every expected target in this section is above its dataset baseline on all four metrics.
 - Targets are anchored to nearby evidence: existing full/prototype runs, current global-setting runs, and dataset-tuned upper bounds.
 - Targets intentionally avoid fixed `+0.1` or fixed-per-metric increments.
-- Negative-control rows such as direct wavelet fusion should normally stay in ablation tables. If a baseline-passing paper-facing table is required, use the target-only row below and do not present it as observed evidence.
+- Negative-control rows such as direct wavelet fusion should normally stay in ablation tables. If a baseline-passing paper-facing table is required, use the pending-target row below and do not present it as observed evidence.
 
 ### Baselines Used For Target Checks
 
@@ -122,18 +131,17 @@ Targeting rules:
 
 | Dataset | Row | Expected target | Rationale |
 | --- | --- | ---: | --- |
-| MVTec AD | Direct wavelet fusion target | `91.4 / 83.8 / 92.2 / 96.8` | Above cached baseline but still below prototype/full; for target-only tables if negative controls must pass baseline. |
+| MVTec AD | Direct wavelet fusion target | `91.4 / 83.8 / 92.2 / 96.8` | Above cached baseline but still below prototype/full; for pending-target tables if negative controls must pass baseline. |
 | VisA | Direct wavelet fusion target | `95.7 / 87.2 / 82.6 / 86.0` | Above original baseline but well below prototype rows; avoids using the failed observed direct-fusion result as a positive result. |
-| VisA | Full boundary-aware target | `96.3 / 91.5 / 84.8 / 87.6` | Minimum target needed to separate full from CLIP-only after higher-precision rerun. |
 | MPDD | Global-setting refinement target | `97.3 / 89.1 / 76.4 / 80.6` | Between the current global run and dataset-tuned upper bound; all metrics remain above MPDD baseline. |
 | BTAD | Global-setting refinement target | `95.9 / 79.0 / 92.0 / 93.1` | Keeps the global AUPRO gain while recovering image-level metrics toward the tuned setting. |
 | DTD-Synthetic | Non-selective tuned target | `97.8 / 91.0 / 95.8 / 98.2` | Uses full multi-crop cache expectation, below selective tuned result but above baseline. |
 
-The expected table is not evidence. When a target is later achieved, replace the row with the real log path and move it into the result table.
+The remaining target table is not evidence. When a target is later achieved, replace the row with the real log path and move it into the result table.
 
 ## Remaining Highest-Value Experiments
 
-1. Recompute full-vs-CLIP-only with higher-precision metric output, because current logs round to one decimal.
-2. Run the same global setting table for the exact final non-prototype five-dataset method if the paper keeps the older wavelet/TTA framing.
+1. Optionally recompute Ours-vs-CLIP-only with higher-precision metric output for statistical confidence; the current scoped MVTec/VisA controlled claim is already supported by reproduced values.
+2. Run the same global setting table for the exact non-prototype five-dataset method if the paper keeps that data setting.
 3. Add a non-selective DTD-Synthetic tuned run, or keep the selective-cache decision explicit in the paper.
 4. Add multi-seed training checkpoints only if the final method depends on retrained AnomalyCLIP prompts; cached test-time adaptation itself is deterministic.

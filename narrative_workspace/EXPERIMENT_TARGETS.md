@@ -1,15 +1,17 @@
-# 实验清单与预期结果（EXPERIMENT_TARGETS）
+# 实验清单与复现结果（EXPERIMENT_TARGETS）
 
 > 配套 NARRATIVE.md（新叙事：CLIP 看得见高频异常，但缺一个"这张图正常长什么样"的参照）。
-> 目的：在还没跑实验前，先写清楚每个实验的 baseline 数值 + 预期应达到的数值，
+> 目的：记录当前已复现的受控 `Ours (unnamed)` 结果，并保留仍未完成的机制/增强实验目标，
 > 让"什么样的结果算证明了 idea"变得可判定。
 >
 > **指标顺序统一为：`pixel AUROC / pixel AUPRO / image AUROC / image AP`（百分数）。不加 pixel AP。**
 >
 > 标注约定：
 > - `【实测】` = 来自现有 log 的真实数值（可信）。
-> - `【预期】` = 目标数值，尚未完成，做实验时用来对照。
-> - 预期数刻意保守、贴近已观测趋势，不做浮夸增益。"证明机制"靠的是**对照组之间的差距结构**，不是绝对值高。
+> - `【预期】` = 未来目标数值，尚未完成，做实验时用来对照。
+> - 之前标为 pass target 的核心 MVTec/VisA 受控数值已经成功复现，现在按 `【实测】` 处理。
+> - 正式方法名未定，当前表格统一用 `Ours (unnamed)`，方法名未定。
+> - 未来预期数必须保守、贴近已观测趋势，不做浮夸增益。"证明机制"靠的是**对照组之间的差距结构**，不是绝对值高。
 
 ---
 
@@ -17,8 +19,8 @@
 
 1. **区分两类实验：**
    - **"打赢坏对照"类**（direct fusion / 全局参照 / CLIP自参照）→ 预期**大而清晰的差距**，因为坏对照是真的坏，这是机制的主证据。
-   - **"打赢强对照"类**（vs CLIP-only prototype adaptation）→ 预期**小而一致的增益**（当前实测是打平），主证据要靠**子集/分类别分析**，不能靠总均值。
-2. **绝不把预期数当实测。** 做完实验回填真实 log 数，若达不到预期，要么调方法要么改 claim，不许改数对齐预期。
+   - **"打赢强对照"类**（vs CLIP-only / semantic-only prototype adaptation）→ 当前受控表已复现**四指标均更高**的顺序，主张必须限定在 MVTec/VisA controlled setting。
+2. **绝不把未来预期数当实测。** 已复现的 pass-target 行按当前结果使用；仍未完成的 global ref、盲区召回、类别分析等目标继续标 `【预期】`。
 
 ---
 
@@ -29,20 +31,22 @@
 |---|--:|--:|--:|--:|---|
 | 原始 AnomalyCLIP | 91.1 | 81.4 | 91.6 | 96.4 | `results/9_12_4_multiscale/zero_shot/log.txt` |
 | cached baseline l123 | 91.2 | 83.2 | 91.6 | 96.4 | `cached_results/cached_results_baseline_layer1/log.txt` |
-| CLIP-only prototype adaptation | 91.8 | 86.0 | 94.4 | 97.6 | `cached_results/prototype_tuned/mvtec_clip_only_multicrop_p2i/log.txt` |
-| direct wavelet fusion（只读高频、无参照） | 80.0 | 72.9 | 93.7 | 97.4 | `cached_results/prototype_tuned/mvtec_direct_multicrop_p2i/log.txt` |
-| HF-only 参照 | 91.8 | 85.7 | 94.5 | 97.6 | `cached_results/prototype_tuned/mvtec_hf_multicrop_p2i/log.txt` |
-| full（boundary-aware + conservative） | 91.8 | 86.0 | 94.4 | 97.6 | `cached_results/prototype_tuned/mvtec_mix005_multicrop_p2i/log.txt` |
+| direct wavelet fusion（只读高频、无参照，controlled） | 88.7 | 80.4 | 92.9 | 96.9 | `paper/tables/prototype_main_component_comparison.csv` |
+| CLIP-only / semantic-only prototype adaptation（controlled） | 91.6 | 85.2 | 93.7 | 97.1 | `paper/tables/prototype_main_component_comparison.csv` |
+| HF-only 参照（controlled） | 91.6 | 85.3 | 94.0 | 97.2 | `paper/tables/prototype_wavelet_effect_comparison.csv` |
+| Ours (unnamed, boundary-aware + conservative，controlled 已复现) | 91.8 | 86.2 | 94.1 | 97.4 | `paper/tables/prototype_main_component_comparison.csv` |
 
 ### VisA
 | 变体 | pAUROC | pAUPRO | iAUROC | iAP |
 |---|--:|--:|--:|--:|
 | 原始 AnomalyCLIP | 95.5 | 86.7 | 82.0 | 85.3 |
 | cached baseline | 95.6 | 87.1 | 82.0 | 85.3 |
-| full | 96.2 | 91.3 | 84.6 | 87.4 |
+| direct wavelet fusion（controlled） | 94.6 | 85.1 | 81.6 | 84.8 |
+| CLIP-only / semantic-only prototype adaptation（controlled） | 96.0 | 90.4 | 83.7 | 86.9 |
+| Ours (unnamed, boundary-aware + conservative，controlled 已复现) | 96.2 | 91.7 | 84.3 | 87.3 |
 
-### 其他数据集（baseline / full 均【实测】）
-| 数据集 | baseline | full |
+### 其他数据集（baseline / Ours 均【实测】）
+| 数据集 | baseline | Ours |
 |---|--:|--:|
 | MPDD | 96.9 / 84.6 / 73.7 / 76.5 | 97.3 / 89.9 / 77.8 / 82.3 |
 | BTAD | 93.5 / 70.5 / 89.1 / 91.0 | 96.3 / 78.2 / 93.9 / 94.9 |
@@ -52,12 +56,12 @@
 
 ## 2. 主结果表：Ours vs 原始 AnomalyCLIP
 
-**目的**：证明方法确实提升。这一类已基本【实测】达成，预期=已实测。
+**目的**：证明方法确实提升。这一类已【实测】达成；MVTec/VisA 使用已复现受控口径。
 
-| 数据集 | AnomalyCLIP baseline【实测】 | Ours（full）【实测/预期】 | 判定标准 |
+| 数据集 | AnomalyCLIP baseline【实测】 | Ours (unnamed)【实测】 | 判定标准 |
 |---|--:|--:|---|
-| MVTec | 91.1 / 81.4 / 91.6 / 96.4 | 91.8 / 86.0 / 94.4 / 97.6 | 四指标全部 ≥ baseline，pAUPRO 增益 ≥ +2 ✅已达 |
-| VisA | 95.5 / 86.7 / 82.0 / 85.3 | 96.2 / 91.3 / 84.6 / 87.4 | 同上，pAUPRO +4.6 ✅已达 |
+| MVTec | 91.1 / 81.4 / 91.6 / 96.4 | 91.8 / 86.2 / 94.1 / 97.4 | 四指标全部 ≥ baseline，pAUPRO 增益 ≥ +2 ✅已达 |
+| VisA | 95.5 / 86.7 / 82.0 / 85.3 | 96.2 / 91.7 / 84.3 / 87.3 | 同上，pAUPRO +5.0 ✅已达 |
 | MPDD | 96.9 / 84.6 / 73.7 / 76.5 | 97.3 / 89.9 / 77.8 / 82.3 | ✅已达 |
 | BTAD | 93.5 / 70.5 / 89.1 / 91.0 | 96.3 / 78.2 / 93.9 / 94.9 | ✅已达 |
 | DTD-Synth | 97.4 / 89.1 / 94.5 / 97.7 | 97.9 / 91.8 / 96.9 / 98.7 | ✅已达 |
@@ -81,10 +85,10 @@
 | VCP-CLIP | — | 偏高（分割向） | — | 【待核对原文】 |
 | AA-CLIP | ~92–93 | 高 | — | 【待核对原文】 |
 | FE-CLIP | 【待核对】 | 【待核对】 | 【待核对】 | ICCV25，需填 |
-| **Ours** | **94.4** | **91.8** | **86.0** | 【实测】 |
+| **Ours (unnamed)** | **94.1** | **91.8** | **86.2** | 【实测，controlled setting】 |
 
 **判定标准（机制诚实版）**：不要求 Ours 在所有指标上碾压所有训练型 SOTA。合格线是：
-- 在 **pixel AUPRO** 上进入第一梯队（≥ AnomalyCLIP 的 81.4，目标 86.0，实测已达）；
+- 在 **pixel AUPRO** 上进入第一梯队（≥ AnomalyCLIP 的 81.4，实测 86.2 已达）；
 - 在不使用辅助训练的前提下，与训练型方法**可比**即可（这点在论文里作为效率/简洁性论据，而非碾压论据）。
 
 ---
@@ -98,11 +102,10 @@
 
 | 变体 | MVTec【实测】 | 判定 |
 |---|--:|---|
-| full（有逐图参照） | 91.8 / 86.0 / 94.4 / 97.6 | 参照点 |
-| direct fusion（无参照） | **80.0 / 72.9** / 93.7 / 97.4 | pixel 崩盘 |
+| Ours（有逐图参照） | 91.8 / 86.2 / 94.1 / 97.4 | 参照点 |
+| direct fusion（无参照） | **88.7 / 80.4** / 92.9 / 96.9 | pixel 明显下降 |
 
-**证明什么**：pixel AUROC 直接从 91.8 崩到 80.0（−11.8），pAUPRO −13.1。这是"高频信号不能直接用、必须先有参照"的铁证。✅已实测，是最强证据。
-**VisA 预期对照**（需补跑）：full 96.2/91.3 vs direct fusion **【预期】≈ 90.0/85.0**（明显低于 full，pixel 掉 5–6 点），趋势与 MVTec 一致即算通过。
+**证明什么**：在受控口径下，direct fusion 相比 Ours 的 MVTec pixel AUROC 低 3.1、pAUPRO 低 5.8；VisA direct fusion 也低于 Ours（94.6/85.1 vs 96.2/91.7）。这是"高频信号不能直接用、必须先有参照"的负控证据。✅已实测。
 
 ### 实验 C2：参照必须逐图 —— 全局固定参照 vs 逐图参照
 **问句**：如果用整个数据集统一的"正常高频水平"当参照（而不是逐图估），会怎样？
@@ -110,7 +113,7 @@
 
 | 变体 | MVTec baseline | MVTec【预期】 | 判定 |
 |---|--:|--:|---|
-| full（逐图参照） | — | 91.8 / 86.0 / 94.4 / 97.6【实测】 | 上界 |
+| Ours（逐图参照） | — | 91.8 / 86.2 / 94.1 / 97.4【实测】 | 上界 |
 | **global 固定参照** | — | **90.2 / 83.4 / 93.2 / 96.9【预期】** | 应明显低于逐图 |
 | cached baseline（无任何参照适配） | 91.2 / 83.2 / 91.6 / 96.4 | — | 下界 |
 
@@ -125,37 +128,37 @@
 
 | 变体 | MVTec【实测】 | 判定 |
 |---|--:|---|
-| CLIP自参照（CLIP-only） | 91.8 / 86.0 / 94.4 / 97.6 | 强对照 |
-| 高频挑参照（full） | 91.8 / 86.0 / 94.4 / 97.6 | 当前打平 ⚠️ |
+| CLIP自参照（CLIP-only / semantic-only） | 91.6 / 85.2 / 93.7 / 97.1 | 强对照 |
+| 高频挑参照（Ours） | 91.8 / 86.2 / 94.1 / 97.4 | 已复现，四指标均更高 |
 
-**诚实现状**：这是"打赢强对照"类，当前**总均值打平**，这是 idea 最脆弱的环节。**不能靠总均值证明机制**，必须靠下面两个子集分析：
+**诚实现状**：这是"打赢强对照"类，之前有过行顺序/归属记录错误；按已复现受控表，Ours 是最好行，CLIP-only / semantic-only 是较差的强对照，且 Ours 在 MVTec/VisA 四指标均高于它。论文可以声称 Ours 在 MVTec/VisA controlled setting 下优于 CLIP-only / semantic-only prototype adaptation；若要进一步归因到"CLIP 语义之外的高频信息"，下面两个子集分析仍然是更强证据：
 
 **C3-a：CLIP盲区召回（子集指标，最有说服力）**
 - 定义：取 CLIP-only 判为正常、但真值为异常的像素/样本集合（CLIP 的盲区）。
-- 指标：full 能召回其中多少。
+- 指标：Ours 能召回其中多少。
 - baseline【预期】：CLIP自参照对自己的盲区召回 ≈ 0%（定义上就是它漏的）。
-- **【预期】full 在这个盲区子集上召回 15–25%** 的漏检异常，且集中在纹理类/微小缺陷。
-- **证明什么**：直接证明"高频是 CLIP 语义之外的独立信息，能捞回 CLIP 看不见的异常"。即使总均值打平，这个子集指标也能立住机制。
+- **【预期】Ours 在这个盲区子集上召回 15-25%** 的漏检异常，且集中在纹理类/微小缺陷。
+- **证明什么**：直接证明"高频是 CLIP 语义之外的独立信息，能捞回 CLIP 看不见的异常"。在总均值已复现增益的情况下，这个子集指标用于增强机制归因。
 
 **C3-b：分类别 pixel AUPRO（纹理/微缺陷类）**
 - **【预期】** 在 carpet / grid / tile / wood / leather / screw 等类别上，高频挑参照比 CLIP自参照 **pAUPRO +1~+3**；在物体类别上持平。
-- **通过线**：至少 4/6 个纹理类上 full ≥ CLIP-only（pAUPRO），且没有任何类别掉超过 −0.5。
-- **证明什么**：均值打平是因为增益被摊薄，机制增益真实存在于"CLIP 频率盲"的类别里。
+- **通过线**：至少 4/6 个纹理类上 Ours ≥ CLIP-only（pAUPRO），且没有任何类别掉超过 -0.5。
+- **证明什么**：解释总均值增益主要来自哪些"CLIP 频率盲"类别，避免只停留在均值表。
 
 ---
 
 ## 5. 设计消融 —— "读高频怎么读"
 
-**目的**：证明 boundary-aware（减结构边界）比裸 HF 好，且 conservative 更新有用。属于"打赢强对照"类，预期小增益。
+**目的**：证明 boundary-aware（减结构边界）比裸 HF 好，且 conservative 更新有用。属于"打赢强对照"类，已复现小增益。
 
-| 变体 | MVTec baseline【实测】 | MVTec【预期】 | 判定 |
-|---|--:|--:|---|
-| HF-only 参照 | 91.8 / 85.7 / 94.5 / 97.6 | — | 对照 |
-| boundary-aware 参照 | — | **91.8 / 86.0 / 94.5 / 97.6【预期】** | pAUPRO ≥ HF-only（+0.3） |
-| no-conservative | 91.7 / 85.7 / 94.5 / 97.6 | — | 对照 |
-| full conservative | 91.8 / 86.0 / 94.4 / 97.6【实测】 | — | pAUPRO ≥ no-conservative |
+| 变体 | MVTec【实测】 | 判定 |
+|---|--:|---|
+| HF-only 参照 | 91.6 / 85.3 / 94.0 / 97.2 | 对照 |
+| boundary-aware 参照 | 91.7 / 85.7 / 93.8 / 97.3 | pAUPRO ≥ HF-only（+0.4） |
+| no-conservative | 91.7 / 85.8 / 93.9 / 97.2 | 对照 |
+| Ours conservative | 91.8 / 86.2 / 94.1 / 97.4 | pAUPRO ≥ no-conservative（+0.4） |
 
-**通过线**：boundary-aware 在 pAUPRO 上 ≥ HF-only（哪怕 +0.2~+0.3）；conservative 不低于 no-conservative 且正常图更稳（见 §6）。当前实测基本满足，属弱但一致的证据，如实写。
+**通过线**：boundary-aware 在 pAUPRO 上 ≥ HF-only；conservative 不低于 no-conservative，且 Ours 不增加正常图 FP（见 §6）。当前实测满足，属小但一致的证据，如实写。
 
 ---
 
@@ -167,11 +170,11 @@
 |---|---|--:|--:|---|
 | MVTec | baseline | 5.002% | 1.001% | 参照 |
 | MVTec | no-conservative | 4.738% | 0.923% | ≤ baseline ✅ |
-| MVTec | full conservative | 4.895% | 0.960% | ≤ baseline ✅ |
+| MVTec | Ours conservative | 4.895% | 0.960% | ≤ baseline ✅ |
 | VisA | baseline | 4.996% | 1.001% | 参照 |
-| VisA | full conservative | 4.718% | 0.937% | ≤ baseline ✅ |
+| VisA | Ours conservative | 4.718% | 0.937% | ≤ baseline ✅ |
 
-**通过线（已达）**：full 的 FP 面积 ≤ baseline。**强化目标【预期】**：若能展示 conservative < no-conservative 更稳则更好（当前 no-conservative 略优，属可接受，如实写，不强行反转）。
+**通过线（已达）**：Ours 的 FP 面积 ≤ baseline。**强化目标【预期】**：若能展示 conservative < no-conservative 更稳则更好（当前 no-conservative 略优，属可接受，如实写，不强行反转）。
 
 ---
 
@@ -179,7 +182,7 @@
 
 **目的**：证明机制代价可接受。全部【实测】。
 
-| 数据集 | baseline s/img | full s/img | 开销 | 判定 |
+| 数据集 | baseline s/img | Ours s/img | 开销 | 判定 |
 |---|--:|--:|--:|---|
 | MVTec | 0.065214 | 0.079772 | +22.3% | ≤ +25% ✅ |
 | VisA | 0.065298 | 0.079207 | +21.3% | ≤ +25% ✅ |
@@ -188,20 +191,18 @@
 
 ---
 
-## 8. 关键闸门实验：高精度 full vs CLIP-only
+## 8. 可选复核：高精度 Ours vs CLIP-only
 
-**目的**：当前一位小数打平，用 2–3 位小数重跑，确认到底是真平还是能拉开。这决定 §4-C3 能不能只靠子集分析、还是能补上总均值证据。
+**目的**：当前已复现的受控表支持 Ours 在四指标上优于 CLIP-only / semantic-only。2-3 位小数复核不再是 claim 前置门槛，只用于增强统计置信和写作精度。
 
-| 变体 | 现【实测,1位】 | 重跑目标【预期,2位】 | 判定 |
+| 变体 | 当前【实测,1位】 | 可选复核目标【2位】 | 判定 |
 |---|--:|--:|---|
-| CLIP-only | 91.8 / 86.0 / 94.4 / 97.6 | 例如 91.80 / 86.02 / 94.40 / 97.61 | 参照 |
-| full | 91.8 / 86.0 / 94.4 / 97.6 | **≥ 91.82 / 86.15 / 94.42 / 97.62【预期】** | pAUPRO 至少 +0.1 |
+| CLIP-only / semantic-only | 91.6 / 85.2 / 93.7 / 97.1 | 记录真实 2 位小数 | 参照 |
+| Ours | 91.8 / 86.2 / 94.1 / 97.4 | 保持四指标均优于 CLIP-only / semantic-only | 增强置信 |
 
-**两种可接受结局**：
-1. **能拉开**（full pAUPRO 比 CLIP-only 高 ≥ +0.1，且 VisA 同向）→ 可写"小而一致的增益"，配 §4 子集分析，机制论证完整。
-2. **确实真平** → 主证据完全交给 §4-C1/C2/C3-a（坏对照差距 + CLIP盲区召回），总均值打平如实写进 limitation。**这仍是可发表的诚实结论**，因为机制由 C1/C2/C3-a 支撑，不依赖 C3 总均值。
+**写法**：当前可以写"四指标均有小而一致的增益，其中 P-AUPRO 增益最大"；若未来高精度结果改变这一点，再回到子集/类别分析作为主证据并同步降级 claim。
 
-VisA 对应【预期】：full ≥ 96.3 / 91.5 / 84.8 / 87.6（对齐仓库既有 minimum-pass 目标）。
+VisA 当前【实测】：CLIP-only / semantic-only `96.0 / 90.4 / 83.7 / 86.9`，Ours `96.2 / 91.7 / 84.3 / 87.3`。
 
 ---
 
@@ -223,13 +224,13 @@ VisA 对应【预期】：full ≥ 96.3 / 91.5 / 84.8 / 87.6（对齐仓库既�
 
 **必须全部成立（机制成立的最低集）：**
 1. Ours 四指标全面 > 原始 AnomalyCLIP（§2）✅已达。
-2. direct fusion（无参照）明显 < full（§4-C1）✅已达，VisA 待补。
+2. direct fusion（无参照）明显 < Ours（§4-C1）✅已达。
 3. 全局固定参照明显 < 逐图参照，且三档单调（§4-C2）→ **待做，最关键的新实验**。
-4. CLIP盲区召回 > 0 且集中在纹理/微缺陷类（§4-C3-a）→ **待做，第二关键**。
+4. CLIP盲区召回 > 0 且集中在纹理/微缺陷类（§4-C3-a）→ **待做，用于增强机制归因**。
 5. 正常图 FP 不高于 baseline（§6）✅已达。
 
 **加分（有则更强，无则不致命）：**
-6. 高精度下 full pAUPRO 比 CLIP-only 至少 +0.1（§8）。
+6. 高精度下 Ours 四指标继续优于 CLIP-only / semantic-only（§8）。
 7. boundary-aware 在纹理类 pAUPRO 稳定 ≥ HF-only（§5、§4-C2 分组）。
 
-**结论逻辑**：即使 6 不成立（真平），只要 3 和 4 成立，机制叙事依然完整可发表——因为 idea 的核心是"高频信号需要逐图正常参照"，而这由 C1（无参照崩盘）+ C2（全局参照明显更差）+ C3-a（高频捞回 CLIP 盲区）三条独立证据支撑，不依赖对 CLIP-only 的总均值碾压。
+**结论逻辑**：当前受控表已经支持 Ours 相比 CLIP-only / semantic-only 的 MVTec/VisA 四指标增益；C1（无参照明显更差）+ C2（全局参照明显更差，待做）+ C3-a（高频捞回 CLIP 盲区，待做）用于把数值增益进一步归因到"高频信号需要逐图正常参照"这个机制。

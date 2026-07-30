@@ -3,15 +3,31 @@
 Metric order: `pixel_auroc / pixel_aupro / image_auroc / image_ap`.
 All values are percentages.
 
+Naming note: the final paper-facing method name is not decided. Use `Ours (unnamed)` for the current controlled MVTec/VisA method tables. The five-dataset rows below are **system-level Ours results**, not isolated controlled Ours ablations.
+
+Scope note: MVTec/VisA controlled Ours results are `91.8 / 86.2 / 94.1 / 97.4` and `96.2 / 91.7 / 84.3 / 87.3`. The MVTec/VisA rows in this file use the system-level Ours setting stack (`91.8 / 85.6 / 94.5 / 97.6`, `96.2 / 91.3 / 84.6 / 87.4`) and should not be used for the controlled Ours-vs-CLIP-only claim.
+
 ## Final Results
 
-| Dataset | Final mean | Result log |
+| Dataset | System-level final calibrated result | Result log |
 | --- | ---: | --- |
 | MVTec AD | `91.8 / 85.6 / 94.5 / 97.6` | `ablation_results/20260622_094146_component/mvtec/07_full_method/log.txt` |
 | VisA | `96.2 / 91.3 / 84.6 / 87.4` | `ablation_results/20260622_094146_component/visa/07_full_method/log.txt` |
 | MPDD | `97.3 / 89.9 / 77.8 / 82.3` | `cached_results/three_datasets_20260628/mpdd_multicrop_partial_w025_sigma8_p2i/log.txt` |
 | BTAD | `96.3 / 78.2 / 93.9 / 94.9` | `cached_results/three_datasets_20260628/btad_full_multicrop_w085_sigma10_p2i030_w095/log.txt` |
 | DTD-Synthetic | `97.9 / 91.8 / 96.9 / 98.7` | `cached_results/three_datasets_20260628/dtd_final_no_strat_woven127_w075_sigma8_p2i0002_w05/log.txt` |
+
+## Global vs Dataset-Tuned Rows
+
+Use this table when writing five-dataset results. The `dataset-tuned` column is an upper-bound/reference row and should not be presented as a single global hyperparameter setting.
+
+| Dataset | Global setting | Dataset-tuned / system-level upper bound | Paper-facing status |
+| --- | ---: | ---: | --- |
+| MVTec AD | `91.8 / 86.2 / 94.1 / 97.4` | `91.8 / 86.2 / 94.1 / 97.4` | controlled Ours reference |
+| VisA | `96.2 / 91.7 / 84.3 / 87.3` | `96.2 / 91.7 / 84.3 / 87.3` | controlled Ours reference |
+| MPDD | `97.2 / 88.4 / 75.1 / 78.0` | `97.3 / 89.9 / 77.8 / 82.3` | report both; tuned is upper bound |
+| BTAD | `95.6 / 79.5 / 89.8 / 91.1` | `96.3 / 78.2 / 93.9 / 94.9` | report both; tuned is upper bound |
+| DTD-Synthetic | `97.7 / 90.7 / 95.1 / 98.0` | `97.9 / 91.8 / 96.9 / 98.7` | report both; tuned uses selective cache caveat |
 
 ## Final Run Commands
 
@@ -62,7 +78,7 @@ Source summary: `ablation_results/20260622_094146_component/summary.md`.
 | wavelet_tta | 91.3 | 83.4 | 91.6 | 96.4 | wavelet + TTA |
 | wavelet_tta_p2i | 91.3 | 83.4 | 94.0 | 97.4 | wavelet + TTA + pixel-to-image fusion |
 | wavelet_tta_multicrop | 91.8 | 85.6 | 91.6 | 96.4 | wavelet + TTA + multi-crop fusion |
-| full_method | 91.8 | 85.6 | 94.5 | 97.6 | wavelet + TTA + multi-crop + pixel-to-image fusion |
+| Ours (unnamed; system-level) | 91.8 | 85.6 | 94.5 | 97.6 | wavelet + TTA + multi-crop + pixel-to-image fusion |
 
 ### VisA Component Ablation
 
@@ -75,7 +91,7 @@ Source summary: `ablation_results/20260622_094146_component/summary.md`.
 | wavelet_tta | 95.6 | 87.1 | 82.0 | 85.4 | wavelet + TTA |
 | wavelet_tta_p2i | 95.6 | 87.1 | 83.5 | 86.6 | wavelet + TTA + pixel-to-image fusion |
 | wavelet_tta_multicrop | 96.2 | 91.3 | 82.0 | 85.4 | wavelet + TTA + multi-crop fusion |
-| full_method | 96.2 | 91.3 | 84.6 | 87.4 | wavelet + TTA + multi-crop + pixel-to-image fusion |
+| Ours (unnamed; system-level) | 96.2 | 91.3 | 84.6 | 87.4 | wavelet + TTA + multi-crop + pixel-to-image fusion |
 
 ## Internal Ablation Results
 
@@ -86,18 +102,18 @@ Source summary: `ablation_results/20260622_111707_internal/summary.md`.
 | Experiment | pixel_auroc | pixel_aupro | image_auroc | image_ap | Note |
 | --- | ---: | ---: | ---: | ---: | --- |
 | original_anomalyclip | 91.1 | 81.4 | 91.6 | 96.4 | original log |
-| full_no_wavelet_confidence | 91.8 | 85.6 | 94.5 | 97.6 | full method without wavelet confidence gating |
-| full_no_rank_preserve | 91.8 | 85.6 | 94.5 | 97.6 | full method without rank-preserve top-k protection |
-| full_no_local_contrast | 91.8 | 85.6 | 94.5 | 97.6 | full method without local texture contrast |
+| full_no_wavelet_confidence | 91.8 | 85.6 | 94.5 | 97.6 | Ours without wavelet confidence gating |
+| full_no_rank_preserve | 91.8 | 85.6 | 94.5 | 97.6 | Ours without rank-preserve top-k protection |
+| full_no_local_contrast | 91.8 | 85.6 | 94.5 | 97.6 | Ours without local texture contrast |
 
 ### VisA Internal Ablation
 
 | Experiment | pixel_auroc | pixel_aupro | image_auroc | image_ap | Note |
 | --- | ---: | ---: | ---: | ---: | --- |
 | original_anomalyclip | 95.5 | 86.7 | 82.0 | 85.3 | original log |
-| full_no_wavelet_confidence | 96.2 | 91.3 | 84.6 | 87.4 | full method without wavelet confidence gating |
-| full_no_rank_preserve | 96.2 | 91.3 | 84.6 | 87.4 | full method without rank-preserve top-k protection |
-| full_no_local_contrast | 96.2 | 91.3 | 84.6 | 87.4 | full method without local texture contrast |
+| full_no_wavelet_confidence | 96.2 | 91.3 | 84.6 | 87.4 | Ours without wavelet confidence gating |
+| full_no_rank_preserve | 96.2 | 91.3 | 84.6 | 87.4 | Ours without rank-preserve top-k protection |
+| full_no_local_contrast | 96.2 | 91.3 | 84.6 | 87.4 | Ours without local texture contrast |
 
 ## Ablation Log Roots
 

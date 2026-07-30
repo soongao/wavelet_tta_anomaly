@@ -1,4 +1,4 @@
-# WPTA 中文顶会稿 v0.6 预投稿评审 Round 4
+# Ours 中文顶会稿 v0.6 预投稿评审 Round 4
 
 评审对象：`outputs/wpta_cvpr_paper_draft_zh_v0.6.md`
 
@@ -16,8 +16,8 @@ v0.6 相比 v0.5 的主要进步是三点。第一，摘要重写成 task、chal
 
 | # | Finding | Severity | Suggested fix |
 |---|---|---|---|
-| 1 | “五数据集表只证明系统级有效性，WPTA 机制的因果证据限定在 MVTec/VisA 受控消融。” | PASS | 这是当前稿件最重要的 claim boundary，应保留到英文版。 |
-| 2 | “除 Baseline 外的 prototype/fusion variants 使用相同的 multi-crop 与 pixel-to-image 设置。” | MAJOR | 该限制已经说明，但 Table 2 caption 还应更明确：baseline-to-full delta 不是纯 WPTA delta，机制证据主要来自 adaptation variants 之间。 |
+| 1 | “五数据集表只证明系统级有效性，Ours 机制的因果证据限定在 MVTec/VisA 受控消融。” | PASS | 这是当前稿件最重要的 claim boundary，应保留到英文版。 |
+| 2 | “除 Baseline 外的 prototype/fusion variants 使用相同的 multi-crop 与 pixel-to-image 设置。” | MAJOR | 该限制已经说明，但 Table 2 caption 还应更明确：baseline-to-full delta 不是纯 Ours delta，机制证据主要来自 adaptation variants 之间。 |
 | 3 | Introduction 的两层证据组织清楚，但 contribution 4 有防御性表述。 | MINOR | 英文版可改成 “We report final-system results with a configuration audit” 这类自然写法。 |
 
 ## Dimension 2: Writing clarity

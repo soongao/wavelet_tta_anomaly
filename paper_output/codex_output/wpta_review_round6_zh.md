@@ -1,4 +1,4 @@
-# WPTA 中文顶会稿自审 round6
+# Ours 中文顶会稿自审 round6
 
 审阅对象：`outputs/wpta_cvpr_paper_draft_zh_v1.0.md`
 
@@ -22,7 +22,7 @@ Top three fixes:
 
 | # | Finding | Severity | Suggested fix |
 |---|---|---|---|
-| 1 | 稿件正确区分了 “Table 1 system-level result” 与 “Table 2/3 WPTA controlled mechanism evidence”。这是 v1.0 的核心优点。 | - | 保持该边界，不要在后续版本中把 MPDD/BTAD final gain 归因为 WPTA。 |
+| 1 | 稿件正确区分了 “Table 1 system-level result” 与 “Table 2/3 Ours controlled mechanism evidence”。这是 v1.0 的核心优点。 | - | 保持该边界，不要在后续版本中把 MPDD/BTAD final gain 归因为 Ours。 |
 | 2 | “外部方法比较当前只作为附录协议参考，不作为主文强比较” 会被 reviewer 视为缺少 strongest baselines。 | CRITICAL | 核验 Appendix B1a/B1b 的 split、backbone、input size、post-processing 和 evaluation script；若不能核验，投稿主文需承认 comparison scope，并避免最佳方法 claim。 |
 | 3 | Figure 2/3 仍是 prompt，方法 pipeline 与跨数据集定性证据没有真实图支撑。 | CRITICAL | 生成 Figure 2 方法图和 Figure 3 qualitative grid；Figure 3 未生成前，正文不得使用跨数据集定性观察支撑 claim。 |
 
@@ -30,8 +30,8 @@ Top three fixes:
 
 | # | Claim | Verdict | Evidence / Risk |
 |---|---|---|---|
-| 1 | Final calibrated system improves fixed AnomalyCLIP baseline on five industrial datasets. | keep | Table 1 支撑，Table 4 限定配置差异。 |
-| 2 | WPTA mechanism is supported by controlled MVTec/VisA ablations. | keep with scope | Table 2/3 支撑，但只限 MVTec/VisA。 |
+| 1 | Ours (unnamed; system-level) improves fixed AnomalyCLIP baseline on five industrial datasets. | keep | Table 1 支撑，Table 4 限定配置差异。 |
+| 2 | Ours mechanism is supported by controlled MVTec/VisA ablations. | keep with scope | Table 2/3 支撑，但只限 MVTec/VisA。 |
 | 3 | Direct wavelet fusion is a negative control. | keep | Table 2/3 中 direct fusion 的 P-AUPRO 低于 baseline/full。 |
 | 4 | Current system reaches external best-method status. | remove / keep only as rejected claim audit | 外部协议未核验；v1.0 已放在 claim map 的 Not supported 行，投稿版应删除该行或移到内部审计。 |
 | 5 | Medical observation beyond industrial data. | appendix only | 只有 ISIC/ISBI 两项 pixel metrics，不能进入摘要、贡献或主结论。 |
@@ -42,7 +42,7 @@ Top three fixes:
 |---|---|---|---|
 | 1 | 当前没有 multi-run / multi-seed，不可报告显著性或置信区间。v1.0 已明确 deterministic-only。 | MAJOR | 若投稿期允许，补 3 次以上独立 run；否则继续保持 deterministic report wording。 |
 | 2 | Table 2/3 因果解释主要依赖 adaptation variants 之间相对变化，v1.0 已正确写明。 | - | 保持表注，不要删除。 |
-| 3 | Table 1 五数据集结果强，但 final setting 数据集特异，系统效果与机制效果必须分开。 | MAJOR | Table 4 应保留在主文或附录靠前位置。 |
+| 3 | Table 1 五数据集结果强，但 system-level setting 数据集特异，系统效果与机制效果必须分开。 | MAJOR | Table 4 应保留在主文或附录靠前位置。 |
 | 4 | 缺类别级 breakdown 和失败案例。 | MAJOR | 生成 classwise breakdown table 和失败案例附录；若缺日志，保留缺失 prompt。 |
 
 ## Dimension 4: Figures And Tables
@@ -88,4 +88,4 @@ Top three fixes:
 
 ## Final Verdict
 
-v1.0 已经是一篇结构完整、证据边界清楚的中文顶会审阅稿；摘要、引言、方法和实验主线能让 reviewer 看懂贡献与限制。它还没有达到投稿水平，主要原因不是文本，而是投稿必需的资产 gate 未关闭：真实图不完整、Figure 1 未过矢量 gate、外部方法协议未核验、部分引用未完成 canonical verification。当前评分 7.2/10；关闭 Figure 2/3、引用和协议核验后，预期可进入 8.5+ 的投稿前精修区间。
+v1.0 已经是一篇结构完整、证据边界清楚的中文顶会审阅稿；摘要、引言、方法和实验数据口径能让 reviewer 看懂贡献与限制。它还没有达到投稿水平，主要原因不是文本，而是投稿必需的资产 gate 未关闭：真实图不完整、Figure 1 未过矢量 gate、外部方法协议未核验、部分引用未完成 canonical verification。当前评分 7.2/10；关闭 Figure 2/3、引用和协议核验后，预期可进入 8.5+ 的投稿前精修区间。

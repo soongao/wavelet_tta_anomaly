@@ -12,13 +12,13 @@ Created by `scripts/analysis/generate_paper_result_figures.py`.
 
 ## Figures
 
-- `figures/figure1_main_results.{pdf,svg,png}`: five-dataset main result summary. Panel a shows paired baseline/full Pixel AUPRO; panel b shows Full - baseline gains for all four metrics.
+- `figures/figure1_main_results.{pdf,svg,png}`: five-dataset main result summary. Panel a shows paired baseline/full Pixel AUPRO; panel b shows Ours - baseline gains for all four metrics.
 - `figures/figure2_core_ablation.{pdf,svg,png}`: core component ablation on MVTec and VisA across all four metrics.
 - `figures/figure3_wavelet_design_ablation.{pdf,svg,png}`: wavelet design deltas over semantic-only prototype adaptation for the two key metrics.
 - `figures/figure4_core_ablation_bar.{pdf,svg,png}`: bar-chart version of component gains over the fixed baseline for Pixel AUPRO and Image AUROC.
-- `figures/figure5_core_ablation_line.{pdf,svg,png}`: ordered component-accumulation trend from baseline to the full method.
+- `figures/figure5_core_ablation_line.{pdf,svg,png}`: ordered component-accumulation trend from baseline to Ours.
 - `figures/figure6_wavelet_design_bar.{pdf,svg,png}`: bar-chart version of wavelet design gains over semantic-only adaptation.
-- `figures/figure7_main_gain_bar.{pdf,svg,png}`: ranked dataset-level gains of the full method over the baseline.
+- `figures/figure7_main_gain_bar.{pdf,svg,png}`: ranked dataset-level gains of Ours over the baseline.
 - `figures/supp_figure_medical_isbi.{pdf,svg,png}`: supplementary ISIC/ISBI pixel-level medical transfer result. Other medical rows are blocked in the source workbook and are not plotted.
 
 ## Generated Source CSVs

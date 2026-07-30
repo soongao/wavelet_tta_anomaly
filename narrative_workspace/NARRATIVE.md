@@ -1,9 +1,11 @@
-# 叙事主线：CLIP 看得见高频异常，但缺一个"这张图正常长什么样"的参照
+# 数据与方法说明：CLIP 看得见高频异常，但缺一个"这张图正常长什么样"的参照
 
 > 工作区文档。锁定论文的机制切入点、方法骨架、证据映射与 claim 边界。
 > 只谈机制，不谈刷分。抬数值但无机制价值的组件（multi-crop / pixel-to-image）一律降级为附录。
 > 本版本已根据 NOVELTY_CHECK.md 修正：频率本身不再是卖点（已被 FE-CLIP/WMoE-CLIP/HarmoniAD 占据），
 > 切入点改为"CLIP 有高频信号但缺逐图正常参照"。
+> 命名状态（2026-07-30）：正式方法名未定。表格和论文入口统一使用 `Ours (unnamed)`。
+> 数据状态：`newversion/paper_v7` 仍带有 `EXPECTED` 占位值，使用前需要按当前结果表更新。
 
 ---
 
@@ -75,16 +77,16 @@ CLIP 的 patch 特征里，高频部分对异常是敏感的——异常那一�
 
 | 机制主张 | 对应实验 / 证据 | 现有日志（待核对） | 状态 |
 |---|---|---|---|
-| 只读高频、不给参照 → 会坏（第 4 步 A） | direct wavelet fusion，MVTec 91.8→80.0 | `cached_results/prototype_tuned/mvtec_direct_multicrop_p2i/log.txt` | 已有，需高精度确认 |
-| 高频信息是 CLIP 语义之外的独立依据（第 4 步 B） | wavelet-in-evidence vs CLIP-only 对照 | `cached_results/prototype_tuned/mvtec_clip_only_multicrop_p2i/log.txt` | 已有，当前打平，需高精度重跑 |
+| 只读高频、不给参照 → 会坏（第 4 步 A） | direct wavelet fusion 明显低于 Ours | `paper/tables/prototype_main_component_comparison.csv` | 已复现；受控表中 MVTec P-AUPRO 80.4 vs 86.2，VisA 85.1 vs 91.7 |
+| 高频信息是 CLIP 语义之外的独立依据（第 4 步 B） | Ours vs CLIP-only / semantic-only 对照 | `paper/tables/prototype_main_component_comparison.csv` | 已复现；四指标均提升。MVTec `91.6/85.2/93.7/97.1` → `91.8/86.2/94.1/97.4`，VisA `96.0/90.4/83.7/86.9` → `96.2/91.7/84.3/87.3` |
 | 逐图估参照不伤正常图 | normal-image stability 表 | `cached_results/prototype_tuned/validation/*_normal_stability.md` | 已有 |
 | "有信号无参照"的存在性 | 高频响应图：异常亮、正常粗糙材质也亮 | `cached_results/prototype_tuned/mechanism_viz/*` | 已有，需针对性挑图 |
-| 主结果超原始 AnomalyCLIP | MVTec / VisA full vs baseline | `ablation_results/20260622_094146_component/*/07_full_method/log.txt` | 已有 |
+| 主结果超原始 AnomalyCLIP | MVTec / VisA Ours vs baseline | `ablation_results/20260622_094146_component/*/07_full_method/log.txt` | 已有 |
 
 ### 换叙事后需要新增/加强的实验（都是机制向）
 1. **"参照必须逐图"的直接验证**：展示同一高频幅度在不同图/材质上对应正常 vs 异常 → 固定阈值必失败、逐图参照必需要。
 2. **"参照来自 CLIP 自己 vs 来自高频"的对照**：用 CLIP 语义置信挑正常区域做 TTA vs 用高频信息挑 → 证明前者对高频异常盲（第 4 步 B 的直接证据）。
-3. 高精度（2–3 位小数）重跑 full vs CLIP-only。
+3. 可选高精度（2-3 位小数）复核 Ours vs CLIP-only，用于增强统计置信，不再作为当前 claim 的前置门槛。
 4. 与训练型 SOTA（WinCLIP/AnomalyCLIP/VCP-CLIP/AA-CLIP/FE-CLIP）横向对比主表（可引公开数值）。
 
 ---
@@ -95,9 +97,10 @@ CLIP 的 patch 特征里，高频部分对异常是敏感的——异常那一�
 - CLIP 的高频分量对异常敏感，但正常材质纹理同样高频 → 需要逐图正常参照才能判读。
 - 直接把高频融进异常图会破坏结果（direct fusion 崩盘）→ 支持"补参照，而非加特征"。
 - 逐图估参照在不伤正常图 FP 的前提下改善检测。
+- 在已复现的 MVTec/VisA 受控设置下，Ours 相比 CLIP-only / semantic-only prototype adaptation 四指标均更高；其中 P-AUPRO 增益最大。
 
 **不能说（除非有新证据）：**
-- 不得声称 full 在数值上明确优于 CLIP-only（当前一位小数打平）。
+- 不得把 MVTec/VisA 受控设置的 Ours-vs-CLIP-only 结果外推到尚未做同类消融的所有数据集。
 - 不得把 multi-crop / pixel-to-image 当核心机制（附录）。
 - 不得声称"频率有助于 ZSAD"是本文发现（已是共识，FE-CLIP/WMoE 在先）。
 - 不得声称推理时用了标签或更新了 CLIP/AnomalyCLIP 参数。
@@ -122,4 +125,4 @@ CLIP 的 patch 特征里，高频部分对异常是敏感的——异常那一�
 ## 7. 下一步
 1. 定向查新最危险撞车点：`training-free / test-time frequency for ZSAD`、`per-image normal reference for ZSAD`（近半年 arXiv）。
 2. 若空 → 设计 §4 的两个机制验证实验（参照必须逐图 / 参照来源对照）。
-3. 回填 §4 证据表真实日志与数值；高精度重跑 full vs CLIP-only。
+3. 回填 §4 证据表真实日志与数值；按需要做高精度复核或类别/盲区分析来增强归因证据。

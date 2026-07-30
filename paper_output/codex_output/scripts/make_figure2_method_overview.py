@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a vector Figure 2 method overview for WPTA.
+"""Generate a vector Figure 2 method overview for Ours.
 
 The figure is a pure vector diagram: boxes, arrows, text, and small
 schematic glyphs are all drawn with Matplotlib primitives. It does not
@@ -200,7 +200,7 @@ def main() -> None:
     ax.text(
         0.18,
         4.34,
-        "Wavelet-Supervised Test-Time Prototype Adaptation (WPTA)",
+        "Ours (unnamed) (Ours)",
         ha="left",
         va="center",
         fontsize=11.2,

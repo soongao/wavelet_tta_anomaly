@@ -52,7 +52,7 @@ PANEL_TITLES = [
     "Direct wavelet cue",
     "Boundary-aware reliability",
     "Selected evidence",
-    "WPTA final map",
+    "Ours final map",
 ]
 
 PANEL_LETTERS = list("abcdefg")
@@ -140,7 +140,7 @@ def add_legend(fig: plt.Figure) -> None:
 
 def add_note(fig: plt.Figure) -> None:
     note = (
-        "WPTA uses boundary-aware wavelet reliability to select visual anchors.\n"
+        "Ours uses boundary-aware wavelet reliability to select visual anchors.\n"
         "Final scoring still comes from calibrated CLIP prototypes."
     )
     note_box = FancyBboxPatch(

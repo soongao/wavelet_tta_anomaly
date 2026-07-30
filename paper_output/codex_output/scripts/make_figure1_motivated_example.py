@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a Figure 1 candidate from a real WPTA mechanism visualization.
+"""Build a Figure 1 candidate from a real Ours mechanism visualization.
 
 The source PNG is a 7-panel real model-output visualization. This script
 keeps the original rendered outputs intact, crops the panel strip, and adds
@@ -31,7 +31,7 @@ PANEL_TITLES = [
     "Direct wavelet cue",
     "Boundary-aware reliability",
     "Selected evidence",
-    "WPTA final map",
+    "Ours final map",
 ]
 
 
@@ -135,7 +135,7 @@ def assemble_figure(panels: list[Image.Image]) -> Image.Image:
     )
     draw.text(
         (margin + 16, note_y + 13),
-        "Observation: direct wavelet cues may activate structure boundaries; WPTA uses boundary-aware reliability to select visual anchors.",
+        "Observation: direct wavelet cues may activate structure boundaries; Ours uses boundary-aware reliability to select visual anchors.",
         font=note_font,
         fill=(30, 30, 30),
     )

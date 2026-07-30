@@ -1,0 +1,19 @@
+\begin{table}[htbp]
+  \centering
+  \caption{Image-level zero-shot anomaly detection baseline results on three medical benchmarks. The best and second-best baseline results are marked in \textbf{bold} and \underline{underline}. The reference Ours column is omitted.}
+  \label{tab:medical_image_baselines}
+  \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lllllll}
+      \toprule
+      Metric & Datasets & CLIP & WinCLIP & VAND & CoOp & AnomalyCLIP \\
+      \midrule
+      \multirow{3}{*}{\shortstack{(Image-AUROC, \\ Image-AP)}}
+       & HeadCT & (56.5, 58.4) & (81.8, 80.2) & (\underline{89.1}, \underline{89.4}) & (78.4, 78.8) & (\textbf{93.4}, \textbf{91.6}) \\
+       & BrainMRI & (73.9, 81.7) & (86.6, \underline{91.5}) & (\underline{89.3}, 90.9) & (61.3, 44.9) & (\textbf{90.3}, \textbf{92.2}) \\
+       & Br35H & (78.4, 78.8) & (80.5, 82.2) & (\underline{93.1}, \underline{92.9}) & (86.0, 87.5) & (\textbf{94.6}, \textbf{94.7}) \\
+      \midrule
+      \multicolumn{2}{l}{\textbf{Average}} & (69.6, 73.0) & (83.0, 84.6) & (\underline{90.5}, \underline{91.1}) & (75.2, 70.4) & (\textbf{92.8}, \textbf{92.8}) \\
+      \bottomrule
+    \end{tabular}%
+  }
+\end{table}

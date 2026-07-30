@@ -1,4 +1,4 @@
-# WPTA 已生成表格索引 v1.0
+# Ours 已生成表格索引 v1.0
 
 本索引用于锁定当前已经可以由现有实验结果支撑的论文表格。中文表格稿见 `outputs/wpta_generated_tables_v1.0.md`，LaTeX 版本见 `outputs/wpta_generated_tables_latex_v1.0.tex`。
 
@@ -6,16 +6,16 @@
 
 | 表格 | LaTeX label | 状态 | 证据边界 |
 |---|---|---|---|
-| Table 1. 五个工业异常检测基准上的主结果 | `tab:main_results` | 可用 | 支撑 final calibrated system 相对固定 AnomalyCLIP baseline 的五数据集系统级提升 |
-| Table 2. WPTA 核心组件消融 | `tab:core_ablation` | 可用 | 支撑 WPTA 机制在 MVTec/VisA 受控设置中的有效性 |
+| Table 1. 五个工业异常检测基准上的主结果 | `tab:main_results` | 可用 | 支撑 system-level Ours setting 相对固定 AnomalyCLIP baseline 的五数据集系统级提升 |
+| Table 2. Ours 核心组件消融 | `tab:core_ablation` | 可用 | 支撑 Ours 机制在 MVTec/VisA 受控设置中的有效性 |
 | Table 3. 小波可靠性设计消融 | `tab:wavelet_design` | 可用 | 支撑小波信息作为 prototype evidence reliability，而不是 final-map fusion |
-| Table 4. 五数据集 final system 配置审计 | `tab:final_config` | 可用 | 限制因果归因，避免把全部五数据集收益都归因于 WPTA |
+| Table 4. 五数据集 system-level Ours setting 配置审计 | `tab:final_config` | 可用 | 限制因果归因，避免把全部五数据集收益都归因于 Ours |
 
 ## 可用于附录的表
 
 | 表格 | LaTeX label | 状态 | 证据边界 |
 |---|---|---|---|
-| Appendix Table A1. MVTec/VisA 系统校准栈消融 | `tab:calibration_stack_ablation` | 可用 | 解释 final calibrated system 的工程校准栈，不作为 WPTA 原型机制主证据 |
+| Appendix Table A1. MVTec/VisA 系统校准栈消融 | `tab:calibration_stack_ablation` | 可用 | 解释 system-level Ours setting 的工程校准栈，不作为 Ours 原型机制主证据 |
 | Appendix Table A2. 医学补充结果 | `tab:medical_preliminary` | 可用但弱表述 | 只支撑 ISIC/ISBI 初步观察，不支撑医学跨域泛化主结论 |
 
 ## 只能作为协议参考的表

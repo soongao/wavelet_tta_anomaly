@@ -1,4 +1,4 @@
-# WPTA 中文顶会稿自审 round7
+# Ours 中文顶会稿自审 round7
 
 审阅对象：`outputs/wpta_cvpr_paper_draft_zh_v1.1.md`
 
@@ -40,8 +40,8 @@ Top three blocking fixes:
 
 | # | Claim | Verdict | Evidence / Risk |
 |---|---|---|---|
-| 1 | Final calibrated system improves fixed AnomalyCLIP baseline on five industrial datasets. | keep | Table 1 支撑，Table 4 限定 final setting 差异。 |
-| 2 | WPTA mechanism is supported by controlled MVTec/VisA ablations. | keep with scope | Table 2/3 支撑，v1.1 没有扩大到五数据集机制 claim。 |
+| 1 | Ours (unnamed; system-level) improves fixed AnomalyCLIP baseline on five industrial datasets. | keep | Table 1 支撑，Table 4 限定 system-level setting 差异。 |
+| 2 | Ours mechanism is supported by controlled MVTec/VisA ablations. | keep with scope | Table 2/3 支撑，v1.1 没有扩大到五数据集机制 claim。 |
 | 3 | Direct wavelet fusion is harmful/insufficient. | keep | Table 2/3 中 direct fusion 低于 baseline 或 full，尤其 P-AUPRO 明显下降。 |
 | 4 | External method ranking. | forbidden internal claim | 已移到 8.1，不再作为正文 supported claim。 |
 | 5 | Medical observation beyond industrial data. | appendix only | 只有 ISIC/ISBI，且只有 pixel-level 指标。 |
@@ -52,7 +52,7 @@ Top three blocking fixes:
 |---|---|---|---|
 | 1 | 当前主结果仍是 deterministic report，没有多 run/multi seed。 | MAJOR | 若要显著性或置信区间，补多 run；否则保持 deterministic-only wording。 |
 | 2 | 缺 classwise breakdown 和失败案例。 | MAJOR | 按第 10 节 prompt 生成类别级表和失败案例附录。 |
-| 3 | Table 4 对 MPDD/BTAD 未启用 wavelet/TTA flags 的说明保留正确。 | - | 不要把 MPDD/BTAD gains 归因给 WPTA。 |
+| 3 | Table 4 对 MPDD/BTAD 未启用 wavelet/TTA flags 的说明保留正确。 | - | 不要把 MPDD/BTAD gains 归因给 Ours。 |
 | 4 | 外部比较表仍只能 protocol-reference。 | CRITICAL | 核验 split/backbone/input size/eval script 后再进入主文。 |
 
 ## Dimension 4: Figures And Tables

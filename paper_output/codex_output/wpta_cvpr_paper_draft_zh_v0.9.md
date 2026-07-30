@@ -1,16 +1,16 @@
-# Wavelet-Supervised Test-Time Prototype Adaptation for Zero-Shot Anomaly Detection
+# Ours (unnamed) for Zero-Shot Anomaly Detection
 
 中文顶会论文稿 v0.9
 
 ## 当前稿件状态
 
-本稿用于内部技术审阅，目标写作标准对齐 CVPR/ICCV 类计算机视觉顶会。中文仅用于便于审阅，不降低证据、引用、图表和实验要求。本文当前不声称 SOTA，不使用未完成实验补数，不把不同数据集的 final setting 统一归因为同一机制。
+本稿用于内部技术审阅，目标写作标准对齐 CVPR/ICCV 类计算机视觉顶会。中文仅用于便于审阅，不降低证据、引用、图表和实验要求。本文当前不声称 SOTA，不使用未完成实验补数，不把不同数据集的 system-level setting 统一归因为同一机制。
 
-当前主证据来自 `/Users/bytedance/code/AnomalyCLIP/paper/result_record/result_table.csv` 中标记为 `current` 的工业结果。表格包见 `outputs/wpta_generated_tables_v0.5.md` 和 `outputs/wpta_generated_tables_latex_v0.5.tex`；图像资产账本见 `outputs/wpta_figure_asset_ledger_v0.1.md`。引用核验状态见 `outputs/wpta_citation_ledger_v0.1.md`，BibTeX 草案见 `outputs/wpta_references_v0.1.bib`。本文已移除正文中的未核验引用占位；仍保留 `FIGURE_PROMPT` 和 `TABLE_DATA_PROMPT` 作为后续图表生成指令，它们不是最终投稿正文。
+当前数据证据来自 `/Users/bytedance/code/AnomalyCLIP/paper/result_record/result_table.csv` 中标记为 `current` 的工业结果。表格包见 `outputs/wpta_generated_tables_v0.5.md` 和 `outputs/wpta_generated_tables_latex_v0.5.tex`；图像资产账本见 `outputs/wpta_figure_asset_ledger_v0.1.md`。引用核验状态见 `outputs/wpta_citation_ledger_v0.1.md`，BibTeX 草案见 `outputs/wpta_references_v0.1.bib`。本文已移除正文中的未核验引用占位；仍保留 `FIGURE_PROMPT` 和 `TABLE_DATA_PROMPT` 作为后续图表生成指令，它们不是最终投稿正文。
 
 ## 摘要
 
-零样本异常检测要求模型在不使用目标类别训练图像和异常标注的条件下，同时完成图像级异常判别和像素级异常定位。现有 CLIP-based 方法通常依赖固定 normal/abnormal 文本原型，但固定原型难以适配每张测试图像中的实例化缺陷外观，并容易把真实局部异常、正常材料纹理和结构边界混淆。本文的核心观察是，小波线索不适合作为最终异常图的直接加性分数，却适合作为测试时原型适配中的 patch evidence reliability。基于这一观察，本文提出 Wavelet-Supervised Test-Time Prototype Adaptation (WPTA)，在冻结 CLIP 参数的前提下，从 CLIP patch feature grid 构造 boundary-aware Haar wavelet reliability，并与初始语义异常分数共同选择 visual normal/abnormal anchors，以 conservative update 校准 prototypes。受控 MVTec/VisA 消融表明，direct wavelet fusion 会降低定位质量，而 semantic-spectral evidence selection 与 conservative calibration 能持续改善 prototype adaptation；五个工业基准上的最终校准系统相对固定 AnomalyCLIP baseline 平均提升 +1.0 / +4.5 / +3.4 / +2.8，指标顺序为 P-AUROC / P-AUPRO / I-AUROC / I-AP。该结果支撑 final calibrated system 的系统级有效性；WPTA 机制本身的因果证据来自 MVTec/VisA 受控消融。
+零样本异常检测要求模型在不使用目标类别训练图像和异常标注的条件下，同时完成图像级异常判别和像素级异常定位。现有 CLIP-based 方法通常依赖固定 normal/abnormal 文本原型，但固定原型难以适配每张测试图像中的实例化缺陷外观，并容易把真实局部异常、正常材料纹理和结构边界混淆。本文的核心观察是，小波线索不适合作为最终异常图的直接加性分数，却适合作为测试时原型适配中的 patch evidence reliability。基于这一观察，本文提出 Ours (unnamed)，在冻结 CLIP 参数的前提下，从 CLIP patch feature grid 构造 boundary-aware Haar wavelet reliability，并与初始语义异常分数共同选择 visual normal/abnormal anchors，以 conservative update 校准 prototypes。受控 MVTec/VisA 消融表明，direct wavelet fusion 会降低定位质量，而 semantic-spectral evidence selection 与 conservative calibration 能持续改善 prototype adaptation；五个工业基准上的系统级 Ours 设置相对固定 AnomalyCLIP baseline 平均提升 +1.0 / +4.5 / +3.4 / +2.8，指标顺序为 P-AUROC / P-AUPRO / I-AUROC / I-AP。该结果支撑 system-level Ours setting 的系统级有效性；Ours 机制本身的因果证据来自 MVTec/VisA 受控消融。
 
 关键词：zero-shot anomaly detection；CLIP；test-time adaptation；prototype calibration；wavelet reliability；industrial inspection
 
@@ -22,23 +22,23 @@
 
 频域或小波线索为这一问题提供了有吸引力但危险的辅助信息。许多工业缺陷表现为局部纹理扰动、边缘断裂或细粒度结构变化，而 Haar 小波能够在局部特征网格上分离高频扰动与低频结构。然而，高频响应并不等价于异常响应。普通物体轮廓、反光、高频背景纹理和正常结构边界同样会产生强小波响应。本文受控消融验证了这一点：在 MVTec 上，direct wavelet fusion / no adaptation 的结果为 88.7 / 80.4 / 92.9 / 96.9，低于固定 baseline 的 91.2 / 83.2 / 91.6 / 96.4；在 VisA 上也从 95.5 / 86.7 / 82.0 / 85.3 降至 94.6 / 85.1 / 81.6 / 84.8。这里的斜杠指标顺序为 P-AUROC / P-AUPRO / I-AUROC / I-AP。
 
-本文提出 WPTA，把小波线索从“最终异常分数”重新定位为“测试时原型校准的可靠性监督”。WPTA 先使用固定 normal/abnormal prototypes 得到初始语义异常分数 `S0`，再在 CLIP patch feature grid 上做 Haar 小波分解，从高频分量估计局部纹理扰动，从低频分量估计结构边界，并构造 boundary-aware reliability `W = norm(HF) * (1 - norm(LF_edge))`。`S0` 提供 evidence 的语义方向，`W` 提供 evidence 的局部频域可靠性，两者共同选择当前测试图像中的 visual abnormal/normal anchors。最后，WPTA 用 conservative update 轻量校准 prototypes，并使用校准后的 prototypes 重新计算 anomaly map。
+本文提出 Ours，把小波线索从“最终异常分数”重新定位为“测试时原型校准的可靠性监督”。Ours 先使用固定 normal/abnormal prototypes 得到初始语义异常分数 `S0`，再在 CLIP patch feature grid 上做 Haar 小波分解，从高频分量估计局部纹理扰动，从低频分量估计结构边界，并构造 boundary-aware reliability `W = norm(HF) * (1 - norm(LF_edge))`。`S0` 提供 evidence 的语义方向，`W` 提供 evidence 的局部频域可靠性，两者共同选择当前测试图像中的 visual abnormal/normal anchors。最后，Ours 用 conservative update 轻量校准 prototypes，并使用校准后的 prototypes 重新计算 anomaly map。
 
-这一设计直接对应三个技术挑战。第一，无标签测试图像中的可信 evidence 稀疏且未知，不能仅用高 anomaly score 或高频响应选择 patch。第二，小波线索如果绕过 CLIP 语义判别直接进入最终 anomaly map，会放大正常边界和材质纹理的伪异常。第三，测试时原型校准存在 prototype drift 风险，错误 evidence 会把 prototypes 拉向噪声或正常结构。WPTA 将小波限制在 evidence reliability 层面，并用 conservative update 控制更新强度，使最终异常图仍由 CLIP semantic prototypes 决定。
+这一设计直接对应三个技术挑战。第一，无标签测试图像中的可信 evidence 稀疏且未知，不能仅用高 anomaly score 或高频响应选择 patch。第二，小波线索如果绕过 CLIP 语义判别直接进入最终 anomaly map，会放大正常边界和材质纹理的伪异常。第三，测试时原型校准存在 prototype drift 风险，错误 evidence 会把 prototypes 拉向噪声或正常结构。Ours 将小波限制在 evidence reliability 层面，并用 conservative update 控制更新强度，使最终异常图仍由 CLIP semantic prototypes 决定。
 
-实验采用两层证据组织。第一层是 MVTec/VisA 受控消融，用于验证 WPTA 机制：semantic-only prototype adaptation 已强于固定原型，wavelet-guided evidence weighting 在 semantic-only 基础上继续提升，conservative update 进一步改善最终结果。第二层是五个工业异常检测基准上的 final calibrated system 结果，包括 MVTec、VisA、MPDD、BTAD 和 DTD-Synthetic；最终系统相对固定 AnomalyCLIP baseline 的平均结果从 94.9 / 82.8 / 86.2 / 89.4 提升到 95.9 / 87.4 / 89.5 / 92.2。由于各数据集 final setting 并不完全相同，五数据集表只证明系统级有效性，WPTA 机制的因果证据限定在 MVTec/VisA 受控消融。
+实验采用两层证据组织。第一层是 MVTec/VisA 受控消融，用于验证 Ours 机制：semantic-only prototype adaptation 已强于固定原型，wavelet-guided evidence weighting 在 semantic-only 基础上继续提升，conservative update 进一步改善最终结果。第二层是五个工业异常检测基准上的 system-level Ours setting 结果，包括 MVTec、VisA、MPDD、BTAD 和 DTD-Synthetic；系统级 Ours 设置相对固定 AnomalyCLIP baseline 的平均结果从 94.9 / 82.8 / 86.2 / 89.4 提升到 95.9 / 87.4 / 89.5 / 92.2。由于各数据集 system-level setting 并不完全相同，五数据集表只证明系统级有效性，Ours 机制的因果证据限定在 MVTec/VisA 受控消融。
 
-这一证据边界也是本文避免过度主张的关键。我们不把 MPDD、BTAD 和 DTD-Synthetic 的 final system gains 写成 WPTA 机制在五个数据集上的因果验证，因为 Table 4 显示不同数据集启用了不同校准模块。相反，主文把“系统级有效性”和“机制级证据”拆开呈现：Table 1 回答最终系统是否改善固定 baseline，Table 2/3 回答 WPTA 机制为何有效，Table 4 记录每个 final run 的实际配置。
+这一证据边界也是本文避免过度主张的关键。我们不把 MPDD、BTAD 和 DTD-Synthetic 的 system-level Ours setting gains 写成 Ours 机制在五个数据集上的因果验证，因为 Table 4 显示不同数据集启用了不同校准模块。相反，主文把“系统级有效性”和“机制级证据”拆开呈现：Table 1 回答系统级 Ours 设置是否改善固定 baseline，Table 2/3 回答 Ours 机制为何有效，Table 4 记录每个 final run 的实际配置。
 
 本文贡献如下：
 
-1. 提出 Wavelet-Supervised Test-Time Prototype Adaptation，将 Haar 小波线索从 final map fusion 重新定位为 prototype adaptation 的 patch evidence reliability。
+1. 提出 Ours (unnamed)，将 Haar 小波线索从 final map fusion 重新定位为 prototype adaptation 的 patch evidence reliability。
 2. 设计 semantic-spectral evidence selection，用初始语义异常分数和 boundary-aware wavelet reliability 共同筛选当前测试图像中的 visual normal/abnormal anchors。
 3. 在冻结 CLIP 参数、不使用目标训练数据、不进行反向传播的条件下进行 conservative prototype calibration，并通过 MVTec/VisA 受控消融验证其机制有效性。
-4. 报告五个工业基准上的 final calibrated system 结果，并用 final-setting 配置审计表明确区分系统级提升和 WPTA 机制证据。该贡献验证的是 calibrated inference stack 的系统级收益，而不是声称 WPTA 机制已在五个数据集上完成因果隔离。
+4. 报告五个工业基准上的 system-level Ours setting 结果，并用 system-level-setting 配置审计表明确区分系统级提升和 Ours 机制证据。该贡献验证的是 calibrated inference stack 的系统级收益，而不是声称 Ours 机制已在五个数据集上完成因果隔离。
 
 [FIGURE_PROMPT:figure1_motivated_example]
-目标：生成 Figure 1，用一个真实工业样例展示 fixed prototype mismatch、direct wavelet fusion failure 和 WPTA 的区别。优先从 `/Users/bytedance/code/AnomalyCLIP/cached_results/prototype_tuned/mechanism_viz` 选择真实资产，候选为 `mvtec_cable_000083_cable.png` 或 `visa_capsules_000260_capsules.png`。四栏横向布局：Input image；AnomalyCLIP initial map，标出真实缺陷低估与正常边界误激活；Direct wavelet fusion map，标出高频边界伪激活；WPTA evidence and final map，显示 `S0`、`W = HF * (1 - LF_edge)`、selected abnormal/normal evidence patches、visual anchors 和 final map。所有热图必须来自真实模型输出；异常 evidence 用橙色边框，normal evidence 用蓝色边框；字体不小于 8pt；白底矢量风格。图注第一句必须表达：小波适合作为 evidence reliability，而不是 final-map fusion。
+目标：生成 Figure 1，用一个真实工业样例展示 fixed prototype mismatch、direct wavelet fusion failure 和 Ours 的区别。优先从 `/Users/bytedance/code/AnomalyCLIP/cached_results/prototype_tuned/mechanism_viz` 选择真实资产，候选为 `mvtec_cable_000083_cable.png` 或 `visa_capsules_000260_capsules.png`。四栏横向布局：Input image；AnomalyCLIP initial map，标出真实缺陷低估与正常边界误激活；Direct wavelet fusion map，标出高频边界伪激活；Ours evidence and final map，显示 `S0`、`W = HF * (1 - LF_edge)`、selected abnormal/normal evidence patches、visual anchors 和 final map。所有热图必须来自真实模型输出；异常 evidence 用橙色边框，normal evidence 用蓝色边框；字体不小于 8pt；白底矢量风格。图注第一句必须表达：小波适合作为 evidence reliability，而不是 final-map fusion。
 [/FIGURE_PROMPT]
 
 ## 2. 相关工作
@@ -49,21 +49,21 @@ CLIP-based anomaly detection 将开放词汇视觉语言表示引入异常检测
 
 ### 2.2 Test-time adaptation for vision-language models
 
-Test-time adaptation 在推理阶段利用测试样本自身的信息缓解分布差异。TPT 在单个测试样本上通过多视图一致性和置信选择进行 test-time prompt tuning，展示了 VLM 在推理阶段适配的可行性 \cite{shu2022tpt}。异常检测中的测试时适配更难，因为异常区域稀疏、未知且常与正常纹理或结构边界相邻。WPTA 不更新 CLIP 参数，也不把整张图像直接作为 adaptation 信号；它只聚合被 `S0` 和 `W` 同时支持的 patch evidence，以降低 prototype drift 风险。
+Test-time adaptation 在推理阶段利用测试样本自身的信息缓解分布差异。TPT 在单个测试样本上通过多视图一致性和置信选择进行 test-time prompt tuning，展示了 VLM 在推理阶段适配的可行性 \cite{shu2022tpt}。异常检测中的测试时适配更难，因为异常区域稀疏、未知且常与正常纹理或结构边界相邻。Ours 不更新 CLIP 参数，也不把整张图像直接作为 adaptation 信号；它只聚合被 `S0` 和 `W` 同时支持的 patch evidence，以降低 prototype drift 风险。
 
 ### 2.3 Frequency and wavelet cues for anomaly localization
 
-多分辨率小波表示为图像和特征网格提供低频结构与高频细节分解基础 \cite{daubechies1988orthonormal,mallat1989theory}。在本文中，小波的作用被严格限制为局部 evidence reliability，而不是一个独立的 anomaly score。这个限制很重要，因为直接把频域响应作为异常分数会受到正常结构边界和材质纹理的干扰。Table 2 和 Table 3 中 direct wavelet fusion 明显低于 WPTA，说明小波线索的角色定位是本文方法成立的关键。
+多分辨率小波表示为图像和特征网格提供低频结构与高频细节分解基础 \cite{daubechies1988orthonormal,mallat1989theory}。在本文中，小波的作用被严格限制为局部 evidence reliability，而不是一个独立的 anomaly score。这个限制很重要，因为直接把频域响应作为异常分数会受到正常结构边界和材质纹理的干扰。Table 2 和 Table 3 中 direct wavelet fusion 明显低于 Ours，说明小波线索的角色定位是本文方法成立的关键。
 
 ### 2.4 Positioning against closest work
 
-| 方法类别 | 文本原型 | 目标域训练 | 测试时原型校准 | 小波可靠性 | 与 WPTA 的区别 |
+| 方法类别 | 文本原型 | 目标域训练 | 测试时原型校准 | 小波可靠性 | 与 Ours 的区别 |
 |---|---:|---:|---:|---:|---|
 | AnomalyCLIP \cite{zhou2024anomalyclip} | 固定或学习得到 | 需要训练 prompt | 否 | 否 | 使用 object-agnostic prompts，但不根据当前测试图像 evidence 校准 prototypes。 |
 | WinCLIP \cite{jeong2023winclip} | 固定 prompt ensemble | 否或 few-shot variant | 否 | 否 | 强调 window-level scoring，不构造 semantic-spectral visual anchors。 |
 | AdaCLIP / CLIP-AD \cite{cao2024adaclip,chen2024clipad} | prompt 或文本特征适配 | 依赖训练或结构改造 | 否 | 否 | 改善 CLIP anomaly scoring，但不使用 boundary-aware wavelet reliability 选择 patch evidence。 |
 | TPT-style VLM adaptation \cite{shu2022tpt} | 测试时 prompt 可变 | 否 | 是 | 否 | 面向通用分类适配，未处理异常区域稀疏和局部伪 evidence 问题。 |
-| WPTA | 初始固定，测试时校准 | 否 | 是 | 是 | 冻结 CLIP，用 `S0` 与 boundary-aware `W` 选择 visual anchors，并保守校准 prototypes。 |
+| Ours | 初始固定，测试时校准 | 否 | 是 | 是 | 冻结 CLIP，用 `S0` 与 boundary-aware `W` 选择 visual anchors，并保守校准 prototypes。 |
 
 ## 3. 方法
 
@@ -71,9 +71,9 @@ Test-time adaptation 在推理阶段利用测试样本自身的信息缓解分�
 
 给定测试图像 `x`，zero-shot anomaly detection 需要输出像素级 anomaly map `M` 和图像级 anomaly score `s_img`。CLIP 图像编码器产生 patch features `{f_i}_{i=1}^N`，文本编码器产生 normal prototype `t_n` 和 abnormal prototype `t_a`。在本文设置中，CLIP 参数冻结，推理阶段不访问目标域训练集，不使用异常标注，也不进行反向传播。
 
-WPTA 包含四个模块。第一，initial semantic scoring 使用固定 `t_n` 和 `t_a` 得到 patch-level semantic prior `S0`。第二，boundary-aware Haar wavelet reliability 在 CLIP patch feature grid 上计算 `W`。第三，semantic-spectral evidence selection 根据 `S0` 与 `W` 选择并聚合 visual normal/abnormal anchors。第四，conservative prototype calibration 用 visual anchors 轻量校准 prototypes，并重新计算 anomaly map。
+Ours 包含四个模块。第一，initial semantic scoring 使用固定 `t_n` 和 `t_a` 得到 patch-level semantic prior `S0`。第二，boundary-aware Haar wavelet reliability 在 CLIP patch feature grid 上计算 `W`。第三，semantic-spectral evidence selection 根据 `S0` 与 `W` 选择并聚合 visual normal/abnormal anchors。第四，conservative prototype calibration 用 visual anchors 轻量校准 prototypes，并重新计算 anomaly map。
 
-**Algorithm 1. WPTA inference for one test image.**
+**Algorithm 1. Ours inference for one test image.**
 
 ```text
 Input:
@@ -105,7 +105,7 @@ Output:
 
 ### 3.2 Initial semantic anomaly score
 
-WPTA 首先使用固定文本原型计算 patch-level semantic anomaly prior。对每个 patch feature `f_i`，异常概率定义为：
+Ours 首先使用固定文本原型计算 patch-level semantic anomaly prior。对每个 patch feature `f_i`，异常概率定义为：
 
 ```text
 S0(i) = exp(sim(f_i, t_a) / tau) /
@@ -116,13 +116,13 @@ S0(i) = exp(sim(f_i, t_a) / tau) /
 
 ### 3.3 Boundary-aware Haar wavelet reliability
 
-WPTA 在 CLIP patch feature grid 上计算小波可靠性，使频域线索与后续 prototype calibration 位于同一特征空间。将 patch features reshape 为 `F in R^{H x W x C}` 后，WPTA 对 `F` 做一级 Haar DWT，得到低频分量 `LL` 与高频分量 `LH`、`HL`、`HH`。高频纹理能量定义为：
+Ours 在 CLIP patch feature grid 上计算小波可靠性，使频域线索与后续 prototype calibration 位于同一特征空间。将 patch features reshape 为 `F in R^{H x W x C}` 后，Ours 对 `F` 做一级 Haar DWT，得到低频分量 `LL` 与高频分量 `LH`、`HL`、`HH`。高频纹理能量定义为：
 
 ```text
 HF(i) = mean_c(|LH_i^c| + |HL_i^c| + |HH_i^c|).
 ```
 
-仅使用 `HF` 会把普通结构边界也当作可靠异常线索，因此 WPTA 从 `LL` 中估计低频结构边缘 `LF_edge(i)`，并构造：
+仅使用 `HF` 会把普通结构边界也当作可靠异常线索，因此 Ours 从 `LL` 中估计低频结构边缘 `LF_edge(i)`，并构造：
 
 ```text
 W(i) = norm(HF(i)) * (1 - norm(LF_edge(i))).
@@ -132,7 +132,7 @@ W(i) = norm(HF(i)) * (1 - norm(LF_edge(i))).
 
 ### 3.4 Semantic-spectral evidence selection
 
-WPTA 用 `S0` 与 `W` 共同选择 abnormal 和 normal evidence。异常 evidence 应同时满足语义上接近 abnormal prototype 且具有可靠局部扰动；正常 evidence 应语义上接近 normal prototype 且不被异常纹理或结构边界污染。概念上，evidence weights 写为：
+Ours 用 `S0` 与 `W` 共同选择 abnormal 和 normal evidence。异常 evidence 应同时满足语义上接近 abnormal prototype 且具有可靠局部扰动；正常 evidence 应语义上接近 normal prototype 且不被异常纹理或结构边界污染。概念上，evidence weights 写为：
 
 ```text
 q_a(i) = S0(i)^gamma * rho(W(i)),
@@ -143,14 +143,14 @@ q_n(i) = (1 - S0(i))^gamma * rho(1 - W(i)).
 
 ### 3.5 Visual anchors and conservative prototype calibration
 
-WPTA 将 selected evidence patches 聚合为当前图像的 visual abnormal anchor 和 visual normal anchor：
+Ours 将 selected evidence patches 聚合为当前图像的 visual abnormal anchor 和 visual normal anchor：
 
 ```text
 v_a = sum_i q_a(i) f_i / sum_i q_a(i),
 v_n = sum_i q_n(i) f_i / sum_i q_n(i).
 ```
 
-随后，WPTA 以 conservative update 校准文本原型：
+随后，Ours 以 conservative update 校准文本原型：
 
 ```text
 t'_a = normalize((1 - alpha) t_a + alpha v_a),
@@ -161,7 +161,7 @@ t'_n = normalize((1 - beta)  t_n + beta  v_n).
 
 ### 3.6 Final anomaly scoring
 
-校准后，WPTA 使用 `t'_a` 和 `t'_n` 重新计算 anomaly probability：
+校准后，Ours 使用 `t'_a` 和 `t'_n` 重新计算 anomaly probability：
 
 ```text
 S(i) = exp(sim(f_i, t'_a) / tau) /
@@ -172,17 +172,17 @@ S(i) = exp(sim(f_i, t'_a) / tau) /
 
 ### 3.7 Implementation details
 
-受控 WPTA 消融在 MVTec 和 VisA 上使用相同缓存特征与评价设置。实验使用 AnomalyCLIP 缓存的 patch features，并聚合 feature map layers 1/2/3；layer fusion 使用 sum，layer temperature 为 1.0，Gaussian smoothing 参数 `sigma=5`，AUPRO 使用 200 个阈值步。所有指标均按 image-pixel-level protocol 计算。
+受控 Ours 消融在 MVTec 和 VisA 上使用相同缓存特征与评价设置。实验使用 AnomalyCLIP 缓存的 patch features，并聚合 feature map layers 1/2/3；layer fusion 使用 sum，layer temperature 为 1.0，Gaussian smoothing 参数 `sigma=5`，AUPRO 使用 200 个阈值步。所有指标均按 image-pixel-level protocol 计算。
 
 Prototype adaptation 默认参数来自 `conf/run_prototype_ablation_experiments_conf.yaml`。Prototype softmax temperature 为 0.07，semantic sharpening `gamma=1.0`，wavelet evidence exponent `eta=1.0`，evidence top-k ratio 为 0.2。Conservative update 使用 `proto_alpha0=0.0`、`proto_beta0=0.01`、`proto_tau_a=0.15` 和 `proto_update_min_abnormal_confidence=0.06`，并在 confidence 不足时抑制更新。Boundary-aware wavelet reliability 使用 `proto_wavelet_mode=boundary_aware` 和 `proto_wavelet_mix=0.05`；HF-only 与 semantic-only variants 只改变 `proto_wavelet_mode`，no-conservative variant 只关闭 `proto_conservative_update`。Direct fusion 负对照不做 prototype adaptation，而是以 `direct_wavelet_fusion_weight=0.5` 直接融合 `S0` 与小波图。
 
-为保证受控消融中 adaptation variants 的可比性，除 Baseline 外的 prototype/fusion variants 使用相同的 multi-crop 与 pixel-to-image 设置：`multicrop_weight=0.50`，`pixel_to_image_weight=0.10`，`pixel_to_image_topk_ratio=0.01`。因此，Table 2 和 Table 3 的因果解释主要来自 adaptation variants 之间的相对比较，而不是把 Baseline 到任一增强行的差值单独归因为 WPTA。五数据集 final systems 使用数据集特定配置，已在 Table 4 中单独审计；完整运行命令见 `/Users/bytedance/code/AnomalyCLIP/FIVE_DATASET_RESULTS_AND_ABLATIONS.md`。
+为保证受控消融中 adaptation variants 的可比性，除 Baseline 外的 prototype/fusion variants 使用相同的 multi-crop 与 pixel-to-image 设置：`multicrop_weight=0.50`，`pixel_to_image_weight=0.10`，`pixel_to_image_topk_ratio=0.01`。因此，Table 2 和 Table 3 的因果解释主要来自 adaptation variants 之间的相对比较，而不是把 Baseline 到任一增强行的差值单独归因为 Ours。五数据集 system-level Ours settings 使用数据集特定配置，已在 Table 4 中单独审计；完整运行命令见 `/Users/bytedance/code/AnomalyCLIP/FIVE_DATASET_RESULTS_AND_ABLATIONS.md`。
 
 ## 4. 实验设置
 
 ### 4.1 Datasets
 
-主实验覆盖五个工业异常检测基准：MVTec、VisA、MPDD、BTAD 和 DTD-Synthetic \cite{bergmann2019mvtec,bergmann2021mvtec,zou2022visa,jezek2021deep,mishra2021vt,aota2023zero}。其中 MVTec 和 VisA 用于 WPTA 受控机制消融；五数据集主表用于报告 final calibrated system 的系统级结果。补充医学观察只报告 ISIC/ISBI 的 pixel-level 结果，其它医学数据集当前未形成完整可比结果，因此医学结果不进入摘要、贡献或主 claim。
+主实验覆盖五个工业异常检测基准：MVTec、VisA、MPDD、BTAD 和 DTD-Synthetic \cite{bergmann2019mvtec,bergmann2021mvtec,zou2022visa,jezek2021deep,mishra2021vt,aota2023zero}。其中 MVTec 和 VisA 用于 Ours 受控机制消融；五数据集主表用于报告 system-level Ours setting 的系统级结果。补充医学观察只报告 ISIC/ISBI 的 pixel-level 结果，其它医学数据集当前未形成完整可比结果，因此医学结果不进入摘要、贡献或主 claim。
 
 说明：`zou2022visa`、`jezek2021deep`、`mishra2021vt` 和 `aota2023zero` 当前来自本地已有 `.bib`，最终投稿前仍需按 `outputs/wpta_citation_ledger_v0.1.md` 完成 canonical metadata 核验。
 
@@ -196,9 +196,9 @@ P-AUROC / P-AUPRO / I-AUROC / I-AP
 
 本文重点分析 P-AUPRO，因为它更直接反映 anomaly localization 的区域质量。I-AUROC 和 I-AP 用于验证图像级检测是否同步受益。当前结果为 deterministic report，尚未包含多 seed 置信区间或显著性检验；因此本文不报告显著性 claim。
 
-### 4.3 Baselines, final systems, and evidence boundary
+### 4.3 Baselines, system-level Ours settings, and evidence boundary
 
-主结果以固定 AnomalyCLIP baseline 作为比较对象，并比较每个数据集的 final calibrated system。受控消融在 MVTec 和 VisA 上报告四个 variants：direct wavelet fusion / no adaptation、semantic prototype adaptation、wavelet prototype adaptation without conservative update，以及 Full WPTA controlled setting。由于五数据集 final systems 与受控消融设置不完全相同，本文显式区分两类证据：Table 1 证明 final calibrated system 的系统级有效性，Table 2 和 Table 3 证明 WPTA 机制。
+主结果以固定 AnomalyCLIP baseline 作为比较对象，并比较每个数据集的 system-level Ours setting。受控消融在 MVTec 和 VisA 上报告四个 variants：direct wavelet fusion / no adaptation、semantic prototype adaptation、Ours w/o conservative update，以及 Ours (controlled setting)。由于五数据集 system-level Ours settings 与受控消融设置不完全相同，本文显式区分两类证据：Table 1 证明 system-level Ours setting 的系统级有效性，Table 2 和 Table 3 证明 Ours 机制。
 
 外部方法比较当前只作为附录协议参考，不作为主文强比较。该处理不是因为数值不足，而是因为现有外部表来自另一份 `main.tex`，其 auxiliary-target split、fine-tuning 条件和 evaluation protocol 尚未与当前 training-free test-time setting 完成逐项核验。主文因此只使用固定 AnomalyCLIP baseline 作为已知可比对象。
 
@@ -206,32 +206,32 @@ P-AUROC / P-AUPRO / I-AUROC / I-AP
 
 ### 5.1 Main results on five industrial benchmarks
 
-Table 1 展示五个工业数据集上的主结果。最终校准系统在所有数据集上均超过固定 AnomalyCLIP baseline，并且平均四个指标全部提升。该表不单独证明所有提升都来自 WPTA；各数据集 final setting 的启用模块见 Table 4。
+Table 1 展示五个工业数据集上的主结果。系统级 Ours 设置在所有数据集上均超过固定 AnomalyCLIP baseline，并且平均四个指标全部提升。该表不单独证明所有提升都来自 Ours；各数据集 system-level setting 的启用模块见 Table 4。
 
 **表 1. 五个工业异常检测基准上的主结果。指标越高越好。**
 
 | Dataset | Method | P-AUROC ↑ | P-AUPRO ↑ | I-AUROC ↑ | I-AP ↑ | Δ vs. baseline |
 |---|---|---:|---:|---:|---:|---:|
 | MVTec | AnomalyCLIP baseline | 91.2 | 83.2 | 91.6 | 96.4 | - |
-| MVTec | Final calibrated system | **91.8** | **85.6** | **94.5** | **97.6** | +0.6 / +2.4 / +2.9 / +1.2 |
+| MVTec | Ours (unnamed; system-level) | **91.8** | **85.6** | **94.5** | **97.6** | +0.6 / +2.4 / +2.9 / +1.2 |
 | VisA | AnomalyCLIP baseline | 95.5 | 86.7 | 82.0 | 85.3 | - |
-| VisA | Final calibrated system | **96.2** | **91.3** | **84.6** | **87.4** | +0.7 / +4.6 / +2.6 / +2.1 |
+| VisA | Ours (unnamed; system-level) | **96.2** | **91.3** | **84.6** | **87.4** | +0.7 / +4.6 / +2.6 / +2.1 |
 | MPDD | AnomalyCLIP baseline | 96.9 | 84.6 | 73.7 | 76.5 | - |
-| MPDD | Final calibrated system | **97.3** | **89.9** | **77.8** | **82.3** | +0.4 / +5.3 / +4.1 / +5.8 |
+| MPDD | Ours (unnamed; system-level) | **97.3** | **89.9** | **77.8** | **82.3** | +0.4 / +5.3 / +4.1 / +5.8 |
 | BTAD | AnomalyCLIP baseline | 93.5 | 70.5 | 89.1 | 91.0 | - |
-| BTAD | Final calibrated system | **96.3** | **78.2** | **93.9** | **94.9** | +2.8 / +7.7 / +4.8 / +3.9 |
+| BTAD | Ours (unnamed; system-level) | **96.3** | **78.2** | **93.9** | **94.9** | +2.8 / +7.7 / +4.8 / +3.9 |
 | DTD-Synthetic | AnomalyCLIP baseline | 97.4 | 89.1 | 94.5 | 97.7 | - |
-| DTD-Synthetic | Final calibrated system | **97.9** | **91.8** | **96.9** | **98.7** | +0.5 / +2.7 / +2.4 / +1.0 |
+| DTD-Synthetic | Ours (unnamed; system-level) | **97.9** | **91.8** | **96.9** | **98.7** | +0.5 / +2.7 / +2.4 / +1.0 |
 | Average | AnomalyCLIP baseline | 94.9 | 82.8 | 86.2 | 89.4 | - |
-| Average | Final calibrated system | **95.9** | **87.4** | **89.5** | **92.2** | +1.0 / +4.5 / +3.4 / +2.8 |
+| Average | Ours (unnamed; system-level) | **95.9** | **87.4** | **89.5** | **92.2** | +1.0 / +4.5 / +3.4 / +2.8 |
 
-平均结果显示，final calibrated system 的最大收益来自 P-AUPRO，平均提升 +4.5。该趋势说明当前系统主要改善局部异常区域覆盖，而不是只提升图像级分类分数。MPDD 和 BTAD 上的 image-level gains 也较明显，分别在 I-AUROC/I-AP 上提升 +4.1/+5.8 和 +4.8/+3.9。由于 MPDD/BTAD final commands 主要启用 multi-crop fusion 和 pixel-to-image fusion，本段只作为系统级结果解释；WPTA 的机制解释见受控消融。
+平均结果显示，system-level Ours setting 的最大收益来自 P-AUPRO，平均提升 +4.5。该趋势说明当前系统主要改善局部异常区域覆盖，而不是只提升图像级分类分数。MPDD 和 BTAD 上的 image-level gains 也较明显，分别在 I-AUROC/I-AP 上提升 +4.1/+5.8 和 +4.8/+3.9。由于 MPDD/BTAD final commands 主要启用 multi-crop fusion 和 pixel-to-image fusion，本段只作为系统级结果解释；Ours 的机制解释见受控消融。
 
 ### 5.2 Core component ablation
 
-Table 2 在 MVTec 和 VisA 的受控消融设置下验证各组件作用。这里的 Full WPTA 是 controlled ablation setting，与五数据集主结果中的 final systems 不完全相同。
+Table 2 在 MVTec 和 VisA 的受控消融设置下验证各组件作用。这里的 Ours 是 controlled ablation setting，与五数据集主结果中的 system-level Ours settings 不完全相同。
 
-**表 2. WPTA 核心组件消融。每个结果单元格为 P-AUROC / P-AUPRO / I-AUROC / I-AP。除 Baseline 外，各 prototype/fusion variants 使用相同 multi-crop 与 pixel-to-image 设置；因此因果解释应主要比较 variants 之间的相对变化，而不是把 Baseline 到增强行的完整差值单独归因于 WPTA。**
+**表 2. Ours 核心组件消融。每个结果单元格为 P-AUROC / P-AUPRO / I-AUROC / I-AP。除 Baseline 外，各 prototype/fusion variants 使用相同 multi-crop 与 pixel-to-image 设置；因此因果解释应主要比较 variants 之间的相对变化，而不是把 Baseline 到增强行的完整差值单独归因于 Ours。**
 
 | Method | MVTec | VisA | 作用 |
 |---|---:|---:|---|
@@ -239,9 +239,9 @@ Table 2 在 MVTec 和 VisA 的受控消融设置下验证各组件作用。这�
 | Direct wavelet fusion / no adaptation | 88.7 / 80.4 / 92.9 / 96.9 | 94.6 / 85.1 / 81.6 / 84.8 | negative control: use wavelet at final-map level |
 | Semantic prototype adaptation | 91.6 / 85.2 / 93.7 / 97.1 | 96.0 / 90.4 / 83.7 / 86.9 | CLIP semantic evidence only |
 | Wavelet prototype adaptation w/o conservative | 91.7 / 85.8 / 93.9 / 97.2 | 96.1 / 91.3 / 84.1 / 87.0 | boundary-aware wavelet evidence, no conservative update |
-| Full WPTA controlled setting | **91.8 / 86.2 / 94.1 / 97.4** | **96.2 / 91.7 / 84.3 / 87.3** | boundary-aware wavelet evidence + conservative update |
+| Ours (controlled setting) | **91.8 / 86.2 / 94.1 / 97.4** | **96.2 / 91.7 / 84.3 / 87.3** | boundary-aware wavelet evidence + conservative update |
 
-该消融给出三点结论。第一，direct wavelet fusion 低于 Baseline 和 Full WPTA，说明小波不应直接作为最终异常图。第二，semantic prototype adaptation 明显优于固定原型，说明 test-time prototype calibration 是有效方向。第三，wavelet prototype adaptation w/o conservative 和 Full WPTA 进一步提升 P-AUPRO，说明小波可靠性和 conservative update 均是最终方法链路的一部分。需要注意，除 Baseline 外的 variants 共享 multi-crop 与 pixel-to-image 设置；因此本表最稳妥的因果解释是 variants 之间的相对变化。
+该消融给出三点结论。第一，direct wavelet fusion 低于 Baseline 和 Ours，说明小波不应直接作为最终异常图。第二，semantic prototype adaptation 明显优于固定原型，说明 test-time prototype calibration 是有效方向。第三，Ours w/o conservative update 和 Ours 进一步提升 P-AUPRO，说明小波可靠性和 conservative update 均是当前 Ours 方法链路的一部分。需要注意，除 Baseline 外的 variants 共享 multi-crop 与 pixel-to-image 设置；因此本表最稳妥的因果解释是 variants 之间的相对变化。
 
 ### 5.3 Wavelet reliability design
 
@@ -253,17 +253,17 @@ Table 3 进一步分析小波可靠性设计。HF-only W 相比 semantic-only �
 |---|---:|---:|---|
 | Semantic-only prototype adaptation | 91.6 / 85.2 / 93.7 / 97.1 | 96.0 / 90.4 / 83.7 / 86.9 | no wavelet reliability |
 | Direct wavelet fusion | 88.7 / 80.4 / 92.9 / 96.9 | 94.6 / 85.1 / 81.6 / 84.8 | wavelet as final-map fusion, negative control |
-| HF-only W + prototype adaptation | 91.6 / 85.3 / 94.0 / 97.2 | 96.0 / 90.8 / 84.0 / 86.9 | high-frequency reliability only |
-| Boundary-aware W + prototype adaptation | 91.7 / 85.7 / 93.8 / 97.3 | 96.1 / 91.2 / 83.9 / 87.1 | suppress structure-boundary pseudo evidence |
-| Full boundary-aware W + conservative | **91.8 / 86.2 / 94.1 / 97.4** | **96.2 / 91.7 / 84.3 / 87.3** | final controlled WPTA setting |
+| HF-only reliability + prototype adaptation | 91.6 / 85.3 / 94.0 / 97.2 | 96.0 / 90.8 / 84.0 / 86.9 | high-frequency reliability only |
+| Boundary-aware reliability + prototype adaptation | 91.7 / 85.7 / 93.8 / 97.3 | 96.1 / 91.2 / 83.9 / 87.1 | suppress structure-boundary pseudo evidence |
+| Ours (unnamed) | **91.8 / 86.2 / 94.1 / 97.4** | **96.2 / 91.7 / 84.3 / 87.3** | final controlled Ours setting |
 
-Boundary-aware W 在 MVTec/VisA 上分别把 P-AUPRO 从 HF-only 的 85.3/90.8 提升到 85.7/91.2。Full setting 进一步达到 86.2/91.7。这说明高频响应有用但不充分，必须结合低频结构边界抑制和保守更新。
+Boundary-aware W 在 MVTec/VisA 上分别把 P-AUPRO 从 HF-only 的 85.3/90.8 提升到 85.7/91.2。Ours setting 进一步达到 86.2/91.7。这说明高频响应有用但不充分，必须结合低频结构边界抑制和保守更新。
 
 ### 5.4 Final-system configuration audit
 
 Table 4 记录五数据集主结果中各 final run 的启用模块。该表的目的不是增加一个新结果，而是明确主结果表的证据边界。
 
-**表 4. 五数据集 final system 配置审计。该表用于限定因果归因。**
+**表 4. 五数据集 system-level Ours setting 配置审计。该表用于限定因果归因。**
 
 | Dataset | Final result | Wavelet reliability | TTA rectification | Multi-crop fusion | Pixel-to-image fusion | Key setting | Result log |
 |---|---:|---|---|---|---|---|---|
@@ -273,39 +273,39 @@ Table 4 记录五数据集主结果中各 final run 的启用模块。该表的�
 | BTAD | 96.3 / 78.2 / 93.9 / 94.9 | no | no | yes | yes | sigma=10, mc=0.85, p2i=0.95, p2i-topk=0.30 | `btad_full_multicrop_w085_sigma10_p2i030_w095/log.txt` |
 | DTD-Synthetic | 97.9 / 91.8 / 96.9 / 98.7 | yes | no | yes | yes | sigma=8, mc=0.75, p2i=0.50, p2i-topk=0.002 | `dtd_final_no_strat_woven127_w075_sigma8_p2i0002_w05/log.txt` |
 
-MVTec 和 VisA final system 包含 wavelet reliability、TTA rectification、multi-crop fusion 和 pixel-to-image fusion；DTD-Synthetic 包含 wavelet reliability、multi-crop fusion 和 pixel-to-image fusion；MPDD 和 BTAD final system 没有启用 wavelet/TTA flags。因此，五数据集结果应写成 final calibrated system 的系统级提升，WPTA 机制则由 MVTec/VisA 受控消融验证。
+MVTec 和 VisA system-level Ours setting 包含 wavelet reliability、TTA rectification、multi-crop fusion 和 pixel-to-image fusion；DTD-Synthetic 包含 wavelet reliability、multi-crop fusion 和 pixel-to-image fusion；MPDD 和 BTAD system-level Ours setting 没有启用 wavelet/TTA flags。因此，五数据集结果应写成 system-level Ours setting 的系统级提升，Ours 机制则由 MVTec/VisA 受控消融验证。
 
 ### 5.5 Appendix results and protocol-reference comparison
 
-MVTec/VisA 系统校准栈消融、ISIC/ISBI 医学补充结果和外部方法候选比较已生成在 `outputs/wpta_generated_tables_v0.5.md`。这些表当前不进入主 claim。系统校准栈表用于解释 final calibrated system 的工程模块；ISIC/ISBI 只作为 appendix-style observation；外部方法候选比较分为 pixel-level 和 image-level 两张 protocol-reference 表，覆盖 MVTec、VisA、MPDD、BTAD 和 DTD-Synthetic，但它们只作为候选比较材料。原因是 external numbers 来自另一份 `main.tex`，而当前 WPTA 稿件强调 training-free test-time adaptation。正式投稿前，若要把外部方法比较放入主文，必须核验 split、backbone、input resolution、preprocessing、post-processing、prompt setting、是否使用 auxiliary training/fine-tuning、evaluation script 和 metric implementation。
+MVTec/VisA 系统校准栈消融、ISIC/ISBI 医学补充结果和外部方法候选比较已生成在 `outputs/wpta_generated_tables_v0.5.md`。这些表当前不进入主 claim。系统校准栈表用于解释 system-level Ours setting 的工程模块；ISIC/ISBI 只作为 appendix-style observation；外部方法候选比较分为 pixel-level 和 image-level 两张 protocol-reference 表，覆盖 MVTec、VisA、MPDD、BTAD 和 DTD-Synthetic，但它们只作为候选比较材料。原因是 external numbers 来自另一份 `main.tex`，而当前 Ours 稿件强调 training-free test-time adaptation。正式投稿前，若要把外部方法比较放入主文，必须核验 split、backbone、input resolution、preprocessing、post-processing、prompt setting、是否使用 auxiliary training/fine-tuning、evaluation script 和 metric implementation。
 
 当前可用的附录表包括：Appendix Table A1 报告 MVTec/VisA 系统校准栈消融，Appendix Table A2 报告 ISIC/ISBI 医学补充结果，Appendix Table B1a/B1b 分别报告五数据集外部方法 pixel-level 与 image-level 协议参考比较。B1a/B1b 暂不加粗最佳值，也不用于最优性结论。
 
-附录使用建议如下：A1 放在系统主结果之后，用来解释 multi-crop、pixel-to-image fusion 和校准栈对 MVTec/VisA final system 的影响；A2 放在附录末尾，只作为医学数据上的 preliminary observation；B1a/B1b 保留在补充材料或内部审阅材料中，除非 protocol verification 完成，否则不进入主文。
+附录使用建议如下：A1 放在系统主结果之后，用来解释 multi-crop、pixel-to-image fusion 和校准栈对 MVTec/VisA system-level Ours setting 的影响；A2 放在附录末尾，只作为医学数据上的 preliminary observation；B1a/B1b 保留在补充材料或内部审阅材料中，除非 protocol verification 完成，否则不进入主文。
 
 [TABLE_DATA_PROMPT:external_protocol_verified_table]
-请核验并生成一个可进入主文的外部方法比较表。候选方法包括 CLIP、WinCLIP、VAND、CoOp、AdaCLIP、AnomalyCLIP、AA-CLIP、TAAP/INPC、Current final system；候选数据集包括 MVTec AD、VisA、MPDD、BTAD、DTD-Synthetic。逐项核验 split、backbone、input resolution、preprocessing、post-processing、prompt setting、是否使用 auxiliary training/fine-tuning、evaluation script 和 metric implementation。输出 CSV 字段：`dataset, method, p_auroc, p_aupro, i_auroc, i_ap, source_file_or_paper, source_line_or_table, citation_key, protocol_match, mismatch_notes, allowed_placement`。只有 `protocol_match=yes` 的行可以进入主文；`partial/no` 的行只能进入附录或删除。
+请核验并生成一个可进入主文的外部方法比较表。候选方法包括 CLIP、WinCLIP、VAND、CoOp、AdaCLIP、AnomalyCLIP、AA-CLIP、TAAP/INPC、Ours (unnamed; system-level)；候选数据集包括 MVTec AD、VisA、MPDD、BTAD、DTD-Synthetic。逐项核验 split、backbone、input resolution、preprocessing、post-processing、prompt setting、是否使用 auxiliary training/fine-tuning、evaluation script 和 metric implementation。输出 CSV 字段：`dataset, method, p_auroc, p_aupro, i_auroc, i_ap, source_file_or_paper, source_line_or_table, citation_key, protocol_match, mismatch_notes, allowed_placement`。只有 `protocol_match=yes` 的行可以进入主文；`partial/no` 的行只能进入附录或删除。
 [/TABLE_DATA_PROMPT]
 
 ### 5.6 Qualitative visualization plan
 
-定性图必须来自真实模型输出，不能用手工热图替代。至少需要覆盖 MVTec、VisA、MPDD、BTAD、DTD-Synthetic 中四个数据集，并包含 Input image、GT mask、AnomalyCLIP baseline map、Boundary-aware wavelet reliability、selected evidence patches 和 WPTA/final map。
+定性图必须来自真实模型输出，不能用手工热图替代。至少需要覆盖 MVTec、VisA、MPDD、BTAD、DTD-Synthetic 中四个数据集，并包含 Input image、GT mask、AnomalyCLIP baseline map、Boundary-aware wavelet reliability、selected evidence patches 和 Ours/final map。
 
-当前已经发现 MVTec/VisA 的真实机制可视化 PNG，位置为 `/Users/bytedance/code/AnomalyCLIP/cached_results/prototype_tuned/mechanism_viz`，包括 `mvtec_bottle_000000_bottle.png`、`mvtec_cable_000083_cable.png`、`mvtec_capsule_000233_capsule.png`、`visa_candle_000100_candle.png`、`visa_capsules_000260_capsules.png` 和 `visa_cashew_000410_cashew.png`。这些资产可以支撑 Figure 1 或附录机制图，但不能替代 Figure 3，因为 Figure 3 需要跨数据集 qualitative evidence。对于 MPDD/BTAD 这类 final run 没有启用 wavelet reliability 的数据集，图中不得把 calibration evidence 标为 WPTA wavelet reliability。
+当前已经发现 MVTec/VisA 的真实机制可视化 PNG，位置为 `/Users/bytedance/code/AnomalyCLIP/cached_results/prototype_tuned/mechanism_viz`，包括 `mvtec_bottle_000000_bottle.png`、`mvtec_cable_000083_cable.png`、`mvtec_capsule_000233_capsule.png`、`visa_candle_000100_candle.png`、`visa_capsules_000260_capsules.png` 和 `visa_cashew_000410_cashew.png`。这些资产可以支撑 Figure 1 或附录机制图，但不能替代 Figure 3，因为 Figure 3 需要跨数据集 qualitative evidence。对于 MPDD/BTAD 这类 final run 没有启用 wavelet reliability 的数据集，图中不得把 calibration evidence 标为 Ours wavelet reliability。
 
 [FIGURE_PROMPT:figure3_qualitative]
-目标：生成 qualitative visualization。每行一个真实 case，列为 Input image、GT mask、AnomalyCLIP baseline map、Calibration evidence map、Selected evidence patches、Final calibrated map。至少覆盖 MVTec、VisA、MPDD、BTAD、DTD-Synthetic 中 4 个数据集。Baseline 与 final map 使用相同色标；MVTec/VisA 可使用 boundary-aware wavelet reliability W，MPDD/BTAD 若 final run 未启用 wavelet reliability，则该列必须标为 dataset-specific calibration evidence 或省略。Abnormal evidence 用橙色边框，normal evidence 用蓝色边框。所有热图必须来自真实模型输出，不能手工涂色。图注第一句必须说明核心观察：final calibrated map 相比 baseline 更聚焦真实缺陷，同时降低伪激活；若只展示 MVTec/VisA，才可写 WPTA mechanism visualization。
+目标：生成 qualitative visualization。每行一个真实 case，列为 Input image、GT mask、AnomalyCLIP baseline map、Calibration evidence map、Selected evidence patches、Final calibrated map。至少覆盖 MVTec、VisA、MPDD、BTAD、DTD-Synthetic 中 4 个数据集。Baseline 与 final map 使用相同色标；MVTec/VisA 可使用 boundary-aware wavelet reliability W，MPDD/BTAD 若 final run 未启用 wavelet reliability，则该列必须标为 dataset-specific calibration evidence 或省略。Abnormal evidence 用橙色边框，normal evidence 用蓝色边框。所有热图必须来自真实模型输出，不能手工涂色。图注第一句必须说明核心观察：final calibrated map 相比 baseline 更聚焦真实缺陷，同时降低伪激活；若只展示 MVTec/VisA，才可写 Ours mechanism visualization。
 [/FIGURE_PROMPT]
 
 ## 6. 讨论
 
 ### 6.1 Why wavelet reliability, not wavelet scoring
 
-小波提供的是局部频率结构，而不是语义异常判别。Direct fusion 负对照显示，直接把小波响应加到 anomaly map 会伤害定位表现。WPTA 的设计把小波限制在 evidence reliability 层面，使最终 anomaly map 仍由 CLIP semantic prototypes 决定。这一角色分工解释了为什么小波能帮助 prototype adaptation，同时避免频域响应的伪异常问题。
+小波提供的是局部频率结构，而不是语义异常判别。Direct fusion 负对照显示，直接把小波响应加到 anomaly map 会伤害定位表现。Ours 的设计把小波限制在 evidence reliability 层面，使最终 anomaly map 仍由 CLIP semantic prototypes 决定。这一角色分工解释了为什么小波能帮助 prototype adaptation，同时避免频域响应的伪异常问题。
 
 ### 6.2 Why conservative calibration
 
-无标签测试时校准容易产生 prototype drift。WPTA 使用 confidence-gated conservative update，使 visual anchors 只有在 evidence 足够可靠时影响 prototypes。受控消融中 Full WPTA 相比 no-conservative variant 进一步提升，说明保守更新对最终性能有稳定贡献。
+无标签测试时校准容易产生 prototype drift。Ours 使用 confidence-gated conservative update，使 visual anchors 只有在 evidence 足够可靠时影响 prototypes。受控消融中 Ours 相比 no-conservative variant 进一步提升，说明保守更新对最终性能有稳定贡献。
 
 ### 6.3 Current limitations
 
@@ -313,19 +313,19 @@ MVTec/VisA 系统校准栈消融、ISIC/ISBI 医学补充结果和外部方法�
 
 ## 7. 结论
 
-本文提出 WPTA，用于 CLIP-based zero-shot anomaly detection。WPTA 将 Haar 小波线索作为 patch evidence reliability 来监督测试时原型校准，而不是把频域响应直接融合到最终 anomaly map 中。受控 MVTec/VisA 消融说明，直接小波融合会损害定位表现，而 semantic-spectral evidence selection 和 conservative prototype calibration 能改善测试时原型适配。五个工业基准上的 final calibrated system 相对固定 AnomalyCLIP baseline 在平均 P-AUPRO 上获得 +4.5 的提升，显示当前系统在异常区域定位上具有明确收益。后续投稿版本需要关闭引用、真实图和协议核验 gate，才能形成完整顶会证据链。
+本文提出 Ours，用于 CLIP-based zero-shot anomaly detection。Ours 将 Haar 小波线索作为 patch evidence reliability 来监督测试时原型校准，而不是把频域响应直接融合到最终 anomaly map 中。受控 MVTec/VisA 消融说明，直接小波融合会损害定位表现，而 semantic-spectral evidence selection 和 conservative prototype calibration 能改善测试时原型适配。五个工业基准上的 system-level Ours setting 相对固定 AnomalyCLIP baseline 在平均 P-AUPRO 上获得 +4.5 的提升，显示当前系统在异常区域定位上具有明确收益。后续投稿版本需要关闭引用、真实图和协议核验 gate，才能形成完整顶会证据链。
 
 ## 8. Claim-evidence map
 
 | Claim | Evidence | Status |
 |---|---|---|
-| Final calibrated system improves fixed AnomalyCLIP baseline on five industrial datasets. | Table 1, all five datasets improve over baseline; Table 4 records per-dataset final settings. | Supported |
+| Ours (unnamed; system-level) improves fixed AnomalyCLIP baseline on five industrial datasets. | Table 1, all five datasets improve over baseline; Table 4 records per-dataset system-level settings. | Supported |
 | Main system-level gain is P-AUPRO. | Table 1 average P-AUPRO gain +4.5, larger than P-AUROC +1.0, I-AUROC +3.4 and I-AP +2.8. | Supported |
-| Direct wavelet fusion is not sufficient. | Table 2 and Table 3, direct fusion is below Baseline and Full in P-AUPRO. | Supported |
+| Direct wavelet fusion is not sufficient. | Table 2 and Table 3, direct fusion is below Baseline and Ours in P-AUPRO. | Supported |
 | Prototype adaptation is useful in the controlled MVTec/VisA setting. | Table 2, semantic adaptation improves over Baseline on MVTec/VisA. | Supported with scope |
 | Wavelet reliability adds value beyond semantic-only adaptation in the controlled MVTec/VisA setting. | Table 2, wavelet no-conservative improves P-AUPRO over semantic-only on both datasets. | Supported with scope |
 | Boundary-aware W improves over HF-only W in the controlled MVTec/VisA setting. | Table 3, boundary-aware W improves P-AUPRO over HF-only on both datasets. | Supported with scope |
-| WPTA mechanism is validated across all five industrial datasets. | Table 4 shows MPDD/BTAD final runs do not enable wavelet/TTA flags. | Not supported; keep mechanism claim limited to MVTec/VisA controlled ablations |
+| Ours mechanism is validated across all five industrial datasets. | Table 4 shows MPDD/BTAD final runs do not enable wavelet/TTA flags. | Not supported; keep mechanism claim limited to MVTec/VisA controlled ablations |
 | Current system reaches SOTA. | External comparison protocol is not fully verified. | Not supported; do not claim |
 | Current system has preliminary positive observation beyond industrial data. | ISIC/ISBI improves from 88.7 / 78.6 to 89.9 / 80.0, but other medical datasets are incomplete. | Appendix-only observation |
 

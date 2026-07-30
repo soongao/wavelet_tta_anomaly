@@ -1,4 +1,4 @@
-# WPTA 中文稿 v0.8 投稿前自审 Round 5
+# Ours 中文稿 v0.8 投稿前自审 Round 5
 
 审阅对象：`outputs/wpta_cvpr_paper_draft_zh_v0.8.md`
 
@@ -12,7 +12,7 @@
 - 当前评分：8.1 / 10
 - 投稿建议：not ready for submission
 
-`v0.8` 的论文主线已经清楚：WPTA 的关键贡献不是“把小波响应加到异常图”，而是把 boundary-aware wavelet response 作为 test-time prototype adaptation 的 evidence reliability。稿件也正确区分了五数据集 final calibrated system 的系统级结果和 MVTec/VisA 受控消融中的机制证据。阻止投稿的主要问题不是叙事，而是三类硬证据尚未闭合：公平外部方法比较、真实跨数据集定性图、最终引用与可复现细节。
+`v0.8` 的论文数据口径已经清楚：Ours 的关键贡献不是“把小波响应加到异常图”，而是把 boundary-aware wavelet response 作为 test-time prototype adaptation 的 evidence reliability。稿件也正确区分了五数据集 system-level Ours setting 的系统级结果和 MVTec/VisA 受控消融中的机制证据。阻止投稿的主要问题不是叙事，而是三类硬证据尚未闭合：公平外部方法比较、真实跨数据集定性图、最终引用与可复现细节。
 
 ## Top 3 Blocking Issues
 
@@ -26,7 +26,7 @@
 
 | # | Finding | Severity | Suggested fix |
 |---|---|---|---|
-| 1 | “系统级有效性”和“机制级证据”的边界写得正确，但贡献 4 仍容易让审稿人问：final calibrated system 是否就是 WPTA？ | MAJOR | 在贡献列表和实验开头加入一句更硬的边界声明：five-dataset final system validates the calibrated inference stack; WPTA mechanism is isolated on MVTec/VisA controlled ablations。 |
+| 1 | “系统级有效性”和“机制级证据”的边界写得正确，但贡献 4 仍容易让审稿人问：system-level Ours setting 是否就是 Ours？ | MAJOR | 在贡献列表和实验开头加入一句更硬的边界声明：five-dataset system-level Ours setting validates the calibrated inference stack; Ours mechanism is isolated on MVTec/VisA controlled ablations。 |
 | 2 | Related Work 的 closest-work 表有用，但没有把 “training-free, no target training images, no backpropagation” 作为对比维度。 | MAJOR | 在 Section 2.4 表中加入 training-free/test-time-only 维度，帮助审稿人理解与 AdaCLIP、CLIP-AD、TPT 的差异。 |
 | 3 | Introduction 已有六段逻辑，但 Figure 1 仍是 prompt，无法形成 page-1 visual hook。 | CRITICAL | 用现有机制 PNG 生成真实 Figure 1，或至少在稿件中记录 Figure 1 asset path 和 caption draft。 |
 
@@ -34,7 +34,7 @@
 
 | # | Finding | Severity | Suggested fix |
 |---|---|---|---|
-| 1 | 方法小节缺少算法框，读者需要从 prose 中重建 WPTA。 | MAJOR | 增加 “Algorithm 1: WPTA inference for one test image”，列出 inputs、frozen CLIP features、S0、W、evidence selection、anchor aggregation、prototype update、final scoring。 |
+| 1 | 方法小节缺少算法框，读者需要从 prose 中重建 Ours。 | MAJOR | 增加 “Algorithm 1: Ours inference for one test image”，列出 inputs、frozen CLIP features、S0、W、evidence selection、anchor aggregation、prototype update、final scoring。 |
 | 2 | 第 145 行写 “最终英文投稿版需要...” 是内部状态语，不应出现在投稿正文。 | MINOR | 改为正式实现说明，把未闭合细节放到投稿前 gate。 |
 | 3 | Conservative update 的 confidence gate 只描述概念，缺少失败时如何回退。 | MAJOR | 明确 evidence confidence below threshold 时保留原 prototype，避免 reviewer 质疑 drift。 |
 
@@ -44,7 +44,7 @@
 |---|---|---|---|
 | 1 | 五数据集主结果强于固定 baseline，但缺少已核验外部方法 comparison，顶会竞争性不足。 | CRITICAL | 同 Blocking Issue 1。 |
 | 2 | 当前结果是 deterministic report，不能报告显著性；稿件已正确避免显著性 claim。 | MINOR | 保持当前写法；若补多 seed，再新增 uncertainty table。 |
-| 3 | 受控机制消融只覆盖 MVTec/VisA，范围清楚但略窄。 | MAJOR | 若时间允许，在 DTD-Synthetic 上补一组 controlled WPTA ablation；若不补，继续把机制 claim 限定为 MVTec/VisA。 |
+| 3 | 受控机制消融只覆盖 MVTec/VisA，范围清楚但略窄。 | MAJOR | 若时间允许，在 DTD-Synthetic 上补一组 controlled Ours ablation；若不补，继续把机制 claim 限定为 MVTec/VisA。 |
 
 ## Dimension 4: Figure and Table Quality
 
@@ -58,8 +58,8 @@
 
 | Claim | Verdict | Evidence used | Missing evidence | Suggested wording |
 |---|---|---|---|---|
-| Final calibrated system improves fixed AnomalyCLIP baseline on five industrial datasets. | keep | Table 1 and Table 4 | multi-run uncertainty absent | “The final calibrated system improves the fixed AnomalyCLIP baseline on all five industrial benchmarks under the current deterministic evaluation.” |
-| WPTA mechanism is validated across five datasets. | remove | Table 4 contradicts this | controlled ablations on MPDD/BTAD/DTD absent | “WPTA mechanism is isolated by controlled MVTec/VisA ablations.” |
+| Ours (unnamed; system-level) improves fixed AnomalyCLIP baseline on five industrial datasets. | keep | Table 1 and Table 4 | multi-run uncertainty absent | “The system-level Ours setting improves the fixed AnomalyCLIP baseline on all five industrial benchmarks under the current deterministic evaluation.” |
+| Ours mechanism is validated across five datasets. | remove | Table 4 contradicts this | controlled ablations on MPDD/BTAD/DTD absent | “Ours mechanism is isolated by controlled MVTec/VisA ablations.” |
 | Direct wavelet fusion is harmful or insufficient. | keep | Table 2/3 direct fusion underperforms | none for MVTec/VisA scope | “Direct final-map wavelet fusion is a negative control in MVTec/VisA.” |
 | Current system is SOTA. | remove | protocol-reference external table only | fair verified external comparison | Do not use. |
 | Medical generalization is demonstrated. | remove/weaken | ISIC/ISBI only | other medical datasets blocked | “A preliminary ISIC/ISBI appendix result suggests the calibration stack can transfer beyond industrial imagery, but this is not a main claim.” |

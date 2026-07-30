@@ -1,4 +1,4 @@
-# WPTA Citation Ledger v0.1
+# Ours Citation Ledger v0.1
 
 本文件记录当前中文稿 v0.6 使用或准备使用的引用状态。原则：能由 arXiv、CrossRef、DOI 或本地已有 `.bib` 追溯的条目才进入正文 citation key；无法核验的条目保留为 `CITATION-PENDING`，不生成伪 BibTeX。
 
@@ -31,7 +31,7 @@
 |---|---|---|
 | Wavelet / texture inspection background | `CITATION-PENDING: wavelet texture inspection` | Verify a canonical wavelet texture or surface inspection reference. Do not cite from memory. |
 | Broader test-time adaptation survey | `shu2022tpt` covers VLM prompt TTA but not a full survey | Add a verified TTA survey or core TTA paper if Related Work keeps survey wording. |
-| Full external comparison methods | Appendix only, protocol-reference | Verify split, backbone, input size, post-processing and evaluation script before using as main comparison. |
+| External comparison methods | Appendix only, protocol-reference | Verify split, backbone, input size, post-processing and evaluation script before using as main comparison. |
 
 ## Draft citation policy for v0.6
 

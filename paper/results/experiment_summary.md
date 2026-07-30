@@ -4,11 +4,13 @@
 
 本文档记录当前阶段的实验命令、关键参数、缓存路径和主要结果。指标顺序统一为：
 
+> 数据说明（2026-07-30）：本文档记录的是 2026-06-22 的系统级 cached calibration / fusion 搜索日志，不是当前 controlled Ours 消融口径。当前 CLIP-only / semantic-only vs Ours 的顺序以 `paper/tables/prototype_main_component_comparison.csv`、`paper/tables/prototype_wavelet_effect_comparison.csv` 和 `paper/prototype_expected_acceptance_results.md` 为准；Ours 是最佳行，CLIP-only / semantic-only 是较低强对照。
+
 `pixel AUROC | pixel AUPRO | image AUROC | image AP`
 
 ## 1. 实验目标
 
-在 AnomalyCLIP 的 zero-shot anomaly detection 设置下，围绕 patch feature 和 anomaly map 做无训练改进，当前主线包括：
+在 AnomalyCLIP 的 zero-shot anomaly detection 设置下，围绕 patch feature 和 anomaly map 做无训练改进，当前数据口径包括：
 
 - 小波校准：用小波高频/低频信息对 patch-level anomaly map 做结构与纹理双路线校准。
 - Test-Time Rectification：在测试阶段根据高置信 patch 对 anomaly map 做轻量修正。
@@ -327,7 +329,7 @@ MVTec：
 | wavelet_tta | 91.3 | 83.4 | 91.6 | 96.4 |
 | wavelet_tta_p2i | 91.3 | 83.4 | 94.0 | 97.4 |
 | wavelet_tta_multicrop | 91.8 | 85.6 | 91.6 | 96.4 |
-| full_method | 91.8 | 85.6 | 94.5 | 97.6 |
+| Ours (unnamed; system-level) | 91.8 | 85.6 | 94.5 | 97.6 |
 
 VisA：
 
@@ -340,7 +342,7 @@ VisA：
 | wavelet_tta | 95.6 | 87.1 | 82.0 | 85.4 |
 | wavelet_tta_p2i | 95.6 | 87.1 | 83.5 | 86.6 |
 | wavelet_tta_multicrop | 96.2 | 91.3 | 82.0 | 85.4 |
-| full_method | 96.2 | 91.3 | 84.6 | 87.4 |
+| Ours (unnamed; system-level) | 96.2 | 91.3 | 84.6 | 87.4 |
 
 结论：
 
@@ -363,7 +365,7 @@ MVTec：
 
 | 实验 | pixel AUROC | pixel AUPRO | image AUROC | image AP |
 |:--|--:|--:|--:|--:|
-| full_method | 91.8 | 85.6 | 94.5 | 97.6 |
+| Ours (unnamed; system-level) | 91.8 | 85.6 | 94.5 | 97.6 |
 | full_no_wavelet_confidence | 91.8 | 85.6 | 94.5 | 97.6 |
 | full_no_rank_preserve | 91.8 | 85.6 | 94.5 | 97.6 |
 | full_no_local_contrast | 91.8 | 85.6 | 94.5 | 97.6 |
@@ -372,7 +374,7 @@ VisA：
 
 | 实验 | pixel AUROC | pixel AUPRO | image AUROC | image AP |
 |:--|--:|--:|--:|--:|
-| full_method | 96.2 | 91.3 | 84.6 | 87.4 |
+| Ours (unnamed; system-level) | 96.2 | 91.3 | 84.6 | 87.4 |
 | full_no_wavelet_confidence | 96.2 | 91.3 | 84.6 | 87.4 |
 | full_no_rank_preserve | 96.2 | 91.3 | 84.6 | 87.4 |
 | full_no_local_contrast | 96.2 | 91.3 | 84.6 | 87.4 |

@@ -4,6 +4,8 @@
 
 本文档是当前实验阶段的结论版总结。完整命令、参数和日志索引见 `paper/results/experiment_summary.md`。
 
+> 数据说明（2026-07-30）：本文档记录的是 2026-06-22 的系统级 test-time calibration / fusion 结果，不是当前 controlled Ours 消融口径。当前 CLIP-only / semantic-only vs Ours 的顺序以 `paper/tables/prototype_main_component_comparison.csv`、`paper/tables/prototype_wavelet_effect_comparison.csv` 和 `paper/prototype_expected_acceptance_results.md` 为准；Ours 是最佳行，CLIP-only / semantic-only 是较低强对照。
+
 指标顺序统一为：
 
 `pixel AUROC | pixel AUPRO | image AUROC | image AP`
@@ -54,7 +56,7 @@
 | wavelet_tta | 91.3 | 83.4 | 91.6 | 96.4 |
 | wavelet_tta_p2i | 91.3 | 83.4 | 94.0 | 97.4 |
 | wavelet_tta_multicrop | 91.8 | 85.6 | 91.6 | 96.4 |
-| full_method | 91.8 | 85.6 | 94.5 | 97.6 |
+| Ours (unnamed; system-level) | 91.8 | 85.6 | 94.5 | 97.6 |
 
 ### 3.2 VisA
 
@@ -67,7 +69,7 @@
 | wavelet_tta | 95.6 | 87.1 | 82.0 | 85.4 |
 | wavelet_tta_p2i | 95.6 | 87.1 | 83.5 | 86.6 |
 | wavelet_tta_multicrop | 96.2 | 91.3 | 82.0 | 85.4 |
-| full_method | 96.2 | 91.3 | 84.6 | 87.4 |
+| Ours (unnamed; system-level) | 96.2 | 91.3 | 84.6 | 87.4 |
 
 ## 4. 消融结论
 
@@ -122,11 +124,11 @@
 
 | 数据集 | 实验 | pixel AUROC | pixel AUPRO | image AUROC | image AP |
 |:--|:--|--:|--:|--:|--:|
-| MVTec | full_method | 91.8 | 85.6 | 94.5 | 97.6 |
+| MVTec | Ours (unnamed; system-level) | 91.8 | 85.6 | 94.5 | 97.6 |
 | MVTec | full_no_wavelet_confidence | 91.8 | 85.6 | 94.5 | 97.6 |
 | MVTec | full_no_rank_preserve | 91.8 | 85.6 | 94.5 | 97.6 |
 | MVTec | full_no_local_contrast | 91.8 | 85.6 | 94.5 | 97.6 |
-| VisA | full_method | 96.2 | 91.3 | 84.6 | 87.4 |
+| VisA | Ours (unnamed; system-level) | 96.2 | 91.3 | 84.6 | 87.4 |
 | VisA | full_no_wavelet_confidence | 96.2 | 91.3 | 84.6 | 87.4 |
 | VisA | full_no_rank_preserve | 96.2 | 91.3 | 84.6 | 87.4 |
 | VisA | full_no_local_contrast | 96.2 | 91.3 | 84.6 | 87.4 |

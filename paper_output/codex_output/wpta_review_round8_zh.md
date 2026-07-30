@@ -1,4 +1,4 @@
-# WPTA 中文顶会稿自审 round8
+# Ours 中文顶会稿自审 round8
 
 审阅对象：`outputs/wpta_cvpr_paper_draft_zh_v1.2.md`
 
@@ -38,7 +38,7 @@ Top three blocking fixes:
 
 | # | Finding | Severity | Suggested fix |
 |---|---|---|---|
-| 1 | v1.2 的主线仍清楚：Table 1 是 final calibrated system 的系统级结果，Table 2/3 是 MVTec/VisA controlled mechanism evidence，Table 4 是归因边界。 | - | 保持三层证据结构。 |
+| 1 | v1.2 的数据口径仍清楚：Table 1 是 system-level Ours setting 的系统级结果，Table 2/3 是 MVTec/VisA controlled mechanism evidence，Table 4 是归因边界。 | - | 保持三层证据结构。 |
 | 2 | Figure 2 已闭合方法总览缺口，使 Method section 更像完整投稿稿件。 | - | LaTeX 插入后做缩放 QA，并保持模块名与 3.1 到 3.6 一致。 |
 | 3 | 外部方法比较仍缺协议核验，当前无法支撑 reviewer 期待的 strongest-baseline 主表。 | CRITICAL | 按第 10 节 protocol verification prompt 生成可审计表，再决定进入主文或附录。 |
 
@@ -46,8 +46,8 @@ Top three blocking fixes:
 
 | # | Claim | Verdict | Evidence / Risk |
 |---|---|---|---|
-| 1 | Final calibrated system improves fixed AnomalyCLIP baseline on five industrial datasets. | keep | Table 1 第 220 到 233 行给出五数据集与平均提升；Table 4 第 275 到 281 行记录 final settings。 |
-| 2 | WPTA mechanism is supported by controlled MVTec/VisA ablations. | keep with scope | Table 2 第 243 到 249 行和 Table 3 第 259 到 265 行支撑；v1.2 第 31 行明确不扩展到五数据集机制 claim。 |
+| 1 | Ours (unnamed; system-level) improves fixed AnomalyCLIP baseline on five industrial datasets. | keep | Table 1 第 220 到 233 行给出五数据集与平均提升；Table 4 第 275 到 281 行记录 system-level settings。 |
+| 2 | Ours mechanism is supported by controlled MVTec/VisA ablations. | keep with scope | Table 2 第 243 到 249 行和 Table 3 第 259 到 265 行支撑；v1.2 第 31 行明确不扩展到五数据集机制 claim。 |
 | 3 | Direct wavelet fusion is not the right role for wavelet cues. | keep | Table 2 第 246 行和 Table 3 第 262 行给出负对照；摘要第 13 行和讨论第 307 行表述与证据一致。 |
 | 4 | External ranking against all listed methods. | forbidden internal claim | v1.2 第 338 行明确该 claim 禁止，B1a/B1b 只做 protocol-reference。 |
 | 5 | Medical result supports general cross-domain conclusion. | remove from main claim | 只有 ISIC/ISBI 初步结果；v1.2 第 331 行仅标为 appendix-only observation。 |
@@ -58,7 +58,7 @@ Top three blocking fixes:
 |---|---|---|---|
 | 1 | 当前结果仍是 deterministic report，没有多 run 或 multi seed。 | MAJOR | 不报告显著性；若需要置信区间，补充多次独立运行。 |
 | 2 | 类别级 breakdown 和失败案例仍缺。 | MAJOR | 生成 classwise breakdown table，并为 Figure 3 或附录增加 failure-case rows。 |
-| 3 | MPDD/BTAD 的 final gains 没有被错误归因给 WPTA。 | - | 保持 Table 4 和第 283 行的边界表述。 |
+| 3 | MPDD/BTAD 的 final gains 没有被错误归因给 Ours。 | - | 保持 Table 4 和第 283 行的边界表述。 |
 | 4 | 医学结果仍不完整。 | MINOR | 维持 appendix-only；除非补齐可比评估，否则不要进入摘要和贡献。 |
 
 ## Dimension 4: Figures And Tables

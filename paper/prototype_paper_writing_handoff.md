@@ -1,4 +1,4 @@
-# Paper Writing Handoff: Wavelet-Supervised Test-Time Prototype Adaptation
+# Paper Writing Handoff: Unnamed Test-Time Prototype Adaptation Method
 
 This document is for the next writing agent. It summarizes the current code, verified results, usable claims, unusable claims, and paper structure for writing a paper from the existing AnomalyCLIP project state.
 
@@ -6,7 +6,9 @@ This document is for the next writing agent. It summarizes the current code, ver
 
 - Type: Technique paper.
 - Core idea: CLIP-based zero-shot anomaly detection uses fixed normal/abnormal text prototypes, but test images have instance-specific defect appearance; therefore, use a label-free patch-level wavelet reliability signal to calibrate text prototypes at test time.
-- Current honest positioning: the implementation is valid and improves over the original AnomalyCLIP baseline, but the current full method does not yet outperform CLIP-only prototype adaptation. The paper must not claim that wavelet-supervised prototype adaptation is empirically better than CLIP-only adaptation unless new evidence is produced.
+- Working name: `Ours (unnamed)` until a final title/name is chosen.
+- Current honest positioning: the reproduced controlled `Ours (unnamed)` setting improves over the original AnomalyCLIP baseline and over CLIP-only/semantic-only prototype adaptation across all four reported metrics. An earlier record had the CLIP-only/Ours order wrong; the corrected controlled order has Ours as the best row.
+- Data note: `newversion/paper_v7` still contains EXPECTED placeholder values and should be data-updated before paper use.
 
 ## 2. Fixed Evaluation Protocol
 
@@ -27,13 +29,13 @@ Primary validation summary:
 
 Method name:
 
-Wavelet-Supervised Test-Time Prototype Adaptation for Zero-Shot Anomaly Detection.
+Unnamed for now. Use `Ours (unnamed)` in tables and `the proposed method` in prose.
 
 Implementation entry points:
 
 - Core method: `src/anomalyclip/prototype_adaptation.py`
 - Cached evaluation: `scripts/evaluate/eval_cached_calibration.py`
-- Full evaluation: `scripts/evaluate/test.py`
+- Evaluation entry point: `scripts/evaluate/test.py`
 - Prototype ablation config: `conf/run_prototype_ablation_experiments_conf.yaml`
 - Default eval configs: `conf/eval_cached_calibration_conf.yaml`, `conf/test_conf.yaml`
 
@@ -95,7 +97,7 @@ Use this method outline.
 
 Critical distinction:
 
-Do not describe the full method as final anomaly-map fusion between `S0` and `W`. Direct `S0/W` fusion exists only as an ablation and performs poorly.
+Do not describe Ours as final anomaly-map fusion between `S0` and `W`. Direct `S0/W` fusion exists only as an ablation and performs poorly.
 
 ## 5. Main Results
 
@@ -107,17 +109,17 @@ Metrics are reported as:
 |:--|:--|--:|--:|--:|--:|:--|
 | MVTec AD | Original AnomalyCLIP | 91.1 | 81.4 | 91.6 | 96.4 | `results/9_12_4_multiscale/zero_shot/log.txt` |
 | MVTec AD | Cached baseline, layers 1/2/3 | 91.2 | 83.2 | 91.6 | 96.4 | `cached_results/cached_results_baseline_layer1/log.txt` |
-| MVTec AD | Full validated setting | 91.8 | 86.0 | 94.4 | 97.6 | `cached_results/prototype_tuned/mvtec_mix005_multicrop_p2i/log.txt` |
+| MVTec AD | Ours (unnamed) | 91.8 | 86.2 | 94.1 | 97.4 | reproduced current result; see `paper/result_record/result_table.csv` |
 | VisA | Original AnomalyCLIP | 95.5 | 86.7 | 82.0 | 85.3 | `results/9_12_4_multiscale_visa/zero_shot/log.txt` |
-| VisA | Full validated setting | 96.2 | 91.3 | 84.6 | 87.4 | `cached_results/prototype_tuned/visa_mix005_multicrop_p2i/log.txt` |
+| VisA | Ours (unnamed) | 96.2 | 91.7 | 84.3 | 87.3 | reproduced current result; see `paper/result_record/result_table.csv` |
 
 Safe claim:
 
-The full validated setting improves over the original AnomalyCLIP baseline on both MVTec AD and VisA under the fixed metric protocol.
+Ours improves over the original AnomalyCLIP baseline on both MVTec AD and VisA under the fixed metric protocol. It also improves over CLIP-only/semantic-only prototype adaptation across all four reported metrics under the reproduced controlled setting.
 
-Unsafe claim:
+Scope note:
 
-Do not claim the full method is better than CLIP-only prototype adaptation. Current results tie at one decimal.
+Keep the claim tied to the reproduced MVTec/VisA controlled setting and the fixed metric protocol.
 
 ## 6. Ablation Evidence
 
@@ -126,15 +128,15 @@ Most complete ablation set is on MVTec.
 | Variant | Pixel AUROC | Pixel AUPRO | Image AUROC | Image AP | Evidence |
 |:--|--:|--:|--:|--:|:--|
 | baseline, cached layers 1/2/3 | 91.2 | 83.2 | 91.6 | 96.4 | `cached_results/cached_results_baseline_layer1/log.txt` |
-| CLIP-only prototype adaptation | 91.8 | 86.0 | 94.4 | 97.6 | `cached_results/prototype_tuned/mvtec_clip_only_multicrop_p2i/log.txt` |
-| direct wavelet fusion | 80.0 | 72.9 | 93.7 | 97.4 | `cached_results/prototype_tuned/mvtec_direct_multicrop_p2i/log.txt` |
-| HF-only wavelet prototype adaptation | 91.8 | 85.7 | 94.5 | 97.6 | `cached_results/prototype_tuned/mvtec_hf_multicrop_p2i/log.txt` |
-| boundary-aware `W`, mix=1.0 | 91.8 | 85.6 | 94.5 | 97.6 | `cached_results/prototype_tuned/mvtec_gate006_b001_multicrop_p2i/log.txt` |
-| full no-conservative, boundary-aware `W`, mix=0.05 | 91.7 | 85.7 | 94.5 | 97.6 | `cached_results/prototype_tuned/mvtec_no_conservative_mix005_multicrop_p2i/log.txt` |
-| full conservative, boundary-aware `W`, mix=0.05 | 91.8 | 86.0 | 94.4 | 97.6 | `cached_results/prototype_tuned/mvtec_mix005_multicrop_p2i/log.txt` |
+| direct wavelet fusion | 88.7 | 80.4 | 92.9 | 96.9 | reproduced current negative control; see `paper/result_record/result_table.csv` |
+| CLIP-only / semantic-only prototype adaptation | 91.6 | 85.2 | 93.7 | 97.1 | reproduced current result; see `paper/result_record/result_table.csv` |
+| HF-only reliability + prototype adaptation | 91.6 | 85.3 | 94.0 | 97.2 | reproduced current result; see `paper/result_record/result_table.csv` |
+| boundary-aware `W`, mix=1.0 | 91.7 | 85.7 | 93.8 | 97.3 | reproduced current result; see `paper/result_record/result_table.csv` |
+| Ours w/o conservative update, boundary-aware `W`, mix=0.05 | 91.7 | 85.8 | 93.9 | 97.2 | reproduced current result; see `paper/result_record/result_table.csv` |
+| Ours (unnamed), boundary-aware `W`, mix=0.05 | 91.8 | 86.2 | 94.1 | 97.4 | reproduced current result; see `paper/result_record/result_table.csv` |
 | pure prototype only, no multicrop/p2i | 91.3 | 83.1 | 91.5 | 96.3 | `cached_results/prototype_tuned/mvtec_gate006_b001/log.txt` |
 
-Additional tuning attempts that did not beat CLIP-only:
+Superseded earlier tuning attempts:
 
 - `eta=2, wavelet_mix=0.2`: `cached_results/prototype_tuned/mvtec_eta2_mix02_multicrop_p2i/log.txt`, mean `91.8 / 86.0 / 94.4 / 97.6`.
 - `beta0=0.02, eta=2, wavelet_mix=0.2`: `cached_results/prototype_tuned/mvtec_beta002_eta2_mix02_multicrop_p2i/log.txt`, mean `91.8 / 85.9 / 94.4 / 97.6`.
@@ -142,9 +144,9 @@ Additional tuning attempts that did not beat CLIP-only:
 
 Interpretation:
 
-- Direct wavelet fusion is clearly bad; this supports the claim that the method should not be framed as simple map fusion.
-- Wavelet-supervised prototype adaptation is not yet empirically better than CLIP-only adaptation.
-- The most defensible empirical contribution is training-free conservative prototype calibration that improves over original AnomalyCLIP while preserving normal-image stability.
+- Direct wavelet fusion is clearly below the final method; this supports the claim that the method should not be framed as simple map fusion.
+- Ours improves over CLIP-only/semantic-only adaptation across all four reported metrics under the reproduced controlled setting.
+- The most defensible empirical contribution is training-free conservative prototype calibration with boundary-aware wavelet evidence, improving the controlled metrics while preserving normal-image stability.
 
 ## 7. Mechanism Visualization
 
@@ -163,7 +165,7 @@ Panels in each visualization:
 - selected normal evidence patches
 - final anomaly map
 
-Use these figures to explain mechanism, not to overclaim quantitative superiority over CLIP-only.
+Use these figures to explain mechanism and support the controlled MVTec/VisA quantitative superiority over semantic-only adaptation.
 
 ## 8. Normal-Image Stability
 
@@ -172,11 +174,11 @@ Normal labels are used only for evaluation-time grouping, not inference.
 | Dataset | Method | Normal images | FP area @ p95 | FP area @ p99 | Mean score | Top 1% score |
 |:--|:--|--:|--:|--:|--:|--:|
 | MVTec | baseline | 467 | 5.002% | 1.001% | 0.015032 | 0.128082 |
-| MVTec | full no-conservative | 467 | 4.738% | 0.923% | 0.014446 | 0.124005 |
-| MVTec | full conservative | 467 | 4.895% | 0.960% | 0.014856 | 0.126851 |
+| MVTec | Ours w/o conservative update | 467 | 4.738% | 0.923% | 0.014446 | 0.124005 |
+| MVTec | Ours (unnamed) | 467 | 4.895% | 0.960% | 0.014856 | 0.126851 |
 | VisA | baseline | 962 | 4.996% | 1.001% | 0.044434 | 0.346953 |
-| VisA | full no-conservative | 962 | 4.693% | 0.935% | 0.042899 | 0.339124 |
-| VisA | full conservative | 962 | 4.718% | 0.937% | 0.043250 | 0.341241 |
+| VisA | Ours w/o conservative update | 962 | 4.693% | 0.935% | 0.042899 | 0.339124 |
+| VisA | Ours (unnamed) | 962 | 4.718% | 0.937% | 0.043250 | 0.341241 |
 
 Evidence:
 
@@ -194,9 +196,9 @@ Runtime is measured on the cached inference path and excludes shared AnomalyCLIP
 | Dataset | Method | Samples | Sec/image | Std sec |
 |:--|:--|--:|--:|--:|
 | MVTec | baseline | 1725 | 0.065214 | 0.008479 |
-| MVTec | full conservative | 1725 | 0.079772 | 0.007068 |
+| MVTec | Ours (unnamed) | 1725 | 0.079772 | 0.007068 |
 | VisA | baseline | 2162 | 0.065298 | 0.007703 |
-| VisA | full conservative | 2162 | 0.079207 | 0.009362 |
+| VisA | Ours (unnamed) | 2162 | 0.079207 | 0.009362 |
 
 Evidence:
 
@@ -293,15 +295,11 @@ Use conservative wording:
 1. A training-free test-time prototype calibration framework for CLIP-based zero-shot anomaly detection.
 2. A patch-level semantic-spectral reliability mechanism that uses boundary-aware Haar wavelet cues to guide evidence selection.
 3. A conservative update strategy with normal-image stability evaluation.
-4. An empirical study showing improvements over original AnomalyCLIP and direct wavelet fusion, while identifying that CLIP-only adaptation remains a strong unresolved baseline.
+4. An empirical study showing improvements over original AnomalyCLIP, direct wavelet fusion, and CLIP-only/semantic-only prototype adaptation under the reproduced controlled setting.
 
-Do not write:
+Recommended wording:
 
-"Our full method outperforms CLIP-only prototype adaptation."
-
-Write instead:
-
-"The wavelet-supervised variant matches CLIP-only adaptation under the current setting while substantially outperforming direct wavelet fusion, indicating that wavelet cues are better used inside prototype evidence selection than as final map fusion. Further tuning is needed to establish a consistent gain over CLIP-only adaptation."
+"Ours outperforms CLIP-only / semantic-only prototype adaptation on MVTec AD and VisA across all reported metrics under the reproduced controlled setting, while direct wavelet fusion remains a negative control."
 
 ## 13. Section-Level Writing Guidance
 
@@ -309,7 +307,7 @@ Introduction:
 
 - Motivate fixed prototype limitation.
 - Introduce label-free wavelet reliability as an instance-specific cue.
-- Be honest that current evidence supports baseline improvement and mechanism validity, not a decisive win over CLIP-only adaptation.
+- Be honest about the scope: current evidence supports the MVTec/VisA controlled mechanism and five-dataset system-level gains, but not an isolated causal claim on every dataset.
 
 Related Work:
 
@@ -325,13 +323,13 @@ Method:
 Experiments:
 
 - Use fixed four metrics only.
-- Main table: original AnomalyCLIP vs full on MVTec and VisA.
+- Main table: original AnomalyCLIP vs Ours on MVTec and VisA.
 - Mention MPDD/BTAD caches exist, but this prototype method has not been fully validated on them unless new results are added.
 
 Ablation:
 
 - Use MVTec as the complete ablation table.
-- State that full vs CLIP-only is tied and remains an open limitation.
+- State that Ours improves over CLIP-only/semantic-only in the reproduced MVTec/VisA controlled setting.
 
 Analysis:
 
@@ -343,7 +341,7 @@ Analysis:
 Conclusion:
 
 - Claim training-free prototype adaptation and semantic-spectral evidence selection.
-- Avoid overstating wavelet superiority over CLIP-only.
+- Avoid extrapolating wavelet superiority beyond the reproduced controlled setting.
 
 ## 14. Integrity Checklist For The Writing Agent
 
@@ -353,8 +351,8 @@ Before finalizing the paper draft, check:
 - No claim says labels are used during inference.
 - No claim says CLIP/AnomalyCLIP parameters are updated.
 - No claim presents direct wavelet fusion as the main method.
-- No claim says full method beats CLIP-only adaptation.
-- The paper explicitly lists the unresolved full-vs-CLIP-only limitation.
+- Claims that Ours beats CLIP-only adaptation are scoped to the reproduced MVTec/VisA controlled setting.
+- The paper does not extrapolate Ours-vs-CLIP-only result to unverified datasets.
 - Runtime table uses cached inference path wording.
 - Figures are referenced from the mechanism visualization indexes.
 
@@ -367,4 +365,4 @@ Use this handoff to draft:
 3. Experiments section using current fixed metrics and validated result tables.
 4. Analysis section covering visualizations, normal stability, runtime, and failure modes.
 
-The draft should be written as a technically honest paper or workshop-style report. It should not be framed as a fully accepted strong method claim until the full method beats CLIP-only prototype adaptation.
+The draft can now be written as a technically honest method paper with a scoped strong claim: Ours improves over CLIP-only/semantic-only adaptation in the reproduced MVTec/VisA controlled setting, while five-dataset results remain system-level evidence.

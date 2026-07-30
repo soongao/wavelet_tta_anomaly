@@ -9,7 +9,8 @@ Kept as figures:
   3. fig_sensitivity         — hyperparameter robustness (3 subplots); wavelet-mix subplot is itself a mechanism curve
   4. fig_blindspot           — compact CLIP blind-spot recall
 
-ALL VALUES ARE EXPECTED TARGETS, NOT MEASURED. Replace with real logs after experiments.
+TARGET PLACEHOLDER VALUES ONLY. These charts are not the current reproduced result source.
+Use paper/tables/*.csv and EXPERIMENT_TARGETS.md for current values before regenerating.
 Style: clean flat vector, white bg, soft muted palette, English only, no 3D. Exports PDF + PNG.
 """
 import os
@@ -67,7 +68,7 @@ def fig_mechanism_ordering():
     ax.set_ylabel("pixel AUPRO (%)")
     ax.set_xticks(x); ax.set_xticklabels(names, fontsize=9)
     ax.set_ylim(68, 90)
-    ax.set_title("Where the normal reference comes from (MVTec, EXPECTED)", fontsize=10.5, color="#333")
+    ax.set_title("Where the normal reference comes from (MVTec, target placeholder)", fontsize=10.5, color="#333")
     ax.yaxis.grid(True, color="#eeeeee", linewidth=0.8); ax.set_axisbelow(True)
     savefig(fig, "fig_mechanism_ordering")
 
@@ -93,7 +94,7 @@ def fig_percategory_gain():
     ax.text(52, y[0]+0.6, "texture / micro-defect", fontsize=8.5, color="#2f6b57", style="italic")
     ax.text(52, y[6]+0.6, "object / structural", fontsize=8.5, color="#3d5a7d", style="italic")
     ax.legend(frameon=False, fontsize=9, loc="lower right")
-    ax.set_title("Gain concentrates on texture classes (MVTec, EXPECTED)", fontsize=10.5, color="#333")
+    ax.set_title("Gain concentrates on texture classes (MVTec, target placeholder)", fontsize=10.5, color="#333")
     ax.xaxis.grid(True, color="#eeeeee", linewidth=0.8); ax.set_axisbelow(True)
     savefig(fig, "fig_percategory_gain")
 
@@ -135,7 +136,7 @@ def fig_sensitivity():
     ax.set_title("(c) mild update is best", fontsize=10)
     ax.yaxis.grid(True, color="#eeeeee", lw=0.8); ax.set_axisbelow(True)
 
-    fig.suptitle("Hyperparameter sensitivity (MVTec pixel AUPRO, EXPECTED)  —  (b) is also a mechanism curve",
+    fig.suptitle("Hyperparameter sensitivity (MVTec pixel AUPRO, target placeholder)  —  (b) is also a mechanism curve",
                  fontsize=10.5, color="#333", y=1.03)
     savefig(fig, "fig_sensitivity")
 
@@ -154,7 +155,7 @@ def fig_blindspot():
     ax.set_ylabel("recall on CLIP blind-spot (%)")
     ax.set_xticks(x); ax.set_xticklabels(datasets)
     ax.set_ylim(0, 26)
-    ax.set_title("Recovering CLIP's misses\n(EXPECTED)", fontsize=10, color="#333")
+    ax.set_title("Recovering CLIP's misses\n(target placeholder)", fontsize=10, color="#333")
     ax.yaxis.grid(True, color="#eeeeee", lw=0.8); ax.set_axisbelow(True)
     savefig(fig, "fig_blindspot")
 

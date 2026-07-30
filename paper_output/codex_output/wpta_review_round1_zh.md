@@ -1,4 +1,4 @@
-# WPTA 中文顶会稿 v0.2 预投稿评审 Round 1
+# Ours 中文顶会稿 v0.2 预投稿评审 Round 1
 
 评审对象：`outputs/wpta_cvpr_paper_draft_zh_v0.2.md`
 
@@ -35,8 +35,8 @@ Major Revision before submission.
 |---|---|---|---|
 | M1 | Introduction | 缺少贯穿全文的 concrete running example。当前有机制描述，但没有一个具体样例帮助审稿人理解 fixed prototype mismatch 和 wavelet false activation。 | 加入“金属件边缘附近细划痕”作为运行示例，并在 Method/Qualitative plan 中回扣。 |
 | M2 | Method | `confidence gate`、`rho(.)`、image-level aggregation 仍过抽象。 | 加一节 “Implementation details to report in final version”，列出必须补齐的具体实现项，避免审稿人认为方法不可复现。 |
-| M3 | Main Result vs Ablation | 主结果 MVTec/VisA Full 数值与消融 Full 数值不一致，虽然 v0.2 说明了 setting 差异，但仍容易被误读。 | 表注和结果段落继续强调 “main setting” 与 “controlled ablation setting” 区分；claim map 不混用两者 delta。 |
-| M4 | Medical result | ISIC/ISBI 单数据集补充结果太弱，放在主实验段可能分散工业论文主线。 | v0.3 将其移动到 Appendix-style “optional observation”，不放入核心贡献。 |
+| M3 | Main Result vs Ablation | 主结果 MVTec/VisA Ours 数值与消融 Ours 数值不一致，虽然 v0.2 说明了 setting 差异，但仍容易被误读。 | 表注和结果段落继续强调 “main setting” 与 “controlled ablation setting” 区分；claim map 不混用两者 delta。 |
+| M4 | Medical result | ISIC/ISBI 单数据集补充结果太弱，放在主实验段可能分散工业论文数据口径。 | v0.3 将其移动到 Appendix-style “optional observation”，不放入核心贡献。 |
 
 ## Minor Issues
 

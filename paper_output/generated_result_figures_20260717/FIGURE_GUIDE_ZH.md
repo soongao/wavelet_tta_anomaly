@@ -16,7 +16,7 @@
 
 **文件**：`figure1_main_results.pdf/svg/png`
 
-**图中信息**：展示五个异常检测数据集上 baseline 与 full method 的主结果。左侧 panel 用配对点/线展示 Pixel AUPRO 的直接提升；右侧 panel 用热力图展示四个指标上的 full - baseline 增益。
+**图中信息**：展示五个异常检测数据集上 baseline 与 Ours 的主结果。左侧 panel 用配对点/线展示 Pixel AUPRO 的直接提升；右侧 panel 用热力图展示四个指标上的 full - baseline 增益。
 
 **能支撑什么论点**：适合放在实验主结果部分，用来说明完整方法在多个数据集、多个指标上整体优于 AnomalyCLIP baseline，尤其突出定位指标 Pixel AUPRO 的稳定提升。
 
@@ -28,7 +28,7 @@
 
 **文件**：`figure2_core_ablation.pdf/svg/png`
 
-**图中信息**：在 MVTec 和 VisA 上，对 baseline、直接小波融合、语义原型适配、无保守更新的小波原型适配、完整方法进行四个指标的消融对比。
+**图中信息**：在 MVTec 和 VisA 上，对 baseline、直接小波融合、语义原型适配、Ours w/o conservative update、完整方法进行四个指标的消融对比。
 
 **能支撑什么论点**：适合放在核心消融实验部分，用来证明提升不是来自某一个随意后处理，而是来自“原型适配 + 小波引导 + 保守更新”的组合。
 
@@ -44,7 +44,7 @@
 
 **能支撑什么论点**：适合说明不是“任何小波特征都有效”，而是 boundary-aware wavelet reliability 与 conservative update 更符合异常定位需求。
 
-**适合怎么写**：重点解释 direct fusion 为负控，HF-only 只能提供有限或不稳定收益，boundary-aware 版本才更接近最终方法。
+**适合怎么写**：重点解释 direct fusion 为负控，HF-only 只能提供有限或不稳定收益，boundary-aware 版本才更接近当前 Ours 方法。
 
 **注意事项**：热力图适合快速比较正负方向和幅度，但如果正文需要更传统的展示方式，可以改用 Figure 6 的柱状图。
 
@@ -64,7 +64,7 @@
 
 **文件**：`figure5_core_ablation_line.pdf/svg/png`
 
-**图中信息**：只沿着有明确构建顺序的路径连线：Baseline -> Semantic adaptation -> WPTA no conservative -> Full WPTA。
+**图中信息**：只沿着有明确构建顺序的路径连线：Baseline -> Semantic adaptation -> Ours no conservative -> Ours。
 
 **能支撑什么论点**：适合展示方法逐步构建时性能如何变化，让读者看到完整方法不是孤立跳点，而是沿着设计路径逐步增强。
 
@@ -88,7 +88,7 @@
 
 **文件**：`figure7_main_gain_bar.pdf/svg/png`
 
-**图中信息**：按数据集排序展示 full method 相比 baseline 在 Pixel AUPRO 和 Image AUROC 上的增益。
+**图中信息**：按数据集排序展示 Ours 相比 baseline 在 Pixel AUPRO 和 Image AUROC 上的增益。
 
 **能支撑什么论点**：适合补充说明方法的收益主要体现在哪些数据集和指标上。它能帮助读者快速看出 BTAD、MPDD、VisA 等数据集上的提升幅度差异。
 
@@ -100,7 +100,7 @@
 
 **文件**：`supp_figure_medical_isbi.pdf/svg/png`
 
-**图中信息**：展示 ISIC/ISBI 医学迁移实验中 baseline 与 full method 在 Pixel AUROC 和 Pixel AUPRO 上的对比。
+**图中信息**：展示 ISIC/ISBI 医学迁移实验中 baseline 与 Ours 在 Pixel AUROC 和 Pixel AUPRO 上的对比。
 
 **能支撑什么论点**：适合放在补充实验，说明方法在医学异常/病灶分割风格数据上也有一定迁移趋势。
 
@@ -110,7 +110,7 @@
 
 ## 推荐放置顺序
 
-正文主线建议：
+正文数据口径建议：
 
 1. `figure1_main_results`：主结果总览。
 2. `figure2_core_ablation` 或 `figure4_core_ablation_bar`：核心消融。若正文偏结果解释，用 Figure 4；若正文需要完整四指标，用 Figure 2。

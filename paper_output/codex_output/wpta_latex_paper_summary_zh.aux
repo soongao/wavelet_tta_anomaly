@@ -23,20 +23,20 @@
 \citation{cao2024adaclip}
 \citation{chen2024clipad}
 \citation{shu2022tpt}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces 小波线索适合作为原型适配证据的可靠性监督，而不是直接替代语义异常分数。该 MVTec cable 样例展示固定原型异常图、直接小波响应、boundary-aware reliability、selected evidence 与 WPTA final map 的对应关系。}}{3}{figure.caption.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces 小波线索适合作为原型适配证据的可靠性监督，而不是直接替代语义异常分数。该 MVTec cable 样例展示固定原型异常图、直接小波响应、boundary-aware reliability、selected evidence 与 Ours final map 的对应关系。}}{3}{figure.caption.1}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:motivation}{{1}{3}{小波线索适合作为原型适配证据的可靠性监督，而不是直接替代语义异常分数。该 MVTec cable 样例展示固定原型异常图、直接小波响应、boundary-aware reliability、selected evidence 与 WPTA final map 的对应关系。}{figure.caption.1}{}}
+\newlabel{fig:motivation}{{1}{3}{小波线索适合作为原型适配证据的可靠性监督，而不是直接替代语义异常分数。该 MVTec cable 样例展示固定原型异常图、直接小波响应、boundary-aware reliability、selected evidence 与 Ours final map 的对应关系。}{figure.caption.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Test-time adaptation for vision-language models}{3}{subsection.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Frequency and wavelet cues for anomaly localization}{3}{subsection.2.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces WPTA 方法总览。WPTA 使用小波线索作为每张测试图像原型适配的 evidence reliability，而不是把小波响应直接融合为最终异常分数。}}{4}{figure.caption.2}\protected@file@percent }
-\newlabel{fig:method}{{2}{4}{WPTA 方法总览。WPTA 使用小波线索作为每张测试图像原型适配的 evidence reliability，而不是把小波响应直接融合为最终异常分数。}{figure.caption.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Ours 方法总览。Ours 使用小波线索作为每张测试图像原型适配的 evidence reliability，而不是把小波响应直接融合为最终异常分数。}}{4}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:method}{{2}{4}{Ours 方法总览。Ours 使用小波线索作为每张测试图像原型适配的 evidence reliability，而不是把小波响应直接融合为最终异常分数。}{figure.caption.2}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 与最相关方向的定位比较。}}{4}{table.caption.3}\protected@file@percent }
 \newlabel{tab:closest_work}{{1}{4}{与最相关方向的定位比较。}{table.caption.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Positioning against closest work}{4}{subsection.2.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3}方法}{4}{section.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem formulation and overview}{4}{subsection.3.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces WPTA inference for one test image.}}{5}{table.caption.4}\protected@file@percent }
-\newlabel{alg:wpta}{{2}{5}{WPTA inference for one test image}{table.caption.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Ours inference for one test image.}}{5}{table.caption.4}\protected@file@percent }
+\newlabel{alg:ours}{{2}{5}{Ours inference for one test image}{table.caption.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Initial semantic anomaly score}{5}{subsection.3.2}\protected@file@percent }
 \newlabel{eq:s0}{{2}{5}{Initial semantic anomaly score}{equation.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Boundary-aware Haar wavelet reliability}{5}{subsection.3.3}\protected@file@percent }
@@ -58,17 +58,17 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Baselines, calibrated systems, and evidence boundary}{7}{subsection.4.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5}结果与分析}{7}{section.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Main results on five industrial benchmarks}{7}{subsection.5.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces 五个工业异常检测基准上的主结果。表格比较固定 AnomalyCLIP baseline 与每个数据集的最终校准推理系统；由于不同数据集启用的校准模块不同，该表用于评估系统级收益。指标越高越好。}}{8}{table.caption.5}\protected@file@percent }
-\newlabel{tab:main_results}{{3}{8}{五个工业异常检测基准上的主结果。表格比较固定 AnomalyCLIP baseline 与每个数据集的最终校准推理系统；由于不同数据集启用的校准模块不同，该表用于评估系统级收益。指标越高越好。}{table.caption.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces WPTA 核心组件消融。每个结果单元格为 P-AUROC / P-AUPRO / I-AUROC / I-AP。除 Baseline 外，各 prototype/fusion variants 使用相同 multi-crop 与 pixel-to-image 设置；因此因果解释应主要比较 variants 之间的相对变化。}}{8}{table.caption.6}\protected@file@percent }
-\newlabel{tab:core_ablation}{{4}{8}{WPTA 核心组件消融。每个结果单元格为 P-AUROC / P-AUPRO / I-AUROC / I-AP。除 Baseline 外，各 prototype/fusion variants 使用相同 multi-crop 与 pixel-to-image 设置；因此因果解释应主要比较 variants 之间的相对变化。}{table.caption.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces 五个工业异常检测基准上的主结果。表格比较固定 AnomalyCLIP baseline 与每个数据集的系统级 Ours 设置；由于不同数据集启用的校准模块不同，该表用于评估系统级收益。指标越高越好。}}{8}{table.caption.5}\protected@file@percent }
+\newlabel{tab:main_results}{{3}{8}{五个工业异常检测基准上的主结果。表格比较固定 AnomalyCLIP baseline 与每个数据集的系统级 Ours 设置；由于不同数据集启用的校准模块不同，该表用于评估系统级收益。指标越高越好。}{table.caption.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Ours 核心组件消融。每个结果单元格为 P-AUROC / P-AUPRO / I-AUROC / I-AP。除 Baseline 外，各 prototype/fusion variants 使用相同 multi-crop 与 pixel-to-image 设置；因此因果解释应主要比较 variants 之间的相对变化。}}{8}{table.caption.6}\protected@file@percent }
+\newlabel{tab:core_ablation}{{4}{8}{Ours 核心组件消融。每个结果单元格为 P-AUROC / P-AUPRO / I-AUROC / I-AP。除 Baseline 外，各 prototype/fusion variants 使用相同 multi-crop 与 pixel-to-image 设置；因此因果解释应主要比较 variants 之间的相对变化。}{table.caption.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Core component ablation}{8}{subsection.5.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Wavelet reliability design}{8}{subsection.5.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Configuration audit}{8}{subsection.5.4}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces 小波可靠性设计消融。每个结果单元格为 P-AUROC / P-AUPRO / I-AUROC / I-AP。小波线索直接作为最终图融合会损害表现，但作为 prototype adaptation 的 reliability weights 更有效。}}{9}{table.caption.7}\protected@file@percent }
 \newlabel{tab:wavelet_design}{{5}{9}{小波可靠性设计消融。每个结果单元格为 P-AUROC / P-AUPRO / I-AUROC / I-AP。小波线索直接作为最终图融合会损害表现，但作为 prototype adaptation 的 reliability weights 更有效。}{table.caption.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 五数据集最终系统配置审计。该表用于限定因果归因。}}{9}{table.caption.8}\protected@file@percent }
-\newlabel{tab:final_config}{{6}{9}{五数据集最终系统配置审计。该表用于限定因果归因。}{table.caption.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 五数据集系统级 Ours 设置配置审计。该表用于限定因果归因。}}{9}{table.caption.8}\protected@file@percent }
+\newlabel{tab:final_config}{{6}{9}{五数据集系统级 Ours 设置配置审计。该表用于限定因果归因。}{table.caption.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}讨论}{9}{section.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Why wavelet reliability, not wavelet scoring}{9}{subsection.6.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Why conservative calibration}{9}{subsection.6.2}\protected@file@percent }
@@ -79,8 +79,8 @@
 \bibcite{bergmann2021mvtec}{2}
 \@writefile{toc}{\contentsline {section}{\numberline {7}结论}{10}{section.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {A}附加系统栈消融}{10}{appendix.A}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces MVTec/VisA 系统校准栈消融。每个结果单元格为 P-AUROC / P-AUPRO / I-AUROC / I-AP。该表解释最终校准推理系统的组成，但不作为 prototype adaptation 的主要因果证据。}}{10}{table.caption.9}\protected@file@percent }
-\newlabel{tab:calibration_stack_ablation}{{7}{10}{MVTec/VisA 系统校准栈消融。每个结果单元格为 P-AUROC / P-AUPRO / I-AUROC / I-AP。该表解释最终校准推理系统的组成，但不作为 prototype adaptation 的主要因果证据。}{table.caption.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces MVTec/VisA 系统校准栈消融。每个结果单元格为 P-AUROC / P-AUPRO / I-AUROC / I-AP。该表解释系统级 Ours 设置的组成，但不作为 prototype adaptation 的主要因果证据。}}{10}{table.caption.9}\protected@file@percent }
+\newlabel{tab:calibration_stack_ablation}{{7}{10}{MVTec/VisA 系统校准栈消融。每个结果单元格为 P-AUROC / P-AUPRO / I-AUROC / I-AP。该表解释系统级 Ours 设置的组成，但不作为 prototype adaptation 的主要因果证据。}{table.caption.9}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {B}附加医学观察}{10}{appendix.B}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces ISIC/ISBI 上的初步医学 pixel-level 结果。该结果只作为附录观察，不作为主文跨域泛化结论。}}{10}{table.caption.10}\protected@file@percent }
 \newlabel{tab:medical_preliminary}{{8}{10}{ISIC/ISBI 上的初步医学 pixel-level 结果。该结果只作为附录观察，不作为主文跨域泛化结论。}{table.caption.10}{}}
