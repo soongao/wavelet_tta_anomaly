@@ -1,14 +1,68 @@
 \section{Ablation Study}
 \label{sec:ablation}
 
-\subsection{Effect of Wavelet Calibration}
-% TODO: Isolate wavelet calibration contribution.
+\subsection{Direct Local Cues Are a Negative Control}
 
-\subsection{Effect of Test-Time Adaptation}
-% TODO: Isolate TTA contribution.
+The first ablation asks whether the local reliability map can be used as an
+anomaly map directly. It cannot. Direct wavelet fusion is worse than the final
+method on MVTec and VisA, and is also worse than semantic-only prototype
+adaptation. This supports the method boundary in Sec.~\ref{sec:method}: local
+high-frequency or boundary-aware responses are candidate cues, not final
+evidence.
 
-\subsection{Effect of Multi-Crop Fusion}
-% TODO: Report multi-crop weight and crop strategy sensitivity.
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures_ablation/figures/controlled_core_ablation_progression_lines.pdf}
+  \caption{Controlled core ablation. The plot visualizes the mechanism order:
+  direct fusion is the negative control, semantic-only prototype adaptation is
+  the strong baseline, and \method{} is the final controlled row.}
+  \label{fig:controlled-core-progression}
+\end{figure}
 
-\subsection{Hyperparameter Sensitivity}
-% TODO: Analyze key parameters without test-set overfitting claims.
+\subsection{Reliability Design}
+
+Table~\ref{tab:wavelet-design-ablation} isolates how the local reliability
+signal is used. Semantic-only prototype adaptation uses $s_i^0$ without
+$W_i$. HF-only reliability uses high-frequency magnitude without the
+low-frequency boundary suppression. Boundary-aware reliability uses
+Eq.~\eqref{eq:reliability}. The final method further adds conservative
+prototype calibration.
+
+\input{tables_ablation/wavelet_design_ablation}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures_ablation/figures/wavelet_design_ablation_progression_lines.pdf}
+  \caption{Reliability-design ablation. The figure is used to check the
+  evidence-selection mechanism, not to claim that a wavelet map is itself an
+  anomaly detector.}
+  \label{fig:wavelet-design-progression}
+\end{figure}
+
+\subsection{Conservative Calibration}
+
+Prototype calibration can be harmful if unreliable abnormal patches are written
+into the abnormal prototype. The current stable configuration therefore uses a
+small normal-side update and disables effective abnormal-side updates
+($\alpha_0=0$). Normal-image stability provides an additional sanity check:
+the final method does not increase normal-image false-positive area over the
+baseline.
+
+\begin{table}[t]
+  \centering
+  \caption{Normal-image stability. FP area is the area above the corresponding
+  threshold on normal images; lower is better.}
+  \label{tab:normal-stability}
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{llccc}
+    \toprule
+    Dataset & Method & Normal images & FP area @ p95 & FP area @ p99 \\
+    \midrule
+    MVTec & Baseline & 467 & 5.002\% & 1.001\% \\
+    MVTec & \method{} & 467 & 4.895\% & 0.960\% \\
+    VisA & Baseline & 962 & 4.996\% & 1.001\% \\
+    VisA & \method{} & 962 & 4.718\% & 0.937\% \\
+    \bottomrule
+  \end{tabular}%
+  }
+\end{table}

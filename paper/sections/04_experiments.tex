@@ -2,16 +2,43 @@
 \label{sec:experiments}
 
 \subsection{Datasets}
-% TODO: Describe MVTec AD and any other datasets used.
+The controlled evidence in this draft uses MVTec AD~\cite{bergmann2019mvtec}
+and VisA~\cite{zou2022visa}. MVTec AD contains industrial object and texture
+categories with pixel-level anomaly masks. VisA is a larger industrial anomaly
+detection benchmark with diverse object categories and defect types. We keep
+the mechanism claims limited to these controlled MVTec/VisA experiments.
 
 \subsection{Evaluation Metrics}
-% TODO: Define image AUROC, image AP, pixel AUROC, and pixel AUPRO.
+We report four metrics, always in the order Pixel AUROC, Pixel AUPRO, Image
+AUROC, and Image AP.
+Pixel AUROC evaluates pixel-wise ranking over anomaly maps. Pixel AUPRO
+measures region-level localization quality and is especially relevant when
+small defects should be localized without excessive false-positive area.
+Image AUROC and Image AP evaluate image-level anomaly detection.
 
 \subsection{Implementation Details}
-% TODO: List checkpoint, CLIP backbone, image size, layers, and inference settings.
+The baseline representation follows the AnomalyCLIP setting. The CLIP visual
+and text encoders are frozen during our added step. The prototype calibration
+module uses the current stable configuration described in
+Sec.~\ref{sec:method}: boundary-aware reliability, top-ratio $0.20$, reliability
+mixing strength $0.05$, $\alpha_0=0$, and $\beta_0=0.01$. We do not perform
+test-time optimization or target-category training.
 
 \subsection{Main Results}
-% TODO: Compare with AnomalyCLIP and other zero-shot anomaly detection methods.
+Table~\ref{tab:controlled-core-ablation} is the paper-facing controlled result.
+It compares the fixed-prototype baseline, direct wavelet-map fusion,
+semantic-only prototype adaptation, boundary-aware evidence selection without
+the conservative update, and the final unnamed method. The important ordering
+is not a ranking claim: direct fusion is the negative control,
+semantic-only adaptation is the strong baseline, and \method{} is the best
+controlled row across all four metrics on both datasets.
+
+\input{tables_ablation/controlled_core_ablation}
 
 \subsection{Qualitative Results}
-% TODO: Add visual anomaly maps and failure/success cases.
+The current draft includes quantitative mechanism tests and generated ablation
+figures. Qualitative examples should be added only after selecting cases that
+show the same mechanism: direct local responses highlight both defects and
+normal texture, while image-conditioned calibration suppresses normal-context
+confusions. We do not use qualitative examples as evidence for claims beyond
+the controlled ablation tables.

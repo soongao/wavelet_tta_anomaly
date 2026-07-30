@@ -1,14 +1,33 @@
 \section{Analysis}
 \label{sec:analysis}
 
-\subsection{Texture and Structure Behavior}
-% TODO: Analyze how the method behaves on texture-like and object-like categories.
+\subsection{What the Controlled Results Support}
 
-\subsection{Localization Quality}
-% TODO: Discuss pixel-level improvements, especially AUPRO.
+The controlled tables support a narrow mechanism claim. Directly using
+wavelet-derived local response as an anomaly map is not sufficient, so the
+method should not be described as local-cue fusion. Semantic-only prototype
+adaptation is already strong, which means that much of the gain comes from
+image-conditioned prototype estimation itself. The remaining improvement from
+boundary-aware reliability is smaller but consistent across all four reported
+metrics on both datasets. This is the level of claim supported by the current
+evidence.
 
-\subsection{Runtime and Cache Efficiency}
-% TODO: Discuss cached feature reuse and CPU/GPU inference costs.
+\subsection{Why Pixel AUPRO Is Informative}
 
-\subsection{Failure Cases}
-% TODO: Identify categories or defect types where the method still struggles.
+The largest controlled margin is usually in Pixel AUPRO. This is consistent
+with the proposed mechanism: a better image-conditioned reference should reduce
+region-level false positives and improve localization quality, even when the
+absolute Pixel AUROC change is modest. The normal-image stability table gives a
+second check in the same direction: conservative calibration does not increase
+the area marked abnormal on normal images.
+
+\subsection{What the Results Do Not Support}
+
+The current data do not support the stronger claim that frequency alone solves
+zero-shot anomaly localization. They also do not support presenting external
+baseline tables as strict same-protocol rankings unless the split, backbone,
+input resolution, post-processing, training data, and metric implementation are
+verified for each row. External baselines can define the research context, but
+the mechanism claim in this draft is grounded in the controlled comparisons:
+direct fusion, semantic-only adaptation, reliability design, conservative
+calibration, and normal-image stability.

@@ -1,4 +1,13 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-% TODO: Summarize the method, main findings, and future direction.
+This draft reframes CLIP-based zero-shot anomaly localization as
+image-conditioned normal reference estimation. Local CLIP responses and
+frequency-derived local signals are treated as candidate cues whose evidence
+value depends on the current test image. \method{} uses these cues to select
+reliable patch evidence, constructs image-conditioned prototypes, and
+recomputes patch anomaly scores in the frozen CLIP semantic space. The current
+controlled results support the intended mechanism: direct local-cue fusion is a
+negative control, semantic-only prototype adaptation is a strong baseline, and
+boundary-aware reliability with conservative calibration gives the best
+controlled row on MVTec AD and VisA.

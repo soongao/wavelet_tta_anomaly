@@ -1,0 +1,3 @@
+\begin{abstract}
+本文提出一个针对 CLIP-based 零样本异常定位的机制命题：局部视觉--文本响应只有相对于当前图像的正常外观参照解释时，才成为可靠异常证据。同样的纹理突变或高频响应，在一张图像中对应缺陷，在另一张图像中对应正常材料颗粒、结构边界或成像噪声。基于这一观察，本文将 CLIP 零样本异常定位表述为图像条件化正常参照估计问题。具体而言，在已有 CLIP/AnomalyCLIP 表征基础上，新增模块以冻结表征为输入，在测试时从单张图像内部选择可靠 patch evidence，估计当前图像的 normal reference，并据此保守校准 normal/abnormal prototypes。这样，异常分数由“局部响应有多强”转为“该局部表征相对于当前图像参照如何被评分”。这一表述与已有文献和实验材料一致：WinCLIP 证明文本原型和窗口局部特征有效，AnomalyCLIP/VCP-CLIP/AA-CLIP 等进一步通过训练式 prompts、visual context 或 adapters 改善语义对齐；本文研究已给定原型之后，单张测试图中的哪些局部响应可以成为校准证据。受控消融显示，直接使用局部高频线索作为异常图构成负控，语义响应驱动的 prototype adaptation 构成强对照，边界感知局部可靠性与保守 prototype calibration 构成当前稳定路径。
+\end{abstract}

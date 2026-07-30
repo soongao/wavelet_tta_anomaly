@@ -1,6 +1,8 @@
 # Paper Draft
 
-This folder contains the LaTeX skeleton for the paper.
+This folder contains the current English paper draft. The paper-facing story is
+the controlled MVTec/VisA mechanism result: local responses are candidate cues,
+and reliable patch evidence is used to estimate image-conditioned prototypes.
 
 ## Structure
 
@@ -15,6 +17,16 @@ This folder contains the LaTeX skeleton for the paper.
 - `sections/07_conclusion.tex`: conclusion.
 - `sections/08_limitations.tex`: limitations.
 - `results/`: experiment result records and paper-facing result summaries.
-- `references.bib`: bibliography placeholder.
+- `references.bib`: verified bibliography entries used by the current draft.
 
-Replace the lightweight local preamble with the official CVPR template before submission.
+Replace the lightweight local preamble with the official venue template before
+submission.
+
+## Data Scope
+
+- Current paper-facing tables use `tables_ablation/` and the reproduced
+  controlled Ours results.
+- `tables/component_ablation.tex` and `tables/internal_ablation.tex` are
+  historical system-level experiment logs and should not be mixed with the
+  controlled mechanism claim.
+- The temporary method name is `Ours (unnamed)` until a final name is chosen.

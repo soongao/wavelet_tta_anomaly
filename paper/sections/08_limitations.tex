@@ -1,4 +1,17 @@
 \section{Limitations}
 \label{sec:limitations}
 
-% TODO: Discuss limitations such as inference cost, cache dependence, and sensitivity.
+The method assumes that a test image contains enough reliable normal evidence
+to estimate an image-conditioned normal reference. If the whole image is
+shifted, if the anomaly covers most of the object, or if normal regions are
+visually ambiguous, the estimated reference can be contaminated. The current
+conservative update reduces this risk but does not remove it.
+
+The boundary-aware reliability signal mainly addresses the confusion between
+high-frequency local variation and low-frequency structure boundaries. It may
+be less informative for logical anomalies, global geometric anomalies, or
+defects whose evidence is primarily semantic rather than local. Finally, the
+mechanism conclusions should be kept within the controlled MVTec/VisA
+experiments reported here. Broader dataset claims require the same controlled
+ablation protocol rather than relying on system-level or externally reported
+baseline tables.

@@ -1,0 +1,31 @@
+\section{问题表述：局部证据的图像条件化}
+
+设测试图像为 $x$，冻结 CLIP 或 AnomalyCLIP 在局部位置 $i$ 的 patch 表征为 $f_i\in\mathbb{R}^{C}$。给定 normal/abnormal text prototypes $t_n,t_a$，已有 CLIP-ZSAD 方法通常通过视觉--文本相似度得到异常概率或异常图~\cite{jeong2023winclip,zhou2024anomalyclip}。WinCLIP 从 normal/anomalous 文本状态和窗口特征出发构造局部图；AnomalyCLIP 则学习 object-agnostic normality/abnormality prompts，并在推理时合并多层 normal/anomaly 相似度图。本文沿用这一类局部相似度评分作为起点，把初始局部异常概率写为
+\begin{equation}
+  s_i^{0}
+  =
+  \frac{\exp(\langle \bar f_i,\bar t_a\rangle/\tau)}
+       {\exp(\langle \bar f_i,\bar t_n\rangle/\tau)+
+        \exp(\langle \bar f_i,\bar t_a\rangle/\tau)},
+  \label{eq:initial-score}
+\end{equation}
+其中 $\bar{\cdot}$ 表示归一化后的特征，$\tau$ 为温度参数。$s_i^{0}$ 提供有效的语义起点；异常标签还需要图像上下文给出判定参照：
+\begin{equation}
+  p(y_i=1\mid s_i^{0}) \neq p(y_i=1\mid s_i^{0}, x),
+  \label{eq:context-dependence}
+\end{equation}
+其中 $y_i=1$ 表示位置 $i$ 属于异常区域。式~\eqref{eq:context-dependence} 表明，一个 patch 的初始异常响应需要结合该测试图像中的正常纹理、结构边界和局部变化范围共同解释。
+
+我们因此把目标从“寻找更强的局部响应”改写为“估计当前图像的评分参照”。令
+\begin{equation}
+  r_x=\mathcal{R}\big(\{f_i,s_i^{0},q_i\}_{i=1}^{N}\big)
+  \label{eq:image-reference}
+\end{equation}
+表示由测试图像内部局部证据估计出的图像条件化参照，其中 $q_i$ 表示与纯语义响应不同的局部可靠性信号。最终评分写成
+\begin{equation}
+  s_i = \Psi(f_i, s_i^{0}; r_x),
+  \label{eq:reference-score}
+\end{equation}
+即局部区域由其初始响应 $s_i^0$ 与当前图像参照 $r_x$ 共同决定。
+
+这个表述导出三个设计要求。第一，$r_x$ 由测试图像自身估计，对应无目标类别正常参考库的设定；这与 WinCLIP+ 使用外部 normal reference images 的设定形成互补。第二，$r_x$ 需要包含 $s_i^0$ 之外的局部可靠性信号，以减轻 CLIP 初始语义响应盲区对校准证据的影响。第三，$r_x$ 将局部响应强度放入证据选择阶段，而在最终评分阶段回到 prototype 空间，从而区分缺陷、正常纹理和结构边界。后续方法节围绕这三个要求展开：如何构造局部可靠性信号，如何用它选择正常/异常证据，以及如何保守地校准 prototypes。

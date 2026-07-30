@@ -353,7 +353,7 @@ def apply_wavelet_prototype_adaptation(
     clip_percentile_high: float = 99.0,
     eps: float = 1e-6,
 ) -> Tuple[torch.Tensor, torch.Tensor, Dict[str, torch.Tensor]]:
-    """Apply training-free wavelet-supervised text prototype adaptation.
+    """Apply image-conditioned prototype adaptation with local reliability.
 
     The returned map is recomputed from calibrated normal/abnormal prototypes.
     No gradients or model parameter updates are used.

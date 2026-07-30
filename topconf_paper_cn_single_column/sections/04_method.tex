@@ -1,0 +1,102 @@
+\section{方法：由可靠局部证据估计图像条件化参照}
+\label{sec:method}
+
+本节给出 \method{} 的论文层面定义。方法以冻结 CLIP 或 AnomalyCLIP 表征为输入，在测试时使用单张图像内部证据完成校准；该过程的输入由冻结表征、初始语义响应和图像内部局部证据组成。核心思想是：先从冻结 CLIP 表征中得到初始语义响应和局部可靠性，再用二者选择可信 patch evidence，最后通过这些 evidence 校准 normal/abnormal prototypes 并重新评分。
+
+\subsection{初始语义响应}
+
+给定测试图像 $x$，冻结 CLIP 产生局部 patch 表征 $\{f_i\}_{i=1}^{N}$。normal/abnormal text prototypes 记为 $t_n,t_a$。初始异常概率 $s_i^0$ 按式~\eqref{eq:initial-score} 计算。它是后续证据选择的语义先验：$s_i^0$ 越大，位置 $i$ 越倾向于异常；$1-s_i^0$ 越大，位置 $i$ 越倾向于正常。
+
+$s_i^0$ 来自 CLIP 的语义相似度。用它选择正常证据时，CLIP 语义响应较弱的细微缺陷可能进入正常集合；用它作为最终异常图时，局部材质差异也可能被语义原型误解释。因此后续步骤引入与语义响应不同的局部可靠性约束。
+
+\subsection{边界感知的局部可靠性}
+
+为了获得与纯语义响应不同的局部证据，我们在 CLIP patch feature grid 上计算一层 Haar-style 小波分解。小波多分辨率分析是经典信号表示工具~\cite{daubechies1988orthonormal,mallat1989theory}；本文使用它在冻结 patch feature grid 上定义逐图局部可靠性。设 $F\in\mathbb{R}^{H\times W\times C}$ 为 patch 特征网格。对每个 $2\times2$ 邻域 $(F_{00},F_{01},F_{10},F_{11})$，定义
+\begin{align}
+  LL &= \frac{1}{2}(F_{00}+F_{01}+F_{10}+F_{11}),\\
+  LH &= \frac{1}{2}(F_{00}-F_{01}+F_{10}-F_{11}),\\
+  HL &= \frac{1}{2}(F_{00}+F_{01}-F_{10}-F_{11}),\\
+  HH &= \frac{1}{2}(F_{00}-F_{01}-F_{10}+F_{11}).
+\end{align}
+高频能量定义为
+\begin{equation}
+  HF_i = \operatorname{mean}_{c}\left(|LH_{i,c}|+|HL_{i,c}|+|HH_{i,c}|\right).
+\end{equation}
+同时，$LL$ 分量刻画较低频的结构变化。我们用其空间梯度构造结构边缘强度
+\begin{equation}
+  E_i = \left\|\nabla LL_i\right\|_2.
+\end{equation}
+将 $HF$ 与 $E$ 上采样回 patch grid，并在每张图内做 percentile clipping 和 $[0,1]$ 归一化，得到 $\widehat{HF}_i$ 和 $\widehat{E}_i$。最终的 boundary-aware 局部可靠性写为
+\begin{equation}
+  W_i = \operatorname{Norm}\left(\widehat{HF}_i \cdot (1-\widehat{E}_i)\right).
+  \label{eq:wavelet-reliability}
+\end{equation}
+这里 $W_i$ 作为证据选择权重使用。高频且可由结构边界解释的位置会被降权；高频且较少受低频结构解释的位置更适合作为异常侧候选证据。
+
+\subsection{语义-局部联合证据权重}
+
+我们分别构造异常证据权重和正常证据权重：
+\begin{align}
+  \omega_i^{a}
+  &=
+  (s_i^0)^\gamma
+  \left((1-\lambda)+\lambda W_i\right)^\eta,\\
+  \omega_i^{n}
+  &=
+  (1-s_i^0)^\gamma
+  \left((1-\lambda)+\lambda(1-W_i)\right)^\eta.
+  \label{eq:evidence-weights}
+\end{align}
+其中 $\gamma$ 控制语义响应的影响，$\eta$ 控制局部可靠性的影响，$\lambda$ 是局部可靠性的混合强度。这个设计对应第~3 节的原则：异常证据需要同时得到语义异常倾向和局部可靠性支持；正常证据需要同时具有语义正常倾向和较低的异常式局部可靠性。
+
+对每张图，我们从 $\omega^a$ 和 $\omega^n$ 中分别选取 top-ratio patches，并归一化权重后形成 visual prototypes：
+\begin{align}
+  v_a &= \operatorname{Norm}\left(\sum_{i\in\mathcal{A}_x}
+      \frac{\omega_i^a}{\sum_{j\in\mathcal{A}_x}\omega_j^a} f_i\right),\\
+  v_n &= \operatorname{Norm}\left(\sum_{i\in\mathcal{N}_x}
+      \frac{\omega_i^n}{\sum_{j\in\mathcal{N}_x}\omega_j^n} f_i\right).
+  \label{eq:visual-prototypes}
+\end{align}
+$\mathcal{A}_x$ 和 $\mathcal{N}_x$ 分别表示测试图像 $x$ 内的异常侧和正常侧证据集合。它们是由语义响应和局部可靠性共同选择出的校准证据集合。
+
+\subsection{保守 prototype 校准}
+
+得到 $v_a$ 和 $v_n$ 后，我们校准 text prototypes。令 $c_n(x)$ 和 $c_a(x)$ 分别表示正常侧与异常侧 top-ratio evidence 的平均置信度。保守更新首先用异常侧最低置信度构造图像级门控
+\begin{equation}
+  g_x=\mathbb{I}[c_a(x)\ge \delta_a],
+\end{equation}
+并设置
+\begin{equation}
+  \beta_x=\beta_0 c_n(x)g_x,\qquad
+  \alpha_x=\alpha_0 c_a(x)g_x .
+\end{equation}
+随后校准 text prototypes：
+\begin{align}
+  t_n^{x} &= \operatorname{Norm}\left((1-\beta_x)t_n+\beta_x v_n\right),\\
+  \hat t_a^{x} &= \operatorname{Norm}\left((1-\alpha_x)t_a+\alpha_x v_a\right),\\
+  t_a^{x} &=
+  \begin{cases}
+    \hat t_a^{x}, & c_a(x)\ge \max(\tau_a,\delta_a),\\
+    t_a, & c_a(x)<\max(\tau_a,\delta_a),
+  \end{cases}
+\end{align}
+其中 $\delta_a$ 是最低证据门控，$\tau_a$ 是异常侧写入阈值。这个设计把测试时校准写成受控的参照估计：正常侧更新幅度由正常证据置信度和 $\beta_0$ 同时限制，并且在异常侧证据达到最低门控时启用；异常侧同时受到最低门控和更高写入阈值控制。当前稳定设置采用更保守的形式：异常侧更新强度设为零，主要依赖受门控的小步正常侧参照来收紧评分基准。该选择对应一个明确机制假设：在零样本条件下，正常证据通常比异常证据更容易从单张图中可靠估计，因此 prototype calibration 优先控制异常侧漂移。
+
+最终异常评分用校准后的 prototypes 重新计算：
+\begin{equation}
+  s_i^{x}
+  =
+  \frac{\exp(\langle \bar f_i,\bar t_a^{x}\rangle/\tau)}
+       {\exp(\langle \bar f_i,\bar t_n^{x}\rangle/\tau)+
+        \exp(\langle \bar f_i,\bar t_a^{x}\rangle/\tau)}.
+  \label{eq:final-score}
+\end{equation}
+若使用多个 CLIP patch layers，则在每层上用同一组图像条件化 prototypes 计算局部图，再做层间融合。整个过程没有梯度反传、优化器步骤或目标域参数学习。
+
+\subsection{当前实验实现}
+
+当前受控实验采用与实现一致的保守设置。证据权重中 $\gamma=1$、$\eta=1$，top-ratio 为 $0.20$，局部可靠性混合强度 $\lambda=0.05$；可靠性图在每张图内使用 $1/99$ percentile clipping 后归一化。prototype calibration 使用 $\alpha_0=0$、$\beta_0=0.01$、异常侧写入阈值 $\tau_a=0.15$，最低异常证据门控 $\delta_a=0.06$。在该稳定设置下，异常侧实际保持原 prototype；正常侧由正常证据置信度缩放，并受最低异常证据门控约束。这个选择与零样本异常检测的不对称性一致：从单张图中估计“正常外观参照”通常比估计“异常外观 prototype”更可靠。
+
+\subsection{方法边界}
+
+\method{} 与直接局部线索融合形成机制对照。直接融合把 $W_i$ 与 $s_i^0$ 线性合成为异常图，用于检验局部线索直接成图的效果。\method{} 将 $W_i$ 用于证据选择和 prototype calibration，最终在 CLIP 语义空间内完成重评分。这个边界明确了论文贡献：本文建立一套由可靠局部证据估计图像条件化参照的评分机制。

@@ -1,0 +1,14 @@
+\section{相关工作}
+
+本文与三类工作相关：CLIP-based zero-shot anomaly detection、频率/局部结构异常线索、以及测试时适配与参照估计。这三条线索共同界定本文的研究位置：在已有 visual-language prototypes 和局部响应基础上，研究单张测试图内部的 evidence 如何形成图像条件化 normal reference。
+
+\paragraph{CLIP-based zero-shot anomaly detection.}
+WinCLIP~\cite{jeong2023winclip} 用 compositional prompt ensemble 描述 normal/anomalous states，并通过多尺度窗口特征得到语言对齐的局部异常图；其 WinCLIP+ 版本进一步用少量 normal reference images 构造视觉关联分数。PromptAD~\cite{li2024promptad}、AnomalyCLIP~\cite{zhou2024anomalyclip} 和 AdaCLIP~\cite{cao2024adaclip} 分别从文本提示、object-agnostic prompt learning、static/dynamic hybrid learnable prompts 改善异常语义表示，其中 AnomalyCLIP 等路线使用辅助异常数据学习 normality/abnormality prompts。VCP-CLIP~\cite{qu2024vcpclip} 通过训练式 Pre-/Post-VCP 将 global 与 patch-level visual contexts 注入 text embeddings，AA-CLIP~\cite{ma2025aaclip} 则通过 anomaly-aware text anchors、residual adapters 和 patch alignment 增强 normal/abnormal 可分性。也有工作从 representative vector selection 与 staged dual-path 的角度提高直接相似度图的稳定性~\cite{chen2024clipad}。这些工作主要回答“如何得到更适合异常检测的视觉--文本表示或提示”。本文回答互补问题：当 normal/abnormal prototypes 已经给定后，单张测试图中的哪些局部响应可以作为校准证据，哪些局部响应承担候选线索的角色。
+
+\paragraph{频率与局部结构线索。}
+频率信息、纹理变化和局部结构细节对异常定位有价值，这一点已有工作已经充分利用。FE-CLIP~\cite{gong2025feclip} 用频率增强的 CLIP adapters 将 DCT 相关信息注入视觉特征；WMoE-CLIP~\cite{chen2026wmoeclip} 用 Haar wavelet decomposition 得到高/低频特征，并通过 mixture-of-experts prompt learning 进行跨模态增强；HarmoniAD~\cite{zhang2026harmoniad} 将 CLIP features 投入频域，分离高频结构路径和低频语义路径进行联合建模。这些方法建立了频率线索在 CLIP-ZSAD 中的相关性。本文采用 Haar-style $2\times2$ feature-grid 分解来定义局部可靠性，并把频率信号放在 evidence selection 阶段：boundary-aware 局部可靠性选择 patch evidence，最终异常图由校准后的 CLIP prototype 相似度给出。直接小波融合在本文中构成负控，用于检验局部线索直接成图对缺陷、正常纹理和结构边界的区分能力。
+
+\paragraph{测试时适配与参照估计。}
+测试时适配和图像条件化提示在视觉语言模型中已有研究，例如 test-time prompt tuning~\cite{shu2022tpt} 和 conditional prompt learning~\cite{zhou2022cocoop}。在异常检测中，WinCLIP+~\cite{jeong2023winclip} 通过少量 normal reference images 改善需要视觉参照的异常；VCP-CLIP~\cite{qu2024vcpclip} 用图像视觉上下文更新文本嵌入，并通过跨数据集训练获得该上下文模块。本文估计的是单张测试图内部的图像条件化 normal reference；prompt 和 adapter 参数在测试时保持固定，evidence selection 由语义响应和局部可靠性共同决定。
+
+因此，本文与上述表示学习或 prompt learning 路线形成分工：已有路线学习更适合异常检测的 prototypes 或上下文模块，本文在已有 CLIP/AnomalyCLIP prototypes 的基础上，研究局部候选线索如何通过当前图像参照转化为可靠异常证据。这个定位与实验组织一致：外部方法界定背景，机制结论由 direct fusion、semantic-only calibration、boundary-aware reliability 和 conservative calibration 的受控比较支持。

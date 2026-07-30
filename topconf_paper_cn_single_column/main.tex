@@ -1,0 +1,52 @@
+\documentclass[UTF8,fontset=none,11pt,a4paper]{ctexart}
+
+\usepackage[a4paper,margin=2.35cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\setCJKmainfont{Songti SC}
+\setCJKsansfont{PingFang SC}
+\setCJKmonofont{PingFang SC}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!55!black
+}
+
+\setlist[itemize]{leftmargin=1.6em,itemsep=0.25em,topsep=0.25em}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=0.25em,topsep=0.25em}
+\linespread{1.08}
+
+\newcommand{\method}{Ours (unnamed)}
+\newcommand{\clip}{CLIP}
+\newcommand{\zsad}{zero-shot anomaly detection}
+\newcommand{\normalref}{image-conditioned normal reference}
+\newcommand{\mvtecvisa}{MVTec AD / VisA}
+
+\title{\vspace{-1.5em}基于图像条件化正常参照的 CLIP 零样本异常定位}
+\author{Anonymous Authors}
+\date{}
+
+\begin{document}
+\maketitle
+
+\input{sections/00_abstract}
+\input{sections/01_introduction}
+\input{sections/02_problem}
+\input{sections/03_principle}
+\input{sections/04_method}
+\input{sections/05_mechanism_tests}
+\input{sections/06_related_work}
+\input{sections/07_limitations}
+\input{sections/08_conclusion}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

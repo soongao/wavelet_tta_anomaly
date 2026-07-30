@@ -1,7 +1,61 @@
 \section{Introduction}
 \label{sec:introduction}
 
-% TODO: Introduce zero-shot anomaly detection and the AnomalyCLIP baseline.
-% TODO: Explain why patch-level structure and texture cues matter.
-% TODO: Motivate wavelet-guided calibration and test-time adaptation.
-% TODO: Summarize contributions.
+Zero-shot anomaly detection aims to identify abnormal images or regions without
+training examples from the target category. Vision-language models make this
+setting practical by comparing visual features with language descriptions of
+normal and abnormal states. WinCLIP~\cite{jeong2023winclip} introduced
+compositional normal/anomalous prompts and local window scoring for
+zero-/few-shot anomaly classification and segmentation. AnomalyCLIP~
+\cite{zhou2024anomalyclip} further learns object-agnostic normality and
+abnormality prompts from auxiliary anomaly data, and later methods improve the
+same family of models with hybrid prompts~\cite{cao2024adaclip}, visual
+context prompting~\cite{qu2024vcpclip}, and anomaly-aware adapters~
+\cite{ma2025aaclip}. These works show that CLIP can provide strong
+normal/abnormal semantic prototypes.
+
+However, anomaly localization is not only a semantic matching problem. A patch
+with a strong abnormal response is still a context-dependent observation. Local
+texture changes, high-frequency responses, and boundary discontinuities often
+appear near defects, but they also occur in normal materials, object contours,
+and imaging noise. The same response may indicate a scratch on a smooth metal
+surface, while being normal on a woven texture. Treating local response strength
+as final evidence therefore mixes true defects with valid local variation.
+
+This distinction is important because frequency and local-structure cues are
+already used in CLIP-based anomaly detection. FE-CLIP injects frequency
+information through trained adapters~\cite{gong2025feclip}; WMoE-CLIP uses
+Haar wavelet features in prompt learning~\cite{chen2026wmoeclip}; HarmoniAD
+models local structure and global semantics through frequency-domain branches~
+\cite{zhang2026harmoniad}. Our claim is not that frequency is a new useful
+signal. Instead, we ask where such local signals should enter the scoring
+mechanism. The controlled results in this project indicate that direct
+wavelet-map fusion is weak, while using boundary-aware local reliability to
+select patch evidence and calibrate prototypes is more stable.
+
+We therefore formulate CLIP-based zero-shot anomaly localization as
+image-conditioned normal reference estimation. The method keeps the
+CLIP/AnomalyCLIP representations fixed, uses the test image itself to select
+reliable normal and abnormal patch evidence, and recomputes local anomaly
+scores with image-conditioned prototypes. This reframes the score from "how
+strong is the local response" to "how abnormal is this patch relative to the
+normal reference estimated from the current image."
+
+Our contributions are:
+\begin{itemize}
+  \item We identify context-dependent local evidence as a central difficulty in
+  CLIP-based zero-shot anomaly localization: local responses are candidate
+  cues, not anomaly evidence by themselves.
+  \item We introduce an image-conditioned prototype calibration framework that
+  estimates a per-image normal reference from reliable patch evidence without
+  target-category samples, labels, or test-time parameter updates.
+  \item We organize the current experiments as mechanism tests. Direct
+  wavelet-map fusion serves as a negative control, semantic-only prototype
+  adaptation is a strong baseline, and boundary-aware reliability plus
+  conservative calibration gives the best controlled row on MVTec AD and VisA.
+\end{itemize}
+
+We deliberately avoid presenting the method as a ranking story. The
+AnomalyCLIP backbone and prompts are learned from auxiliary anomaly data; the
+claim here is narrower. The added module is a test-time evidence-selection and
+prototype-calibration step on top of frozen representations.

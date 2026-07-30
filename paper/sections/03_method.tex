@@ -1,23 +1,124 @@
 \section{Method}
 \label{sec:method}
 
-\subsection{Overview}
-% TODO: Define the full inference pipeline and notation.
+\subsection{Problem Setup}
 
-\subsection{AnomalyCLIP Baseline}
-% TODO: Describe image-level and patch-level anomaly scoring inherited from AnomalyCLIP.
+Let $x$ be a test image and let a frozen CLIP/AnomalyCLIP encoder produce
+patch features $\{f_i\}_{i=1}^{N}$, where $f_i\in\mathbb{R}^{C}$. The normal
+and abnormal text prototypes are denoted by $t_n$ and $t_a$. All features are
+normalized before similarity computation. The initial local anomaly probability
+is
+\begin{equation}
+  s_i^0 =
+  \frac{\exp(\langle \bar f_i,\bar t_a\rangle/\tau)}
+       {\exp(\langle \bar f_i,\bar t_n\rangle/\tau)+
+        \exp(\langle \bar f_i,\bar t_a\rangle/\tau)} .
+  \label{eq:initial-score}
+\end{equation}
+This is the same normal/abnormal prototype scoring view used by CLIP-based
+ZSAD methods, but here $s_i^0$ is treated only as a semantic prior.
 
-\subsection{Wavelet-Guided Patch Calibration}
-% TODO: Describe structure-texture separation and wavelet-guided map calibration.
+\subsection{Boundary-Aware Local Reliability}
 
-\subsection{Wavelet-Guided Test-Time Adaptation}
-% TODO: Describe how reliable patch anchors rectify text features at test time.
+To obtain a local signal that is not identical to the text-prototype response,
+we compute a Haar-style decomposition on the CLIP patch-feature grid. Wavelet
+multi-resolution analysis is a classical signal representation tool~
+\cite{daubechies1988orthonormal,mallat1989theory}; we only use the simplest
+feature-grid decomposition as a reliability definition. For each $2\times2$
+neighborhood $(F_{00},F_{01},F_{10},F_{11})$ in the patch grid,
+\begin{align}
+  LL &= \frac{1}{2}(F_{00}+F_{01}+F_{10}+F_{11}), \\
+  LH &= \frac{1}{2}(F_{00}-F_{01}+F_{10}-F_{11}), \\
+  HL &= \frac{1}{2}(F_{00}+F_{01}-F_{10}-F_{11}), \\
+  HH &= \frac{1}{2}(F_{00}-F_{01}-F_{10}+F_{11}).
+\end{align}
+The high-frequency magnitude is
+\begin{equation}
+  HF_i=\operatorname{mean}_c(|LH_{i,c}|+|HL_{i,c}|+|HH_{i,c}|).
+\end{equation}
+The low-frequency component provides a structure boundary estimate,
+\begin{equation}
+  E_i=\|\nabla LL_i\|_2 .
+\end{equation}
+After upsampling to the original patch grid, both maps are clipped by per-image
+1/99 percentiles and normalized to $[0,1]$, giving $\widehat{HF}_i$ and
+$\widehat{E}_i$. The reliability signal is
+\begin{equation}
+  W_i=\operatorname{Norm}\left(\widehat{HF}_i(1-\widehat{E}_i)\right).
+  \label{eq:reliability}
+\end{equation}
+$W_i$ is not an anomaly score. It downweights high-frequency responses that
+coincide with low-frequency structure boundaries, and is used only to guide
+which patches become calibration evidence.
 
-\subsection{Multi-Crop Localization Fusion}
-% TODO: Describe deterministic crop generation, stitched crop maps, and fusion.
+\subsection{Patch Evidence Selection}
 
-\subsection{Image-Pixel Score Interaction}
-% TODO: Describe pixel-to-image and image-to-pixel score fusion if included.
+We construct abnormal-side and normal-side evidence weights as
+\begin{align}
+  \omega_i^a &=
+  (s_i^0)^\gamma\left((1-\lambda)+\lambda W_i\right)^\eta, \\
+  \omega_i^n &=
+  (1-s_i^0)^\gamma\left((1-\lambda)+\lambda(1-W_i)\right)^\eta .
+  \label{eq:evidence-weights}
+\end{align}
+Thus abnormal evidence must be supported by the semantic abnormal prior and the
+local reliability signal, while normal evidence must have low abnormal prior
+and low abnormal-style reliability. For each image we select the top-ratio
+patches under each weight and compute weighted visual prototypes:
+\begin{align}
+  v_a &= \operatorname{Norm}\left(
+  \sum_{i\in\mathcal{A}_x}
+  \frac{\omega_i^a}{\sum_{j\in\mathcal{A}_x}\omega_j^a} f_i\right), \\
+  v_n &= \operatorname{Norm}\left(
+  \sum_{i\in\mathcal{N}_x}
+  \frac{\omega_i^n}{\sum_{j\in\mathcal{N}_x}\omega_j^n} f_i\right).
+  \label{eq:visual-prototypes}
+\end{align}
+The sets $\mathcal{A}_x$ and $\mathcal{N}_x$ are not labels. They are
+image-internal evidence sets selected by the current scoring rule.
 
-\subsection{Training-Free Inference}
-% TODO: Clarify that the method is training-free in the zero-shot setting.
+\subsection{Conservative Prototype Calibration}
+
+The visual prototypes are used to calibrate the text prototypes:
+\begin{align}
+  t_n^x &= \operatorname{Norm}\left((1-\beta_x)t_n+\beta_x v_n\right),\\
+  \hat t_a^x &= \operatorname{Norm}\left((1-\alpha_x)t_a+\alpha_x v_a\right).
+\end{align}
+Because abnormal evidence is less reliable in a single test image, the update
+is conservative. In the implementation, $\beta_x$ is scaled by the normal
+evidence confidence and is applied only when abnormal evidence passes a
+minimum-confidence gate; $\alpha_x$ is additionally gated by an abnormal
+confidence threshold. The stable controlled setting uses
+\[
+\gamma=1,\quad \eta=1,\quad \lambda=0.05,\quad
+\text{top-ratio}=0.20,
+\]
+\[
+\alpha_0=0,\quad \beta_0=0.01,\quad \tau_a=0.15,\quad
+\delta_a=0.06 .
+\]
+With $\alpha_0=0$, the abnormal prototype is effectively not updated in the
+current setting. The method mainly estimates a small image-conditioned normal
+reference and avoids drifting toward unreliable abnormal patches.
+
+The final patch anomaly score is recomputed with the calibrated prototypes:
+\begin{equation}
+  s_i^x =
+  \frac{\exp(\langle \bar f_i,\bar t_a^x\rangle/\tau)}
+       {\exp(\langle \bar f_i,\bar t_n^x\rangle/\tau)+
+        \exp(\langle \bar f_i,\bar t_a^x\rangle/\tau)} .
+  \label{eq:final-score}
+\end{equation}
+When multiple CLIP patch layers are used, each layer is rescored with the same
+image-conditioned prototypes and the layer maps are fused. The added module
+uses no optimizer step, no gradient backpropagation, and no target-category
+normal or abnormal labels.
+
+\subsection{Method Boundary}
+
+The method is intentionally different from direct local-cue fusion. A direct
+fusion baseline forms an anomaly map by mixing $s_i^0$ and $W_i$ at the map
+level. That baseline tests whether the local reliability map itself defines
+anomaly. \method{} instead uses $W_i$ only before scoring, during evidence
+selection and prototype calibration, and the final map remains a CLIP semantic
+similarity map.

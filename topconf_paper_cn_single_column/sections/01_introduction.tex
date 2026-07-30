@@ -1,0 +1,20 @@
+\section{引言}
+
+零样本异常检测希望在没有目标类别训练样本或目标类别参考图像的情况下定位缺陷。在这一任务口径下，已有方法可以借助辅助异常数据或跨数据集训练学习更适合异常检测的表征；例如 AnomalyCLIP、AdaCLIP、VCP-CLIP 和 AA-CLIP 分别通过 prompt learning、adapter 或 visual context 模块增强 CLIP 表征。CLIP~\cite{radford2021clip} 的开放词汇视觉语言对齐能力使这一任务可以被转化为 normal/abnormal prototypes 与图像表征之间的匹配问题。WinCLIP~\cite{jeong2023winclip} 通过 normal/anomalous 状态提示和多尺度窗口特征把 CLIP 引入 zero-/few-shot anomaly classification and segmentation；其 WinCLIP+ 进一步使用少量 normal reference images 计算视觉关联分数。AnomalyCLIP~\cite{zhou2024anomalyclip} 学习 object-agnostic normality/abnormality prompts，使异常语义脱离具体物体名。后续工作又从 hybrid prompts~\cite{cao2024adaclip}、visual context prompting~\cite{qu2024vcpclip}、anomaly-aware anchors and adapters~\cite{ma2025aaclip} 等方向增强 CLIP-ZSAD。已有范式证明了 normal/abnormal 语义原型的有效性，并进一步引出异常定位中特有的问题：局部匹配响应需要图像参照才能成为局部异常证据。
+
+异常定位关心的是当前图像中哪些区域偏离了该图像自身的正常外观规律。局部纹理变化、边界突变和高频响应经常出现在缺陷区域中，也覆盖合法的材料纹理、物体结构边缘、颗粒表面和拍摄噪声。换言之，一个 patch 的局部响应具有图像语境依赖性：相似的响应模式，在光滑金属上对应划痕，在粗糙织物上对应正常纹理。基于响应强弱的异常评分会把候选线索直接当成证据，从而混淆缺陷、正常纹理和结构边界。
+
+这一语境依赖性形成两个机制对照：局部线索适合提出候选区域，语义自校准适合提供初始方向，二者都需要当前图像参照来完成证据判定。频率和局部结构线索已经被用于 CLIP-ZSAD，例如 FE-CLIP 用频率增强的 CLIP adapters~\cite{gong2025feclip}，WMoE-CLIP 用 Haar wavelet features 调整 prompt learning~\cite{chen2026wmoeclip}，HarmoniAD 用频域高/低频双分支协调局部结构和全局语义~\cite{zhang2026harmoniad}。本文把频率响应作为候选证据来源，研究它在单图参照估计中的使用方式：同一类局部信号直接作为异常图会同时放大缺陷和正常纹理；由 CLIP 初始语义响应单独选择校准证据则会继承初始响应的盲区。本文因此将 CLIP 零样本异常定位重新表述为图像条件化正常参照估计问题：参照由单张测试图内部的可靠局部证据估计，并与外部 normal image bank 和训练式 visual context prompt 形成互补。
+
+在这个表述下，局部响应回答“哪里存在值得关注的变化”；异常证据进一步回答“这个变化相对于当前图像的正常外观是否异常”。具体地，我们保持 CLIP 的视觉语言表征冻结，从测试图像内部选择可信的正常与异常局部证据，构造图像条件化参照，并用该参照校准 normal/abnormal prototypes 后重新评分。该参照为 CLIP 局部响应提供当前图像内的判断基准。
+
+本文的核心命题是：CLIP 局部响应的证据价值由图像内正常参照决定；可靠证据选择与保守 prototype calibration 能够把候选响应转化为更稳定的异常定位分数。该命题把方法设计和实验验证连接起来：方法节定义如何估计参照，机制验证节检验哪些局部响应能进入参照，以及参照校准是否保持正常图稳定。
+
+本文的贡献可概括为三点：
+\begin{itemize}
+  \item \textbf{问题表述。} 我们将 CLIP-based 零样本异常定位表述为图像条件化正常参照估计，明确局部响应从候选线索转化为异常证据所需的判断基准。
+  \item \textbf{方法原则。} 我们提出图像条件化正常参照估计框架，在冻结 CLIP/AnomalyCLIP 表征的前提下从测试图像内部选择可靠局部证据，并通过 prototype calibration 重新评分局部区域。
+  \item \textbf{机制验证。} 我们用已有受控消融检验该表述：direct wavelet fusion 构成负控，semantic-only calibration 构成强对照，boundary-aware reliability 与 conservative update 验证可靠证据选择和参照校准的必要性。
+\end{itemize}
+
+本文的实验叙事围绕机制证据展开。AnomalyCLIP 使用辅助异常数据学习类别无关提示；本文新增模块在冻结表征之上运行，在测试时保持模型参数固定，并使用单张测试图内部证据完成校准。频率或局部变化在本文中是候选证据的一类；核心研究问题是这些候选证据如何在当前图像的正常参照下被校准。

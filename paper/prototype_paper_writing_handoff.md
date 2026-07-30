@@ -8,7 +8,7 @@ This document is for the next writing agent. It summarizes the current code, ver
 - Core idea: CLIP-based zero-shot anomaly detection uses fixed normal/abnormal text prototypes, but test images have instance-specific defect appearance; therefore, use a label-free patch-level wavelet reliability signal to calibrate text prototypes at test time.
 - Working name: `Ours (unnamed)` until a final title/name is chosen.
 - Current honest positioning: the reproduced controlled `Ours (unnamed)` setting improves over the original AnomalyCLIP baseline and over CLIP-only/semantic-only prototype adaptation across all four reported metrics. An earlier record had the CLIP-only/Ours order wrong; the corrected controlled order has Ours as the best row.
-- Data note: `newversion/paper_v7` still contains EXPECTED placeholder values and should be data-updated before paper use.
+- Data note: `newversion/paper_v7` is an archival draft and is not the current paper-facing data source. Use the controlled reproduced tables under `paper/tables_ablation/` for the current Ours-vs-semantic-only story.
 
 ## 2. Fixed Evaluation Protocol
 

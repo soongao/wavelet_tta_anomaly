@@ -1,14 +1,39 @@
 \section{Related Work}
 \label{sec:related_work}
 
-\subsection{Zero-Shot Anomaly Detection}
-% TODO: Discuss CLIP-based and vision-language anomaly detection methods.
+\paragraph{CLIP-based zero-shot anomaly detection.}
+WinCLIP~\cite{jeong2023winclip} compares image and window features with
+normal/anomalous text prompts, and its few-shot version uses normal reference
+images for visual association. PromptAD~\cite{li2024promptad},
+AnomalyCLIP~\cite{zhou2024anomalyclip}, and AdaCLIP~\cite{cao2024adaclip}
+improve the text side through manual, object-agnostic, or hybrid learnable
+prompts. VCP-CLIP~\cite{qu2024vcpclip} injects visual context into text
+embeddings, while AA-CLIP~\cite{ma2025aaclip} trains anomaly-aware anchors and
+residual adapters. These methods primarily ask how to obtain better
+normal/abnormal representations. Our work asks a complementary question: once
+such prototypes are available, which local responses in a single test image
+should be trusted as evidence for calibrating them?
 
-\subsection{Prompt Learning and Test-Time Adaptation}
-% TODO: Discuss prompt tuning, test-time prompt adaptation, and feature rectification.
+\paragraph{Frequency and local-structure cues.}
+Frequency cues are a relevant but already established direction. FE-CLIP~
+\cite{gong2025feclip} introduces frequency-enhanced adapters for CLIP.
+WMoE-CLIP~\cite{chen2026wmoeclip} decomposes CLIP features into Haar
+low-frequency and high-frequency components for wavelet-enhanced prompt
+learning. HarmoniAD~\cite{zhang2026harmoniad} separates local structural
+signals and global semantic signals in the frequency domain. These works make
+it inappropriate to claim that this paper discovers the usefulness of
+frequency. The distinction is usage: \method{} does not train frequency
+features into CLIP and does not treat a wavelet response as the anomaly map.
+The response is used only as a boundary-aware reliability signal for patch
+evidence selection.
 
-\subsection{Frequency and Wavelet Analysis for Vision}
-% TODO: Discuss frequency-domain and wavelet-based visual representations.
-
-\subsection{Multi-Scale Localization}
-% TODO: Discuss multi-scale and crop-based strategies for anomaly localization.
+\paragraph{Test-time adaptation and reference estimation.}
+Test-time prompt tuning~\cite{shu2022tpt} and conditional prompt learning~
+\cite{zhou2022cocoop} show that image-conditioned prompting can improve
+vision-language generalization. In anomaly detection, WinCLIP+ uses external
+normal reference images, and VCP-CLIP uses trained visual context modules. Our
+setting is different from both: no target-category normal bank is accessed, and
+no prompt or adapter parameter is optimized at test time. The estimated
+reference is constructed from the current test image itself. This makes the
+method closer to a conservative per-image scoring calibration than to prompt
+learning or self-training.

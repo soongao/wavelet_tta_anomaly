@@ -1,3 +1,18 @@
 \begin{abstract}
-% TODO: Summarize the problem, motivation, proposed method, and main results.
+CLIP-based zero-shot anomaly detection usually scores local regions by their
+similarity to normal and abnormal text prototypes. This score is a useful
+semantic prior, but it is not sufficient evidence for localization: the same
+local response may correspond to a defect in one image and to normal texture,
+material granularity, or an object boundary in another. We therefore formulate
+zero-shot anomaly localization as image-conditioned normal reference
+estimation. Given frozen CLIP/AnomalyCLIP representations, \method{} selects
+reliable patch evidence inside a single test image, estimates image-conditioned
+normal and abnormal prototypes, and recomputes patch scores in the same
+semantic space. The added module performs no test-time backpropagation, does
+not update model parameters, and does not use target-category labels or a
+normal reference set. Controlled experiments on MVTec AD and VisA show a
+consistent mechanism: direct wavelet-map fusion is a negative control,
+semantic-only prototype adaptation is a strong baseline, and boundary-aware
+local reliability with conservative prototype calibration gives the best
+controlled row across all reported metrics.
 \end{abstract}
