@@ -1,0 +1,79 @@
+% Formula bank for the current image-conditioned prototype calibration draft.
+% This file is not included by main.tex; it mirrors the implementation-facing
+% definitions used in sections/03_method.tex.
+
+\section{Formula Bank}
+\label{sec:formula_bank}
+
+\subsection{Initial Prototype Score}
+
+For patch feature $f_i$ and normal/abnormal text prototypes $t_n,t_a$, the
+initial anomaly prior is
+\begin{equation}
+  s_i^0 =
+  \frac{\exp(\langle \bar f_i,\bar t_a\rangle/\tau)}
+       {\exp(\langle \bar f_i,\bar t_n\rangle/\tau)+
+        \exp(\langle \bar f_i,\bar t_a\rangle/\tau)} .
+\end{equation}
+
+\subsection{Haar-Style Reliability}
+
+For each $2\times2$ patch-feature neighborhood:
+\begin{align}
+  LL &= \frac{1}{2}(F_{00}+F_{01}+F_{10}+F_{11}), \\
+  LH &= \frac{1}{2}(F_{00}-F_{01}+F_{10}-F_{11}), \\
+  HL &= \frac{1}{2}(F_{00}+F_{01}-F_{10}-F_{11}), \\
+  HH &= \frac{1}{2}(F_{00}-F_{01}-F_{10}+F_{11}).
+\end{align}
+The high-frequency magnitude and low-frequency boundary strength are
+\begin{align}
+  HF_i &= \operatorname{mean}_c(|LH_{i,c}|+|HL_{i,c}|+|HH_{i,c}|),\\
+  E_i &= \|\nabla LL_i\|_2 .
+\end{align}
+After per-image percentile clipping and normalization:
+\begin{equation}
+  W_i = \operatorname{Norm}\left(\widehat{HF}_i(1-\widehat{E}_i)\right).
+\end{equation}
+
+\subsection{Evidence Weights}
+
+\begin{align}
+  \omega_i^a &=
+  (s_i^0)^\gamma\left((1-\lambda)+\lambda W_i\right)^\eta, \\
+  \omega_i^n &=
+  (1-s_i^0)^\gamma\left((1-\lambda)+\lambda(1-W_i)\right)^\eta .
+\end{align}
+
+\subsection{Visual Prototypes}
+
+For top-ratio evidence sets $\mathcal{A}_x$ and $\mathcal{N}_x$:
+\begin{align}
+  v_a &= \operatorname{Norm}\left(
+  \sum_{i\in\mathcal{A}_x}
+  \frac{\omega_i^a}{\sum_{j\in\mathcal{A}_x}\omega_j^a} f_i\right), \\
+  v_n &= \operatorname{Norm}\left(
+  \sum_{i\in\mathcal{N}_x}
+  \frac{\omega_i^n}{\sum_{j\in\mathcal{N}_x}\omega_j^n} f_i\right).
+\end{align}
+
+\subsection{Conservative Prototype Calibration}
+
+\begin{align}
+  t_n^x &= \operatorname{Norm}\left((1-\beta_x)t_n+\beta_x v_n\right),\\
+  \hat t_a^x &= \operatorname{Norm}\left((1-\alpha_x)t_a+\alpha_x v_a\right).
+\end{align}
+In the stable controlled setting,
+\[
+\gamma=1,\quad \eta=1,\quad \lambda=0.05,\quad
+\text{top-ratio}=0.20,\quad
+\alpha_0=0,\quad \beta_0=0.01 .
+\]
+
+\subsection{Final Score}
+
+\begin{equation}
+  s_i^x =
+  \frac{\exp(\langle \bar f_i,\bar t_a^x\rangle/\tau)}
+       {\exp(\langle \bar f_i,\bar t_n^x\rangle/\tau)+
+        \exp(\langle \bar f_i,\bar t_a^x\rangle/\tau)} .
+\end{equation}

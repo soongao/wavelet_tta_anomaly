@@ -1,0 +1,61 @@
+{
+  "num_selected": 8,
+  "examples": [
+    {
+      "cls_name": "tile",
+      "defect_type": "crack",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/tile/test/crack/016.png",
+      "gap_delta": "0.27572713792324066",
+      "detail_prompt": "a photo of a tile surface with a medium-sized irregular crack in the central region."
+    },
+    {
+      "cls_name": "tile",
+      "defect_type": "crack",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/tile/test/crack/010.png",
+      "gap_delta": "0.20134976506233215",
+      "detail_prompt": "a photo of a tile surface with a medium-sized irregular crack in the lower left region."
+    },
+    {
+      "cls_name": "wood",
+      "defect_type": "liquid",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/wood/test/liquid/008.png",
+      "gap_delta": "0.2684008777141571",
+      "detail_prompt": "a photo of a wood surface with a large diagonal elongated liquid stain in the central region."
+    },
+    {
+      "cls_name": "wood",
+      "defect_type": "scratch",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/wood/test/scratch/016.png",
+      "gap_delta": "0.18686146289110184",
+      "detail_prompt": "a photo of a wood surface with a large irregular scratch in the right region."
+    },
+    {
+      "cls_name": "leather",
+      "defect_type": "glue",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/leather/test/glue/001.png",
+      "gap_delta": "0.23201483488082886",
+      "detail_prompt": "a photo of a leather surface with a small irregular glue in the left region."
+    },
+    {
+      "cls_name": "carpet",
+      "defect_type": "thread",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/carpet/test/thread/013.png",
+      "gap_delta": "0.158584326505661",
+      "detail_prompt": "a photo of a carpet texture with a large diagonal elongated thread-like defect in the central region."
+    },
+    {
+      "cls_name": "hazelnut",
+      "defect_type": "crack",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/hazelnut/test/crack/006.png",
+      "gap_delta": "0.16980940103530884",
+      "detail_prompt": "a photo of a hazelnut with a large irregular crack in the right region."
+    },
+    {
+      "cls_name": "hazelnut",
+      "defect_type": "hole",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/hazelnut/test/hole/012.png",
+      "gap_delta": "0.16077035665512085",
+      "detail_prompt": "a photo of a hazelnut with a medium-sized irregular hole in the central region."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+\begin{table}[t]
+\centering
+\caption{Oracle detailed prompt 的文本侧诊断结果。该实验比较 generic abnormal prompt 与加入当前缺陷外观描述后的 detailed prompt response。}
+\label{tab:detail-prompt-diagnostic}
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+诊断项 & 样例数 & 覆盖范围 & 指标 & 统计值 \\
+\midrule
+异常/背景响应间隔变化 & 8 & 5 类 / 6 缺陷 & $\Delta$ gap & 0.207 (0.159--0.276) \\
+Generic 弱响应区域恢复 & 12 & 3 类 / 5 缺陷 & Coverage gain & 0.060 (0.016--0.156) \\
+\bottomrule
+\end{tabular}
+\end{table}

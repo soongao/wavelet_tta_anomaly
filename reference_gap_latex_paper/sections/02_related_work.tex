@@ -1,0 +1,11 @@
+\section{相关工作}
+\label{sec:related_work}
+
+\paragraph{基于 CLIP 的零样本异常定位。}
+CLIP 通过共享嵌入空间连接视觉区域和文本描述~\cite{radford2021clip}。WinCLIP 将这一接口用于异常检测，结合 prompt ensemble 和局部窗口评分进行异常定位~\cite{jeong2023winclip}。PromptAD 研究了用于零样本异常检测的文本 prompt~\cite{li2024promptad}。AnomalyCLIP 从辅助异常数据中学习 object-agnostic 正常/异常 prompt~\cite{zhou2024anomalyclip}。AdaCLIP、VCP-CLIP 和 AA-CLIP 分别通过 hybrid learnable prompts、visual context prompting 和 anomaly-aware adapters 进一步增强语义接口~\cite{cao2024adaclip,qu2024vcpclip,ma2025aaclip}。这些方法主要增强正常/异常语义轴；本文关注在已有语义轴下，如何依据当前测试图像的正常外观解释局部证据。
+
+\paragraph{频域与局部结构线索。}
+频域信息已经是异常检测中的相关信号。FE-CLIP 为 CLIP 引入 frequency-enhanced adapters~\cite{gong2025feclip}。WMoE-CLIP 将 CLIP 特征分解为 Haar 低频和高频分量，并用于 prompt learning~\cite{chen2026wmoeclip}。HarmoniAD 通过频域分支建模局部结构和全局语义~\cite{zhang2026harmoniad}。Wavelet 分析本身也是经典的多分辨率信号表示方法~\cite{daubechies1988orthonormal,mallat1989theory}。本文中的频域响应承担不同角色：它刻画 patch 特征中的局部结构变化，并参与当前图像正常参照的证据选择。
+
+\paragraph{测试时参照与自适应。}
+视觉语言模型可以受益于测试时或图像条件化自适应，例如 test-time prompt tuning 和 conditional prompt learning~\cite{shu2022tpt,zhou2022cocoop}。在异常检测中，当外部正常样本可用时，正常参照图像能够提供有价值的信息，例如 WinCLIP 的少样本设置。本文研究的零样本设置不提供目标类别正常图像，因此参照需要从测试图自身估计。\method{} 不更新 prompt、adapter 或 encoder 参数，而是通过当前图像内部的 patch 证据构建正常外观参照。

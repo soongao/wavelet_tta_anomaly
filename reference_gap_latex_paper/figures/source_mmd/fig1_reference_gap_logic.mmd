@@ -1,0 +1,23 @@
+flowchart LR
+  A["已有 CLIP-ZSAD<br/>正常/异常文本原型<br/>(可由 prompt learning 得到)"]
+  B["Patch-text matching<br/>得到语义响应 q_i"]
+  C["当前测试图正常外观<br/>材质 / 纹理 / 结构边界 / 重复模式"]
+  D["Reference gap<br/>跨图语义轴缺少当前图像正常外观基准"]
+  E["局部证据混杂<br/>正常纹理、结构边界、真实缺陷<br/>可能落在相近响应区域"]
+  F["从测试图自身估计<br/>图像条件化正常参照 r_n(x)"]
+  G["重新解释 patch 响应<br/>相对于文本语义轴 + 当前图像正常参照"]
+
+  A --> B
+  B --> E
+  C -.-> D
+  D --> E
+  E --> F
+  F --> G
+  B --> G
+
+  classDef source fill:#eef4ff,stroke:#3b5b92,color:#111;
+  classDef gap fill:#fff4df,stroke:#9a6a00,color:#111;
+  classDef method fill:#edf7ed,stroke:#2f7d32,color:#111;
+  class A,B,C source;
+  class D,E gap;
+  class F,G method;

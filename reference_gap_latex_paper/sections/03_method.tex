@@ -1,0 +1,162 @@
+\section{方法}
+\label{sec:method}
+
+\subsection{语义参照与图像条件化参照}
+
+给定测试图像 $x$，冻结的 CLIP/AnomalyCLIP 视觉编码器输出若干层 patch 特征。为简化记号，先讨论用于构造参照的一层特征网格
+$F\in\mathbb{R}^{H_p\times W_p\times C}$，其展平后的 patch 特征记为
+$\{f_i\}_{i=1}^{N}$，$N=H_pW_p$。所有视觉特征在相似度计算前做 $\ell_2$ 归一化。记已有 \clipzsad{} 模型给出的正常和异常文本原型为
+$t_n,t_a\in\mathbb{R}^{C}$。在 AnomalyCLIP 一类方法中，这些原型已经可以包含学习得到的上下文 token；本文直接将它们作为跨图共享的语义参照。
+
+与现有 CLIP-based ZSAD 的 patch-text matching 形式一致~\cite{radford2021clip,jeong2023winclip,zhou2024anomalyclip}，每个 patch 的语义响应定义为
+\begin{equation}
+  q_i =
+  \frac{\exp(\langle \bar f_i,\bar t_a\rangle/\tau)}
+       {\exp(\langle \bar f_i,\bar t_n\rangle/\tau)+
+        \exp(\langle \bar f_i,\bar t_a\rangle/\tau)} .
+  \label{eq:semantic-response}
+\end{equation}
+$q_i$ 给出 patch 在正常/异常语义轴上的相对位置。本文进一步估计图像条件化正常参照
+$r_n(x)$，使局部响应不仅由跨图文本原型解释，也由当前图像内部的正常外观基准解释。该参照需要满足三个约束：证据来自同一张测试图像；证据在语义轴上更接近正常侧；证据在局部结构上能够代表当前图像的稳定外观。后续步骤将 $r_n(x)$ 实例化为由可靠正常 patch 聚合得到的视觉参照 $v_n$。
+
+\subsection{局部结构变化响应}
+
+图像条件化参照的核心是选择哪些 patch 能支撑当前图像的正常外观。仅依据 $q_i$ 排序会把正常纹理、结构边界和缺陷边缘放在同一语义响应空间中。为刻画 patch 邻域内的局部结构变化，\method{} 在 CLIP patch 特征网格上计算一层 Haar 离散小波分解~\cite{daubechies1988orthonormal,mallat1989theory}。对于每个 $2\times2$ 邻域
+$(F_{00},F_{01},F_{10},F_{11})$，四个分量为
+\begin{equation}
+\begin{aligned}
+  LL &= \tfrac{1}{2}(F_{00}+F_{01}+F_{10}+F_{11}),&
+  LH &= \tfrac{1}{2}(F_{00}-F_{01}+F_{10}-F_{11}),\\
+  HL &= \tfrac{1}{2}(F_{00}+F_{01}-F_{10}-F_{11}),&
+  HH &= \tfrac{1}{2}(F_{00}-F_{01}-F_{10}+F_{11}).
+\end{aligned}
+\label{eq:haar-components}
+\end{equation}
+其中 $LL$ 保留邻域平均结构，$LH,HL,HH$ 对应水平方向、垂直方向和对角方向的局部变化。高频幅值 $h_i$ 与低频边界强度 $e_i$ 定义为
+\begin{equation}
+\begin{aligned}
+  h_i &=
+  \frac{1}{C}\sum_{c=1}^{C}\left(|LH_{i,c}|+|HL_{i,c}|+|HH_{i,c}|\right),\\
+  e_i &=
+  \left(\frac{\|D_xLL_i\|_2^2+\|D_yLL_i\|_2^2}{C}\right)^{1/2}.
+\end{aligned}
+\label{eq:structural-statistics}
+\end{equation}
+其中 $D_x$ 与 $D_y$ 为相邻低频单元的一阶差分。高频幅值会响应缺陷造成的局部破坏，也会响应正常物体轮廓和规则结构边界，因此 $h_i$ 与 $e_i$ 经过双线性上采样回原 patch 网格后共同参与局部结构响应。
+
+为减少极端响应对单图归一化的影响，本文对每张图像使用分位裁剪归一化。记
+\begin{equation}
+\begin{aligned}
+  \mathcal{R}_x(z_i)
+  &=\frac{\operatorname{clip}(z_i,p_{\ell}(z),p_u(z))-p_{\ell}(z)}
+          {p_u(z)-p_{\ell}(z)+\epsilon},\\
+  W_i
+  &=\mathcal{R}_x\!\left(\mathcal{R}_x(h_i)\left(1-\mathcal{R}_x(e_i)\right)\right).
+\end{aligned}
+\label{eq:structural-response}
+\end{equation}
+$p_{\ell}(z)$ 和 $p_u(z)$ 是当前图像内所有 patch 响应的下分位和上分位。
+$W_i$ 较高表示该位置存在明显局部变化，且这种变化不主要由低频结构边界解释。在参照估计中，正常证据偏向低 $W_i$ 的稳定区域，异常候选证据偏向高 $W_i$ 的局部变化区域。
+
+\subsection{可靠 Patch 证据选择}
+
+\method{} 将语义响应和局部结构变化写入同一个证据权重。设 $\lambda$ 控制局部结构响应的混合强度，$\gamma$ 控制语义响应的锐化程度，$\eta$ 控制结构响应的权重曲线。异常侧和正常侧证据权重分别为
+\begin{align}
+  \omega_i^a &=
+  (q_i)^\gamma\left((1-\lambda)+\lambda W_i\right)^\eta, \\
+  \omega_i^n &=
+  (1-q_i)^\gamma\left((1-\lambda)+\lambda(1-W_i)\right)^\eta .
+  \label{eq:evidence-weights}
+\end{align}
+该权重把两个条件合在一起：正常参照证据需要具有较低异常语义响应，并处在局部结构稳定区域；异常候选证据需要具有较高异常语义响应，并伴随难以由低频边界解释的局部变化。去除局部结构项时，证据选择退化为只由语义响应驱动的图像条件化参照估计。
+
+令 $\rho$ 为证据比例，$K=\lceil \rho N\rceil$。对每张测试图像，分别选取
+\begin{equation}
+  \mathcal{A}_x=\operatorname{TopK}(\{\omega_i^a\}_{i=1}^{N},K),
+  \qquad
+  \mathcal{N}_x=\operatorname{TopK}(\{\omega_i^n\}_{i=1}^{N},K).
+  \label{eq:evidence-sets}
+\end{equation}
+$\mathcal{A}_x$ 和 $\mathcal{N}_x$ 是图像内部证据集合，由当前图像的响应排序产生，作为后续参照聚合的索引集合。集合内归一化权重为
+\begin{equation}
+  \pi_i^a=
+  \frac{\omega_i^a}{\sum_{j\in\mathcal{A}_x}\omega_j^a+\epsilon},
+  \qquad
+  \pi_i^n=
+  \frac{\omega_i^n}{\sum_{j\in\mathcal{N}_x}\omega_j^n+\epsilon}.
+\end{equation}
+加权视觉参照为
+\begin{align}
+  v_a &= \operatorname{Norm}\left(
+  \sum_{i\in\mathcal{A}_x}\pi_i^a f_i\right), \\
+  v_n &= \operatorname{Norm}\left(
+  \sum_{i\in\mathcal{N}_x}\pi_i^n f_i\right).
+  \label{eq:visual-references}
+\end{align}
+其中 $v_n$ 即 $r_n(x)$ 的经验估计。正常侧参照由低 $q_i$ 且低 $W_i$ 的 patch 支撑，描述当前图像中占主导的稳定外观；异常侧参照 $v_a$ 提供当前图像中可疑局部变化的方向，并用于后续门控。
+
+\subsection{保守参照校准}
+
+视觉参照与文本原型位于同一 CLIP 嵌入空间，因此可以通过归一化插值形成图像条件化原型。首先定义证据置信度
+\begin{equation}
+  c_a=\frac{1}{K}\sum_{i\in\mathcal{A}_x}\omega_i^a,
+  \qquad
+  c_n=\frac{1}{K}\sum_{i\in\mathcal{N}_x}\omega_i^n .
+  \label{eq:evidence-confidence}
+\end{equation}
+异常候选证据控制当前图像是否触发参照更新：
+\begin{equation}
+  m_x=\mathbb{I}[c_a\ge \delta_a],
+  \qquad
+  g_x=\mathbb{I}[c_a\ge \max(\tau_a,\delta_a)] .
+  \label{eq:update-gates}
+\end{equation}
+其中 $\delta_a$ 为图像级更新门限，$\tau_a$ 为异常侧原型更新门限。更新强度为
+\begin{equation}
+  \beta_x=\beta_0 c_n m_x,
+  \qquad
+  \alpha_x=\alpha_0 c_a m_x .
+  \label{eq:update-strength}
+\end{equation}
+图像条件化文本原型写作
+\begin{align}
+  t_n^x &= \operatorname{Norm}\left((1-\beta_x)t_n+\beta_x v_n\right),\\
+  \widetilde{t}_a^x &= \operatorname{Norm}\left((1-\alpha_x)t_a+\alpha_x v_a\right),\\
+  t_a^x &= g_x\widetilde{t}_a^x+(1-g_x)t_a .
+  \label{eq:prototype-calibration}
+\end{align}
+该校准是非对称的：正常侧证据通常覆盖更充分，用于估计当前图像的正常外观参照；异常侧证据更稀疏，主要承担更新门控和可疑方向刻画。实现中可将异常侧更新设为门控路径，使异常文本原型保持已有语义方向，并让正常文本原型向 $v_n$ 做受控移动。最终每个 patch 的异常响应由图像条件化原型重新计算：
+\begin{equation}
+  a_i^x =
+  \frac{\exp(\langle \bar f_i,\bar t_a^x\rangle/\tau)}
+       {\exp(\langle \bar f_i,\bar t_n^x\rangle/\tau)+
+        \exp(\langle \bar f_i,\bar t_a^x\rangle/\tau)} .
+  \label{eq:final-response}
+\end{equation}
+像素级异常图由 $a_i^x$ 上采样得到。若使用多个 CLIP 层，\method{} 先用选定层的 patch token 构造同一组 $t_n^x,t_a^x$，再在各层上按式~\eqref{eq:final-response} 重算响应并进行层级融合。
+
+\subsection{推理流程}
+
+对单张测试图像，\method{} 的推理过程如下。第一，冻结视觉编码器提取 patch 特征，并用已有文本原型计算语义响应 $q_i$。第二，在用于构造参照的 patch 特征网格上执行 Haar 分解，得到局部结构变化响应 $W_i$。第三，依据式~\eqref{eq:evidence-weights} 计算正常侧和异常侧证据权重，并根据式~\eqref{eq:evidence-sets} 选取图像内部证据集合。第四，聚合得到 $v_n$ 与 $v_a$，由证据置信度确定更新门控和更新强度。第五，用图像条件化原型重算 patch 响应，并融合为最终异常图。
+
+\begin{algorithm}[t]
+\caption{\method{} 的单图推理流程}
+\label{alg:icnr-inference}
+\small
+\begin{tabularx}{\linewidth}{@{}p{0.12\linewidth}Y@{}}
+\toprule
+输入 & 测试图像 $x$；冻结视觉编码器；已有正常/异常文本原型 $t_n,t_a$；证据比例与门控参数。 \\
+输出 & 图像条件化异常响应图。 \\
+\midrule
+1 & 提取多层 CLIP patch 特征，并在选定特征网格 $F$ 上计算初始语义响应 $q_i$。 \\
+2 & 对 $F$ 执行 Haar 分解，得到高频幅值 $h_i$ 与低频边界强度 $e_i$，并计算局部结构变化响应 $W_i$。 \\
+3 & 将 $q_i$ 与 $W_i$ 写入正常侧和异常侧证据权重 $\omega_i^n,\omega_i^a$。 \\
+4 & 根据权重分别选取 $\mathcal{N}_x$ 与 $\mathcal{A}_x$，并在集合内归一化证据权重。 \\
+5 & 聚合正常侧和异常侧视觉参照 $v_n,v_a$，其中 $v_n$ 作为当前图像正常参照 $r_n(x)$ 的估计。 \\
+6 & 由证据置信度确定更新门控和更新强度，得到图像条件化原型 $t_n^x,t_a^x$。 \\
+7 & 在各层 patch 特征上用 $t_n^x,t_a^x$ 重算异常响应，并上采样融合为最终异常图。 \\
+\bottomrule
+\end{tabularx}
+\end{algorithm}
+
+额外计算主要来自一次 patch 网格 Haar 分解、两次 top-$K$ 证据选择和一次基于校准原型的响应重算。推理阶段仅依赖测试图像、冻结编码器和已有文本原型。

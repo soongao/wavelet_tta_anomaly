@@ -1,0 +1,66 @@
+\documentclass[UTF8,11pt,fontset=none]{ctexart}
+
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setmainfont{Times New Roman}
+\setCJKmainfont{Songti SC}
+\setCJKsansfont{PingFang SC}
+\setCJKmonofont{Songti SC}
+
+\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{setspace}
+\usepackage{array}
+\usepackage{tabularx}
+
+\floatstyle{ruled}
+\newfloat{algorithm}{t}{loa}
+\floatname{algorithm}{算法}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue
+}
+
+\onehalfspacing
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.25em}
+
+\title{面向 CLIP 零样本异常定位的图像条件化正常参照估计}
+\author{匿名稿件}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\newcommand{\method}{ICNR}
+\newcommand{\clipzsad}{CLIP-ZSAD}
+
+\input{sections/00_abstract}
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_method}
+\input{sections/04_experiments}
+\input{sections/05_analysis}
+\input{sections/06_limitations}
+\input{sections/07_conclusion}
+\input{sections/08_statements}
+
+{\small
+\bibliographystyle{plain}
+\bibliography{references}
+}
+
+\end{document}

@@ -1,0 +1,18 @@
+\section{实验}
+\label{sec:experiments}
+
+\subsection{数据集与指标}
+
+主结果覆盖五个工业异常检测基准：MVTec AD~\cite{bergmann2019mvtec}、VisA~\cite{zou2022visa}、MPDD~\cite{jezek2021deep}、BTAD~\cite{mishra2021vt} 和 DTD-Synthetic~\cite{aota2023zero}。其中 MVTec AD 与 VisA 进一步用于受控机制消融，以分析图像条件化参照和局部结构响应的作用。
+
+实验报告 Pixel AUROC、Pixel AUPRO、Image AUROC 和 Image AP。Pixel AUROC 衡量异常图的像素级排序能力。Pixel AUPRO 衡量区域级定位质量，在小缺陷和误报面积控制场景中更具指示性。Image AUROC 与 Image AP 用于评估图像级异常检测。
+
+\subsection{实现细节}
+
+比较方法包括 CLIP~\cite{radford2021clip}、WinCLIP~\cite{jeong2023winclip}、VAND~\cite{chen2023aprilgan}、CoOp~\cite{zhou2022coop}、AdaCLIP~\cite{cao2024adaclip}、AnomalyCLIP~\cite{zhou2024anomalyclip} 和 AA-CLIP~\cite{ma2025aaclip}。在本文的图像条件化参照估计过程中，CLIP 视觉编码器和文本原型保持冻结。除特别说明外，\method{} 使用边界感知局部结构响应、top-ratio $0.20$、可靠性混合强度 $0.05$、$\alpha_0=0$ 和 $\beta_0=0.01$。新增步骤不进行测试时优化，也不使用目标类别训练。
+
+\subsection{跨方法比较}
+
+表~\ref{tab:main-results} 按图像级和像素级结果报告五个工业基准上的零样本异常定位表现。该表采用统一的跨方法 baseline 集合，并将 \method{} 与已有 CLIP-ZSAD 方法放在同一评测口径下比较。\method{} 列使用当前项目记录的五数据集结果；MVTec AD 与 VisA 上的机制归因由后续受控消融给出。
+
+\input{tables/main_results}

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a1" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#5b5b5b"/>
+    </marker>
+  </defs>
+  <rect width="1080" height="520" fill="#ffffff"/>
+
+  <text x="540" y="32" text-anchor="middle" font-size="19" font-weight="bold" fill="#333">Motivation: CLIP sees the high-frequency change, but cannot tell anomaly from material</text>
+
+  <!-- ============ ROW LABELS ============ -->
+  <text x="120" y="90" text-anchor="middle" font-size="13" font-weight="bold" fill="#555">Input</text>
+  <text x="120" y="250" text-anchor="middle" font-size="13" font-weight="bold" fill="#2f6b57">CLIP High-Freq. Response</text>
+  <text x="120" y="410" text-anchor="middle" font-size="13" font-weight="bold" fill="#8a3f34">After Per-Image Reference</text>
+
+  <!-- ============ CASE 1: smooth object with scratch ============ -->
+  <text x="300" y="70" text-anchor="middle" font-size="13" fill="#444">(a) Smooth object + defect</text>
+  <!-- input -->
+  <rect x="240" y="85" width="120" height="90" rx="6" fill="#e3e8ee" stroke="#c2ccd6"/>
+  <rect x="300" y="120" width="22" height="6" rx="2" fill="#d98b80"/>
+  <text x="300" y="192" text-anchor="middle" font-size="10" fill="#888">defect = scratch</text>
+  <!-- HF response: only defect lights up -->
+  <rect x="240" y="205" width="120" height="90" rx="6" fill="#f2f8f5" stroke="#bcdccd"/>
+  <rect x="300" y="240" width="22" height="6" rx="2" fill="#2f8f6b"/>
+  <text x="300" y="312" text-anchor="middle" font-size="10" fill="#2f6b57">defect stands out ✓</text>
+  <!-- after ref -->
+  <rect x="240" y="325" width="120" height="90" rx="6" fill="#fdf3f1" stroke="#e6c1b8"/>
+  <ellipse cx="311" cy="352" rx="12" ry="6" fill="#e57f70"/>
+  <text x="300" y="432" text-anchor="middle" font-size="10" fill="#8a3f34">correct detection ✓</text>
+
+  <!-- ============ CASE 2: textured normal (no defect) ============ -->
+  <text x="560" y="70" text-anchor="middle" font-size="13" fill="#444">(b) Rough texture, normal</text>
+  <!-- input: hatch pattern -->
+  <rect x="500" y="85" width="120" height="90" rx="6" fill="#e3e8ee" stroke="#c2ccd6"/>
+  <g stroke="#b6bfc9" stroke-width="1.5">
+    <line x1="508" y1="95" x2="612" y2="95"/><line x1="508" y1="110" x2="612" y2="110"/>
+    <line x1="508" y1="125" x2="612" y2="125"/><line x1="508" y1="140" x2="612" y2="140"/>
+    <line x1="508" y1="155" x2="612" y2="155"/><line x1="508" y1="168" x2="612" y2="168"/>
+  </g>
+  <text x="560" y="192" text-anchor="middle" font-size="10" fill="#888">no defect</text>
+  <!-- HF response: whole thing lights up -->
+  <rect x="500" y="205" width="120" height="90" rx="6" fill="#f2f8f5" stroke="#bcdccd"/>
+  <g stroke="#2f8f6b" stroke-width="1.5" opacity="0.7">
+    <line x1="508" y1="215" x2="612" y2="215"/><line x1="508" y1="230" x2="612" y2="230"/>
+    <line x1="508" y1="245" x2="612" y2="245"/><line x1="508" y1="260" x2="612" y2="260"/>
+    <line x1="508" y1="275" x2="612" y2="275"/><line x1="508" y1="288" x2="612" y2="288"/>
+  </g>
+  <text x="560" y="312" text-anchor="middle" font-size="10" fill="#b5651d">whole region lights up ✗</text>
+  <!-- after ref: suppressed -->
+  <rect x="500" y="325" width="120" height="90" rx="6" fill="#fdf3f1" stroke="#e6c1b8"/>
+  <text x="560" y="375" text-anchor="middle" font-size="11" fill="#8a3f34">clean (suppressed)</text>
+  <text x="560" y="432" text-anchor="middle" font-size="10" fill="#8a3f34">no false alarm ✓</text>
+
+  <!-- middle insight box -->
+  <rect x="700" y="205" width="200" height="90" rx="10" fill="#fff8e6" stroke="#e6c78a"/>
+  <text x="800" y="232" text-anchor="middle" font-size="12" font-weight="bold" fill="#7a5a1e">Same HF magnitude</text>
+  <text x="800" y="252" text-anchor="middle" font-size="11" fill="#7a5a1e">anomaly in (a),</text>
+  <text x="800" y="268" text-anchor="middle" font-size="11" fill="#7a5a1e">normal in (b)</text>
+  <text x="800" y="286" text-anchor="middle" font-size="11" font-weight="bold" fill="#7a5a1e">→ a fixed threshold fails</text>
+
+  <!-- solution box -->
+  <rect x="700" y="325" width="340" height="90" rx="10" fill="#fdeae4" stroke="#e6a89f"/>
+  <text x="870" y="352" text-anchor="middle" font-size="13" font-weight="bold" fill="#8a3f34">Our idea</text>
+  <text x="870" y="374" text-anchor="middle" font-size="12" fill="#8a3f34">estimate each image's own normal HF level,</text>
+  <text x="870" y="392" text-anchor="middle" font-size="12" fill="#8a3f34">flag only what exceeds that per-image reference</text>
+
+  <!-- vertical flow arrows -->
+  <line x1="300" y1="178" x2="300" y2="202" stroke="#5b5b5b" stroke-width="2" marker-end="url(#a1)"/>
+  <line x1="300" y1="298" x2="300" y2="322" stroke="#5b5b5b" stroke-width="2" marker-end="url(#a1)"/>
+  <line x1="560" y1="178" x2="560" y2="202" stroke="#5b5b5b" stroke-width="2" marker-end="url(#a1)"/>
+  <line x1="560" y1="298" x2="560" y2="322" stroke="#5b5b5b" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- bottom takeaway -->
+  <text x="540" y="475" text-anchor="middle" font-size="13" fill="#444" font-style="italic">High-frequency response alone is ambiguous; the per-image normal reference disambiguates anomaly vs. material.</text>
+</svg>

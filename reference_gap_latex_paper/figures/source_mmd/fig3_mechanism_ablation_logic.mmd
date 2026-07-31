@@ -1,0 +1,34 @@
+flowchart TB
+  Q["机制问题<br/>频域线索的价值在哪里？<br/>图像条件化参照是否必要？"]
+
+  subgraph Controls["受控变体回答的机制问题"]
+    Base["Base<br/>只有已有文本语义轴"]
+    Direct["Direct<br/>直接融合 wavelet map<br/>检验频域能否直接充当异常图"]
+    Global["Global<br/>固定/全局参照<br/>检验额外参照是否足够"]
+    Sem["Sem<br/>只用语义响应选择图像内证据<br/>检验单图参照本身的作用"]
+    Struct["Struct<br/>语义响应 + 局部结构稳定性<br/>检验证据选择是否更可靠"]
+    ICNR["ICNR<br/>Struct + 保守正常参照校准"]
+  end
+
+  subgraph Reading["预期读法"]
+    R1["Direct 较弱<br/>说明频域不应作为直接异常分数"]
+    R2["Global 有效但不充分<br/>说明参照需要随当前图像变化"]
+    R3["Sem 已经较强<br/>说明主要缺口是图像条件化正常参照"]
+    R4["Struct / ICNR 最强<br/>说明局部结构变化适合做证据选择信号"]
+  end
+
+  Q --> Base
+  Q --> Direct --> R1
+  Q --> Global --> R2
+  Q --> Sem --> R3
+  Sem --> Struct --> ICNR --> R4
+  Base -.-> Sem
+  Direct -.-> ICNR
+  Global -.-> ICNR
+
+  classDef question fill:#f7eeee,stroke:#9b3a3a,color:#111;
+  classDef variant fill:#eef4ff,stroke:#3b5b92,color:#111;
+  classDef reading fill:#edf7ed,stroke:#2f7d32,color:#111;
+  class Q question;
+  class Base,Direct,Global,Sem,Struct,ICNR variant;
+  class R1,R2,R3,R4 reading;

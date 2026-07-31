@@ -1,0 +1,116 @@
+{
+  "num_selected": 12,
+  "top_ratio": 0.03,
+  "contact_sheet": "outputs/detail_prompt_oracle/mvtec_detail_recovers_generic_misses/detail_recovers_generic_misses_contact.png",
+  "csv": "outputs/detail_prompt_oracle/mvtec_detail_recovers_generic_misses/detail_recovers_generic_misses.csv",
+  "examples": [
+    {
+      "cls_name": "zipper",
+      "defect_type": "squeezed_teeth",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/zipper/test/squeezed_teeth/004.png",
+      "coverage_gain": 0.15577889447236182,
+      "missed_recovery": 0.15577889447236182,
+      "component_recall_gain": 1.0,
+      "detail_prompt": "a photo of a zipper with a small irregular squeezed teeth in the upper region."
+    },
+    {
+      "cls_name": "zipper",
+      "defect_type": "squeezed_teeth",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/zipper/test/squeezed_teeth/001.png",
+      "coverage_gain": 0.12365672771303163,
+      "missed_recovery": 0.12365672771303163,
+      "component_recall_gain": 1.0,
+      "detail_prompt": "a photo of a zipper with a medium-sized irregular squeezed teeth in the upper region."
+    },
+    {
+      "cls_name": "zipper",
+      "defect_type": "squeezed_teeth",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/zipper/test/squeezed_teeth/007.png",
+      "coverage_gain": 0.07395097631906938,
+      "missed_recovery": 0.07395097631906938,
+      "component_recall_gain": 1.0,
+      "detail_prompt": "a photo of a zipper with a medium-sized irregular squeezed teeth in the upper region."
+    },
+    {
+      "cls_name": "zipper",
+      "defect_type": "split_teeth",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/zipper/test/split_teeth/017.png",
+      "coverage_gain": 0.0717341699942955,
+      "missed_recovery": 0.0717341699942955,
+      "component_recall_gain": 1.0,
+      "detail_prompt": "a photo of a zipper with a medium-sized irregular split teeth in the central region."
+    },
+    {
+      "cls_name": "pill",
+      "defect_type": "faulty_imprint",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/pill/test/faulty_imprint/003.png",
+      "coverage_gain": 0.06967316949581961,
+      "missed_recovery": 0.06967316949581961,
+      "component_recall_gain": 1.0,
+      "detail_prompt": "a photo of a pill with a medium-sized irregular faulty imprint in the central region."
+    },
+    {
+      "cls_name": "cable",
+      "defect_type": "missing_cable",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/cable/test/missing_cable/010.png",
+      "coverage_gain": 0.03956084680594803,
+      "missed_recovery": 0.03956084680594803,
+      "component_recall_gain": 1.0,
+      "detail_prompt": "a photo of a cable with a large irregular missing cable in the central region."
+    },
+    {
+      "cls_name": "zipper",
+      "defect_type": "squeezed_teeth",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/zipper/test/squeezed_teeth/006.png",
+      "coverage_gain": 0.03577611079053664,
+      "missed_recovery": 0.03577611079053664,
+      "component_recall_gain": 1.0,
+      "detail_prompt": "a photo of a zipper with a small irregular squeezed teeth in the lower region."
+    },
+    {
+      "cls_name": "zipper",
+      "defect_type": "squeezed_teeth",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/zipper/test/squeezed_teeth/015.png",
+      "coverage_gain": 0.03560689982592182,
+      "missed_recovery": 0.03560689982592182,
+      "component_recall_gain": 1.0,
+      "detail_prompt": "a photo of a zipper with a medium-sized vertical elongated squeezed teeth in the upper region."
+    },
+    {
+      "cls_name": "zipper",
+      "defect_type": "split_teeth",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/zipper/test/split_teeth/001.png",
+      "coverage_gain": 0.03502906976744186,
+      "missed_recovery": 0.03502906976744186,
+      "component_recall_gain": 1.0,
+      "detail_prompt": "a photo of a zipper with a medium-sized irregular split teeth in the upper region."
+    },
+    {
+      "cls_name": "zipper",
+      "defect_type": "combined",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/zipper/test/combined/014.png",
+      "coverage_gain": 0.03349661432070307,
+      "missed_recovery": 0.03349661432070307,
+      "component_recall_gain": 1.0,
+      "detail_prompt": "a photo of a zipper with a large irregular combined defects in the lower region."
+    },
+    {
+      "cls_name": "zipper",
+      "defect_type": "squeezed_teeth",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/zipper/test/squeezed_teeth/012.png",
+      "coverage_gain": 0.026306039273805114,
+      "missed_recovery": 0.026306039273805114,
+      "component_recall_gain": 1.0,
+      "detail_prompt": "a photo of a zipper with a medium-sized irregular squeezed teeth in the lower region."
+    },
+    {
+      "cls_name": "zipper",
+      "defect_type": "split_teeth",
+      "img_path": "/Users/bytedance/Downloads/mvtec_anomaly_detection/zipper/test/split_teeth/002.png",
+      "coverage_gain": 0.01588352084712111,
+      "missed_recovery": 0.01588352084712111,
+      "component_recall_gain": 1.0,
+      "detail_prompt": "a photo of a zipper with a medium-sized irregular split teeth in the upper region."
+    }
+  ]
+}

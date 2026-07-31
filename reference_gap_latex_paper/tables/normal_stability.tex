@@ -1,0 +1,17 @@
+\begin{table}[t]
+  \centering
+  \caption{正常图稳定性。FP area 表示正常图中超过对应阈值的面积比例；数值越低越好。}
+  \label{tab:normal-stability}
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{llccc}
+    \toprule
+    数据集 & 方法 & 正常图数量 & FP area @ p95 & FP area @ p99 \\
+    \midrule
+    MVTec & Baseline & 467 & 5.002\% & 1.001\% \\
+    MVTec & \method{} & 467 & 4.895\% & 0.960\% \\
+    VisA & Baseline & 962 & 4.996\% & 1.001\% \\
+    VisA & \method{} & 962 & 4.718\% & 0.937\% \\
+    \bottomrule
+  \end{tabular}%
+  }
+\end{table}

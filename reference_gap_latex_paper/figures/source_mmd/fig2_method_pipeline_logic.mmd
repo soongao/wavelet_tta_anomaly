@@ -1,0 +1,64 @@
+flowchart TB
+  subgraph Input["输入与冻结组件"]
+    X["测试图像 x"]
+    Enc["冻结 CLIP / AnomalyCLIP 视觉编码器"]
+    Text["已有文本原型 t_n, t_a"]
+  end
+
+  subgraph Semantic["语义响应"]
+    F["Patch 特征网格 F"]
+    Q["正常/异常语义轴上的响应 q_i"]
+  end
+
+  subgraph Structure["局部结构变化"]
+    Haar["Haar 分解"]
+    HF["高频幅值 h_i<br/>局部变化强度"]
+    LF["低频边界强度 e_i<br/>可解释结构边界"]
+    W["结构变化响应 W_i<br/>高频变化 - 边界解释"]
+  end
+
+  subgraph Evidence["证据选择"]
+    Wa["异常侧权重 omega_i^a<br/>高 q_i + 高 W_i"]
+    Wn["正常侧权重 omega_i^n<br/>低 q_i + 低 W_i"]
+    Aset["异常候选集合 A_x"]
+    Nset["正常参照集合 N_x"]
+  end
+
+  subgraph Reference["图像条件化参照"]
+    Va["异常候选方向 v_a"]
+    Vn["正常视觉参照 v_n = r_n(x)"]
+    Gate["证据置信度与门控"]
+    Calib["图像条件化原型 t_n^x, t_a^x"]
+  end
+
+  Out["重算 patch 异常响应<br/>上采样并融合为异常图"]
+
+  X --> Enc --> F
+  Text --> Q
+  F --> Q
+  F --> Haar
+  Haar --> HF --> W
+  Haar --> LF --> W
+  Q --> Wa
+  W --> Wa
+  Q --> Wn
+  W --> Wn
+  Wa --> Aset --> Va
+  Wn --> Nset --> Vn
+  Va --> Gate
+  Vn --> Gate
+  Text --> Calib
+  Gate --> Calib
+  Calib --> Out
+  F --> Out
+
+  classDef input fill:#eef4ff,stroke:#3b5b92,color:#111;
+  classDef struct fill:#f5f1ff,stroke:#6a51a3,color:#111;
+  classDef evidence fill:#fff4df,stroke:#9a6a00,color:#111;
+  classDef ref fill:#edf7ed,stroke:#2f7d32,color:#111;
+  classDef output fill:#f7eeee,stroke:#9b3a3a,color:#111;
+  class X,Enc,Text,F,Q input;
+  class Haar,HF,LF,W struct;
+  class Wa,Wn,Aset,Nset evidence;
+  class Va,Vn,Gate,Calib ref;
+  class Out output;
