@@ -33,13 +33,14 @@ mechanism. The controlled results in this project indicate that direct
 wavelet-map fusion is weak, while using boundary-aware local reliability to
 select patch evidence and calibrate prototypes is more stable.
 
-We therefore formulate CLIP-based zero-shot anomaly localization as
+We therefore address this missing-reference issue with
 image-conditioned normal reference estimation. The method keeps the
 CLIP/AnomalyCLIP representations fixed, uses the test image itself to select
 reliable normal and abnormal patch evidence, and recomputes local anomaly
-scores with image-conditioned prototypes. This reframes the score from "how
-strong is the local response" to "how abnormal is this patch relative to the
-normal reference estimated from the current image."
+scores with image-conditioned prototypes. The added module changes the
+question from using local response strength as final evidence to asking how
+abnormal a patch is relative to a normal reference estimated from the current
+image.
 
 Our contributions are:
 \begin{itemize}
@@ -50,9 +51,10 @@ Our contributions are:
   estimates a per-image normal reference from reliable patch evidence without
   target-category samples, labels, or test-time parameter updates.
   \item We organize the current experiments as mechanism tests. Direct
-  wavelet-map fusion serves as a negative control, semantic-only prototype
-  adaptation is a strong baseline, and boundary-aware reliability plus
-  conservative calibration gives the best controlled row on MVTec AD and VisA.
+  wavelet-map fusion serves as a negative control, GlobalRef tests a fixed/global
+  reference, semantic-only prototype adaptation is a strong
+  baseline, and boundary-aware reliability plus conservative calibration gives
+  the best controlled row on MVTec AD and VisA.
 \end{itemize}
 
 We deliberately avoid presenting the method as a ranking story. The

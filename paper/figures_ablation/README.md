@@ -14,9 +14,9 @@ Scope:
 
 Generated assets:
 
-- `figures/controlled_core_ablation_absolute_bars.*`: controlled core ablation across all four metrics.
-- `figures/controlled_core_ablation_gain_bars.*`: core ablation gains over the fixed baseline for Pixel-AUPRO and Image-AUROC.
-- `figures/controlled_core_ablation_progression_lines.*`: ordered core ablation path from baseline to Ours.
+- `figures/controlled_core_ablation_absolute_bars.*`: controlled core ablation across all four metrics, including GlobalRef.
+- `figures/controlled_core_ablation_gain_bars.*`: core ablation gains over the fixed baseline for Pixel-AUPRO and Image-AUROC, including GlobalRef.
+- `figures/controlled_core_ablation_progression_lines.*`: ordered image-conditioned ablation path from baseline to Ours; diagnostic alternatives such as direct fusion and GlobalRef are intentionally shown in the bar charts instead.
 - `figures/wavelet_design_ablation_absolute_bars.*`: wavelet reliability design ablation across all four metrics.
 - `figures/wavelet_design_ablation_gain_bars.*`: wavelet design gains over semantic-only prototype adaptation.
 - `figures/wavelet_design_ablation_progression_lines.*`: ordered wavelet reliability design progression.

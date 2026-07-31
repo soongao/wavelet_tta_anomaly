@@ -24,3 +24,15 @@ my_results*/
 .DS_Store
 *.pt
 outputs
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.brf
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+/paper/main.pdf

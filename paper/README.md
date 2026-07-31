@@ -22,6 +22,18 @@ and reliable patch evidence is used to estimate image-conditioned prototypes.
 Replace the lightweight local preamble with the official venue template before
 submission.
 
+## Build Check
+
+Current compile command:
+
+```bash
+python3 /Users/bytedance/.codex/plugins/cache/openai-bundled/latex/0.2.4/scripts/compile_latex.py /Users/bytedance/code/AnomalyCLIP/paper/main.tex
+```
+
+Last checked on 2026-07-31: the draft compiled successfully with TeX Live /
+`latexmk`, producing `paper/main.pdf`. The log showed no undefined citations,
+missing figures, or LaTeX errors; only ordinary underfull box warnings.
+
 ## Data Scope
 
 - Current paper-facing tables use `tables_ablation/` and the reproduced

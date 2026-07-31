@@ -11,6 +11,7 @@
 - Controlled VisA Ours: `96.2 / 91.7 / 84.3 / 87.3`.
 - Ours is higher than CLIP-only / semantic-only prototype adaptation on all four reported metrics for MVTec and VisA under the reproduced controlled setting.
 - Direct wavelet fusion remains the negative control and is worse than Ours.
+- GlobalRef controlled result is recorded in `narrative_workspace/GLOBALREF_EXPERIMENT_RECORD.md`: MVTec `91.2 / 84.3 / 93.1 / 96.9`, VisA `95.8 / 89.2 / 83.2 / 86.4`. Ours exceeds GlobalRef by `+1.9` / `+2.5` pixel AUPRO.
 
 ## Data Status
 - `newversion/paper_v7` still carries EXPECTED placeholder values and must be data-updated before use.

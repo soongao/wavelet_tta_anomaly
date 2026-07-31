@@ -11,6 +11,21 @@ The previous highest-risk conflict is resolved. The MVTec/VisA controlled values
 
 The current paper-facing claim may therefore say: under the reproduced MVTec/VisA controlled setting, Ours improves over CLIP-only / semantic-only prototype adaptation across all four reported metrics, with the largest margin in pixel AUPRO, while direct wavelet fusion remains a negative control.
 
+GlobalRef has also been recorded as a diagnostic control:
+
+- MVTec GlobalRef: `91.2 / 84.3 / 93.1 / 96.9`
+- VisA GlobalRef: `95.8 / 89.2 / 83.2 / 86.4`
+- Ours - GlobalRef pixel AUPRO: `+1.9` on MVTec and `+2.5` on VisA
+
+Manual GlobalRef provenance is recorded in `narrative_workspace/GLOBALREF_EXPERIMENT_RECORD.md`. The original command/log/commit provenance could not be recovered, so this row should be treated as a manual diagnostic record rather than a fully rerunnable reproduced run.
+
+## Build Check
+
+The active LaTeX draft at `paper/main.tex` compiled successfully on 2026-07-31
+using the bundled LaTeX compile wrapper and TeX Live / `latexmk`. The generated
+PDF is `paper/main.pdf`. No undefined citations, missing figures, or LaTeX
+errors were observed; only ordinary underfull box warnings remain.
+
 ## Remaining Consistency Risks
 
 ### 1. `Ours` rows must keep data-setting suffixes

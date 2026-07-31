@@ -10,13 +10,21 @@ adaptation. This supports the method boundary in Sec.~\ref{sec:method}: local
 high-frequency or boundary-aware responses are candidate cues, not final
 evidence.
 
+The GlobalRef diagnostic control is less pathological: it improves over direct
+map fusion and over the fixed-prototype baseline on pixel AUPRO. However, it
+still remains below the image-conditioned reference, with \method{} improving
+pixel AUPRO over GlobalRef by $+1.9$ on MVTec and $+2.5$ on VisA. This is the
+desired diagnostic pattern: a fixed global reference is useful, but it does not
+replace a reference estimated from the current image.
+
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\linewidth]{figures_ablation/figures/controlled_core_ablation_progression_lines.pdf}
-  \caption{Controlled core ablation. The plot visualizes the mechanism order:
-  direct fusion is the negative control, semantic-only prototype adaptation is
-  the strong baseline, and \method{} is the final controlled row.}
-  \label{fig:controlled-core-progression}
+  \includegraphics[width=\linewidth]{figures_ablation/figures/controlled_core_ablation_gain_bars.pdf}
+  \caption{Controlled core ablation gains over the fixed baseline. Direct
+  fusion is the negative control, GlobalRef tests a fixed reference, and
+  semantic-only prototype adaptation is the strongest non-frequency
+  image-conditioned control.}
+  \label{fig:controlled-core-gains}
 \end{figure}
 
 \subsection{Reliability Design}

@@ -49,6 +49,7 @@ WAVELET_SOURCE = TABLE_SRC / "prototype_wavelet_effect_comparison.csv"
 CORE_METHODS = [
     "Baseline",
     "Direct wavelet fusion / no adaptation",
+    "GlobalRef",
     "Semantic prototype adaptation",
     "Ours w/o conservative update",
     "Ours (unnamed)",
@@ -56,6 +57,7 @@ CORE_METHODS = [
 CORE_LABELS = {
     "Baseline": "Baseline",
     "Direct wavelet fusion / no adaptation": "Direct\nfusion",
+    "GlobalRef": "Global\nref",
     "Semantic prototype adaptation": "Semantic\nadapt.",
     "Ours w/o conservative update": "Ours\nw/o cons.",
     "Ours (unnamed)": "Ours",
@@ -93,6 +95,7 @@ WAVELET_PROGRESS_METHODS = [
 COLORS = {
     "Baseline": "#6B7280",
     "Direct wavelet fusion / no adaptation": "#C44E52",
+    "GlobalRef": "#B7791F",
     "Semantic prototype adaptation": "#4C78A8",
     "Ours w/o conservative update": "#F58518",
     "Ours (unnamed)": "#2A9D8F",
@@ -149,6 +152,13 @@ def load_ablation_csv(path: Path, method_column: str, method_order: list[str]) -
                     }
                 )
     df = pd.DataFrame.from_records(records)
+    available_methods = set(df["method"])
+    unknown_methods = sorted(available_methods - set(method_order))
+    missing_methods = [method for method in method_order if method not in available_methods]
+    if unknown_methods:
+        raise ValueError(f"{path} contains methods not listed in method_order: {unknown_methods}")
+    if missing_methods:
+        raise ValueError(f"{path} is missing methods listed in method_order: {missing_methods}")
     df["method"] = pd.Categorical(df["method"], categories=method_order, ordered=True)
     df["dataset"] = pd.Categorical(df["dataset"], categories=DATASETS, ordered=True)
     return df.sort_values(["dataset", "method"]).reset_index(drop=True)
@@ -425,14 +435,14 @@ def write_figure_snippets() -> None:
         ),
         (
             "controlled_core_ablation_gain_bars",
-            "Controlled core ablation gains over the fixed baseline.",
+            "Controlled core ablation gains over the fixed baseline, including diagnostic controls.",
             "fig:controlled-core-ablation-gains",
             "figure*",
             r"\textwidth",
         ),
         (
             "controlled_core_ablation_progression_lines",
-            "Ordered controlled ablation path from baseline to Ours.",
+            "Ordered image-conditioned ablation path from baseline to Ours.",
             "fig:controlled-core-ablation-lines",
             "figure*",
             r"\textwidth",

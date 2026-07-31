@@ -27,11 +27,12 @@ test-time optimization or target-category training.
 \subsection{Main Results}
 Table~\ref{tab:controlled-core-ablation} is the paper-facing controlled result.
 It compares the fixed-prototype baseline, direct wavelet-map fusion,
-semantic-only prototype adaptation, boundary-aware evidence selection without
-the conservative update, and the final unnamed method. The important ordering
-is not a ranking claim: direct fusion is the negative control,
-semantic-only adaptation is the strong baseline, and \method{} is the best
-controlled row across all four metrics on both datasets.
+GlobalRef, semantic-only prototype adaptation, boundary-aware evidence
+selection without the conservative update, and the final unnamed method. The
+important ordering is not a ranking claim: direct fusion is the negative
+control, GlobalRef tests a fixed/global reference, semantic-only
+adaptation is the strong baseline, and \method{} is the best controlled row
+across all four metrics on both datasets.
 
 \input{tables_ablation/controlled_core_ablation}
 
