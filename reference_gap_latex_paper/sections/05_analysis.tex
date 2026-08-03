@@ -1,45 +1,45 @@
 \section{分析}
 \label{sec:analysis}
 
-\subsection{Reference Gap 的证据}
+\subsection{Reference Gap 的诊断证据}
 
-表~\ref{tab:detail-prompt-diagnostic} 给出文本侧的诊断证据。在 MVTec 样例中，oracle detailed prompt 明确写入当前缺陷外观后，异常区域与背景区域的响应间隔平均增加 $0.207$；在 generic prompt 原本响应不足的样例中，detailed prompt 对标注异常区域的平均覆盖恢复为 $0.060$。这说明 patch response 不只由训练得到的通用 abnormal 语义决定，还会被当前样本的具体外观信息调节。
+表~\ref{tab:detail-prompt-diagnostic} 给出文本侧的诊断证据。在 MVTec 样例中，detailed prompt 写入当前缺陷外观后，异常区域与背景区域的响应间隔平均增加 $0.207$；在 generic prompt 原本响应不足的样例中，标注异常区域的平均覆盖恢复为 $0.060$。这一实验说明 patch response 同时受到通用 abnormal 语义和当前样本具体外观信息的调节；\method{} 在推理流程中通过图像侧 patch 证据建模这类外观上下文。
 
 \input{tables/detail_prompt_diagnostic}
 
-受控结果进一步支持 reference gap 的叙事。将 wavelet 响应直接混入异常图时，MVTec 的 Pixel AUPRO 降至 $80.4$，VisA 降至 $85.1$，低于最终图像条件化参照结果。Global 相对 Direct 有明显改善，但仍低于 \method{}：MVTec 的 Pixel AUPRO 差距为 $1.9$，VisA 的差距为 $2.5$。Sem 是强基线，说明主要增益来自当前图像参照估计本身；Struct 进一步改善了用于估计参照的 patch 证据选择。
+MVTec AD 和 VisA 上的受控结果进一步支持 reference gap 的解释。将 wavelet 响应直接混入异常图时，MVTec 的 Pixel AUPRO 为 $80.4$，VisA 为 $85.1$，低于基于参照估计的变体。Global 相对 Direct 有明显改善，但仍低于 \method{}：MVTec 的 Pixel AUPRO 差距为 $1.9$，VisA 的差距为 $2.5$，说明固定参照不足以刻画当前图像的正常外观。Sem 是强基线，表明主要改进来自当前图像参照估计；Struct 在 Sem 基础上继续提高 Pixel AUPRO，说明边界感知结构响应主要通过改善证据选择发挥作用。
 
 \input{tables/controlled_core_ablation}
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.82\linewidth]{figures/fig_mechanism_ordering.pdf}
-  \caption{从结果工作区复制的机制排序图。预期模式是：Direct 较弱，Global 有效但不充分，Sem 已经较强，而 \method{} 通过局部结构证据选择进一步改善图像条件化参照。}
+  \caption{受控消融结果。Direct 较弱说明频域响应更适合作为证据选择信号；Global 低于图像条件化参照说明参照需要随当前图像变化；Sem 和 Struct 的差距反映局部结构响应对可靠证据选择的作用。}
   \label{fig:mechanism-ordering}
 \end{figure}
 
 \subsection{局部结构响应设计}
 
-表~\ref{tab:wavelet-design-ablation} 隔离了频域响应的使用方式。HF 只使用高频幅值，不抑制结构边界。Bnd 使用式~\eqref{eq:structural-response} 降低由低频结构边界解释的响应。最终方法进一步加入保守正常参照估计。这个设计使频域响应的作用落在证据选择阶段。
+表~\ref{tab:wavelet-design-ablation} 隔离了局部结构响应的使用方式。HF 只使用高频幅值，不抑制结构边界。Bnd 使用式~\eqref{eq:structural-response} 降低由低频结构边界解释的响应。最终方法进一步加入保守正常参照估计。该组消融表明，结构响应更适合作为正常参照的证据选择信号。
 
 \input{tables/wavelet_design_ablation}
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.82\linewidth]{figures/wavelet_design_ablation_progression_lines.pdf}
-  \caption{可靠性设计消融。曲线用于分析局部结构变化如何影响图像条件化正常参照的 patch 证据选择。}
+  \caption{局部结构响应设计消融。曲线展示高频响应、边界抑制和保守正常参照估计对图像条件化参照质量的影响。}
   \label{fig:wavelet-design-progression}
 \end{figure}
 
 \subsection{正常图稳定性}
 
-正常侧参照采用保守更新。表~\ref{tab:normal-stability} 报告正常图中超过两个高响应阈值的面积。\method{} 在两个数据集上均没有增加该误报面积，这与正常参照校正的定位一致：方法调整的是当前图像的正常外观基准，而不是放大异常图响应。
+正常侧参照采用保守更新。表~\ref{tab:normal-stability} 报告正常图中超过两个高响应阈值的面积。\method{} 在两个数据集上均保持该误报面积稳定。这一结果与方法设计一致：图像条件化参照用于调整正常外观基准，并约束异常响应的放大范围。
 
 \input{tables/normal_stability}
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.82\linewidth]{figures/fig_sensitivity.pdf}
-  \caption{从结果工作区复制的敏感性曲线。wavelet-mix 曲线反映局部结构变化参与正常参照证据选择的强度。}
+  \caption{局部结构响应强度的敏感性分析。曲线反映结构响应参与正常参照证据选择时对定位指标的影响。}
   \label{fig:sensitivity}
 \end{figure}

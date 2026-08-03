@@ -3,12 +3,12 @@
 
 \subsection{语义参照与图像条件化参照}
 
-给定测试图像 $x$，冻结的 CLIP/AnomalyCLIP 视觉编码器输出若干层 patch 特征。为简化记号，先讨论用于构造参照的一层特征网格
+给定测试图像 $x$ 和一个已有 \clipzsad{} 模型，冻结的 CLIP 系视觉编码器输出若干层 patch 特征。为简化记号，先讨论用于构造参照的一层特征网格
 $F\in\mathbb{R}^{H_p\times W_p\times C}$，其展平后的 patch 特征记为
 $\{f_i\}_{i=1}^{N}$，$N=H_pW_p$。所有视觉特征在相似度计算前做 $\ell_2$ 归一化。记已有 \clipzsad{} 模型给出的正常和异常文本原型为
-$t_n,t_a\in\mathbb{R}^{C}$。在 AnomalyCLIP 一类方法中，这些原型已经可以包含学习得到的上下文 token；本文直接将它们作为跨图共享的语义参照。
+$t_n,t_a\in\mathbb{R}^{C}$。这些原型可以来自手写 prompt、可学习 prompt，或由辅助异常数据学习得到的上下文 token；\method{} 直接将它们作为跨图共享的语义参照，并在其上估计当前图像的正常外观基准。
 
-与现有 CLIP-based ZSAD 的 patch-text matching 形式一致~\cite{radford2021clip,jeong2023winclip,zhou2024anomalyclip}，每个 patch 的语义响应定义为
+与现有 patch-text matching 形式一致~\cite{radford2021clip,jeong2023winclip,zhou2024anomalyclip}，每个 patch 的语义响应定义为
 \begin{equation}
   q_i =
   \frac{\exp(\langle \bar f_i,\bar t_a\rangle/\tau)}
@@ -16,8 +16,8 @@ $t_n,t_a\in\mathbb{R}^{C}$。在 AnomalyCLIP 一类方法中，这些原型已�
         \exp(\langle \bar f_i,\bar t_a\rangle/\tau)} .
   \label{eq:semantic-response}
 \end{equation}
-$q_i$ 给出 patch 在正常/异常语义轴上的相对位置。本文进一步估计图像条件化正常参照
-$r_n(x)$，使局部响应不仅由跨图文本原型解释，也由当前图像内部的正常外观基准解释。该参照需要满足三个约束：证据来自同一张测试图像；证据在语义轴上更接近正常侧；证据在局部结构上能够代表当前图像的稳定外观。后续步骤将 $r_n(x)$ 实例化为由可靠正常 patch 聚合得到的视觉参照 $v_n$。
+$q_i$ 给出 patch 相对于正常/异常文本原型的语义响应。本文进一步估计图像条件化正常参照
+$r_n(x)$，使局部响应不仅由跨图文本原型解释，也由当前图像内部的正常外观基准解释。该参照需要满足三个约束：证据来自同一张测试图像；证据在语义响应上更接近正常侧；证据在局部结构上能够代表当前图像的稳定外观。后续步骤将 $r_n(x)$ 实例化为由可靠正常 patch 聚合得到的视觉参照 $v_n$。
 
 \subsection{局部结构变化响应}
 

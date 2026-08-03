@@ -3,16 +3,18 @@
 
 \subsection{数据集与指标}
 
-主结果覆盖五个工业异常检测基准：MVTec AD~\cite{bergmann2019mvtec}、VisA~\cite{zou2022visa}、MPDD~\cite{jezek2021deep}、BTAD~\cite{mishra2021vt} 和 DTD-Synthetic~\cite{aota2023zero}。其中 MVTec AD 与 VisA 进一步用于受控机制消融，以分析图像条件化参照和局部结构响应的作用。
+本文采用目标类别零样本设置：目标类别训练图像、正常参考图像和像素标注均不可用，模型直接输出图像级异常分数和像素级异常图。主结果覆盖五个工业异常检测基准：MVTec AD~\cite{bergmann2019mvtec}、VisA~\cite{zou2022visa}、MPDD~\cite{jezek2021deep}、BTAD~\cite{mishra2021vt} 和 DTD-Synthetic~\cite{aota2023zero}。其中 MVTec AD 与 VisA 具有完整的像素级标注和多样的工业缺陷类型，本文进一步在这两个数据集上报告受控消融，以分析图像条件化参照和局部结构响应的作用。
 
 实验报告 Pixel AUROC、Pixel AUPRO、Image AUROC 和 Image AP。Pixel AUROC 衡量异常图的像素级排序能力。Pixel AUPRO 衡量区域级定位质量，在小缺陷和误报面积控制场景中更具指示性。Image AUROC 与 Image AP 用于评估图像级异常检测。
 
 \subsection{实现细节}
 
-比较方法包括 CLIP~\cite{radford2021clip}、WinCLIP~\cite{jeong2023winclip}、VAND~\cite{chen2023aprilgan}、CoOp~\cite{zhou2022coop}、AdaCLIP~\cite{cao2024adaclip}、AnomalyCLIP~\cite{zhou2024anomalyclip} 和 AA-CLIP~\cite{ma2025aaclip}。在本文的图像条件化参照估计过程中，CLIP 视觉编码器和文本原型保持冻结。除特别说明外，\method{} 使用边界感知局部结构响应、top-ratio $0.20$、可靠性混合强度 $0.05$、$\alpha_0=0$ 和 $\beta_0=0.01$。新增步骤不进行测试时优化，也不使用目标类别训练。
+比较覆盖原始 CLIP 零样本匹配、局部窗口匹配、视觉异常检测桥接、上下文/提示学习、适应式提示、物体无关异常提示和异常感知适配等代表路线~\cite{radford2021clip,jeong2023winclip,chen2023aprilgan,zhou2022coop,cao2024adaclip,zhou2024anomalyclip,ma2025aaclip}。\method{} 建立在已有 \clipzsad{} 原型之上，沿用基线的视觉编码器、文本原型、多层特征融合和平滑设置；图像条件化参照估计作为推理阶段模块接入，保持视觉编码器、文本编码器和已学习 prompt 冻结。除特别说明外，可靠 patch 选择使用 top-ratio $0.20$，局部结构响应的混合强度为 $0.05$；最终报告设置采用 $\alpha_0=0$ 和 $\beta_0=0.01$，即保持异常文本原型方向不变，并对正常文本原型做保守校准。
+
+为避免把不同作用混为一个系统增益，本文在 MVTec AD 和 VisA 上进一步设置四类受控变体。Direct 将局部结构响应直接并入异常图，用于检验频域响应是否可以直接作为定位信号。Global 使用固定参照，用于检验参照是否需要随当前图像变化。Sem 只依据语义响应选择当前图像内证据，用于隔离图像条件化参照本身的作用。Struct 在 Sem 基础上加入边界感知结构响应，用于检验局部结构线索是否改善证据选择。
 
 \subsection{跨方法比较}
 
-表~\ref{tab:main-results} 按图像级和像素级结果报告五个工业基准上的零样本异常定位表现。该表采用统一的跨方法 baseline 集合，并将 \method{} 与已有 CLIP-ZSAD 方法放在同一评测口径下比较。\method{} 列使用当前项目记录的五数据集结果；MVTec AD 与 VisA 上的机制归因由后续受控消融给出。
+表~\ref{tab:main-results} 按图像级和像素级结果报告五个工业基准上的零样本异常定位表现。该表采用该任务通行的 image-level 与 pixel-level 指标组织方式，便于与外部公开报告对齐。\method{} 列报告本文实现得到的五数据集结果；MVTec AD 与 VisA 上的模块作用由后续受控消融分析。
 
 \input{tables/main_results}

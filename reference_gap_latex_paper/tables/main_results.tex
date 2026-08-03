@@ -1,6 +1,6 @@
 \begin{table}[t]
 \centering
-\caption{五个工业基准上的零样本异常定位结果。所有指标均以百分比报告；最佳和次优结果分别用粗体和下划线标出。}
+\caption{五个工业基准上的零样本异常定位结果。所有指标均以百分比报告；最佳和次优结果分别用粗体和下划线标出。外部方法按其公开零样本报告口径整理，平均值按该方法可用数据集计算。}
 \label{tab:main-results}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccccc}
@@ -29,4 +29,6 @@ DTD-Synthetic & (33.9, 12.5) & (83.9, 57.8) & (95.3, 86.9) & (-, -) & (\underlin
 \bottomrule
 \end{tabular}%
 }
+\vspace{0.25em}
+\footnotesize $^{\dagger}$ 表示训练式 anomaly-aware CLIP 强基线；本文对模块作用的同协议受控分析见表~\ref{tab:controlled-core-ablation}。
 \end{table}
