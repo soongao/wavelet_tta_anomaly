@@ -19,6 +19,33 @@ This file records the copied assets used by `reference_gap_latex_paper`.
 | `figures/source_svg/fig2_architecture.svg` | `narrative_workspace/figures/fig2_architecture.svg` | Architecture figure source; needs PDF conversion before direct LaTeX inclusion. |
 | `figures/source_svg/fig3_mechanism_ablation.svg` | `narrative_workspace/figures/fig3_mechanism_ablation.svg` | Mechanism figure source; copied for editing continuity. |
 
+## Source Mermaid Assets
+
+| Local file | Source file | Note |
+|---|---|---|
+| `figures/source_mmd/fig_method_architecture_icnr.mmd` | Created in this draft directory | Method architecture diagram source for ICNR. |
+| `figures/source_mmd/fig_qualitative_localization_layout.mmd` | Created in this draft directory | Qualitative localization comparison layout source. |
+
+## Source Excalidraw Assets
+
+| Local file | Source file | Note |
+|---|---|---|
+| `figures/source_excalidraw/fig_method_architecture_icnr.excalidraw` | Created in this draft directory | Editable Excalidraw source for the ICNR method architecture figure. |
+
+## Raster Assets Embedded In Excalidraw
+
+| Embedded in | Source file | Note |
+|---|---|---|
+| `figures/source_excalidraw/fig_method_architecture_icnr.excalidraw` | `paper_output/wpta_latest_cn_en_figures_20260709/figures/mvtec_three_row_selection_assets/mvtec_cable_input.png` | MVTec cable input thumbnail for `image x`. |
+| `figures/source_excalidraw/fig_method_architecture_icnr.excalidraw` | `paper_output/wpta_latest_cn_en_figures_20260709/figures/mvtec_three_row_selection_assets/mvtec_cable_final.png` | MVTec cable final anomaly heatmap thumbnail. |
+| `figures/source_excalidraw/fig_method_architecture_icnr.excalidraw` | `paper_output/wpta_latest_cn_en_figures_20260709/figures/mvtec_three_row_selection_assets/mvtec_cable_gt.png` | MVTec cable GT mask thumbnail shown as a small reference. |
+
+## Figure Design Notes Created In Draft
+
+| Local file | Source file | Note |
+|---|---|---|
+| `notes/TOPCONF_FIGURE_ELEMENT_RESEARCH_CN.md` | Created in this draft directory | Research note on top-conference figure element conventions and ICNR-specific visual design. |
+
 ## Data Snapshots
 
 | Local file | Source file |

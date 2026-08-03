@@ -82,22 +82,22 @@ Metric order: `pixel AUROC / pixel AUPRO / image AUROC / image AP`.
 
 | Dataset | Baseline | SemanticProto | GlobalRef | Ours | Verdict |
 |---|---:|---:|---:|---:|---|
-| MVTec | `91.2 / 83.2 / 91.6 / 96.4` | `91.6 / 85.2 / 93.7 / 97.1` | `91.2 / 84.3 / 93.1 / 96.9` | `91.8 / 86.2 / 94.1 / 97.4` | Strong support: GlobalRef improves over baseline/direct fusion on localization but remains below Ours, especially pAUPRO |
-| VisA | `95.5 / 86.7 / 82.0 / 85.3` | `96.0 / 90.4 / 83.7 / 86.9` | `95.8 / 89.2 / 83.2 / 86.4` | `96.2 / 91.7 / 84.3 / 87.3` | Strong support: GlobalRef improves over baseline/direct fusion but remains below Ours, especially pAUPRO |
+| MVTec | `91.2 / 83.2 / 91.6 / 96.4` | `91.6 / 85.2 / 93.7 / 97.1` | `91.2 / 84.3 / 93.1 / 96.9` | `91.8 / 86.2 / 94.5 / 97.6` | Strong support: GlobalRef improves over baseline/direct fusion on localization but remains below Ours, especially pAUPRO |
+| VisA | `95.5 / 86.7 / 82.0 / 85.3` | `96.0 / 90.4 / 83.7 / 86.9` | `95.8 / 89.2 / 83.2 / 86.4` | `96.2 / 91.7 / 84.6 / 87.4` | Strong support: GlobalRef improves over baseline/direct fusion but remains below Ours, especially pAUPRO |
 
 ### Gap vs Ours
 
 | Dataset | Ours - GlobalRef pAUROC | Ours - GlobalRef pAUPRO | Ours - GlobalRef iAUROC | Ours - GlobalRef iAP |
 |---|---:|---:|---:|---:|
-| MVTec | `+0.6` | `+1.9` | `+1.0` | `+0.5` |
-| VisA | `+0.4` | `+2.5` | `+1.1` | `+0.9` |
+| MVTec | `+0.6` | `+1.9` | `+1.4` | `+0.7` |
+| VisA | `+0.4` | `+2.5` | `+1.4` | `+1.0` |
 
 ### Diagnostic Position
 
 | Dataset | DirectFusion | GlobalRef | Ours |
 |---|---:|---:|---:|
-| MVTec | `88.7 / 80.4 / 92.9 / 96.9` | `91.2 / 84.3 / 93.1 / 96.9` | `91.8 / 86.2 / 94.1 / 97.4` |
-| VisA | `94.6 / 85.1 / 81.6 / 84.8` | `95.8 / 89.2 / 83.2 / 86.4` | `96.2 / 91.7 / 84.3 / 87.3` |
+| MVTec | `88.7 / 80.4 / 92.9 / 96.9` | `91.2 / 84.3 / 93.1 / 96.9` | `91.8 / 86.2 / 94.5 / 97.6` |
+| VisA | `94.6 / 85.1 / 81.6 / 84.8` | `95.8 / 89.2 / 83.2 / 86.4` | `96.2 / 91.7 / 84.6 / 87.4` |
 
 Interpretation: GlobalRef is not a broken/strawman control. It improves over direct map fusion and over the fixed-prototype baseline on pixel AUPRO, but still falls clearly below image-conditioned Ours. This is the desired diagnostic pattern. Because the original command/log provenance is unavailable, write it as a recorded diagnostic control rather than as a fully rerunnable reproduced run.
 

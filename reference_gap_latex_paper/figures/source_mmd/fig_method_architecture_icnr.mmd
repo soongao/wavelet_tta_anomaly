@@ -1,0 +1,90 @@
+flowchart LR
+  %% ICNR method architecture figure.
+  %% Purpose: show how frozen CLIP semantics are augmented with an image-conditioned normal reference.
+
+  subgraph Input["Input and frozen components"]
+    X["Test image x"]
+    Enc["Frozen CLIP / AnomalyCLIP<br/>visual encoder"]
+    Text["Frozen text prototypes<br/>normal t_n / abnormal t_a"]
+  end
+
+  subgraph PatchField["Patch feature field"]
+    F["Multi-layer patch features"]
+    Fref["Reference layer feature grid F"]
+  end
+
+  subgraph SemanticBranch["Semantic branch"]
+    Q["Patch-text response q_i<br/>position on normal-abnormal semantic axis"]
+  end
+
+  subgraph StructureBranch["Boundary-aware structure branch"]
+    Haar["One-level Haar decomposition<br/>on patch feature grid"]
+    HF["High-frequency magnitude h_i<br/>local texture / defect change"]
+    LF["Low-frequency boundary strength e_i<br/>object edge / regular structure"]
+    W["Structural response W_i<br/>HF change not explained by LF boundary"]
+  end
+
+  subgraph Evidence["Reliable patch evidence selection"]
+    Wn["Normal evidence weight omega_i^n<br/>low q_i + low W_i"]
+    Wa["Suspicious evidence weight omega_i^a<br/>high q_i + high W_i"]
+    Nset["Normal evidence set N_x<br/>stable patches from current image"]
+    Aset["Suspicious evidence set A_x<br/>candidate abnormal patches"]
+  end
+
+  subgraph Reference["Image-conditioned reference estimation"]
+    Vn["Normal visual reference v_n<br/>r_n(x)"]
+    Va["Suspicious visual direction v_a"]
+    Conf["Evidence confidence<br/>c_n, c_a"]
+    Gate["Conservative update gate<br/>m_x, g_x"]
+  end
+
+  subgraph Calibration["Prototype calibration and rescoring"]
+    Tnx["Image-conditioned normal prototype t_n^x"]
+    Tax["Abnormal prototype t_a^x<br/>kept frozen or gated"]
+    Score["Recomputed patch anomaly response a_i^x"]
+    Map["Final anomaly map<br/>upsample and layer fusion"]
+  end
+
+  X --> Enc --> F
+  F --> Fref
+  Text --> Q
+  Fref --> Q
+  Fref --> Haar
+  Haar --> HF --> W
+  Haar --> LF --> W
+  Q --> Wn
+  W --> Wn
+  Q --> Wa
+  W --> Wa
+  Wn --> Nset --> Vn
+  Wa --> Aset --> Va
+  Vn --> Conf
+  Va --> Conf
+  Conf --> Gate
+  Text --> Tnx
+  Text --> Tax
+  Gate --> Tnx
+  Gate --> Tax
+  Vn --> Tnx
+  Va -. gated update .-> Tax
+  F --> Score
+  Tnx --> Score
+  Tax --> Score
+  Score --> Map
+
+  Text -. "semantic axis" .-> Q
+  Vn -. "current-image normal reference" .-> Tnx
+
+  classDef input fill:#eef4ff,stroke:#3b5b92,color:#111;
+  classDef semantic fill:#eaf7ff,stroke:#2477a3,color:#111;
+  classDef structure fill:#f5f1ff,stroke:#6a51a3,color:#111;
+  classDef evidence fill:#fff4df,stroke:#9a6a00,color:#111;
+  classDef reference fill:#edf7ed,stroke:#2f7d32,color:#111;
+  classDef output fill:#f7eeee,stroke:#9b3a3a,color:#111;
+
+  class X,Enc,Text,F,Fref input;
+  class Q semantic;
+  class Haar,HF,LF,W structure;
+  class Wn,Wa,Nset,Aset evidence;
+  class Vn,Va,Conf,Gate,Tnx,Tax reference;
+  class Score,Map output;

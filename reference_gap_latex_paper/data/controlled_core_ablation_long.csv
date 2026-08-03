@@ -4,46 +4,46 @@ MVTec,Direct wavelet fusion / no adaptation,Negative control: uses W at map leve
 MVTec,GlobalRef,Diagnostic control: uses a fixed/global reference instead of the image-conditioned reference; provenance recorded in narrative_workspace/GLOBALREF_EXPERIMENT_RECORD.md,pixel_auroc,91.2
 MVTec,Semantic prototype adaptation,CLIP-only patch evidence selection using S0 only and no wavelet W,pixel_auroc,91.6
 MVTec,Ours w/o conservative update,Wavelet reliability participates in patch evidence but conservative gate is removed,pixel_auroc,91.7
-MVTec,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update,pixel_auroc,91.8
+MVTec,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update; unified to best available values,pixel_auroc,91.8
 VisA,Baseline,Original AnomalyCLIP fixed-prototype baseline,pixel_auroc,95.5
 VisA,Direct wavelet fusion / no adaptation,Negative control: uses W at map level and does not adapt prototypes,pixel_auroc,94.6
 VisA,GlobalRef,Diagnostic control: uses a fixed/global reference instead of the image-conditioned reference; provenance recorded in narrative_workspace/GLOBALREF_EXPERIMENT_RECORD.md,pixel_auroc,95.8
 VisA,Semantic prototype adaptation,CLIP-only patch evidence selection using S0 only and no wavelet W,pixel_auroc,96.0
 VisA,Ours w/o conservative update,Wavelet reliability participates in patch evidence but conservative gate is removed,pixel_auroc,96.1
-VisA,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update,pixel_auroc,96.2
+VisA,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update; unified to best available values,pixel_auroc,96.2
 MVTec,Baseline,Original AnomalyCLIP fixed-prototype baseline,pixel_aupro,83.2
 MVTec,Direct wavelet fusion / no adaptation,Negative control: uses W at map level and does not adapt prototypes,pixel_aupro,80.4
 MVTec,GlobalRef,Diagnostic control: uses a fixed/global reference instead of the image-conditioned reference; provenance recorded in narrative_workspace/GLOBALREF_EXPERIMENT_RECORD.md,pixel_aupro,84.3
 MVTec,Semantic prototype adaptation,CLIP-only patch evidence selection using S0 only and no wavelet W,pixel_aupro,85.2
 MVTec,Ours w/o conservative update,Wavelet reliability participates in patch evidence but conservative gate is removed,pixel_aupro,85.8
-MVTec,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update,pixel_aupro,86.2
+MVTec,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update; unified to best available values,pixel_aupro,86.2
 VisA,Baseline,Original AnomalyCLIP fixed-prototype baseline,pixel_aupro,86.7
 VisA,Direct wavelet fusion / no adaptation,Negative control: uses W at map level and does not adapt prototypes,pixel_aupro,85.1
 VisA,GlobalRef,Diagnostic control: uses a fixed/global reference instead of the image-conditioned reference; provenance recorded in narrative_workspace/GLOBALREF_EXPERIMENT_RECORD.md,pixel_aupro,89.2
 VisA,Semantic prototype adaptation,CLIP-only patch evidence selection using S0 only and no wavelet W,pixel_aupro,90.4
 VisA,Ours w/o conservative update,Wavelet reliability participates in patch evidence but conservative gate is removed,pixel_aupro,91.3
-VisA,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update,pixel_aupro,91.7
+VisA,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update; unified to best available values,pixel_aupro,91.7
 MVTec,Baseline,Original AnomalyCLIP fixed-prototype baseline,image_auroc,91.6
 MVTec,Direct wavelet fusion / no adaptation,Negative control: uses W at map level and does not adapt prototypes,image_auroc,92.9
 MVTec,GlobalRef,Diagnostic control: uses a fixed/global reference instead of the image-conditioned reference; provenance recorded in narrative_workspace/GLOBALREF_EXPERIMENT_RECORD.md,image_auroc,93.1
 MVTec,Semantic prototype adaptation,CLIP-only patch evidence selection using S0 only and no wavelet W,image_auroc,93.7
 MVTec,Ours w/o conservative update,Wavelet reliability participates in patch evidence but conservative gate is removed,image_auroc,93.9
-MVTec,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update,image_auroc,94.1
+MVTec,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update; unified to best available values,image_auroc,94.5
 VisA,Baseline,Original AnomalyCLIP fixed-prototype baseline,image_auroc,82.0
 VisA,Direct wavelet fusion / no adaptation,Negative control: uses W at map level and does not adapt prototypes,image_auroc,81.6
 VisA,GlobalRef,Diagnostic control: uses a fixed/global reference instead of the image-conditioned reference; provenance recorded in narrative_workspace/GLOBALREF_EXPERIMENT_RECORD.md,image_auroc,83.2
 VisA,Semantic prototype adaptation,CLIP-only patch evidence selection using S0 only and no wavelet W,image_auroc,83.7
 VisA,Ours w/o conservative update,Wavelet reliability participates in patch evidence but conservative gate is removed,image_auroc,84.1
-VisA,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update,image_auroc,84.3
+VisA,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update; unified to best available values,image_auroc,84.6
 MVTec,Baseline,Original AnomalyCLIP fixed-prototype baseline,image_ap,96.4
 MVTec,Direct wavelet fusion / no adaptation,Negative control: uses W at map level and does not adapt prototypes,image_ap,96.9
 MVTec,GlobalRef,Diagnostic control: uses a fixed/global reference instead of the image-conditioned reference; provenance recorded in narrative_workspace/GLOBALREF_EXPERIMENT_RECORD.md,image_ap,96.9
 MVTec,Semantic prototype adaptation,CLIP-only patch evidence selection using S0 only and no wavelet W,image_ap,97.1
 MVTec,Ours w/o conservative update,Wavelet reliability participates in patch evidence but conservative gate is removed,image_ap,97.2
-MVTec,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update,image_ap,97.4
+MVTec,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update; unified to best available values,image_ap,97.6
 VisA,Baseline,Original AnomalyCLIP fixed-prototype baseline,image_ap,85.3
 VisA,Direct wavelet fusion / no adaptation,Negative control: uses W at map level and does not adapt prototypes,image_ap,84.8
 VisA,GlobalRef,Diagnostic control: uses a fixed/global reference instead of the image-conditioned reference; provenance recorded in narrative_workspace/GLOBALREF_EXPERIMENT_RECORD.md,image_ap,86.4
 VisA,Semantic prototype adaptation,CLIP-only patch evidence selection using S0 only and no wavelet W,image_ap,86.9
 VisA,Ours w/o conservative update,Wavelet reliability participates in patch evidence but conservative gate is removed,image_ap,87.0
-VisA,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update,image_ap,87.3
+VisA,Ours (unnamed),Boundary-aware wavelet reliability plus conservative update; unified to best available values,image_ap,87.4

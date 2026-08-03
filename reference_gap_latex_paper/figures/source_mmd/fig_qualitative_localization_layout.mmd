@@ -1,0 +1,89 @@
+flowchart TB
+  %% Qualitative localization figure layout.
+  %% Purpose: specify the multi-row visual comparison figure to be filled with real images, masks, and heatmaps.
+
+  Title["Qualitative localization comparison<br/>ICNR should suppress normal texture / boundary responses and concentrate heat on true defects"]
+
+  subgraph Columns["Column order used for every example"]
+    direction LR
+    C1["Input image"]
+    C2["Ground-truth mask"]
+    C3["AnomalyCLIP baseline<br/>semantic prototypes only"]
+    C4["Semantic-only reference<br/>image evidence without W_i"]
+    C5["ICNR (Ours)<br/>image-conditioned normal reference"]
+  end
+
+  subgraph Row1["Row 1: normal texture false positives"]
+    direction LR
+    R1A["Carpet / wood texture<br/>input crop"]
+    R1B["GT defect mask"]
+    R1C["Baseline heatmap<br/>normal texture remains bright"]
+    R1D["Semantic-only heatmap<br/>partly cleaner"]
+    R1E["ICNR heatmap<br/>background texture suppressed"]
+  end
+
+  subgraph Row2["Row 2: small local defect"]
+    direction LR
+    R2A["Tile crack or leather glue<br/>input crop"]
+    R2B["GT defect mask"]
+    R2C["Baseline heatmap<br/>diffuse response"]
+    R2D["Semantic-only heatmap<br/>better but still spread"]
+    R2E["ICNR heatmap<br/>compact response on defect"]
+  end
+
+  subgraph Row3["Row 3: structure boundary confusion"]
+    direction LR
+    R3A["Zipper / cable boundary<br/>input crop"]
+    R3B["GT defect mask"]
+    R3C["Baseline heatmap<br/>edge and defect mixed"]
+    R3D["Semantic-only heatmap<br/>edge partly retained"]
+    R3E["ICNR heatmap<br/>boundary response reduced"]
+  end
+
+  subgraph Row4["Row 4: limited-gain or failure case"]
+    direction LR
+    R4A["Large-area anomaly or logic defect<br/>input crop"]
+    R4B["GT defect mask"]
+    R4C["Baseline heatmap"]
+    R4D["Semantic-only heatmap"]
+    R4E["ICNR heatmap<br/>show honest limitation"]
+  end
+
+  subgraph Insets["Consistent visual rules"]
+    direction LR
+    Z1["Zoom boxes<br/>same region in all columns"]
+    Z2["Shared colormap<br/>same normalization within each row"]
+    Z3["Mask outline<br/>red contour, not opaque fill"]
+    Z4["Failure annotation<br/>short, non-promotional label"]
+  end
+
+  Title --> Columns
+  Columns --> Row1 --> Row2 --> Row3 --> Row4 --> Insets
+
+  C1 -. same column .-> R1A
+  C2 -. same column .-> R1B
+  C3 -. same column .-> R1C
+  C4 -. same column .-> R1D
+  C5 -. same column .-> R1E
+
+  R1A -. vertical alignment .-> R2A -. vertical alignment .-> R3A -. vertical alignment .-> R4A
+  R1B -. vertical alignment .-> R2B -. vertical alignment .-> R3B -. vertical alignment .-> R4B
+  R1C -. vertical alignment .-> R2C -. vertical alignment .-> R3C -. vertical alignment .-> R4C
+  R1D -. vertical alignment .-> R2D -. vertical alignment .-> R3D -. vertical alignment .-> R4D
+  R1E -. vertical alignment .-> R2E -. vertical alignment .-> R3E -. vertical alignment .-> R4E
+
+  classDef title fill:#f7eeee,stroke:#9b3a3a,color:#111;
+  classDef header fill:#eef4ff,stroke:#3b5b92,color:#111;
+  classDef input fill:#f7f7f7,stroke:#666,color:#111;
+  classDef mask fill:#fff1f1,stroke:#b22222,color:#111;
+  classDef baseline fill:#fff4df,stroke:#9a6a00,color:#111;
+  classDef ours fill:#edf7ed,stroke:#2f7d32,color:#111;
+  classDef rule fill:#f5f1ff,stroke:#6a51a3,color:#111;
+
+  class Title title;
+  class C1,C2,C3,C4,C5 header;
+  class R1A,R2A,R3A,R4A input;
+  class R1B,R2B,R3B,R4B mask;
+  class R1C,R1D,R2C,R2D,R3C,R3D,R4C,R4D baseline;
+  class R1E,R2E,R3E,R4E ours;
+  class Z1,Z2,Z3,Z4 rule;

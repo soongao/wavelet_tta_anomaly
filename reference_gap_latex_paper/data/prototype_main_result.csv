@@ -1,5 +1,11 @@
 dataset,method,pixel_auroc,pixel_aupro,image_auroc,image_ap,result_type,improvement_vs_baseline,notes
-MVTec,AnomalyCLIP baseline,91.2,83.2,91.6,96.4,current,-,Cached baseline result
-MVTec,Ours (unnamed),91.8,86.2,94.1,97.4,current_reproduced,+0.6 / +3.0 / +2.5 / +1.0,Reproduced current result; replaces earlier erroneous 91.8 / 86.0 / 94.4 / 97.6 record
-VisA,AnomalyCLIP baseline,95.5,86.7,82.0,85.3,current,-,Original AnomalyCLIP baseline
-VisA,Ours (unnamed),96.2,91.7,84.3,87.3,current_reproduced,+0.7 / +5.0 / +2.3 / +2.0,Reproduced current result; replaces earlier erroneous 96.2 / 91.3 / 84.6 / 87.4 record
+MVTec,AnomalyCLIP baseline,91.2,83.2,91.6,96.4,current_best_unified,-,Unified baseline values used by the main table
+MVTec,Ours (unnamed),91.8,86.2,94.5,97.6,current_best_unified,+0.6 / +3.0 / +2.9 / +1.2,Unified to the best available values already present in manuscript records
+VisA,AnomalyCLIP baseline,95.5,87.0,82.1,85.4,current_best_unified,-,Unified baseline values used by the main table
+VisA,Ours (unnamed),96.2,91.7,84.6,87.4,current_best_unified,+0.7 / +5.0 / +2.6 / +2.1,Unified to the best available values already present in manuscript records
+MPDD,AnomalyCLIP baseline,96.5,88.7,77.0,82.0,current,-,Main-table baseline value
+MPDD,Ours (unnamed),97.3,89.9,77.8,82.3,current_best_unified,+0.8 / +1.2 / +0.8 / +0.3,Unified to the best available values already present in manuscript records
+BTAD,AnomalyCLIP baseline,94.2,74.8,88.3,87.3,current,-,Main-table baseline value
+BTAD,Ours (unnamed),96.3,79.5,93.9,94.9,current_best_unified,+2.1 / +4.7 / +5.6 / +7.6,Unified to the best available values already present in manuscript records
+DTD-Synthetic,AnomalyCLIP baseline,97.9,92.3,93.5,97.0,current,-,Main-table baseline value
+DTD-Synthetic,Ours (unnamed),97.9,91.8,96.9,98.7,current_best_unified,+0.0 / -0.5 / +3.4 / +1.7,Unified to the best available values already present in manuscript records

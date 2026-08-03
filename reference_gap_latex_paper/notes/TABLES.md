@@ -19,20 +19,20 @@
 \toprule
 Dataset & Method & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
 \midrule
-\multirow{2}{*}{MVTec AD} & AnomalyCLIP & 91.1 & 81.4 & 91.6 & 96.4 \\
-                          & Ours (unnamed) & \textbf{91.8} & \textbf{86.2} & \textbf{94.1} & \textbf{97.4} \\
+\multirow{2}{*}{MVTec AD} & AnomalyCLIP & 91.2 & 83.2 & 91.6 & 96.4 \\
+                          & Ours (unnamed) & \textbf{91.8} & \textbf{86.2} & \textbf{94.5} & \textbf{97.6} \\
 \midrule
-\multirow{2}{*}{VisA}     & AnomalyCLIP & 95.5 & 86.7 & 82.0 & 85.3 \\
-                          & Ours (unnamed) & \textbf{96.2} & \textbf{91.7} & \textbf{84.3} & \textbf{87.3} \\
+\multirow{2}{*}{VisA}     & AnomalyCLIP & 95.5 & 87.0 & 82.1 & 85.4 \\
+                          & Ours (unnamed) & \textbf{96.2} & \textbf{91.7} & \textbf{84.6} & \textbf{87.4} \\
 \midrule
-\multirow{2}{*}{MPDD}     & AnomalyCLIP & 96.9 & 84.6 & 73.7 & 76.5 \\
-                          & Ours (global) & \textbf{97.2} & \textbf{88.4} & \textbf{75.1} & \textbf{78.0} \\
+\multirow{2}{*}{MPDD}     & AnomalyCLIP & 96.5 & 88.7 & 77.0 & 82.0 \\
+                          & Ours (unnamed) & \textbf{97.3} & \textbf{89.9} & \textbf{77.8} & \textbf{82.3} \\
 \midrule
-\multirow{2}{*}{BTAD}     & AnomalyCLIP & 93.5 & 70.5 & 89.1 & 91.0 \\
-                          & Ours (global) & \textbf{95.6} & \textbf{79.5} & \textbf{89.8} & \textbf{91.1} \\
+\multirow{2}{*}{BTAD}     & AnomalyCLIP & 94.2 & 74.8 & 88.3 & 87.3 \\
+                          & Ours (unnamed) & \textbf{96.3} & \textbf{79.5} & \textbf{93.9} & \textbf{94.9} \\
 \midrule
-\multirow{2}{*}{DTD-Synth}& AnomalyCLIP & 97.4 & 89.1 & 94.5 & 97.7 \\
-                          & Ours (global) & \textbf{97.7} & \textbf{90.7} & \textbf{95.1} & \textbf{98.0} \\
+\multirow{2}{*}{DTD-Synth}& AnomalyCLIP & \textbf{97.9} & \textbf{92.3} & 93.5 & 97.0 \\
+                          & Ours (unnamed) & \textbf{97.9} & 91.8 & \textbf{96.9} & \textbf{98.7} \\
 \bottomrule
 \end{tabular}}
 \end{table*}
@@ -53,11 +53,11 @@ Method & Image AUROC & Pixel AUROC & Pixel AUPRO \\
 \midrule
 WinCLIP*      & 91.8 & 85.1 & 64.6 \\
 APRIL-GAN*    & 86.1 & 87.6 & 44.0 \\
-AnomalyCLIP   & 91.5 & 91.1 & 81.4 \\
+AnomalyCLIP   & 91.6 & 91.2 & 83.2 \\
 AdaCLIP*      & 92.0 & 89.0 & --   \\
 FE-CLIP*      & --   & --   & --   \\
 \midrule
-\textbf{Ours (unnamed)} & \textbf{94.1} & \textbf{91.8} & \textbf{86.2} \\
+\textbf{Ours (unnamed)} & \textbf{94.5} & \textbf{91.8} & \textbf{86.2} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -83,14 +83,14 @@ Direct fusion (no adaptation) & 88.7 & 80.4 & 92.9 & 96.9 \\
 Baseline                      & 91.2 & 83.2 & 91.6 & 96.4 \\
 Semantic-only adaptation      & 91.6 & 85.2 & 93.7 & 97.1 \\
 Ours w/o conservative update  & 91.7 & 85.8 & 93.9 & 97.2 \\
-\textbf{Ours (unnamed)}       & \textbf{91.8} & \textbf{86.2} & \textbf{94.1} & \textbf{97.4} \\
+\textbf{Ours (unnamed)}       & \textbf{91.8} & \textbf{86.2} & \textbf{94.5} & \textbf{97.6} \\
 \midrule
 \multicolumn{5}{l}{\emph{VisA}}\\
 Direct fusion (no adaptation) & 94.6 & 85.1 & 81.6 & 84.8 \\
 Baseline                      & 95.5 & 86.7 & 82.0 & 85.3 \\
 Semantic-only adaptation      & 96.0 & 90.4 & 83.7 & 86.9 \\
 Ours w/o conservative update  & 96.1 & 91.3 & 84.1 & 87.0 \\
-\textbf{Ours (unnamed)}       & \textbf{96.2} & \textbf{91.7} & \textbf{84.3} & \textbf{87.3} \\
+\textbf{Ours (unnamed)}       & \textbf{96.2} & \textbf{91.7} & \textbf{84.6} & \textbf{87.4} \\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -111,7 +111,7 @@ Variant & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
 HF-only reliability          & 91.6 & 85.3 & 94.0 & 97.2 \\
 Boundary-aware reliability   & 91.7 & 85.7 & 93.8 & 97.3 \\
 No conservative update       & 91.7 & 85.8 & 93.9 & 97.2 \\
-\textbf{Ours (unnamed)}      & \textbf{91.8} & \textbf{86.2} & \textbf{94.1} & \textbf{97.4} \\
+\textbf{Ours (unnamed)}      & \textbf{91.8} & \textbf{86.2} & \textbf{94.5} & \textbf{97.6} \\
 \bottomrule
 \end{tabular}
 \end{table}

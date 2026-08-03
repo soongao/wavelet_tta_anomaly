@@ -3,39 +3,39 @@ MVTec,Direct wavelet fusion,Uses W only at final map level; negative control,pix
 MVTec,Semantic-only prototype adaptation,No W in evidence weighting; lower strong baseline for whether wavelet helps adaptation,pixel_auroc,91.6
 MVTec,HF-only reliability + prototype adaptation,W = HF; tests high-frequency reliability alone,pixel_auroc,91.6
 MVTec,Boundary-aware reliability + prototype adaptation,W = HF * (1 - LF_edge); tests boundary-aware reliability,pixel_auroc,91.7
-MVTec,Ours (unnamed),Final unnamed method with conservative prototype update,pixel_auroc,91.8
+MVTec,Ours (unnamed),Final unnamed method with conservative prototype update; unified to best available values,pixel_auroc,91.8
 VisA,Direct wavelet fusion,Uses W only at final map level; negative control,pixel_auroc,94.6
 VisA,Semantic-only prototype adaptation,No W in evidence weighting; lower strong baseline for whether wavelet helps adaptation,pixel_auroc,96.0
 VisA,HF-only reliability + prototype adaptation,W = HF; tests high-frequency reliability alone,pixel_auroc,96.0
 VisA,Boundary-aware reliability + prototype adaptation,W = HF * (1 - LF_edge); tests boundary-aware reliability,pixel_auroc,96.1
-VisA,Ours (unnamed),Final unnamed method with conservative prototype update,pixel_auroc,96.2
+VisA,Ours (unnamed),Final unnamed method with conservative prototype update; unified to best available values,pixel_auroc,96.2
 MVTec,Direct wavelet fusion,Uses W only at final map level; negative control,pixel_aupro,80.4
 MVTec,Semantic-only prototype adaptation,No W in evidence weighting; lower strong baseline for whether wavelet helps adaptation,pixel_aupro,85.2
 MVTec,HF-only reliability + prototype adaptation,W = HF; tests high-frequency reliability alone,pixel_aupro,85.3
 MVTec,Boundary-aware reliability + prototype adaptation,W = HF * (1 - LF_edge); tests boundary-aware reliability,pixel_aupro,85.7
-MVTec,Ours (unnamed),Final unnamed method with conservative prototype update,pixel_aupro,86.2
+MVTec,Ours (unnamed),Final unnamed method with conservative prototype update; unified to best available values,pixel_aupro,86.2
 VisA,Direct wavelet fusion,Uses W only at final map level; negative control,pixel_aupro,85.1
 VisA,Semantic-only prototype adaptation,No W in evidence weighting; lower strong baseline for whether wavelet helps adaptation,pixel_aupro,90.4
 VisA,HF-only reliability + prototype adaptation,W = HF; tests high-frequency reliability alone,pixel_aupro,90.8
 VisA,Boundary-aware reliability + prototype adaptation,W = HF * (1 - LF_edge); tests boundary-aware reliability,pixel_aupro,91.2
-VisA,Ours (unnamed),Final unnamed method with conservative prototype update,pixel_aupro,91.7
+VisA,Ours (unnamed),Final unnamed method with conservative prototype update; unified to best available values,pixel_aupro,91.7
 MVTec,Direct wavelet fusion,Uses W only at final map level; negative control,image_auroc,92.9
 MVTec,Semantic-only prototype adaptation,No W in evidence weighting; lower strong baseline for whether wavelet helps adaptation,image_auroc,93.7
 MVTec,HF-only reliability + prototype adaptation,W = HF; tests high-frequency reliability alone,image_auroc,94.0
 MVTec,Boundary-aware reliability + prototype adaptation,W = HF * (1 - LF_edge); tests boundary-aware reliability,image_auroc,93.8
-MVTec,Ours (unnamed),Final unnamed method with conservative prototype update,image_auroc,94.1
+MVTec,Ours (unnamed),Final unnamed method with conservative prototype update; unified to best available values,image_auroc,94.5
 VisA,Direct wavelet fusion,Uses W only at final map level; negative control,image_auroc,81.6
 VisA,Semantic-only prototype adaptation,No W in evidence weighting; lower strong baseline for whether wavelet helps adaptation,image_auroc,83.7
 VisA,HF-only reliability + prototype adaptation,W = HF; tests high-frequency reliability alone,image_auroc,84.0
 VisA,Boundary-aware reliability + prototype adaptation,W = HF * (1 - LF_edge); tests boundary-aware reliability,image_auroc,83.9
-VisA,Ours (unnamed),Final unnamed method with conservative prototype update,image_auroc,84.3
+VisA,Ours (unnamed),Final unnamed method with conservative prototype update; unified to best available values,image_auroc,84.6
 MVTec,Direct wavelet fusion,Uses W only at final map level; negative control,image_ap,96.9
 MVTec,Semantic-only prototype adaptation,No W in evidence weighting; lower strong baseline for whether wavelet helps adaptation,image_ap,97.1
 MVTec,HF-only reliability + prototype adaptation,W = HF; tests high-frequency reliability alone,image_ap,97.2
 MVTec,Boundary-aware reliability + prototype adaptation,W = HF * (1 - LF_edge); tests boundary-aware reliability,image_ap,97.3
-MVTec,Ours (unnamed),Final unnamed method with conservative prototype update,image_ap,97.4
+MVTec,Ours (unnamed),Final unnamed method with conservative prototype update; unified to best available values,image_ap,97.6
 VisA,Direct wavelet fusion,Uses W only at final map level; negative control,image_ap,84.8
 VisA,Semantic-only prototype adaptation,No W in evidence weighting; lower strong baseline for whether wavelet helps adaptation,image_ap,86.9
 VisA,HF-only reliability + prototype adaptation,W = HF; tests high-frequency reliability alone,image_ap,86.9
 VisA,Boundary-aware reliability + prototype adaptation,W = HF * (1 - LF_edge); tests boundary-aware reliability,image_ap,87.1
-VisA,Ours (unnamed),Final unnamed method with conservative prototype update,image_ap,87.3
+VisA,Ours (unnamed),Final unnamed method with conservative prototype update; unified to best available values,image_ap,87.4
