@@ -15,6 +15,17 @@ venv/
 # Notebook checkpoints
 .ipynb_checkpoints/
 
+# Experiment data and generated outputs
+cache/
+cached_results*/
+results/
+outputs/
+checkpoints/
+ablation_results/
+sweep_results/
+my_results*/
+paper_output/
+
 # LaTeX build artifacts
 *.aux
 *.bbl

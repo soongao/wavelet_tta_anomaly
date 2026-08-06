@@ -1,0 +1,36 @@
+script: scripts/evaluate/eval_cached_calibration.py
+args:
+  cache_dir: ./cache/mvtec_anomalyclip_features
+  save_path: ./cached_results_ncma_mvtec
+  dataset: mvtec
+  metrics: image-pixel-level
+  aupro_steps: 200
+  image_size: null
+  feature_map_layer: null
+  layer_weighting: sum
+  layer_weight_temperature: 1.0
+  sigma: 4
+  classes: null
+  recompute_maps: false
+  use_ncma_adaptation: true
+  ncma_manifold_path: ./cache/ncma_manifold.pt
+  ncma_fit_from_sample: false
+  ncma_anchor_layers: mean
+  ncma_num_anchors: 64
+  ncma_tangent_rank: 8
+  ncma_pca_neighbors: 128
+  ncma_fit_topk_ratio: 0.35
+  ncma_max_fit_tokens: 8192
+  ncma_kmeans_iters: 5
+  ncma_residual_temperature: 1.0
+  ncma_update_topk_ratio: 0.2
+  ncma_update_alpha: 0.1
+  ncma_normal_gamma: 1.0
+  ncma_residual_weight: 0.35
+  ncma_temperature: 0.07
+  ncma_layer_fusion: sum
+  ncma_use_projection_update: true
+  ncma_use_residual_score: true
+  ncma_update_abnormal: false
+  ncma_abnormal_alpha: 0.05
+  ncma_seed: 0

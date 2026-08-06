@@ -1,0 +1,14 @@
+script: scripts/cache/build_ncma_manifold.py
+args:
+  cache_dir: ./cache/mvtec_anomalyclip_features
+  output_path: ./cache/ncma_manifold.pt
+  normal_only: true
+  anchor_layers: mean
+  num_anchors: 64
+  tangent_rank: 8
+  pca_neighbors: 128
+  max_patches_per_sample: 256
+  max_fit_tokens: 8192
+  kmeans_iters: 5
+  max_samples: null
+  seed: 0
