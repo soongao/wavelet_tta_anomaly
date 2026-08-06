@@ -1,0 +1,26 @@
+flowchart LR
+    subgraph Source["Source: normal-change manifold atlas"]
+        A["Source normal images"]
+        B["Frozen CLIP patch tokens"]
+        C["Local normal neighborhoods"]
+        D["Allowed normal-change directions"]
+        A --> B --> C --> D
+    end
+
+    subgraph Test["Target: project before adapting"]
+        X["Unlabeled test image"]
+        V["Augmented views"]
+        P["Patch-level test-time trajectories"]
+        G["Project trajectories to<br/>normal-change manifold"]
+        N["On-manifold projected targets"]
+        O["Off-manifold residuals"]
+        U["Temporary prompt/adapter update"]
+        S["CLIP semantic score<br/>+ manifold residual score"]
+        M["Anomaly map"]
+        X --> V --> P --> G
+        G --> N --> U
+        G --> O --> S --> M
+        U --> S
+    end
+
+    D --> G

@@ -1,0 +1,21 @@
+flowchart TB
+    X["Patch trajectory from test image and views"]
+
+    subgraph Ordinary["Ordinary TTA"]
+        O1["Optimize raw trajectory"]
+        O2["Normal change and defect residual<br/>both drive adaptation"]
+        O3["Defect evidence can be flattened"]
+        O1 --> O2 --> O3
+    end
+
+    subgraph NCMA["NCMA"]
+        N1["Project trajectory to normal-change manifold"]
+        N2["On-manifold projection<br/>pseudo-normal update target"]
+        N3["Off-manifold residual<br/>detached anomaly evidence"]
+        N4["Anomaly map"]
+        N1 --> N2 --> N4
+        N1 --> N3 --> N4
+    end
+
+    X --> O1
+    X --> N1
