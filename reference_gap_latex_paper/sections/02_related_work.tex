@@ -5,7 +5,7 @@
 CLIP 通过共享嵌入空间连接视觉区域和文本描述~\cite{radford2021clip}。基于 CLIP 的异常检测方法通常把正常/异常状态写成文本提示或可学习文本原型，并用 patch-text 相似度产生局部异常图~\cite{jeong2023winclip,li2024promptad,zhou2024anomalyclip}。后续路线进一步引入混合提示、视觉上下文提示或异常感知适配模块，以增强跨类别语义表示~\cite{cao2024adaclip,qu2024vcpclip,ma2025aaclip}。这些方法主要增强文本侧正常/异常语义参照或训练式视觉上下文适配；本文关注在已有文本参照下，如何依据当前测试图像的正常外观解释局部证据。
 
 \paragraph{频域与局部结构线索。}
-频域信息已经是异常检测中的相关信号。近期路线为 CLIP 引入 frequency-enhanced adapters、Haar 低/高频分解和局部--全局频域分支，以增强视觉语言异常表示~\cite{gong2025feclip,chen2026wmoeclip,zhang2026harmoniad}。Wavelet 分析本身也是经典的多分辨率信号表示方法~\cite{daubechies1988orthonormal,mallat1989theory}。本文中的频域响应承担不同角色：它刻画 patch 特征中的局部结构变化，并参与当前图像正常参照的证据选择。
+频域信息已经是异常检测中的相关信号。近期路线为 CLIP 引入 frequency-enhanced adapters、Haar 低/高频分解和局部--全局频域分支，以增强视觉语言异常表示~\cite{gong2025feclip,chen2026wmoeclip,zhang2026harmoniad}。小波分析本身也是经典的多分辨率信号表示方法~\cite{daubechies1988orthonormal,mallat1989theory}。本文不将频域本身作为新异常分数，而是使用小波局部结构响应刻画 patch 证据的稳定性，并参与当前图像正常参照的证据选择。
 
-\paragraph{测试时参照与自适应。}
-视觉语言模型可以受益于测试时或图像条件化自适应，例如 test-time prompt tuning 和 conditional prompt learning~\cite{shu2022tpt,zhou2022cocoop}。在异常检测中，外部正常样本能够形成显式正常参照；视觉上下文也可以调节文本侧表示~\cite{jeong2023winclip,qu2024vcpclip}。在本文采用的 \clipzsad{} 协议中，目标类别训练样本和正常参考图像不可用，因此正常外观参照需要从当前测试图自身估计。\method{} 保持 prompt、adapter 和 encoder 参数冻结，通过当前图像内部的 patch 证据构建正常外观参照。
+\paragraph{单图参照与测试时自适应。}
+视觉语言模型可以受益于测试时或图像条件化自适应，例如 test-time prompt tuning 和 conditional prompt learning~\cite{shu2022tpt,zhou2022cocoop}。这些方法通常关注提示或模型参数如何随测试样本变化。在异常检测中，外部正常样本能够形成显式正常参照；视觉上下文也可以调节文本侧表示~\cite{jeong2023winclip,qu2024vcpclip}。在本文采用的 \clipzsad{} 协议中，目标类别训练样本和正常参考图像不可用，因此正常外观参照需要从当前测试图自身估计。\method{} 保持 prompt、adapter 和 encoder 参数冻结，通过当前图像内部的 patch 证据构建正常外观参照，而不是执行测试时参数更新。

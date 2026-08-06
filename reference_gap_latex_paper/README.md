@@ -17,6 +17,7 @@ latexmk -xelatex -interaction=nonstopmode main.tex
 - `figures/source_svg/`: copied SVG source assets for motivation/architecture figures. They are not included directly because the current LaTeX build uses PDF figures.
 - `data/`: CSV snapshots for the controlled tables and plots.
 - `notes/`: copied writing notes, provenance notes, and source table notes.
+- `notes/SOP_IDEA_AUDIT_CN.md`: zsad-idea-sop based idea audit and packaging decision.
 
 ## Scope
 

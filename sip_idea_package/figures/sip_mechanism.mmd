@@ -1,0 +1,20 @@
+flowchart LR
+    I[Input test image] --> WV[Wavelet structural view generator]
+    WV --> V1[Original view]
+    WV --> V2[Low-frequency view]
+    WV --> V3[Detail / edge view]
+    WV --> V4[Band-drop reconstruction]
+    V1 --> CLIP[Frozen CLIP image encoder]
+    V2 --> CLIP
+    V3 --> CLIP
+    V4 --> CLIP
+    CLIP --> MAPS[Patch anomaly maps per structural view]
+    MAPS --> STABLE[Confidence-selected stable regions]
+    STABLE --> TTA[Test-time structural consensus tuning]
+    TTA --> PARAM[Prompt / band gate / score head]
+    PARAM --> MAPS
+    MAPS --> RES[Cross-view residual field]
+    MAPS --> MEAN[Mean semantic anomaly evidence]
+    RES --> SCORE[Structural invariance anomaly score]
+    MEAN --> SCORE
+    SCORE --> OUT[Final anomaly map]

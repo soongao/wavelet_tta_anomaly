@@ -1,6 +1,6 @@
 \begin{table}[t]
 \centering
-\caption{局部结构响应设计消融。单元为 Pixel AUROC/AUPRO 或 Image AUROC/AP。}
+\caption{小波局部结构响应用于参照估计的设计消融。单元为 Pixel AUROC/AUPRO 或 Image AUROC/AP。}
 \label{tab:wavelet-design-ablation}
 \small
 \setlength{\tabcolsep}{5pt}
@@ -10,10 +10,10 @@
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 & Pixel & Image & Pixel & Image \\
 \midrule
-Direct & 88.7 / 80.4 & 92.9 / 96.9 & 94.6 / 85.1 & 81.6 / 84.8 \\
-Sem & 91.6 / 85.2 & 93.7 / 97.1 & 96.0 / 90.4 & 83.7 / 86.9 \\
-HF & 91.6 / 85.3 & 94.0 / 97.2 & 96.0 / 90.8 & 84.0 / 86.9 \\
-Bnd & 91.7 / 85.7 & 93.8 / 97.3 & 96.1 / 91.2 & 83.9 / 87.1 \\
+ScoreFusion & 88.7 / 80.4 & 92.9 / 96.9 & 94.6 / 85.1 & 81.6 / 84.8 \\
+SemRef & 91.6 / 85.2 & 93.7 / 97.1 & 96.0 / 90.4 & 83.7 / 86.9 \\
+HFRef & 91.6 / 85.3 & 94.0 / 97.2 & 96.0 / 90.8 & 84.0 / 86.9 \\
+BndRef & 91.7 / 85.7 & 93.8 / 97.3 & 96.1 / 91.2 & 83.9 / 87.1 \\
 \method{} & \textbf{91.8 / 86.2} & \textbf{94.5 / 97.6} & \textbf{96.2 / 91.7} & \textbf{84.6 / 87.4} \\
 \bottomrule
 \end{tabular}

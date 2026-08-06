@@ -1,7 +1,7 @@
 # 论文表格草案（当前结果口径 / TABLES.md）
 
 > 当前已复现结果以 `../../paper/tables/*.csv`、`../../paper/prototype_main_result_table.md`
-> 和 `../EXPERIMENT_TARGETS.md` 为准。正式方法名未定，表格先用 `Ours (unnamed)`。
+> 和 `../EXPERIMENT_TARGETS.md` 为准。本文方法名统一为 `ICNR`。
 > 外部 SOTA 数值标 `*` = 待核对原论文。
 > 指标顺序：pixel AUROC / pixel AUPRO / image AUROC / image AP（%）。
 
@@ -20,19 +20,19 @@
 Dataset & Method & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
 \midrule
 \multirow{2}{*}{MVTec AD} & AnomalyCLIP & 91.2 & 83.2 & 91.6 & 96.4 \\
-                          & Ours (unnamed) & \textbf{91.8} & \textbf{86.2} & \textbf{94.5} & \textbf{97.6} \\
+	                          & ICNR & \textbf{91.8} & \textbf{86.2} & \textbf{94.5} & \textbf{97.6} \\
 \midrule
 \multirow{2}{*}{VisA}     & AnomalyCLIP & 95.5 & 87.0 & 82.1 & 85.4 \\
-                          & Ours (unnamed) & \textbf{96.2} & \textbf{91.7} & \textbf{84.6} & \textbf{87.4} \\
+	                          & ICNR & \textbf{96.2} & \textbf{91.7} & \textbf{84.6} & \textbf{87.4} \\
 \midrule
 \multirow{2}{*}{MPDD}     & AnomalyCLIP & 96.5 & 88.7 & 77.0 & 82.0 \\
-                          & Ours (unnamed) & \textbf{97.3} & \textbf{89.9} & \textbf{77.8} & \textbf{82.3} \\
+	                          & ICNR & \textbf{97.3} & \textbf{89.9} & \textbf{77.8} & \textbf{82.3} \\
 \midrule
 \multirow{2}{*}{BTAD}     & AnomalyCLIP & 94.2 & 74.8 & 88.3 & 87.3 \\
-                          & Ours (unnamed) & \textbf{96.3} & \textbf{79.5} & \textbf{93.9} & \textbf{94.9} \\
+	                          & ICNR & \textbf{96.3} & \textbf{79.5} & \textbf{93.9} & \textbf{94.9} \\
 \midrule
 \multirow{2}{*}{DTD-Synth}& AnomalyCLIP & \textbf{97.9} & \textbf{92.3} & 93.5 & 97.0 \\
-                          & Ours (unnamed) & \textbf{97.9} & 91.8 & \textbf{96.9} & \textbf{98.7} \\
+	                          & ICNR & \textbf{97.9} & 91.8 & \textbf{96.9} & \textbf{98.7} \\
 \bottomrule
 \end{tabular}}
 \end{table*}
@@ -57,7 +57,7 @@ AnomalyCLIP   & 91.6 & 91.2 & 83.2 \\
 AdaCLIP*      & 92.0 & 89.0 & --   \\
 FE-CLIP*      & --   & --   & --   \\
 \midrule
-\textbf{Ours (unnamed)} & \textbf{94.5} & \textbf{91.8} & \textbf{86.2} \\
+\textbf{ICNR} & \textbf{94.5} & \textbf{91.8} & \textbf{86.2} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -79,18 +79,18 @@ FE-CLIP*      & --   & --   & --   \\
 Variant & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
 \midrule
 \multicolumn{5}{l}{\emph{MVTec AD}}\\
-Direct fusion (no adaptation) & 88.7 & 80.4 & 92.9 & 96.9 \\
-Baseline                      & 91.2 & 83.2 & 91.6 & 96.4 \\
-Semantic-only adaptation      & 91.6 & 85.2 & 93.7 & 97.1 \\
-Ours w/o conservative update  & 91.7 & 85.8 & 93.9 & 97.2 \\
-\textbf{Ours (unnamed)}       & \textbf{91.8} & \textbf{86.2} & \textbf{94.5} & \textbf{97.6} \\
+ScoreFusion                   & 88.7 & 80.4 & 92.9 & 96.9 \\
+FixedProto                    & 91.2 & 83.2 & 91.6 & 96.4 \\
+SemRef                        & 91.6 & 85.2 & 93.7 & 97.1 \\
+StructRef                     & 91.7 & 85.8 & 93.9 & 97.2 \\
+\textbf{ICNR}                 & \textbf{91.8} & \textbf{86.2} & \textbf{94.5} & \textbf{97.6} \\
 \midrule
 \multicolumn{5}{l}{\emph{VisA}}\\
-Direct fusion (no adaptation) & 94.6 & 85.1 & 81.6 & 84.8 \\
-Baseline                      & 95.5 & 86.7 & 82.0 & 85.3 \\
-Semantic-only adaptation      & 96.0 & 90.4 & 83.7 & 86.9 \\
-Ours w/o conservative update  & 96.1 & 91.3 & 84.1 & 87.0 \\
-\textbf{Ours (unnamed)}       & \textbf{96.2} & \textbf{91.7} & \textbf{84.6} & \textbf{87.4} \\
+ScoreFusion                   & 94.6 & 85.1 & 81.6 & 84.8 \\
+FixedProto                    & 95.5 & 86.7 & 82.0 & 85.3 \\
+SemRef                        & 96.0 & 90.4 & 83.7 & 86.9 \\
+StructRef                     & 96.1 & 91.3 & 84.1 & 87.0 \\
+\textbf{ICNR}                 & \textbf{96.2} & \textbf{91.7} & \textbf{84.6} & \textbf{87.4} \\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -108,10 +108,10 @@ Ours w/o conservative update  & 96.1 & 91.3 & 84.1 & 87.0 \\
 \toprule
 Variant & Pixel AUROC & Pixel AUPRO & Image AUROC & Image AP \\
 \midrule
-HF-only reliability          & 91.6 & 85.3 & 94.0 & 97.2 \\
-Boundary-aware reliability   & 91.7 & 85.7 & 93.8 & 97.3 \\
-No conservative update       & 91.7 & 85.8 & 93.9 & 97.2 \\
-\textbf{Ours (unnamed)}      & \textbf{91.8} & \textbf{86.2} & \textbf{94.5} & \textbf{97.6} \\
+HFRef                        & 91.6 & 85.3 & 94.0 & 97.2 \\
+BndRef                       & 91.7 & 85.7 & 93.8 & 97.3 \\
+StructRef                    & 91.7 & 85.8 & 93.9 & 97.2 \\
+\textbf{ICNR}                & \textbf{91.8} & \textbf{86.2} & \textbf{94.5} & \textbf{97.6} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -132,12 +132,12 @@ Dataset & Method & FP@p95(\%) & FP@p99(\%) & s/img \\
 \multirow{3}{*}{MVTec}
  & Baseline & 5.002 & 1.001 & 0.065 \\
  & NoCons   & 4.738 & 0.923 & --    \\
- & Ours (unnamed) & 4.895 & 0.960 & 0.079 \\
+ & ICNR & 4.895 & 0.960 & 0.079 \\
 \midrule
 \multirow{3}{*}{VisA}
  & Baseline & 4.996 & 1.001 & 0.065 \\
  & NoCons   & 4.693 & 0.935 & --    \\
- & Ours (unnamed) & 4.718 & 0.937 & 0.079 \\
+ & ICNR & 4.718 & 0.937 & 0.079 \\
 \bottomrule
 \end{tabular}
 \end{table}

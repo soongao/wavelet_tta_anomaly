@@ -426,7 +426,7 @@ ICNR 推荐：
 2. `GT`
 3. `AnomalyCLIP`
 4. `Semantic-only`
-5. `GlobalRef` 或 `DirectFusion`，若要突出 reference gap
+5. `GlobalRef` 或 `ScoreFusion`，若要突出 reference gap
 6. `ICNR`
 
 推荐行：

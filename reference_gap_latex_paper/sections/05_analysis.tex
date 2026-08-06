@@ -7,20 +7,20 @@
 
 \input{tables/detail_prompt_diagnostic}
 
-MVTec AD 和 VisA 上的受控结果进一步支持 reference gap 的解释。将 wavelet 响应直接混入异常图时，MVTec 的 Pixel AUPRO 为 $80.4$，VisA 为 $85.1$，低于基于参照估计的变体。Global 相对 Direct 有明显改善，但仍低于 \method{}：MVTec 的 Pixel AUPRO 差距为 $1.9$，VisA 的差距为 $2.5$，说明固定参照不足以刻画当前图像的正常外观。Sem 是强基线，表明主要改进来自当前图像参照估计；Struct 在 Sem 基础上继续提高 Pixel AUPRO，说明边界感知结构响应主要通过改善证据选择发挥作用。
+MVTec AD 和 VisA 上的受控结果进一步支持 reference gap 的解释。ScoreFusion 将局部结构响应直接作为异常分数使用，MVTec 的 Pixel AUPRO 为 $80.4$，VisA 为 $85.1$，低于基于参照估计的变体。GlobalRef 相对 ScoreFusion 有明显改善，但仍低于 \method{}：MVTec 的 Pixel AUPRO 差距为 $1.9$，VisA 的差距为 $2.5$，说明固定参照不足以刻画当前图像的正常外观。SemRef 是强基线，表明主要改进来自当前图像参照估计；StructRef 在 SemRef 基础上继续提高 Pixel AUPRO，说明边界感知结构响应主要通过改善证据选择发挥作用。
 
 \input{tables/controlled_core_ablation}
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.82\linewidth]{figures/fig_mechanism_ordering.pdf}
-  \caption{受控消融结果。Direct 较弱说明频域响应更适合作为证据选择信号；Global 低于图像条件化参照说明参照需要随当前图像变化；Sem 和 Struct 的差距反映局部结构响应对可靠证据选择的作用。}
+  \caption{受控消融结果。ScoreFusion 较弱说明局部结构响应更适合作为证据选择信号；GlobalRef 低于图像条件化参照说明参照需要随当前图像变化；SemRef 和 StructRef 的差距反映局部结构响应对可靠证据选择的作用。}
   \label{fig:mechanism-ordering}
 \end{figure}
 
 \subsection{局部结构响应设计}
 
-表~\ref{tab:wavelet-design-ablation} 隔离了局部结构响应的使用方式。HF 只使用高频幅值，不抑制结构边界。Bnd 使用式~\eqref{eq:structural-response} 降低由低频结构边界解释的响应。最终方法进一步加入保守正常参照估计。该组消融表明，结构响应更适合作为正常参照的证据选择信号。
+表~\ref{tab:wavelet-design-ablation} 隔离了局部结构响应的使用方式。HFRef 只使用高频幅值，不抑制结构边界。BndRef 使用式~\eqref{eq:structural-response} 降低由低频结构边界解释的响应。最终方法进一步加入保守正常参照估计。该组消融表明，结构响应更适合作为正常参照的证据选择信号。
 
 \input{tables/wavelet_design_ablation}
 

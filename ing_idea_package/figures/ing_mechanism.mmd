@@ -1,0 +1,19 @@
+flowchart LR
+    I[Input image] --> C[Frozen CLIP image encoder]
+    I --> W[Multiscale structural consistency]
+    C --> P[Patch feature grid]
+    P --> S[External normal/abnormal semantic prior]
+    S --> N[Normal witness discovery]
+    W --> N
+    P --> N
+    N --> G[Intra-image normality grounding]
+    P --> D[Patch evidence to be explained]
+    G --> R[Intra-image normality anchors]
+    R --> E[Reference-relative deviation]
+    D --> E
+    S --> A[Semantic anomaly evidence]
+    W --> Q[Grounding reliability gate]
+    A --> F[Grounded anomaly scoring]
+    E --> F
+    Q --> F
+    F --> O[Final anomaly map]

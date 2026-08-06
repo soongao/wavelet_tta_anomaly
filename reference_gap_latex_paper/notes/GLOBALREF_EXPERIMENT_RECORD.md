@@ -94,7 +94,7 @@ Metric order: `pixel AUROC / pixel AUPRO / image AUROC / image AP`.
 
 ### Diagnostic Position
 
-| Dataset | DirectFusion | GlobalRef | Ours |
+| Dataset | ScoreFusion | GlobalRef | Ours |
 |---|---:|---:|---:|
 | MVTec | `88.7 / 80.4 / 92.9 / 96.9` | `91.2 / 84.3 / 93.1 / 96.9` | `91.8 / 86.2 / 94.5 / 97.6` |
 | VisA | `94.6 / 85.1 / 81.6 / 84.8` | `95.8 / 89.2 / 83.2 / 86.4` | `96.2 / 91.7 / 84.6 / 87.4` |
@@ -111,7 +111,7 @@ Use these thresholds before deciding how strongly to write the claim.
 | Ours beats GlobalRef by `+1.0` to `+1.5` pixel AUPRO on both datasets | Acceptable support; use cautious wording |
 | Gap is below `+1.0` pixel AUPRO | Weak support; do not make GlobalRef a main mechanism claim |
 | GlobalRef matches or beats Ours | Current claim must be revised |
-| GlobalRef is worse than DirectFusion | Check implementation; result may be an unfair/broken control |
+| GlobalRef is worse than ScoreFusion | Check implementation; result may be an unfair/broken control |
 
 ## 6. Paper-Facing Sentence
 
