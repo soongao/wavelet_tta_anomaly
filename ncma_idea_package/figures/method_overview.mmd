@@ -1,26 +1,38 @@
 flowchart LR
-    subgraph Source["Source: normal-change manifold atlas"]
-        A["Source normal images"]
-        B["Frozen CLIP patch tokens"]
-        C["Local normal neighborhoods"]
-        D["Allowed normal-change directions"]
-        A --> B --> C --> D
+    subgraph CLIP["Frozen CLIP"]
+        IE["Image encoder<br/>f_phi"]
+        TE["Text encoder<br/>g_psi"]
     end
 
-    subgraph Test["Target: project before adapting"]
-        X["Unlabeled test image"]
-        V["Augmented views"]
-        P["Patch-level test-time trajectories"]
-        G["Project trajectories to<br/>normal-change manifold"]
-        N["On-manifold projected targets"]
-        O["Off-manifold residuals"]
-        U["Temporary prompt/adapter update"]
-        S["CLIP semantic score<br/>+ manifold residual score"]
+    subgraph Text["Text branch: state anchors"]
+        T0["Normal / abnormal prompts"]
+        T1["Text anchors<br/>t_n, t_a"]
+        T0 --> TE --> T1
+    end
+
+    subgraph Test["Target branch: strict zero-shot single-image inference"]
+        X["Target test image x"]
+        P["Target patch tokens"]
+        C["Text-guided normal<br/>candidate selection"]
+        Atlas["Per-image normal-change<br/>manifold"]
+        G["Project patches to<br/>per-image manifold"]
+        N["On-manifold projections"]
+        R["Off-manifold residuals"]
+        Cw["Compatibility +<br/>normal semantic weight"]
+        V["Per-image visual normal anchor"]
+        U["Normal text-anchor calibration<br/>t_n -> t_n'"]
+        S["Calibrated CLIP semantic score"]
         M["Anomaly map"]
-        X --> V --> P --> G
-        G --> N --> U
-        G --> O --> S --> M
-        U --> S
+        X --> IE --> P
+        P --> C --> Atlas --> G
+        P --> G
+        G --> N --> Cw --> V --> U --> S
+        G --> R
+        R --> M
+        S --> M
     end
 
-    D --> G
+    T1 --> C
+    T1 --> Cw
+    T1 --> U
+    T1 --> S

@@ -1,0 +1,13 @@
+script: scripts/evaluate/eval_cached_calibration.py
+args:
+  cache_dir: ./cache/mvtec_anomalyclip_features
+  save_path: ./results/mvtec_layers_1_2_3_sigma8_full
+  dataset: mvtec
+  metrics: image-pixel-level
+  aupro_steps: 200
+  recompute_maps: true
+  feature_map_layer:
+  - 1
+  - 2
+  - 3
+  sigma: 8

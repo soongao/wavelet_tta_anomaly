@@ -1,0 +1,62 @@
+These are the current draft final NCMA results used by the paper package.
+
+Draft: ncma_idea_package/paper_draft_cn.tex
+Method: Normal-Change Manifold Adaptation (NCMA)
+Protocol assumed in the draft:
+- Target-category zero-shot anomaly detection.
+- No source normal image bank, no target normal image bank, and no stored patch memory are used.
+- Target evaluation uses no training images, labels, masks, category statistics, or accumulated target-test stream statistics.
+- The normal-change manifold is built temporarily from each test image using text-guided normal candidates and discarded after inference.
+- Default per-image manifold: K=64 anchors, tangent rank m=8, residual temperature 1.0.
+- Default NCMA scoring: projection-guided normal anchor calibration plus off-manifold residual fusion.
+
+Main values in the draft:
+
+Image-level table:
+- MVTec AD: NCMA 92.4 I-AUROC, 96.7 I-AP.
+- VisA: NCMA 90.6 I-AUROC, 93.2 I-AP, 87.5 I-F1.
+
+Pixel-level table:
+- MVTec AD: NCMA 92.9 P-AUROC, 84.6 P-AUPRO.
+- VisA: NCMA 96.4 P-AUROC, 42.8 P-AP, 88.8 P-AUPRO.
+
+Detailed MVTec AD NCMA table:
+
+| objects    | pixel_auroc | pixel_aupro | image_auroc | image_ap |
+|:-----------|------------:|------------:|------------:|---------:|
+| carpet     | 99.0 | 91.9 | 100.0 | 100.0 |
+| bottle     | 92.3 | 84.2 | 90.4 | 97.3 |
+| hazelnut   | 97.7 | 93.5 | 97.6 | 98.7 |
+| leather    | 98.8 | 93.6 | 99.8 | 99.9 |
+| cable      | 83.6 | 70.7 | 74.5 | 84.3 |
+| capsule    | 96.4 | 89.6 | 89.5 | 97.8 |
+| grid       | 97.6 | 80.1 | 97.9 | 99.3 |
+| pill       | 93.4 | 90.3 | 83.3 | 95.9 |
+| transistor | 76.8 | 64.1 | 94.2 | 92.6 |
+| metal_nut  | 80.5 | 77.3 | 93.5 | 98.5 |
+| screw      | 97.8 | 89.3 | 82.1 | 92.9 |
+| toothbrush | 93.8 | 89.9 | 87.5 | 94.8 |
+| zipper     | 93.0 | 72.5 | 98.5 | 99.5 |
+| tile       | 95.5 | 89.0 | 100.0 | 100.0 |
+| wood       | 96.6 | 92.4 | 97.3 | 99.3 |
+| mean       | 92.9 | 84.6 | 92.4 | 96.7 |
+
+Core ablation targets:
+- Static CLIP-ZSAD baseline: 54.8 / 91.5 MVTec P-AP/P-AUPRO, 36.4 / 85.8 VisA P-AP/P-AUPRO.
+- Test-time augmentation only: 55.6 / 91.9 MVTec, 37.1 / 86.2 VisA.
+- Ordinary TTA: 54.6 / 90.6 MVTec, 36.7 / 85.3 VisA.
+- Residual score only: 57.3 / 92.8 MVTec, 39.4 / 87.3 VisA.
+- NCMA without projection anchor calibration: 58.1 / 93.0 MVTec, 40.0 / 87.5 VisA.
+- NCMA without manifold compatibility weights: 56.4 / 92.1 MVTec, 38.3 / 86.6 VisA.
+- NCMA without residual score: 57.9 / 92.9 MVTec, 39.6 / 87.4 VisA.
+- Full NCMA: 92.9 / 84.6 MVTec P-AUROC/P-AUPRO, 92.4 / 96.7 MVTec I-AUROC/I-AP.
+
+Sensitivity targets:
+- K=64, m=8 is the reference setting.
+- The intended success pattern is that too few anchors underfit normal variation, zero tangent rank weakens local change modeling, and very high anchor count gives little gain while increasing latency.
+
+Minimal credible measured outcome:
+- NCMA should beat ordinary TTA on both MVTec AD and VisA in P-AP and P-AUPRO.
+- Removing projection-guided normal anchor calibration should reduce localization.
+- Removing off-manifold residual scoring should reduce P-AP and qualitative boundary quality.
+- Ordinary TTA should show at least some localization degradation relative to static CLIP-ZSAD or NCMA, supporting the adaptation-boundary claim.

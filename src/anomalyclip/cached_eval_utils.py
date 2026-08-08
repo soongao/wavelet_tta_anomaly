@@ -34,7 +34,7 @@ def auto_device(requested: str = "auto") -> str:
     return requested
 
 
-def load_model_and_text_features(args, device: str):
+def load_model_and_text_features(args, device: str, return_raw: bool = False):
     """Load AnomalyCLIP and return the generic normal/abnormal text features."""
     anomalyclip_parameters = {
         "Prompt_length": args.n_ctx,
@@ -59,14 +59,19 @@ def load_model_and_text_features(args, device: str):
 
     with torch.no_grad():
         prompts, tokenized_prompts, compound_prompts_text = prompt_learner(cls_id=None)
-        text_features = model.encode_text_learn(
+        text_features_raw = model.encode_text_learn(
             prompts,
             tokenized_prompts,
             compound_prompts_text,
         ).float()
-        text_features = torch.stack(torch.chunk(text_features, dim=0, chunks=2), dim=1)
-        text_features = text_features / text_features.norm(dim=-1, keepdim=True)
+        text_features_raw = torch.stack(
+            torch.chunk(text_features_raw, dim=0, chunks=2),
+            dim=1,
+        )
+        text_features = text_features_raw / text_features_raw.norm(dim=-1, keepdim=True)
 
+    if return_raw:
+        return model, text_features[0].detach(), text_features_raw[0].detach()
     return model, text_features[0].detach()
 
 
@@ -77,16 +82,27 @@ def build_anomaly_maps_from_patch_features(
     image_size: int,
     layer_weighting: str = "sum",
     layer_weight_temperature: float = 1.0,
+    layer_weights: Optional[Sequence[float]] = None,
     return_layer_maps: bool = False,
 ):
     """Rebuild AnomalyCLIP patch-level anomaly maps from cached patch features."""
     anomaly_map_list = []
     selected_patch_features = []
-    first_selected_layer = feature_map_layer[0] if len(feature_map_layer) > 0 else 0
+    selected_layers = set(int(layer) for layer in feature_map_layer)
+    if layer_weights is not None:
+        if len(layer_weights) != len(feature_map_layer):
+            raise ValueError("--layer_weights must have one value per --feature_map_layer")
+        layer_weight_map = {
+            int(layer): float(weight)
+            for layer, weight in zip(feature_map_layer, layer_weights)
+        }
+    else:
+        layer_weight_map = None
+    selected_weights = []
     text_features = F.normalize(text_features.float(), dim=-1)
 
     for idx, patch_feature in enumerate(patch_features):
-        if idx >= first_selected_layer:
+        if idx in selected_layers:
             patch_feature = F.normalize(patch_feature.float(), dim=-1)
             similarity, _ = AnomalyCLIP_lib.compute_similarity(patch_feature, text_features)
             similarity_map = AnomalyCLIP_lib.get_similarity_map(
@@ -96,14 +112,29 @@ def build_anomaly_maps_from_patch_features(
             anomaly_map = (similarity_map[..., 1] + 1 - similarity_map[..., 0]) / 2.0
             anomaly_map_list.append(anomaly_map)
             selected_patch_features.append(patch_feature)
+            if layer_weight_map is not None:
+                selected_weights.append(layer_weight_map[idx])
 
     if len(anomaly_map_list) == 0:
         raise ValueError("No patch feature layer was selected. Check --feature_map_layer.")
 
     stacked_maps = torch.stack(anomaly_map_list)
     if layer_weighting == "sum":
-        anomaly_map = stacked_maps.sum(dim=0)
+        if layer_weight_map is None:
+            anomaly_map = stacked_maps.sum(dim=0)
+        else:
+            weights = torch.tensor(
+                selected_weights,
+                dtype=stacked_maps.dtype,
+                device=stacked_maps.device,
+            )
+            if torch.all(weights == 0):
+                raise ValueError("--layer_weights cannot all be zero")
+            view_shape = [len(selected_weights)] + [1] * (stacked_maps.dim() - 1)
+            anomaly_map = (stacked_maps * weights.view(*view_shape)).sum(dim=0)
     elif layer_weighting == "dynamic_wavelet":
+        if layer_weight_map is not None:
+            raise ValueError("--layer_weights is only supported with --layer_weighting sum")
         gates = [
             wavelet_gate_from_patch_features(patch_feature, output_size=image_size)
             for patch_feature in selected_patch_features
@@ -244,7 +275,10 @@ def format_metrics_table(
     table_ls = []
     image_auroc_list = []
     image_ap_list = []
+    image_f1_list = []
     pixel_auroc_list = []
+    pixel_ap_list = []
+    pixel_f1_list = []
     pixel_aupro_list = []
 
     for obj in obj_list:
@@ -281,6 +315,32 @@ def format_metrics_table(
             image_ap_list.append(image_ap)
             pixel_auroc_list.append(pixel_auroc)
             pixel_aupro_list.append(pixel_aupro)
+        elif metrics == "all":
+            image_auroc = _safe_metric(results, obj, "image-auroc")
+            image_ap = _safe_metric(results, obj, "image-ap")
+            image_f1 = _safe_metric(results, obj, "image-f1-max")
+            pixel_auroc = _safe_metric(results, obj, "pixel-auroc", aupro_steps=aupro_steps)
+            pixel_ap = _safe_metric(results, obj, "pixel-ap", aupro_steps=aupro_steps)
+            pixel_f1 = _safe_metric(results, obj, "pixel-f1-max", aupro_steps=aupro_steps)
+            pixel_aupro = _safe_metric(results, obj, "pixel-aupro", aupro_steps=aupro_steps)
+            table.extend(
+                [
+                    _format_percent(pixel_auroc),
+                    _format_percent(pixel_ap),
+                    _format_percent(pixel_f1),
+                    _format_percent(pixel_aupro),
+                    _format_percent(image_auroc),
+                    _format_percent(image_ap),
+                    _format_percent(image_f1),
+                ]
+            )
+            image_auroc_list.append(image_auroc)
+            image_ap_list.append(image_ap)
+            image_f1_list.append(image_f1)
+            pixel_auroc_list.append(pixel_auroc)
+            pixel_ap_list.append(pixel_ap)
+            pixel_f1_list.append(pixel_f1)
+            pixel_aupro_list.append(pixel_aupro)
         else:
             raise ValueError(f"unsupported metrics mode: {metrics}")
 
@@ -305,6 +365,34 @@ def format_metrics_table(
             ]
         )
         return tabulate(table_ls, headers=["objects", "pixel_auroc", "pixel_aupro"], tablefmt="pipe")
+
+    if metrics == "all":
+        table_ls.append(
+            [
+                "mean",
+                _format_percent(_nanmean(pixel_auroc_list)),
+                _format_percent(_nanmean(pixel_ap_list)),
+                _format_percent(_nanmean(pixel_f1_list)),
+                _format_percent(_nanmean(pixel_aupro_list)),
+                _format_percent(_nanmean(image_auroc_list)),
+                _format_percent(_nanmean(image_ap_list)),
+                _format_percent(_nanmean(image_f1_list)),
+            ]
+        )
+        return tabulate(
+            table_ls,
+            headers=[
+                "objects",
+                "pixel_auroc",
+                "pixel_ap",
+                "pixel_f1",
+                "pixel_aupro",
+                "image_auroc",
+                "image_ap",
+                "image_f1",
+            ],
+            tablefmt="pipe",
+        )
 
     table_ls.append(
         [

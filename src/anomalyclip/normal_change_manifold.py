@@ -9,7 +9,7 @@ import torch.nn.functional as F
 
 @dataclass(frozen=True)
 class NormalChangeManifold:
-    """Local atlas of source-domain normal patch variation."""
+    """Local atlas of normal patch variation."""
 
     anchors: torch.Tensor
     bases: torch.Tensor
@@ -157,7 +157,7 @@ def fit_normal_change_manifold_from_tokens(
     eps: float = 1e-6,
     metadata: Optional[Dict[str, object]] = None,
 ) -> NormalChangeManifold:
-    """Fit a local normal-change manifold atlas from normal patch tokens."""
+    """Fit a local normal-change manifold atlas from selected normal patch tokens."""
     if tokens.dim() != 2:
         raise ValueError(f"tokens must be [M, C], got {tuple(tokens.shape)}")
     if tokens.size(0) == 0:
@@ -475,7 +475,10 @@ def apply_ncma_adaptation(
     )
     if manifold is None:
         if not fit_from_sample:
-            raise ValueError("NCMA needs a source normal-change manifold or --ncma_fit_from_sample")
+            raise ValueError(
+                "NCMA strict zero-shot evaluation needs --ncma_fit_from_sample "
+                "when no optional manifold path is provided."
+            )
         manifold = fit_normal_change_manifold_from_patch_features(
             selected_patch_features,
             anomaly_map=base_anomaly_map,

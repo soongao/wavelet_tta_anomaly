@@ -1,0 +1,140 @@
+{
+  "pdf": "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/paper_draft_cn.pdf",
+  "page_count": 9,
+  "warnings": [
+    {
+      "page": 4,
+      "category": "text-overlap",
+      "message": "Text blocks overlap. A: 给定测试 patch 表示 z ，其最匹配正常邻域由流形外残差最小化确定： | B: Σ − 1",
+      "rect": [
+        252.20501708984375,
+        259.1376953125,
+        277.5783386230469,
+        261.33831787109375
+      ]
+    },
+    {
+      "page": 4,
+      "category": "text-overlap",
+      "message": "Text blocks overlap. A: 给定测试 patch 表示 z ，其最匹配正常邻域由流形外残差最小化确定： | B: 2 k \u0010 z − a k − U k U ⊤ k ( z − a k ) \u0011 2 . (3)",
+      "rect": [
+        266.14398193359375,
+        259.1376953125,
+        430.0480041503906,
+        261.33831787109375
+      ]
+    },
+    {
+      "page": 4,
+      "category": "text-overlap",
+      "message": "Text blocks overlap. A: Σ − 1 | B: 2 k \u0010 z − a k − U k U ⊤ k ( z − a k ) \u0011 2 . (3)",
+      "rect": [
+        266.14398193359375,
+        259.1376953125,
+        277.5783386230469,
+        289.683837890625
+      ]
+    },
+    {
+      "page": 4,
+      "category": "text-overlap",
+      "message": "Text blocks overlap. A: r ( z ) = Σ − 1 | B: 2 k ⋆ ( z − Π M ( z )) 2 . (5)",
+      "rect": [
+        276.1340026855469,
+        349.728759765625,
+        287.5683288574219,
+        380.2738342285156
+      ]
+    },
+    {
+      "page": 4,
+      "category": "text-overlap",
+      "message": "Text blocks overlap. A: 表示为 ˜ z ( v ) i ( θ ) 。流形内一致性损失为 | B: P N i =1 P V v =0 ¯ w ( v ) i ˜ z ( v ) i ( θ ) − sg...",
+      "rect": [
+        217.74998474121094,
+        729.6027221679688,
+        247.27305603027344,
+        731.2952880859375
+      ]
+    },
+    {
+      "page": 4,
+      "category": "text-overlap",
+      "message": "Text blocks overlap. A: P N i =1 P V v =0 ¯ w ( v ) i ˜ z ( v ) i ( θ ) − sg... | B: 2 P N i =1 P V v =0 ¯ w ( v ) i + ε , (9)",
+      "rect": [
+        274.46600341796875,
+        752.235107421875,
+        425.2970886230469,
+        756.4843139648438
+      ]
+    },
+    {
+      "page": 4,
+      "category": "tiny-font",
+      "message": "Many spans use very small text (< 7.0pt). Smallest observed span: 6.0pt.",
+      "rect": [
+        273.926025390625,
+        268.8703308105469,
+        277.5783386230469,
+        274.8479309082031
+      ]
+    },
+    {
+      "page": 5,
+      "category": "text-overlap",
+      "message": "Text blocks overlap. A: P N i =1 P V v =0 ¯ w ( v ) i log p n \u0010 ˜ z ( v ) i ... | B: P N i =1 P V v =0 ¯ w ( v ) i + ε . (11)",
+      "rect": [
+        278.3739929199219,
+        215.0642547607422,
+        401.02972412109375,
+        218.1202850341797
+      ]
+    },
+    {
+      "page": 5,
+      "category": "text-overlap",
+      "message": "Text blocks overlap. A: A img = 1 | B: q",
+      "rect": [
+        282.0360107421875,
+        588.3801879882812,
+        286.9014587402344,
+        593.4432983398438
+      ]
+    },
+    {
+      "page": 6,
+      "category": "tiny-font",
+      "message": "Many spans use very small text (< 7.0pt). Smallest observed span: 7.0pt.",
+      "rect": [
+        216.06199645996094,
+        78.17774963378906,
+        218.87940979003906,
+        85.15155029296875
+      ]
+    }
+  ],
+  "rendered_pages": [
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/pages/page-01.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/pages/page-02.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/pages/page-03.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/pages/page-04.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/pages/page-05.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/pages/page-06.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/pages/page-07.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/pages/page-08.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/pages/page-09.png"
+  ],
+  "overlay_pages": [
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/overlays/page-01-overlay.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/overlays/page-02-overlay.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/overlays/page-03-overlay.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/overlays/page-04-overlay.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/overlays/page-05-overlay.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/overlays/page-06-overlay.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/overlays/page-07-overlay.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/overlays/page-08-overlay.png",
+    "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/overlays/page-09-overlay.png"
+  ],
+  "contact_sheet": "/Users/bytedance/code/AnomalyCLIP/ncma_idea_package/build/ncma_idea_package/review/contact-sheet.png",
+  "used_renderer": "pymupdf"
+}

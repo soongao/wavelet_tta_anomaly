@@ -70,22 +70,48 @@ from scipy.ndimage import gaussian_filter
 def build_anomaly_maps_from_patch_features(patch_features, text_features, args):
     anomaly_map_list = []
     selected_patch_features = []
+    selected_layers = set(int(layer) for layer in args.feature_map_layer)
+    if args.layer_weights is not None:
+        if len(args.layer_weights) != len(args.feature_map_layer):
+            raise ValueError("--layer_weights must have one value per --feature_map_layer")
+        layer_weight_map = {
+            int(layer): float(weight)
+            for layer, weight in zip(args.feature_map_layer, args.layer_weights)
+        }
+    else:
+        layer_weight_map = None
+    selected_weights = []
     for idx, patch_feature in enumerate(patch_features):
-        if idx >= args.feature_map_layer[0]:
+        if idx in selected_layers:
             patch_feature = patch_feature / patch_feature.norm(dim=-1, keepdim=True)
             similarity, _ = AnomalyCLIP_lib.compute_similarity(patch_feature, text_features)
             similarity_map = AnomalyCLIP_lib.get_similarity_map(similarity[:, 1:, :], args.image_size)
             anomaly_map = (similarity_map[..., 1] + 1 - similarity_map[..., 0]) / 2.0
             anomaly_map_list.append(anomaly_map)
             selected_patch_features.append(patch_feature)
+            if layer_weight_map is not None:
+                selected_weights.append(layer_weight_map[idx])
 
     if len(anomaly_map_list) == 0:
         raise ValueError("No patch feature layer was selected. Check --feature_map_layer.")
 
     stacked_maps = torch.stack(anomaly_map_list)
     if args.layer_weighting == "sum":
-        anomaly_map = stacked_maps.sum(dim=0)
+        if layer_weight_map is None:
+            anomaly_map = stacked_maps.sum(dim=0)
+        else:
+            weights = torch.tensor(
+                selected_weights,
+                dtype=stacked_maps.dtype,
+                device=stacked_maps.device,
+            )
+            if torch.all(weights == 0):
+                raise ValueError("--layer_weights cannot all be zero")
+            view_shape = [len(selected_weights)] + [1] * (stacked_maps.dim() - 1)
+            anomaly_map = (stacked_maps * weights.view(*view_shape)).sum(dim=0)
     elif args.layer_weighting == "dynamic_wavelet":
+        if layer_weight_map is not None:
+            raise ValueError("--layer_weights is only supported with --layer_weighting sum")
         gate_list = [
             wavelet_gate_from_patch_features(patch_feature, output_size=args.image_size)
             for patch_feature in selected_patch_features
@@ -200,8 +226,8 @@ def test(args):
             )
         elif not args.ncma_fit_from_sample:
             raise ValueError(
-                "NCMA needs --ncma_manifold_path learned from source normal samples, "
-                "or --ncma_fit_from_sample for the test-local ablation."
+                "NCMA strict zero-shot evaluation needs --ncma_fit_from_sample "
+                "when no optional --ncma_manifold_path is provided."
             )
 
     model.to(device)
@@ -512,6 +538,14 @@ def test(args):
                     (1.0 - args.multicrop_weight) * anomaly_map.detach().cpu().float()
                     + args.multicrop_weight * crop_map.float()
                 ).clamp_min(0.0)
+            if args.use_image_score_map_gate:
+                gate = text_probs.float().view(-1, 1, 1).clamp(
+                    float(args.image_score_map_min_gate),
+                    float(args.image_score_map_max_gate),
+                )
+                if args.image_score_map_gate_power > 0:
+                    gate = gate.pow(float(args.image_score_map_gate_power))
+                anomaly_map = anomaly_map.float() * gate
             anomaly_map = torch.stack([torch.from_numpy(gaussian_filter(i, sigma = args.sigma)) for i in anomaly_map.detach().cpu()], dim = 0 )
             if args.use_pixel_to_image_fusion:
                 pixel_score = topk_pixel_score(
@@ -605,6 +639,7 @@ def build_parser():
     parser.add_argument("--feature_map_layer", type=int,  nargs="+", default=[1, 2, 3], help="zero shot")
     parser.add_argument("--layer_weighting", type=str, default="sum", choices=["sum", "dynamic_wavelet"], help="multi-layer anomaly-map fusion strategy")
     parser.add_argument("--layer_weight_temperature", type=float, default=1.0, help="temperature for dynamic_wavelet layer weights")
+    parser.add_argument("--layer_weights", type=float, nargs="+", default=None, help="optional explicit weights aligned with --feature_map_layer")
     parser.add_argument("--metrics", type=str, default='image-pixel-level')
     parser.add_argument("--aupro_steps", type=int, default=200, help="number of thresholds used by pixel AUPRO")
     parser.add_argument("--seed", type=int, default=111, help="random seed")
@@ -674,6 +709,10 @@ def build_parser():
     parser.add_argument("--pixel_to_image_weight", type=float, default=0.0, help="weight for pixel-to-image score fusion")
     parser.add_argument("--pixel_to_image_topk_ratio", type=float, default=0.01, help="top-k pixel ratio used for pixel-to-image fusion")
     parser.add_argument("--pixel_to_image_normalize", action="store_true", help="normalize each pixel map before pixel-to-image fusion")
+    parser.add_argument("--use_image_score_map_gate", action="store_true", help="scale the pixel map by image-level anomaly confidence")
+    parser.add_argument("--image_score_map_gate_power", type=float, default=1.0, help="power for image-score pixel-map gating")
+    parser.add_argument("--image_score_map_min_gate", type=float, default=0.0, help="minimum image-score pixel-map gate")
+    parser.add_argument("--image_score_map_max_gate", type=float, default=1.0, help="maximum image-score pixel-map gate")
     parser.add_argument("--use_tta_rectification", action="store_true", help="enable wavelet-guided test-time text feature rectification")
     parser.add_argument("--tta_mode", type=str, default="legacy", choices=["legacy", "wavelet_guided"], help="test-time text rectification strategy")
     parser.add_argument("--tta_alpha", type=float, default=0.2, help="text feature interpolation strength for test-time rectification")
@@ -704,8 +743,8 @@ def build_parser():
     parser.add_argument("--proto_percentile_low", type=float, default=1.0, help="low percentile for per-image wavelet clipping")
     parser.add_argument("--proto_percentile_high", type=float, default=99.0, help="high percentile for per-image wavelet clipping")
     parser.add_argument("--use_ncma_adaptation", action="store_true", help="enable normal-change manifold adaptation")
-    parser.add_argument("--ncma_manifold_path", type=str, default=None, help="source normal-change manifold path")
-    parser.add_argument("--ncma_fit_from_sample", action="store_true", help="fit the manifold from the current test sample as an ablation")
+    parser.add_argument("--ncma_manifold_path", type=str, default=None, help="optional precomputed manifold for source-calibration runs")
+    parser.add_argument("--ncma_fit_from_sample", action="store_true", help="fit a temporary manifold from the current unlabeled test sample")
     parser.add_argument("--ncma_anchor_layers", type=str, default="mean", choices=["last", "mean"], help="patch layers used by the NCMA manifold")
     parser.add_argument("--ncma_num_anchors", type=int, default=64, help="number of local normal-change manifold anchors")
     parser.add_argument("--ncma_tangent_rank", type=int, default=8, help="local tangent rank for NCMA projection")

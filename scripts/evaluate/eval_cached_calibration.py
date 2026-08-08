@@ -9,7 +9,11 @@ if str(SRC_ROOT) not in sys.path:
 import argparse
 import os
 
+import numpy as np
 import torch
+import torch.nn.functional as F
+from PIL import Image
+import AnomalyCLIP_lib
 
 from anomalyclip.cached_eval_utils import (
     build_anomaly_maps_from_patch_features,
@@ -18,6 +22,7 @@ from anomalyclip.cached_eval_utils import (
     compute_image_text_prob,
     format_metrics_table,
     init_results,
+    load_model_and_text_features,
     sample_cache_paths,
     selected_classes,
     smooth_anomaly_map,
@@ -59,6 +64,69 @@ def _load_patch_features(sample):
     return [patch_feature.float() for patch_feature in sample["patch_features"]]
 
 
+def _transport_kwargs(args):
+    return {
+        "ot_mode": args.ot_mode,
+        "ot_cost": args.ot_cost,
+        "ot_anchor_mode": args.ot_anchor_mode,
+        "ot_epsilon": args.ot_epsilon,
+        "ot_tau_patch": args.ot_tau_patch,
+        "ot_tau_anchor": args.ot_tau_anchor,
+        "ot_partial_mass": args.ot_partial_mass,
+        "ot_iterations": args.ot_iterations,
+        "ot_score": args.ot_score,
+        "ot_alpha": args.ot_alpha,
+        "ot_beta": args.ot_beta,
+        "curvature": args.hyperbolic_curvature,
+        "temperature": args.hyperbolic_temperature,
+        "radius_scale": args.hyperbolic_radius_scale,
+        "cone_aperture": args.cone_aperture,
+        "margin": args.entailment_margin,
+    }
+
+
+def _build_transport_maps_from_patch_features(
+    patch_features,
+    text_features_raw,
+    args,
+    return_layer_maps=False,
+):
+    anomaly_map_list = []
+    selected_patch_features = []
+    selected_layers = set(int(layer) for layer in args.feature_map_layer)
+    for idx, patch_feature in enumerate(patch_features):
+        if idx not in selected_layers:
+            continue
+
+        similarity, energy, _ = AnomalyCLIP_lib.compute_transport_anomaly(
+            patch_feature.float(),
+            text_features_raw.float(),
+            **_transport_kwargs(args),
+        )
+        if args.patch_score_space == "energy":
+            anomaly_map = AnomalyCLIP_lib.get_similarity_map(
+                energy[:, 1:].unsqueeze(-1),
+                args.image_size,
+            )[..., 0]
+        else:
+            similarity_map = AnomalyCLIP_lib.get_similarity_map(
+                similarity[:, 1:, :],
+                args.image_size,
+            )
+            anomaly_map = (similarity_map[..., 1] + 1 - similarity_map[..., 0]) / 2.0
+
+        anomaly_map_list.append(anomaly_map)
+        selected_patch_features.append(patch_feature.float())
+
+    if len(anomaly_map_list) == 0:
+        raise ValueError("No patch feature layer was selected. Check --feature_map_layer.")
+
+    anomaly_map = torch.stack(anomaly_map_list).sum(dim=0)
+    if return_layer_maps:
+        return anomaly_map, selected_patch_features, anomaly_map_list
+    return anomaly_map, selected_patch_features
+
+
 def _build_multicrop_index(multicrop_cache_dir):
     if not multicrop_cache_dir:
         return None
@@ -90,7 +158,122 @@ def _fuse_multicrop_map(anomaly_map, crop_map, weight):
     return ((1.0 - weight) * anomaly_map + weight * crop_map).clamp_min(0.0)
 
 
-def _build_maps_and_gate(sample, text_features, args, metadata):
+MVTec_OBJECT_CLASSES = {
+    "bottle",
+    "cable",
+    "capsule",
+    "hazelnut",
+    "metal_nut",
+    "pill",
+    "screw",
+    "toothbrush",
+    "transistor",
+    "zipper",
+}
+
+
+def _should_apply_foreground_gate(sample, args):
+    if not args.use_foreground_gate:
+        return False
+    cls_name = sample["cls_name"]
+    if args.foreground_classes is None:
+        return cls_name in MVTec_OBJECT_CLASSES
+    requested = set(args.foreground_classes)
+    return "all" in requested or cls_name in requested
+
+
+def _foreground_gate_from_image(image_path, image_size, args):
+    output_size = image_size if isinstance(image_size, int) else image_size[0]
+    image = Image.open(image_path).convert("RGB").resize((output_size, output_size), Image.BILINEAR)
+    image_tensor = torch.from_numpy(np.asarray(image, dtype=np.float32) / 255.0)
+
+    height, width, _ = image_tensor.shape
+    border = max(2, min(height, width) // 32)
+    border_pixels = torch.cat(
+        [
+            image_tensor[:border].reshape(-1, 3),
+            image_tensor[-border:].reshape(-1, 3),
+            image_tensor[:, :border].reshape(-1, 3),
+            image_tensor[:, -border:].reshape(-1, 3),
+        ],
+        dim=0,
+    )
+    background = border_pixels.median(dim=0).values.view(1, 1, 3)
+    distance = (image_tensor - background).square().mean(dim=-1).sqrt()
+
+    contrast = distance.max() - distance.min()
+    if contrast < float(args.foreground_min_contrast):
+        return torch.ones(1, height, width)
+
+    distance = (distance - distance.min()) / contrast.clamp_min(1e-6)
+    kernel = int(args.foreground_smooth_kernel)
+    if kernel > 1:
+        if kernel % 2 == 0:
+            kernel += 1
+        distance = F.avg_pool2d(
+            distance.view(1, 1, height, width),
+            kernel_size=kernel,
+            stride=1,
+            padding=kernel // 2,
+        ).view(height, width)
+        distance = (distance - distance.min()) / (distance.max() - distance.min()).clamp_min(1e-6)
+
+    quantile = min(max(float(args.foreground_quantile), 0.0), 0.95)
+    threshold = torch.quantile(distance.flatten(), quantile)
+    foreground = ((distance - threshold) / (1.0 - threshold).clamp_min(1e-6)).clamp(0.0, 1.0)
+    if args.foreground_power > 0:
+        foreground = foreground.pow(float(args.foreground_power))
+
+    outside_weight = min(max(float(args.foreground_outside_weight), 0.0), 1.0)
+    gate = outside_weight + (1.0 - outside_weight) * foreground
+    return gate.unsqueeze(0)
+
+
+def _apply_foreground_gate(sample, anomaly_map, args):
+    if not _should_apply_foreground_gate(sample, args):
+        return anomaly_map
+    foreground_gate = _foreground_gate_from_image(sample["img_path"], anomaly_map.shape[-1], args)
+    if foreground_gate.shape[-2:] != anomaly_map.shape[-2:]:
+        foreground_gate = F.interpolate(
+            foreground_gate.unsqueeze(1),
+            size=anomaly_map.shape[-2:],
+            mode="bilinear",
+            align_corners=False,
+        ).squeeze(1)
+    return anomaly_map.float() * foreground_gate.to(dtype=anomaly_map.dtype)
+
+
+def _normalize_map_per_image(anomaly_map, args):
+    mode = args.map_normalization
+    if mode == "none":
+        return anomaly_map
+
+    anomaly_map = anomaly_map.float()
+    batch = anomaly_map.shape[0]
+    flat = anomaly_map.flatten(1)
+    eps = 1e-6
+
+    if mode == "minmax":
+        lower = flat.min(dim=1).values
+        upper = flat.max(dim=1).values
+    elif mode == "percentile":
+        q_low = min(max(float(args.map_norm_percentile_low) / 100.0, 0.0), 1.0)
+        q_high = min(max(float(args.map_norm_percentile_high) / 100.0, 0.0), 1.0)
+        if q_high <= q_low:
+            raise ValueError("--map_norm_percentile_high must be greater than --map_norm_percentile_low")
+        lower = torch.quantile(flat, q_low, dim=1)
+        upper = torch.quantile(flat, q_high, dim=1)
+    else:
+        raise ValueError(f"unsupported map normalization mode: {mode}")
+
+    view_shape = (batch,) + (1,) * (anomaly_map.dim() - 1)
+    normalized = ((anomaly_map - lower.view(view_shape)) / (upper - lower).view(view_shape).clamp_min(eps)).clamp(0.0, 1.0)
+    if args.map_norm_power > 0 and args.map_norm_power != 1.0:
+        normalized = normalized.pow(float(args.map_norm_power))
+    return normalized
+
+
+def _build_maps_and_gate(sample, text_features, args, metadata, text_features_raw=None):
     feature_layers_changed = list(args.feature_map_layer) != list(metadata["feature_map_layer"])
     wavelet_fusion_changed = args.wavelet_fusion != metadata.get("wavelet_fusion", args.wavelet_fusion)
     can_recompute_from_patch = "patch_features" in sample
@@ -100,7 +283,9 @@ def _build_maps_and_gate(sample, text_features, args, metadata):
         and can_recompute_from_patch
     )
     need_patch_features = (
-        args.use_tta_rectification
+        args.score_mode != "cosine"
+        or args.reload_text_features_from_checkpoint
+        or args.use_tta_rectification
         or args.use_ncma_adaptation
         or args.use_wavelet_prototype_adaptation
         or args.use_direct_wavelet_fusion
@@ -114,15 +299,26 @@ def _build_maps_and_gate(sample, text_features, args, metadata):
     )
     if need_patch_features:
         patch_features = _load_patch_features(sample)
-        map_outputs = build_anomaly_maps_from_patch_features(
-            patch_features,
-            text_features,
-            args.feature_map_layer,
-            args.image_size,
-            layer_weighting=args.layer_weighting,
-            layer_weight_temperature=args.layer_weight_temperature,
-            return_layer_maps=args.use_layer_consistency,
-        )
+        if args.score_mode == "hyperbolic_uot":
+            if text_features_raw is None:
+                raise ValueError("--score_mode hyperbolic_uot needs raw text features")
+            map_outputs = _build_transport_maps_from_patch_features(
+                patch_features,
+                text_features_raw,
+                args,
+                return_layer_maps=args.use_layer_consistency,
+            )
+        else:
+            map_outputs = build_anomaly_maps_from_patch_features(
+                patch_features,
+                text_features,
+                args.feature_map_layer,
+                args.image_size,
+                layer_weighting=args.layer_weighting,
+                layer_weight_temperature=args.layer_weight_temperature,
+                layer_weights=args.layer_weights,
+                return_layer_maps=args.use_layer_consistency,
+            )
         if args.use_layer_consistency:
             anomaly_map, selected_patch_features, layer_maps = map_outputs
         else:
@@ -155,7 +351,15 @@ def _build_maps_and_gate(sample, text_features, args, metadata):
     return anomaly_map, wavelet_gate, texture_gate, None, None, None
 
 
-def _evaluate_sample(sample, text_features, args, metadata, multicrop_index=None, normal_change_manifold=None):
+def _evaluate_sample(
+    sample,
+    text_features,
+    args,
+    metadata,
+    multicrop_index=None,
+    normal_change_manifold=None,
+    text_features_raw=None,
+):
     text_features_for_map = text_features
     image_features = sample["image_features"].float()
     text_prob = None
@@ -165,6 +369,7 @@ def _evaluate_sample(sample, text_features, args, metadata, multicrop_index=None
         text_features_for_map,
         args,
         metadata,
+        text_features_raw=text_features_raw,
     )
     wavelet_reliability = None
     if args.wavelet_mode == "dual_route":
@@ -314,6 +519,7 @@ def _evaluate_sample(sample, text_features, args, metadata, multicrop_index=None
             args.image_size,
             layer_weighting=args.layer_weighting,
             layer_weight_temperature=args.layer_weight_temperature,
+            layer_weights=args.layer_weights,
             return_layer_maps=args.use_layer_consistency,
         )
         if args.use_layer_consistency:
@@ -322,8 +528,14 @@ def _evaluate_sample(sample, text_features, args, metadata, multicrop_index=None
             anomaly_map, selected_patch_features = map_outputs
             layer_maps = None
         text_prob = compute_image_text_prob(image_features, text_features_for_map)
-    elif text_prob is None:
-        text_prob = sample.get("text_prob")
+    elif (
+        text_prob is None
+        and (
+            args.score_mode != "hyperbolic_uot"
+            or args.use_cached_image_score_with_alt_map
+        )
+    ):
+        text_prob = None if args.reload_text_features_from_checkpoint else sample.get("text_prob")
         if text_prob is None:
             text_prob = compute_image_text_prob(image_features, text_features_for_map)
         else:
@@ -444,7 +656,21 @@ def _evaluate_sample(sample, text_features, args, metadata, multicrop_index=None
                 weight=args.multicrop_weight,
             )
 
+    if text_prob is None:
+        text_prob = anomaly_map.flatten(1).max(dim=1).values
+
+    if args.use_image_score_map_gate:
+        gate = text_prob.float().view(-1, 1, 1).clamp(
+            float(args.image_score_map_min_gate),
+            float(args.image_score_map_max_gate),
+        )
+        if args.image_score_map_gate_power > 0:
+            gate = gate.pow(float(args.image_score_map_gate_power))
+        anomaly_map = anomaly_map.float() * gate
+
     anomaly_map = smooth_anomaly_map(anomaly_map, sigma=args.sigma)
+    anomaly_map = _apply_foreground_gate(sample, anomaly_map, args)
+    anomaly_map = _normalize_map_per_image(anomaly_map, args)
     if args.use_pixel_to_image_fusion:
         pixel_score = topk_pixel_score(
             anomaly_map,
@@ -468,11 +694,21 @@ def evaluate_cache(args) -> None:
     metadata = torch.load(metadata_path, map_location="cpu")
     args.image_size = args.image_size or metadata["image_size"]
     args.feature_map_layer = args.feature_map_layer or metadata["feature_map_layer"]
+    args.checkpoint_path = args.checkpoint_path or metadata.get("checkpoint_path")
+    args.depth = args.depth or metadata.get("depth", 9)
+    args.n_ctx = args.n_ctx or metadata.get("n_ctx", 12)
+    args.t_n_ctx = args.t_n_ctx or metadata.get("t_n_ctx", 4)
+    args.dpam_layer = args.dpam_layer or metadata.get("dpam_layer", 20)
     sample_paths = sample_cache_paths(args.cache_dir)
     if len(sample_paths) == 0:
         raise FileNotFoundError(f"no sample cache files found under {args.cache_dir}/samples")
 
     if metadata.get("cache_mode") == "maps_only":
+        if args.score_mode != "cosine":
+            raise ValueError(
+                "This cache was created with --maps_only. Rebuild without --maps_only "
+                "to evaluate alternate patch scorers."
+            )
         if list(args.feature_map_layer) != list(metadata["feature_map_layer"]):
             raise ValueError(
                 "This cache was created with --maps_only, so --feature_map_layer "
@@ -511,6 +747,17 @@ def evaluate_cache(args) -> None:
     results = init_results(obj_list)
     logger = get_logger(args.save_path)
     text_features = metadata["text_features"].float()
+    text_features_raw = None
+    if args.reload_text_features_from_checkpoint or args.score_mode == "hyperbolic_uot":
+        _, loaded_text_features, loaded_text_features_raw = load_model_and_text_features(
+            args,
+            device="cpu",
+            return_raw=True,
+        )
+        if args.reload_text_features_from_checkpoint:
+            text_features = loaded_text_features.float()
+        if args.score_mode == "hyperbolic_uot":
+            text_features_raw = loaded_text_features_raw.float()
     normal_change_manifold = None
     if args.use_ncma_adaptation:
         if args.ncma_manifold_path:
@@ -520,15 +767,21 @@ def evaluate_cache(args) -> None:
             )
         elif not args.ncma_fit_from_sample:
             raise ValueError(
-                "NCMA needs --ncma_manifold_path learned from source normal samples, "
-                "or --ncma_fit_from_sample for the test-local ablation."
+                "NCMA strict zero-shot evaluation needs --ncma_fit_from_sample "
+                "when no optional --ncma_manifold_path is provided."
             )
     multicrop_index = _build_multicrop_index(args.multicrop_cache_dir) if args.use_multicrop_fusion else None
+    run_title = (
+        "NCMA cached calibration evaluation"
+        if args.use_ncma_adaptation
+        else "AnomalyCLIP cached calibration evaluation"
+    )
     log_run_context(
         logger,
         args,
-        title="AnomalyCLIP cached calibration evaluation",
+        title=run_title,
         extra_info={
+            "method": "NCMA" if args.use_ncma_adaptation else "AnomalyCLIP cached calibration",
             "cache_dir": args.cache_dir,
             "cache_mode": metadata.get("cache_mode", "unknown"),
             "cache_num_samples": metadata.get("num_samples", "unknown"),
@@ -558,6 +811,7 @@ def evaluate_cache(args) -> None:
             metadata,
             multicrop_index=multicrop_index,
             normal_change_manifold=normal_change_manifold,
+            text_features_raw=text_features_raw,
         )
         results[cls_name]["imgs_masks"].append(sample["img_mask"].float())
         results[cls_name]["gt_sp"].append(int(sample["anomaly"]))
@@ -581,12 +835,43 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--cache_dir", type=str, default="./cache/mvtec_anomalyclip_features")
     parser.add_argument("--save_path", type=str, default="./cached_results_mvtec")
     parser.add_argument("--dataset", type=str, default="mvtec")
-    parser.add_argument("--metrics", type=str, default="image-pixel-level", choices=["image-level", "pixel-level", "image-pixel-level"])
+    parser.add_argument(
+        "--metrics",
+        type=str,
+        default="image-pixel-level",
+        choices=["image-level", "pixel-level", "image-pixel-level", "all"],
+    )
     parser.add_argument("--aupro_steps", type=int, default=200)
+    parser.add_argument("--checkpoint_path", type=str, default=None)
+    parser.add_argument("--reload_text_features_from_checkpoint", action="store_true")
+    parser.add_argument("--depth", type=int, default=None)
+    parser.add_argument("--n_ctx", type=int, default=None)
+    parser.add_argument("--t_n_ctx", type=int, default=None)
+    parser.add_argument("--dpam_layer", type=int, default=None)
     parser.add_argument("--image_size", type=int, default=None)
     parser.add_argument("--feature_map_layer", type=int, nargs="+", default=None)
+    parser.add_argument("--score_mode", type=str, default="cosine", choices=["cosine", "hyperbolic_uot"])
+    parser.add_argument("--patch_score_space", type=str, default="prob", choices=["prob", "energy"])
+    parser.add_argument("--use_cached_image_score_with_alt_map", action="store_true")
+    parser.add_argument("--hyperbolic_curvature", type=float, default=1.0)
+    parser.add_argument("--hyperbolic_temperature", type=float, default=1.0)
+    parser.add_argument("--hyperbolic_radius_scale", type=float, default=0.1)
+    parser.add_argument("--cone_aperture", type=float, default=0.1)
+    parser.add_argument("--entailment_margin", type=float, default=0.2)
+    parser.add_argument("--ot_mode", type=str, default="unbalanced", choices=["balanced", "partial", "unbalanced"])
+    parser.add_argument("--ot_cost", type=str, default="hyperbolic_cone", choices=["cosine", "euclidean", "hyperbolic_distance", "hyperbolic_cone"])
+    parser.add_argument("--ot_anchor_mode", type=str, default="normal", choices=["normal", "anomaly", "both", "normal_anomaly"])
+    parser.add_argument("--ot_epsilon", type=float, default=0.05)
+    parser.add_argument("--ot_tau_patch", type=float, default=0.5)
+    parser.add_argument("--ot_tau_anchor", type=float, default=0.5)
+    parser.add_argument("--ot_partial_mass", type=float, default=0.9)
+    parser.add_argument("--ot_iterations", type=int, default=50)
+    parser.add_argument("--ot_score", type=str, default="combined", choices=["unmatched", "cost", "combined"])
+    parser.add_argument("--ot_alpha", type=float, default=1.0)
+    parser.add_argument("--ot_beta", type=float, default=1.0)
     parser.add_argument("--layer_weighting", type=str, default="sum", choices=["sum", "dynamic_wavelet"])
     parser.add_argument("--layer_weight_temperature", type=float, default=1.0)
+    parser.add_argument("--layer_weights", type=float, nargs="+", default=None)
     parser.add_argument("--sigma", type=float, default=4)
     parser.add_argument("--classes", type=str, nargs="+", default=None)
     parser.add_argument("--recompute_maps", action="store_true", help="rebuild base maps from cached patch features")
@@ -646,6 +931,17 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--multicrop_cache_dir", type=str, default=None)
     parser.add_argument("--multicrop_weight", type=float, default=0.25)
     parser.add_argument("--multicrop_missing_policy", type=str, default="error", choices=["error", "base"])
+    parser.add_argument("--use_foreground_gate", action="store_true")
+    parser.add_argument("--foreground_classes", type=str, nargs="+", default=None)
+    parser.add_argument("--foreground_outside_weight", type=float, default=0.2)
+    parser.add_argument("--foreground_power", type=float, default=1.0)
+    parser.add_argument("--foreground_quantile", type=float, default=0.2)
+    parser.add_argument("--foreground_smooth_kernel", type=int, default=31)
+    parser.add_argument("--foreground_min_contrast", type=float, default=0.03)
+    parser.add_argument("--map_normalization", type=str, default="none", choices=["none", "minmax", "percentile"])
+    parser.add_argument("--map_norm_percentile_low", type=float, default=1.0)
+    parser.add_argument("--map_norm_percentile_high", type=float, default=99.0)
+    parser.add_argument("--map_norm_power", type=float, default=1.0)
     parser.add_argument("--use_image_to_pixel_gate", action="store_true")
     parser.add_argument("--image_to_pixel_weight", type=float, default=0.0)
     parser.add_argument("--image_to_pixel_power", type=float, default=1.0)
@@ -655,6 +951,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--pixel_to_image_weight", type=float, default=0.0)
     parser.add_argument("--pixel_to_image_topk_ratio", type=float, default=0.01)
     parser.add_argument("--pixel_to_image_normalize", action="store_true")
+    parser.add_argument("--use_image_score_map_gate", action="store_true")
+    parser.add_argument("--image_score_map_gate_power", type=float, default=1.0)
+    parser.add_argument("--image_score_map_min_gate", type=float, default=0.0)
+    parser.add_argument("--image_score_map_max_gate", type=float, default=1.0)
     parser.add_argument("--use_tta_rectification", action="store_true")
     parser.add_argument("--tta_mode", type=str, default="legacy", choices=["legacy", "wavelet_guided"])
     parser.add_argument("--tta_alpha", type=float, default=0.2)
@@ -685,8 +985,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--proto_percentile_low", type=float, default=1.0)
     parser.add_argument("--proto_percentile_high", type=float, default=99.0)
     parser.add_argument("--use_ncma_adaptation", action="store_true")
-    parser.add_argument("--ncma_manifold_path", type=str, default=None)
-    parser.add_argument("--ncma_fit_from_sample", action="store_true")
+    parser.add_argument("--ncma_manifold_path", type=str, default=None, help="optional precomputed manifold for source-calibration runs")
+    parser.add_argument("--ncma_fit_from_sample", action="store_true", help="fit a temporary manifold from the current unlabeled test sample")
     parser.add_argument("--ncma_anchor_layers", type=str, default="mean", choices=["last", "mean"])
     parser.add_argument("--ncma_num_anchors", type=int, default=64)
     parser.add_argument("--ncma_tangent_rank", type=int, default=8)

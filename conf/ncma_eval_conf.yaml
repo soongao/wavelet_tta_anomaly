@@ -1,7 +1,7 @@
 script: scripts/evaluate/eval_cached_calibration.py
 args:
   cache_dir: ./cache/mvtec_anomalyclip_features
-  save_path: ./cached_results_ncma_mvtec
+  save_path: ./results/ncma_mvtec_final
   dataset: mvtec
   metrics: image-pixel-level
   aupro_steps: 200
@@ -13,8 +13,8 @@ args:
   classes: null
   recompute_maps: false
   use_ncma_adaptation: true
-  ncma_manifold_path: ./cache/ncma_manifold.pt
-  ncma_fit_from_sample: false
+  ncma_manifold_path: null
+  ncma_fit_from_sample: true
   ncma_anchor_layers: mean
   ncma_num_anchors: 64
   ncma_tangent_rank: 8

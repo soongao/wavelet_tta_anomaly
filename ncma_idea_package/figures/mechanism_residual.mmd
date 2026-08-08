@@ -1,21 +1,41 @@
 flowchart TB
-    X["Patch trajectory from test image and views"]
+    subgraph CLIP["Frozen CLIP inputs"]
+        X["Target test image x"]
+        IE["Image encoder<br/>f_phi"]
+        P["Patch tokens"]
+        Prompt["Normal / abnormal prompts"]
+        TE["Text encoder<br/>g_psi"]
+        T["Text anchors<br/>t_n, t_a"]
+        X --> IE --> P
+        Prompt --> TE --> T
+    end
 
-    subgraph Ordinary["Ordinary TTA"]
-        O1["Optimize raw trajectory"]
-        O2["Normal change and defect residual<br/>both drive adaptation"]
-        O3["Defect evidence can be flattened"]
-        O1 --> O2 --> O3
+    subgraph Ordinary["Ordinary test-time calibration"]
+        O1["Select low-anomaly raw patches<br/>using text anchors"]
+        O2["Build visual normal anchor<br/>from raw patch evidence"]
+        O3["Normal change and defect residual<br/>can both enter the anchor"]
+        O4["Defect response is weakened"]
+        T --> O1
+        P --> O1 --> O2 --> O3 --> O4
     end
 
     subgraph NCMA["NCMA"]
-        N1["Project trajectory to normal-change manifold"]
-        N2["On-manifold projection<br/>pseudo-normal update target"]
-        N3["Off-manifold residual<br/>detached anomaly evidence"]
-        N4["Anomaly map"]
-        N1 --> N2 --> N4
-        N1 --> N3 --> N4
+        A["Text-guided normal candidates"]
+        B["Per-image normal-change manifold"]
+        N1["Project patch tokens<br/>to the per-image manifold"]
+        N2["On-manifold projection"]
+        N3["Off-manifold residual"]
+        N4["Compatibility + normal semantic weight"]
+        N5["Calibrate normal text anchor<br/>with accepted projections"]
+        N6["Calibrated semantic score"]
+        N7["Residual anomaly evidence"]
+        N8["Anomaly map"]
+        P --> A --> B --> N1
+        P --> N1
+        T --> A
+        T --> N4
+        T --> N5
+        T --> N6
+        N1 --> N2 --> N4 --> N5 --> N6 --> N8
+        N1 --> N3 --> N7 --> N8
     end
-
-    X --> O1
-    X --> N1

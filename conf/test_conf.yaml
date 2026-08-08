@@ -118,7 +118,7 @@ args:
   proto_percentile_high: 99.0
   use_ncma_adaptation: false
   ncma_manifold_path: null
-  ncma_fit_from_sample: false
+  ncma_fit_from_sample: true
   ncma_anchor_layers: mean
   ncma_num_anchors: 64
   ncma_tangent_rank: 8

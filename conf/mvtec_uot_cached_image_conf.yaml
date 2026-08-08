@@ -1,0 +1,15 @@
+script: scripts/evaluate/eval_cached_calibration.py
+args:
+  cache_dir: ./cache/mvtec_anomalyclip_features
+  save_path: ./results/mvtec_uot_layers_1_2_3_sigma8_cached_image_full
+  dataset: mvtec
+  metrics: all
+  aupro_steps: 200
+  recompute_maps: true
+  score_mode: hyperbolic_uot
+  use_cached_image_score_with_alt_map: true
+  feature_map_layer:
+  - 1
+  - 2
+  - 3
+  sigma: 8
