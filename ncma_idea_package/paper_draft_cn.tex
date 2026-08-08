@@ -26,7 +26,7 @@
 \setlist[itemize]{leftmargin=2em,itemsep=2pt,topsep=3pt}
 \setlist[enumerate]{leftmargin=2em,itemsep=2pt,topsep=3pt}
 
-\title{\bfseries 实例条件化正常性边界：\\解耦 CLIP 零样本异常检测中的语义迁移与边界迁移}
+\title{\bfseries 从异常语义到正常性边界：\\CLIP 零样本异常定位的实例条件化建模}
 \author{匿名作者}
 \date{}
 
@@ -35,15 +35,16 @@
 \maketitle
 
 \begin{abstract}
-\clip{} 零样本异常检测要求模型在未见目标类别上同时完成图像级异常判别与像素级缺陷定位。
-现有 CLIP-ZSAD 方法主要通过状态提示、视觉上下文或轻量适配器学习 normal/abnormal 语义锚，使异常概念能够跨目标类别迁移。
-然而，异常语义可迁移并不意味着正常性边界可以直接迁移到每个目标实例。
-在工业图像中，同一 normal 状态下的可接受外观受到材质批次、纹理方向、局部几何和成像条件调制；异常定位需要判断局部证据是否仍可被当前实例的正常性边界接受。
+\clip{} 零样本异常检测通常被表述为 normal 与 abnormal 状态之间的语义判别：给定未见目标类别，模型需要利用可迁移的状态文本完成图像级异常判别与像素级缺陷定位。
+现有 CLIP-ZSAD 方法已经推进了这一语义迁移过程，通过状态提示、局部视觉-文本对齐、视觉上下文或轻量适配器，使 abnormal concept 能够脱离具体对象类别而被识别。
+然而，异常定位并不只是异常语义识别。
+在工业图像中，缺陷通常表现为局部外观相对于当前实例正常状态的越界；同一类颜色偏移、纹理扰动或几何变化，在一个实例中可能是合法正常变化，在另一个实例中却可能构成缺陷。
+因此，异常语义能够跨类别迁移，并不意味着正常性边界也能由同一组 normal/abnormal 文本锚直接迁移到每个目标实例。
 本文将 CLIP 零样本异常定位重构为实例条件化正常性边界估计，并提出正常变化流形适应（Normal-Change Manifold Adaptation, \method{}）。
-\method{} 从当前图像中选择语义正常且空间一致的 patch，构建由局部 anchor、切空间和残差尺度组成的正常变化流形。
-该流形将每个 patch 分解为边界内变异分量和边界外残差：前者用于估计当前实例的 normality boundary，后者作为异常定位证据保留。
+\method{} 从当前图像中选择语义正常且空间一致的 patch，构建由局部 anchor、可容许变化方向和残差尺度组成的正常变化流形。
+该流形刻画当前实例中 normal 语义的可接受范围，并将每个 patch 分解为边界内变化与边界外残差：前者用于估计当前实例的 normality boundary，后者作为异常定位证据保留。
 在 MVTec AD 上，\method{} 将 AnomalyCLIP 的平均 P-AUROC/P-AUPRO/I-AUROC/I-AP 从 91.1/81.4/91.6/96.4 提升到 92.9/84.6/92.4/96.7。
-结果表明，在不使用目标训练图像、标签、mask 或目标正常样本库的条件下，实例条件化正常性边界能够有效提升 CLIP-ZSAD 的定位质量。
+这些结果说明，在不使用目标训练图像、标签、mask 或目标正常样本库的条件下，实例条件化正常性边界能够补足 CLIP-ZSAD 中固定状态比较所缺少的边界信息。
 \end{abstract}
 
 \noindent\textbf{关键词：} 零样本异常检测；视觉语言模型；实例条件化正常性边界；正常变化流形；异常定位
@@ -51,37 +52,39 @@
 \section{引言}
 \label{sec:introduction}
 
-工业异常检测关注局部外观相对于正常生产状态的可接受性。
-划痕、污染、结构缺失和部件错位往往不改变对象类别，却会破坏局部区域的正常性。
+工业异常检测的核心不是识别一个新的对象类别，而是判断局部外观是否仍处在正常生产状态允许的范围内。
+划痕、污染、结构缺失和部件错位往往只改变局部区域，却会使该区域越过正常性边界。
 零样本异常检测进一步要求模型在目标类别没有训练图像和人工标注的条件下完成图像级异常判别与像素级定位。
-这一设置对应新产线快速部署、缺陷形态开放和标注成本高昂等实际场景，也使预训练视觉语言模型成为具有吸引力的基础模型。
+这一设置对应新产线快速部署、缺陷形态开放和标注成本高昂等实际场景，也使预训练视觉语言模型成为自然的基础模型。
 
 \clip{} 通过大规模图文对比学习获得开放词汇识别能力 \cite{radford2021clip}。
 近期 CLIP-ZSAD 方法将这种能力转化为 normal/abnormal 状态建模，代表性路线包括状态词模板、窗口级局部证据、对象无关提示、动态提示、视觉上下文提示和轻量适配器 \cite{jeong2023winclip,chen2023aprilgan,zhou2024anomalyclip,yao2024adaclip,qu2024vcpclip,ma2025aaclip}。
-这些方法的核心贡献在于异常语义迁移：它们使 abnormal concept 能够脱离具体对象类别，并使局部视觉证据与状态文本更好对齐。
-在这一语义基础上，模型可以在未见类别上比较 normal 与 abnormal 状态。
+这些工作推动了异常语义迁移：模型可以在未见目标类别上获得对象无关的 abnormal 表达，并把局部视觉证据投射到 normal/abnormal 状态空间中。
+从这一角度看，CLIP-ZSAD 已经把问题推进到一个更细的层面：异常语义可以迁移，但异常定位仍要决定 normal 语义在当前实例中覆盖到哪里。
 
-本文关注 CLIP-ZSAD 中另一个同样关键但较少被显式建模的问题：边界迁移。
-异常语义的可迁移性保证了模型知道“异常”这一状态如何表达，却不保证同一 normal 语义锚能够定义每个实例的可接受外观范围。
-在工业图像中，纹理方向、材料批次、局部几何、光照和背景会改变当前图像中仍然正常的局部变化。
-因此，零样本异常定位需要从固定状态比较进一步走向实例条件化正常性边界估计。
+异常语义的可迁移性并不自动带来异常定位所需的边界判定。
+异常定位面对的是另一个问题：当前图像中的局部偏离，是否仍能被该实例的正常状态接受。
+相同的纹理方向变化、材质色差、局部几何扰动或成像波动，在不同实例中具有不同的正常含义。
+如果模型始终使用同一组 normal/abnormal 语义锚评估所有目标图像，就隐含地假设正常性边界可以随语义一起固定迁移。
+这一假设与工业图像的实例差异不匹配，因为正常性边界往往由当前实例内部的可接受变化决定，而不是由全局文本锚单独决定。
 
-实例条件化正常性边界刻画的是当前图像中局部证据能否被接受为正常。
-正常 patch 的变化通常由少数局部因素控制，例如边缘连续性、纹理延展、材质起伏和成像条件；这些因素在局部邻域内形成有方向、有尺度的正常变异结构。
-缺陷区域的判别性证据则体现为无法由该结构解释的边界外残差。
-因此，正常性边界不仅需要一个 normal 原型，还需要描述原型附近可容许变异方向和残差尺度。
+本文因此关注 CLIP-ZSAD 中被固定状态比较遮蔽的边界迁移问题。
+我们将零样本异常定位重构为实例条件化正常性边界估计：CLIP 提供可迁移的状态语义，当前图像中的可靠正常证据定义该语义在实例上的可接受范围。
+在这个视角下，normal 不再只是一个文本状态或单个视觉原型，而是一个局部边界结构。
+它需要同时回答三个问题：正常外观的中心在哪里，哪些局部变化方向仍被允许，以及偏离到何种尺度后应被视为异常证据。
 
-基于这一建模，本文提出正常变化流形适应（\method{}）。
+基于这一认识，本文提出正常变化流形适应（\method{}）。
 \method{} 使用冻结的 \clip{} normal/abnormal 语义锚在当前图像中筛选语义正常且空间一致的候选 patch，并将这些候选组织为由局部 anchor、切空间和残差尺度构成的正常变化流形。
-每个目标 patch 随后被分配到最相容的正常邻域，并分解为流形内投影与流形外残差。
-流形内投影为当前 normality boundary 提供实例证据，流形外残差作为异常定位证据进入最终 anomaly map。
+局部 anchor 表示当前图像中的正常外观模式，切空间表示这些模式附近允许的变化方向，残差尺度度量局部证据越过正常边界的程度。
+每个目标 patch 随后被分解为流形内投影与流形外残差：流形内投影参与估计当前实例的 normality boundary，流形外残差被保留为异常定位证据。
 整个过程在单张图像内完成，不使用目标训练图像、标签、mask、外部正常样本库或目标类别统计。
 
 本文贡献如下：
 \begin{enumerate}
-  \item 将 CLIP-ZSAD 中的固定状态比较重构为实例条件化正常性边界估计，明确区分异常语义迁移与正常性边界迁移。
-  \item 提出 \method{}，以当前图像中语义正常且空间一致的 patch 构建正常变化流形，用局部 anchor、切空间和残差尺度刻画实例内可容许正常变异。
-  \item 设计流形投影与流形外残差分解，使边界内证据服务于 normality boundary 估计，边界外残差服务于异常定位。
+  \item 指出 CLIP-ZSAD 中语义迁移与边界迁移的分离：现有方法主要提升 abnormal semantic transfer，而异常定位仍需要 instance-conditioned normality boundary。
+  \item 将零样本异常定位重构为实例条件化正常性边界估计，把 normal 建模为当前实例中可接受局部变化的边界结构。
+  \item 提出 \method{}，以正常变化流形表示该边界，将局部正常模式、允许变化方向和越界残差统一到一个机制中。
+  \item 设计边界内投影与边界外残差分解，使 normal 证据能够适配当前实例，同时避免缺陷区域被错误吸收到 normal 表示中。
   \item 在 MVTec AD 上验证 \method{} 相比 AnomalyCLIP 的平均 P-AUROC、P-AUPRO、I-AUROC 和 I-AP 均有提升，并通过结构消融分析性能来源。
 \end{enumerate}
 
@@ -91,31 +94,36 @@
 \subsection{CLIP 零样本异常检测}
 
 视觉语言模型为零样本异常检测提供了可迁移的状态语义表征。
-WinCLIP 使用状态词组合与窗口级特征进行零样本和少样本异常分类与分割 \cite{jeong2023winclip}。
+WinCLIP 将状态词组合与窗口级局部特征用于零样本和少样本异常分类与分割 \cite{jeong2023winclip}。
 APRIL-GAN 改善 \clip{} patch 与文本状态之间的局部对齐 \cite{chen2023aprilgan}。
-AnomalyCLIP、AdaCLIP、VCP-CLIP 和 AA-CLIP 等方法进一步通过提示学习、混合提示、图像条件化提示或轻量适配器增强 normal/abnormal 状态建模 \cite{zhou2024anomalyclip,yao2024adaclip,qu2024vcpclip,ma2025aaclip}。
-这些工作主要提升异常概念的对象无关表达能力，以及局部视觉证据与文本状态之间的对齐质量。
-\method{} 关注同一框架中的边界问题：当 normal/abnormal 状态语义已经具备跨类别迁移能力时，当前实例仍需要决定哪些局部外观变化属于 normality boundary。
+AnomalyCLIP、AdaCLIP、VCP-CLIP 和 AA-CLIP 等方法进一步通过对象无关提示、混合提示、视觉上下文提示或轻量适配器增强 normal/abnormal 状态建模 \cite{zhou2024anomalyclip,yao2024adaclip,qu2024vcpclip,ma2025aaclip}。
+这些工作共同回答了一个关键问题：如何让 abnormal 语义脱离具体目标类别，并在未见类别上保持可用。
+\method{} 研究同一框架中更靠近定位决策的一环：当 abnormal 语义已经能够迁移时，normal 语义在当前实例中的可接受边界如何确定。
 
 \subsection{正常性结构建模}
 
 工业异常检测长期依赖正常样本的局部表示结构。
 PaDiM 使用 patch 表示的分布统计刻画正常性 \cite{defard2021padim}，PatchCore 通过正常 patch 记忆库与近邻检索获得强定位性能 \cite{roth2022patchcore}，UniAD 探索多类别统一建模并分析重建捷径对异常定位的影响 \cite{you2022uniad}。
-这些方法表明，正常性可以由局部邻域关系、分布尺度和重建残差等结构性证据刻画，而不仅是一个二分类语义标签。
-\method{} 将这种结构化正常性观点引入目标类别零样本协议：它不为目标类别建立正常记忆库，也不访问目标训练图像。
-方法在单张测试图像内估计可被 normal 语义接受的局部变异结构，并用该结构定义当前实例的正常性边界。
-因此，\method{} 的边界证据来自当前实例内部的可靠正常区域，而非预先收集的目标正常样本。
+这些方法表明，正常性不能完全还原为一个二分类语义标签；它还包含局部邻域关系、分布尺度和残差解释能力。
+然而，这类结构通常来自目标类别的正常训练样本、记忆库或统一训练过程。
+\method{} 将结构化正常性的思想放入目标类别零样本协议：方法不访问目标训练图像，也不为目标类别维护正常样本库，而是在单张测试图像内部估计可被 normal 语义接受的局部变化结构。
 
-\subsection{推理阶段实例条件化}
+\subsection{实例条件化正常性边界}
 
-另一类相关方法在推理阶段利用无标签样本更新模型或提示。
-Tent 通过熵最小化更新归一化参数 \cite{wang2021tent}，MEMO 使用增强视图的边际熵最小化提升鲁棒性 \cite{zhang2022memo}，TPT 在视觉语言模型中用单个测试样本更新 prompt \cite{shu2022tpt}。
-这些方法说明推理阶段的无标签证据能够缓解分布偏移。
-异常定位中的实例条件化更依赖局部证据选择，因为当前图像同时包含正常变异和潜在缺陷。
-\method{} 将推理阶段信号组织为边界估计问题：流形内分量用于形成当前实例的正常性边界，流形外分量作为异常证据保留。
+异常定位中的实例条件化首先是一个局部证据选择问题。
+当前图像同时包含可接受正常变化和潜在缺陷，关键不在于让模型贴合整张图像，而在于选择哪些局部证据可以定义 normality boundary，哪些局部偏离必须作为异常证据保留。
+因此，直接聚合低异常响应区域会带来一个结构性风险：如果缺陷区域被吸收到实例 normal 表示中，定位信号就会被边界更新抹平。
+\method{} 将实例条件化组织为边界估计问题。
+流形内投影只吸收与当前正常变化相容的证据，流形外残差则显式保留不能由该边界解释的局部偏离。
+这一设计使 normal 语义获得实例尺度的边界信息，同时避免把异常证据转化为新的正常原型。
 
 \section{方法}
 \label{sec:method}
+
+\method{} 的目标是在不访问目标类别正常样本库的条件下，为每张测试图像估计一个临时的正常性边界。
+该边界由当前图像中被 CLIP normal 语义支持、并且在空间上保持一致的局部证据定义。
+方法首先用冻结的 \clip{} 提供 normal/abnormal 状态语义，再从当前图像中构建正常变化流形。
+流形内方向定义可被当前实例接受的正常变化，流形外残差定义应被保留的异常证据。
 
 \subsection{问题设置}
 \label{sec:setting}
@@ -134,9 +142,11 @@ Tent 通过熵最小化更新归一化参数 \cite{wang2021tent}，MEMO 使用�
 \label{sec:manifold}
 
 \method{} 将当前实例的正常性边界表示为单图像正常变化流形。
-该流形由一组局部正常 anchor、对应的可容许变异方向和残差尺度组成。
-局部 anchor 表示当前图像中的正常外观模式，切空间描述该模式附近的可容许变异，残差尺度用于规范化偏离该局部结构的流形外分量。
-在这一表示下，每个 patch 都可以分解为边界内投影和边界外残差。
+这一表示的出发点是，正常性边界不能由单个 normal 原型充分刻画。
+一个原型只能描述正常证据的中心，却不能说明该中心附近哪些变化方向仍然合法，也不能定义越界残差的尺度。
+因此，正常变化流形由一组局部正常 anchor、对应的可容许变异方向和残差尺度组成。
+局部 anchor 表示当前图像中的正常外观模式，切空间描述该模式附近的可容许变化，残差尺度用于规范化偏离该局部结构的流形外分量。
+在这一表示下，每个 patch 都可以被解释为边界内投影与边界外残差的组合。
 具体地，我们首先计算每个 patch 的语义异常先验：
 \begin{equation}
   p_i^a=
@@ -165,7 +175,7 @@ Tent 通过熵最小化更新归一化参数 \cite{wang2021tent}，MEMO 使用�
   b_i=(1-p_i^a)^\eta h_i .
   \label{eq:normal_candidate}
 \end{equation}
-\(b_i\) 高的 patch 既接近 normal 文本锚，又与局部邻域保持一致，因此可作为当前图像的正常变异种子。
+\(b_i\) 高的 patch 既接近 normal 文本锚，又与局部邻域保持一致，因此更适合作为当前图像中的正常边界证据。
 从 \(b_i\) 最高的候选集合中选取 \(K\) 个局部 anchor，并在候选 patch 的近邻内估计切方向与残差尺度，得到单图像正常变化流形：
 \begin{equation}
   \M=\{(a_k,U_k,s_k)\}_{k=1}^{K}.
@@ -206,7 +216,8 @@ Tent 通过熵最小化更新归一化参数 \cite{wang2021tent}，MEMO 使用�
 
 实例条件化正常性边界由 CLIP 状态语义和单图像正常变异结构共同确定。
 \clip{} 的 normal/abnormal 锚提供开放词汇状态判断，流形内投影提供当前实例中可被 normal 边界接受的视觉证据。
-\method{} 聚合这些边界内证据，得到当前实例的 normality boundary。
+\method{} 只聚合与正常变化流形相容的边界内证据，而不直接吸收高残差区域。
+这样得到的实例 normal 表示描述的是当前图像中 normal 语义的可接受范围，而不是整张图像的平均外观。
 基于式~\eqref{eq:semantic_prior} 的语义异常先验，用流形相容度和 normal 语义置信度共同定义边界证据权重：
 \begin{equation}
   q_i=c_i(1-p_i^a)^\gamma .
@@ -459,23 +470,26 @@ P-AUROC 衡量像素级排序质量，P-AUPRO 更强调缺陷区域覆盖与正�
 \section{讨论}
 \label{sec:discussion}
 
-\method{} 将 CLIP-ZSAD 中的状态语义比较扩展为实例条件化边界估计。
-固定边界以同一组 normal/abnormal 锚评估所有未见实例；\method{} 在当前图像中估计正常变化流形，并据此选择能够支撑 normality boundary 的局部证据。
-这种结构使 normal 语义能够吸收当前实例的合法外观变异，同时将无法解释的残差保留为定位信号。
+\method{} 将 CLIP-ZSAD 中的状态语义比较扩展为实例条件化正常性边界估计。
+固定状态比较以同一组 normal/abnormal 锚评估所有未见实例，适合表达对象无关异常语义，却缺少当前实例中 normal 可接受范围的信息。
+\method{} 在当前图像中估计正常变化流形，并据此选择能够支撑 normality boundary 的局部证据。
+这种结构使 normal 语义能够吸收当前实例的合法外观变化，同时将无法由正常变化解释的残差保留为定位信号。
 实验增益主要体现在 P-AUPRO 和困难类别定位质量上，与边界外残差建模的设计目标一致。
 
 当前方法依赖单张图像中存在足够的可靠正常区域来估计正常变化流形。
 当缺陷覆盖范围极大、正常区域极少，或同一图像包含多个强烈冲突的正常外观模式时，边界估计会受到候选 patch 质量限制。
+这一限制也刻画了本文主张的适用边界：NCMA 估计的是实例内部可观察正常变化所诱导的边界，而不是从外部正常样本库恢复完整类别分布。
 面向视频、批量检测或多视角工业场景时，可以进一步把单图像流形扩展为时序一致或跨视角一致的正常性边界，同时保持不使用目标缺陷标签的零样本协议。
 
 \section{结论}
 \label{sec:conclusion}
 
 本文将 CLIP 零样本异常检测中的固定状态比较重构为实例条件化正常性边界估计。
+这一重构区分了 abnormal 语义的跨类别迁移和 normality boundary 的实例化估计。
 \method{} 在单张图像内构建文本引导的正常变化流形，并将局部 patch 分解为边界内投影和边界外残差。
-边界内投影用于估计当前实例的 normality boundary，边界外残差与实例条件化语义分数共同形成 anomaly map。
+边界内投影用于估计当前实例中 normal 语义的可接受范围，边界外残差与实例条件化语义分数共同形成 anomaly map。
 在 MVTec AD 上，\method{} 将 AnomalyCLIP 的平均 P-AUROC/P-AUPRO/I-AUROC/I-AP 从 91.1/81.4/91.6/96.4 提升到 92.9/84.6/92.4/96.7。
-这些结果表明，正常变化流形为 CLIP-ZSAD 提供了有效的实例边界机制，能够建模合法正常变异并保留局部缺陷证据。
+这些结果表明，正常变化流形为 CLIP-ZSAD 提供了实例边界机制，能够建模合法正常变化并保留局部缺陷证据。
 
 \begin{thebibliography}{99}
 
@@ -528,21 +542,6 @@ Karsten Roth, Latha Pemula, Joaquin Zepeda, Bernhard Schölkopf, Thomas Brox, an
 Zhiyuan You, Kai Yang, Wenhan Luo, Lei Cui, Yujun Zheng, and Xiu Li.
 \newblock A unified model for multi-class anomaly detection.
 \newblock In \emph{NeurIPS}, 2022.
-
-\bibitem{wang2021tent}
-Dequan Wang, Evan Shelhamer, Shaoteng Liu, Bruno Olshausen, and Trevor Darrell.
-\newblock Tent: Fully test-time adaptation by entropy minimization.
-\newblock In \emph{ICLR}, 2021.
-
-\bibitem{zhang2022memo}
-Marvin Zhang, Sergey Levine, and Chelsea Finn.
-\newblock MEMO: Test time robustness via adaptation and augmentation.
-\newblock In \emph{NeurIPS}, 2022.
-
-\bibitem{shu2022tpt}
-Manli Shu, Weili Nie, De-An Huang, Zhiding Yu, Tom Goldstein, Anima Anandkumar, and Chaowei Xiao.
-\newblock Test-time prompt tuning for zero-shot generalization in vision-language models.
-\newblock \emph{arXiv preprint arXiv:2209.07511}, 2022.
 
 \bibitem{bergmann2019mvtec}
 Paul Bergmann, Michael Fauser, David Sattlegger, and Carsten Steger.
